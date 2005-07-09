@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Matrix4.plot - An eclipse plugin                                 -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<project name="matrix4.plot.release" default="help">
+
+   <property file=".ant.properties"/>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Help                                                             -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="help" description="--> shows the help screen">
+      <echo>MAKING A NEW RELEASE (release.xml)</echo>
+      <echo>archive.src: archiving the source</echo>
+      <echo>ant.zip: makes a zip file with the ANT scripts</echo>
+      <echo>release.sf: making the release for SourceForge</echo>
+      <echo/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Archiving the code                                               -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="src.zip" description="--> makes a zipfile with the source code">
+      <mkdir dir="${matrix4.plot.bin}"/>
+      <zip zipfile="${matrix4.plot.bin}/src.zip" basedir="${matrix4.plot.src}" includes="**/*.java, **/*.txt, **/*.bmp, **/*.gif, **/*.xml, **/*.properties, ant/.ant.properties"/>
+   </target>
+
+   <target name="src.tar.gz" description="--> makes a tar.gz-file with the source code">
+      <mkdir dir="${matrix4.plot.bin}"/>
+      <tar tarfile="${matrix4.plot.bin}/src.tar" basedir="${matrix4.plot.src}" includes="**/*.java, **/*.txt, **/*.bmp, **/*.gif, **/*.xml, **/*.properties, ant/.ant.properties"/>
+      <gzip zipfile="${matrix4.plot.bin}/src.tar.gz" src="${matrix4.plot.bin}/src.tar"/>
+      <delete file="${matrix4.plot.bin}/src.tar"/>
+   </target>
+
+   <target name="archive.src" depends="src.zip, src.tar.gz" description="--> archives the source code"/>
+
+   <target name="ant.zip" description="--> makes a zipfile with the ANT scripts">
+      <mkdir dir="${matrix4.plot.bin}"/>
+      <zip zipfile="${matrix4.plot.bin}/matrix4.plot.ant.zip" basedir="${matrix4.plot.src}" includes="build.xml, ant/**"/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Making a release, ready for upload to SourceForge                -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="release.sf" description="--> makes a complete Matrix4.plot release ready to publish on SourceForge">
+      <mkdir dir="${matrix4.plot.sf}"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.jar" todir="${matrix4.plot.dist}" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.jar" tofile="${matrix4.plot.dist}/matrix4.plot-${releasenumber}.jar" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.jar" tofile="${matrix4.plot.sf}/matrix4.plot-${releasenumber}.jar" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/src.zip" tofile="${matrix4.plot.sf}/matrix4.plot-src-${releasenumber}.zip" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/src.tar.gz" tofile="${matrix4.plot.sf}/matrix4.plot-src-${releasenumber}.tar.gz" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/docs.tar.gz" tofile="${matrix4.plot.sf}/matrix4.plot-docs-${releasenumber}.tar.gz" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.ant.zip" tofile="${matrix4.plot.sf}/matrix4.plot.ant-${releasenumber}.zip" overwrite="yes"/>
+   </target>
+
+   <target name="earlyaccess.sf" description="--> makes a complete Matrix4.plot release ready to publish on SourceForge">
+      <mkdir dir="${matrix4.plot.sf}"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.jar" todir="${matrix4.plot.dist}" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.jar" tofile="${matrix4.plot.dist}/matrix4.plot-${earlyaccesslowagie}.jar" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.jar" tofile="${matrix4.plot.sf}/matrix4.plot-${earlyaccesslowagie}.jar" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/src.zip" tofile="${matrix4.plot.sf}/matrix4.plot-src-${earlyaccesslowagie}.zip" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/src.tar.gz" tofile="${matrix4.plot.sf}/matrix4.plot-src-${earlyaccesslowagie}.tar.gz" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/docs.tar.gz" tofile="${matrix4.plot.sf}/matrix4.plot-docs-${earlyaccesslowagie}.tar.gz" overwrite="yes"/>
+      <copy file="${matrix4.plot.bin}/matrix4.plot.ant.zip" tofile="${matrix4.plot.sf}/matrix4.plot-ant-${earlyaccesslowagie}.zip" overwrite="yes"/>
+   </target>
+</project>

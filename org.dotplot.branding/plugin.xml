@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.dotplot.matrix"
+   name="Matrix4.plot"
+   version="2.1.1"
+   provider-name="Matrix4.plot Team CS@FH-Giessen Germany">
+
+   <runtime>
+      <library name="branding.jar"/>
+   </runtime>
+
+</plugin>

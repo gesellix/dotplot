@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Matrix4.plot - An eclipse plugin                                 -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<project name="Matrix4.plot" default="help" basedir=".">
+
+   <property file=".ant.properties"/>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Help                                                             -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="help" description="--> shows the help screen">
+      <echo>Using ANT for ${ant.project.name}</echo>
+      <echo/>
+      <ant antfile="download.xml" inheritAll="false"/>
+      <ant antfile="compile.xml" inheritAll="false"/>
+      <ant antfile="site.xml" inheritAll="false"/>
+      <ant antfile="release.xml" inheritAll="false"/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Make a new release after exporting the modules src/www from CVS  -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="release" description="--> builds a release after you have exported the src and www module from CVS">
+      <ant antfile="download.xml" inheritAll="false" target="download.bin"/>
+      <ant antfile="release.xml" inheritAll="false" target="archive.src"/>
+      <ant antfile="release.xml" inheritAll="false" target="ant.zip"/>
+      <ant antfile="site.xml" inheritAll="false" target="docs.tar.gz"/>
+      <ant antfile="compile.xml" inheritAll="false" target="jar"/>
+      <ant antfile="site.xml" inheritAll="false" target="lowagie.com"/>
+      <ant antfile="release.xml" inheritAll="false" target="release.sf"/>
+   </target>
+
+   <target name="earlyaccess" description="--> builds a release after you have exported the src and www module from CVS">
+      <ant antfile="download.xml" inheritAll="false" target="download.bin"/>
+      <ant antfile="release.xml" inheritAll="false" target="archive.src"/>
+      <ant antfile="release.xml" inheritAll="false" target="ant.zip"/>
+      <ant antfile="site.xml" inheritAll="false" target="docs.tar.gz"/>
+      <ant antfile="compile.xml" inheritAll="false" target="jar"/>
+      <ant antfile="site.xml" inheritAll="false" target="lowagie.com"/>
+      <ant antfile="release.xml" inheritAll="false" target="earlyaccess.sf"/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Forwarding targetcalls to subscripts                             -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="download">
+      <ant antfile="download.xml" inheritAll="false" target="download"/>
+   </target>
+
+   <target name="download.bin">
+      <ant antfile="download.xml" inheritAll="false" target="download.bin"/>
+   </target>
+
+   <target name="getFromCvs">
+      <ant antfile="download.xml" inheritAll="false" target="getFromCvs"/>
+   </target>
+
+   <target name="compile">
+      <ant antfile="compile.xml" inheritAll="false" target="compile"/>
+   </target>
+
+   <target name="compile.debug">
+      <ant antfile="compile.xml" inheritAll="false" target="compile.debug"/>
+   </target>
+
+   <target name="jar">
+      <ant antfile="compile.xml" inheritAll="false" target="jar"/>
+   </target>
+
+   <target name="jar.debug">
+      <ant antfile="compile.xml" inheritAll="false" target="jar.debug"/>
+   </target>
+
+   <target name="javadoc">
+      <ant antfile="site.xml" inheritAll="false" target="javadoc"/>
+   </target>
+
+   <target name="docs.tar.gz">
+      <ant antfile="site.xml" inheritAll="false" target="docs.tar.gz"/>
+   </target>
+
+   <target name="lowagie.com">
+      <ant antfile="site.xml" inheritAll="false" target="lowagie.com"/>
+   </target>
+
+   <target name="tutorial">
+      <ant antfile="site.xml" inheritAll="false" target="tutorial"/>
+   </target>
+
+   <target name="tutorial.tar.gz">
+      <ant antfile="site.xml" inheritAll="false" target="tutorial.tar.gz"/>
+   </target>
+
+   <target name="archive.src">
+      <ant antfile="release.xml" inheritAll="false" target="archive.src"/>
+   </target>
+
+   <target name="ant.zip">
+      <ant antfile="release.xml" inheritAll="false" target="ant.zip"/>
+   </target>
+
+   <target name="package">
+      <ant antfile="compile.xml" inheritAll="false" target="package"/>
+   </target>
+
+   <target name="installer">
+      <ant antfile="compile.xml" inheritAll="false" target="installer"/>
+   </target>
+
+   <target name="completeUpdate" depends="jar, archive.src, installer" description="create everything and move to special folders">
+      <mkdir dir="${outputdir}/lib"/>
+      <copy todir="${outputdir}" overwrite="true">
+         <fileset dir="${tempdir}/ext">
+            <include name="src.tar.gz"/>
+            <include name="matrix4dotplot.jar"/>
+            <include name="lib/**/*"/>
+         </fileset>
+      </copy>
+      <copy todir="${outputdir}" overwrite="true">
+         <fileset dir="${tempdir}/ext">
+            <include name="*-matrix4dotplot*.*"/>
+         </fileset>
+      </copy>
+      <delete dir="${tempdir}"/>
+   </target>
+</project>

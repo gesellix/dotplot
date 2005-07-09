@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Matrix4.plot - An eclipse plugin                                 -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<project name="matrix4.plot.compile" default="help">
+
+   <property file=".ant.properties"/>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Help                                                             -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="help" description="--> shows the help screen">
+      <echo>COMPILING AND JARRING THE CODE (compile.xml)</echo>
+      <echo>ant compile: compiles Matrix4.plot</echo>
+      <echo>ant jar: compiles and jars Matrix4.plot</echo>
+      <echo/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Compiling the code                                               -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="compile" description="--> compiles the Matrix4.plot code">
+      <mkdir dir="${matrix4.plot.classes}"/>
+      <javac
+         srcdir="${matrix4.plot.src}"
+         destdir="${matrix4.plot.classes}"
+         classpath="${matrix4.plot.libs}:${eclipse.libs}"
+         debug="true" debuglevel="lines,vars,source"/>
+      <copy todir="${matrix4.plot.classes}" overwrite="yes">
+         <fileset dir="${matrix4.plot.src}">
+            <include name="**/*.properties"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Compiling the code for debugging                                 -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="compile.debug" description="--> compiles the Matrix4.plot code, lists compiled files">
+      <mkdir dir="${matrix4.plot.classes}"/>
+      <javac
+         srcdir="${matrix4.plot.src}"
+         destdir="${matrix4.plot.classes}"
+         classpath="${matrix4.plot.libs}:${eclipse.libs}"
+         listfiles="yes"
+         debug="true" debuglevel="lines,vars,source"/>
+      <copy todir="${matrix4.plot.classes}" overwrite="yes">
+         <fileset dir="${matrix4.plot.src}">
+            <include name="**/*.properties"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Jarring the code                                                 -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="compiler.manifest">
+      <manifest file="MANIFEST.MF">
+         <attribute name="Class-Path" value="lib/log4j-1.2.8.jar lib/iText.jar lib/org.pdfbox.jar lib/jai_mlibwrapper.jar lib/jai_core.jar lib/jai_codec.jar lib/jai_imageio.jar lib/clibwrapper_jiio.jar lib/activation.jar lib/mail.jar"/>
+         <attribute name="Main-Class" value="org.dotplot.DotplotCreator"/>
+      </manifest>
+   </target>
+
+   <target name="make.jar" description="--> makes a jarfile from the Matrix4.plot code">
+      <mkdir dir="${matrix4.plot.bin}"/>
+      <jar jarfile="${matrix4.plot.bin}/matrix4dotplot.jar" basedir="${matrix4.plot.classes}" manifest="../META-INF/MANIFEST.MF"/>
+      <copy todir="${matrix4.plot.bin}/lib" overwrite="yes">
+         <fileset dir="${matrix4.plot.lib}">
+            <include name="**/*.jar"/>
+            <exclude name="**/standalone-compiler.jar"/>
+         </fileset>
+      </copy>
+      <delete file="MAINFEST.MF"/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Create the plugin package                                        -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="make.package" depends="make.jar" description="--> makes a package folder from the Matrix4.plot code">
+      <mkdir dir="${matrix4.plot.bin}"/>
+      <mkdir dir="${matrix4.plot.pckg.features}/org.dotplot.matrix_${releasenumber}"/>
+      <mkdir dir="${matrix4.plot.pckg.plugins}/org.dotplot.matrix_${releasenumber}"/>
+      <mkdir dir="${matrix4.plot.pckg.plugins}/org.dotplot.plugin_${releasenumber}"/>
+
+      <!-- feature (org.dotplot.matrix) -->
+      <copy todir="${matrix4.plot.pckg.features}/org.dotplot.matrix_${releasenumber}" overwrite="yes">
+         <fileset dir="${matrix4.plot.home.feature}">
+            <include name="*.xml"/>
+            <include name="*.gif"/>
+         </fileset>
+      </copy>
+
+      <!-- branding (org.dotplot.branding) -->
+      <jar jarfile="${matrix4.plot.pckg.plugins}/org.dotplot.matrix_${releasenumber}/branding.jar" basedir="${matrix4.plot.home.branding}">
+         <filename name="dummy"/>
+      </jar>
+      <copy todir="${matrix4.plot.pckg.plugins}/org.dotplot.matrix_${releasenumber}" overwrite="yes">
+         <fileset dir="${matrix4.plot.home.branding}">
+            <include name="about.*"/>
+            <include name="*.gif"/>
+            <include name="*.bmp"/>
+            <include name="*.xml"/>
+         </fileset>
+      </copy>
+
+      <!-- plugin (org.dotplot.plugin) -->
+      <copy file="${matrix4.plot.bin}/matrix4dotplot.jar" tofile="${matrix4.plot.pckg.plugins}/org.dotplot.plugin_${releasenumber}/plugin.jar"/>
+      <copy todir="${matrix4.plot.pckg.plugins}/org.dotplot.plugin_${releasenumber}" overwrite="yes">
+         <fileset dir="${matrix4.plot.home}">
+            <include name="icons/*"/>
+            <include name="lib/*.jar"/>
+            <include name="plugin.xml"/>
+            <exclude name="lib/standalone-compiler.jar"/>
+         </fileset>
+      </copy>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Creating the installer                                           -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="make.installer">
+      <taskdef name="izpack" classpath="${matrix4.plot.lib}/standalone-compiler.jar" classname="com.izforge.izpack.ant.IzPackTask"/>
+
+      <izpack input="install.xml"
+         output="${tempdir}/ext/install-matrix4dotplot-${releasenumber}.jar"
+         installerType="standard"
+         basedir="${tempdir}/ext/eclipse"/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Compiling and jarring the code                                   -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="jar" depends="compile, make.jar" description="--> makes a jarfile from the Matrix4.plot code"/>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Jarring the code (debug)                                         -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="jar.debug" depends="compile.debug, make.jar" description="--> makes a jarfile from the Matrix4.plot code"/>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Compiling, jarring and packaging the code                        -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="package" depends="compile, make.package" description="--> makes a packagefile from the Matrix4.plot code">
+      <!-- ZIP the package -->
+      <zip zipfile="${matrix4.plot.bin}/plugin-matrix4dotplot-${releasenumber}.zip" basedir="${matrix4.plot.bin}/eclipse" includes="**/*"/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Compiling, jarring and creating an installer                     -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="installer" depends="package, make.installer" description="--> creates an installer from the Matrix4.plot code"/>
+
+</project>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- Matrix4.plot - An eclipse plugin                                 -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+<project name="matrix4.plot.download" default="help">
+
+   <property file=".ant.properties"/>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Help                                                             -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="help" description="--> shows the help screen">
+      <echo>DOWNLOADING Matrix4.plot (download.xml)</echo>
+      <echo>ant download: downloads the source code needed to create matrix4dotplot.jar</echo>
+      <echo>ant download.bin: downloads some precompiled jars and zips</echo>
+      <echo>ant getFromCvs: downloads the complete CVS repository</echo>
+      <echo/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Getting the most recent code from CVS                            -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="getFromCvs" description="--> gets the source code from CVS">
+      <cvspass cvsroot="${matrix4.plot.cvsroot}" password="" passfile=".cvspass"/>
+      <cvs command="export" passfile=".cvspass" compression="true" cvsRoot="${matrix4.plot.cvsroot}" package="www" date="now" dest="${matrix4.plot.home}"/>
+      <cvs command="export" passfile=".cvspass" compression="true" cvsRoot="${matrix4.plot.cvsroot}" package="src" date="now" dest="${matrix4.plot.home}"/>
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Getting the code from the sourceforge directory                  -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="download" depends="download.bin" description="--> downloads the most recent release of the code">
+
+      <mkdir dir="${matrix4.plot.downloads}"/>
+      <get src="http://itext.sourceforge.net/downloads/src.tar.gz" dest="${matrix4.plot.downloads}/src.tar.gz" verbose="true"/>
+
+      <mkdir dir="${matrix4.plot.src}"/>
+      <gunzip src="${matrix4.plot.downloads}/src.tar.gz" dest="${matrix4.plot.downloads}/temp.tar"/>
+      <untar src="${matrix4.plot.downloads}/temp.tar" dest="${matrix4.plot.src}"/>
+      <delete file="${matrix4.plot.downloads}/temp.tar"/>
+
+   </target>
+
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+   <!-- Getting jars and zips that belong in the bin directory           -->
+   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+   <target name="download.bin" description="--> downloads files that hardly ever change">
+      <mkdir dir="${matrix4.plot.bin}"/>
+      <get usetimestamp="true" src="http://itext.sourceforge.net/downloads/crimson.jar" dest="${matrix4.plot.bin}/crimson.jar" verbose="true"/>
+      <get usetimestamp="true" src="http://itext.sourceforge.net/downloads/iTextHYPH.jar" dest="${matrix4.plot.bin}/iTextHYPH.jar" verbose="true"/>
+      <get usetimestamp="true" src="http://itext.sourceforge.net/downloads/iTextAsian.jar" dest="${matrix4.plot.bin}/iTextAsian.jar" verbose="true"/>
+      <get usetimestamp="true" src="http://itext.sourceforge.net/downloads/iTextAsianCmaps.jar" dest="${matrix4.plot.bin}/iTextAsianCmaps.jar" verbose="true"/>
+      <get usetimestamp="true" src="http://itext.sourceforge.net/downloads/servlet.jar" dest="${matrix4.plot.bin}/servlet.jar" verbose="true"/>
+      <get usetimestamp="true" src="http://itext.sourceforge.net/downloads/barcodefonts.zip" dest="${matrix4.plot.bin}/barcodefonts.zip" verbose="true"/>
+   </target>
+</project>
