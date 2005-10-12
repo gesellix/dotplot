@@ -30,9 +30,9 @@
 # by USERNAME. It is recommended that someone be watching this module
 # as it shouldn't need to be modified very often.
 CVSROOT /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVvt} gesellchen@users.sourceforge.net
-org.dotplot.branding /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVvt} gesellchen@users.sourceforge.net
-org.dotplot.matrix /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVvt} gesellchen@users.sourceforge.net
-org.dotplot.plugin /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVvt} gesellchen@users.sourceforge.net
+org.dotplot.branding /cvsroot/sitedocs/org.dotplot.branding/cvstools/syncmail %{sVvt} gesellchen@users.sourceforge.net
+org.dotplot.matrix /cvsroot/sitedocs/org.dotplot.matrix/cvstools/syncmail %{sVvt} gesellchen@users.sourceforge.net
+org.dotplot.plugin /cvsroot/sitedocs/org.dotplot.plugin/cvstools/syncmail %{sVvt} gesellchen@users.sourceforge.net
 
 # This sends mail to a mailing list, defined by the PROJECTNAME-LISTNAME
 # value. Any changes to any modules in the project will thus generate an
