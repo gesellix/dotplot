@@ -261,7 +261,7 @@ public class DotplotCreator implements IDotplotCreator
       if (!((QImageConfiguration) GlobalConfiguration.getInstance().get(GlobalConfiguration.KEY_IMG_CONFIGURATION))
             .isOnlyExport())
       {
-         if (false == DotPlotProgressMonitor.getInstance().getControl(qImage))
+         if (!DotPlotProgressMonitor.getInstance().getControl(qImage))
          {
             // registering control did not work
          }
