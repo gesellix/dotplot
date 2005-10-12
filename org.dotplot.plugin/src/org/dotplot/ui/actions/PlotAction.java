@@ -388,7 +388,7 @@ public class PlotAction implements IWorkbenchWindowActionDelegate, SelectionList
       ImageData imgData = null;
       try
       {
-         imgData = new ImageData(JAITools.aggregateImages(gridImages, size).getAbsolutePath());
+         imgData = new ImageData(JAITools.aggregateImages(gridImages, size, false).getAbsolutePath());
       }
       catch (IOException e)
       {

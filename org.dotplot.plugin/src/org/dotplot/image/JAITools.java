@@ -519,14 +519,16 @@ final public class JAITools
    /**
     * Aggregates/Combines the images given by indexedImages. The size must be the correct size of the target image.
     *
-    * @param indexedImages of the clients to their corresponding image part
-    * @param size          the target size of the complete image
+    * @param indexedImages           of the clients to their corresponding image part
+    * @param size                    the target size of the complete image
+    * @param deleteFileAutomatically set the returned File to "deleteOnExit"
     *
-    * @return a File, the target image has been saved to. It will be deleted on exit.
+    * @return a File, the target image has been saved to. It will be deleted on VM exit if deleteFileAutomatically was true.
     *
     * @throws IOException if an error occurs
     */
-   public static File aggregateImages(Map indexedImages, Dimension size) throws IOException
+   public static File aggregateImages(Map indexedImages, Dimension size, boolean deleteFileAutomatically)
+         throws IOException
    {
       if (indexedImages.size() == 1)
       {
@@ -535,7 +537,10 @@ final public class JAITools
       }
 
       File targetFile = File.createTempFile("grid_aggregated", ".jpeg");
-      targetFile.deleteOnExit();
+      if (deleteFileAutomatically)
+      {
+         targetFile.deleteOnExit();
+      }
 
       exportImageMap(indexedImages, File.createTempFile("grid_imagelist", ".txt"));
 
