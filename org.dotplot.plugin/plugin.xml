@@ -4,7 +4,8 @@
    name="Matrix4.plot"
    version="2.1.1"
    provider-name="Matrix4.plot Team CS@FH-Giessen Germany"
-   class="org.dotplot.plugin.DotPlotPlugin">
+   class="org.dotplot.plugin.DotPlotPlugin"
+   singleton="true">
 
    <runtime>
       <library name="plugin.jar"/>

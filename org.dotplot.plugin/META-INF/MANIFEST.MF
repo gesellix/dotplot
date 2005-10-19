@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Main-Class: org.dotplot.DotplotCreator
+Main-Class: org.dotplot.DotplotCreator 
 Class-Path: lib/iText.jar
  lib/jai_codec.jar
  lib/jai_core.jar
@@ -10,7 +10,7 @@ Class-Path: lib/iText.jar
  lib/mail.jar
  lib/org.pdfbox.jar
  lib/activation.jar
-Bundle-SymbolicName: org.dotplot.plugin
+Bundle-SymbolicName: org.dotplot.plugin; singleton=true
 Bundle-Version: 2.1.1
 Bundle-Name: Matrix4.plot
 Bundle-Vendor: Matrix4.plot Team CS@FH-Giessen Germany
