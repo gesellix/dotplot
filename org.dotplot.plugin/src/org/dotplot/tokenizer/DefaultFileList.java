@@ -20,6 +20,10 @@ import org.dotplot.ui.configuration.GlobalConfiguration;
 public class DefaultFileList extends Vector implements IFileList
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 4837343738386189346L;
+   /**
     * The Logger for the DefaultFileList.
     */
    private static Logger logger = Logger.getLogger(DefaultFileList.class.getName());

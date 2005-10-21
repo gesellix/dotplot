@@ -17,6 +17,11 @@ import org.dotplot.ui.configuration.views.ConfigurationView;
 public class ConfigurationViews extends TreeMap
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -5681058414337679722L;
+
+   /**
     * Notifies all attached <code>Observers</code> of the <code>ConfigurationViews</code> in the container.
     */
    public void notifyObservers()

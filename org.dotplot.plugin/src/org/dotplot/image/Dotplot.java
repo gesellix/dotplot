@@ -9,7 +9,6 @@ import java.awt.Rectangle;
 import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
-import javax.media.jai.ROIShape;
 import javax.media.jai.TiledImage;
 
 import org.eclipse.swt.graphics.ImageData;
@@ -264,11 +263,9 @@ class Dotplot implements IDotplot
          }
       }
 
-      ROIShape roishape;
       /*
        TODO scale ROI, if neccessary and applicable
-
-      roishape = new ROIShape(roi);
+      ROIShape roishape = new ROIShape(roi);
       this.roi =
          QImage.createROIFromImage(
             this.tiledImage.getSubImage(roi.x, roi.y, roi.width, roi.height));

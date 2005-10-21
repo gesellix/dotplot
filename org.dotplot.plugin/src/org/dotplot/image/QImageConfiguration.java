@@ -13,10 +13,15 @@ import java.io.Serializable;
  */
 public class QImageConfiguration implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 67839459306018464L;
+
    // RegionOfInterest
 //   private Rectangle roi;
 
-   // only export and no plot for screen?
+// only export and no plot for screen?
    private boolean isOnlyExport;
 
    // Export Dotplots yes/no

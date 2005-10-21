@@ -4,7 +4,6 @@
 package org.dotplot.tokenizer.tests;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -64,16 +63,17 @@ public class Test
 
       list.add(new File("pdf/examples/Hausübung1.pdf"));
 
+/*
       FileReader fr = new FileReader(new File("txt/bild/1.txt"));
-
       int c;
-      /*
-          while(true){
-             c = fr.read();
-            System.out.print(Character.getNumericValue((char) c));
-             System.out.println(" - " + (char)c);
-             if(c== -1) break;
-          }*/
+      while (true)
+      {
+         c = fr.read();
+         System.out.print(Character.getNumericValue((char) c));
+         System.out.println(" - " + (char) c);
+         if (c == -1) break;
+      }
+*/
 
       configuration.setFileList(list);
       //configuration.setConvertFiles(true);

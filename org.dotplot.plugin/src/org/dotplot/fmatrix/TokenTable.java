@@ -11,7 +11,7 @@ import java.util.Vector;
  * of one axis(dimension) of the dotplot.
  * It uses a Vector to store all indices (and references to
  * further information, such as attributes).
- * <p />
+ * <p/>
  * In this implementation a TokenTable object will be "fed" by
  * a TypeTable object, since all needed information
  * (the type index) is provided by that class.
@@ -21,6 +21,10 @@ import java.util.Vector;
  */
 public class TokenTable implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -3232840680096821917L;
    private Vector tokenTable;
    private int tokenIndex;
 
@@ -39,10 +43,9 @@ public class TokenTable implements Serializable
     * Therefore this classes tokenIndex is the key
     * to the inserted typeIndex.
     *
-    * @return int			- the key the inserted typeindex
-    *         was inserted under.
+    * @return int         - the key the inserted typeindex was inserted under.
     *
-    * @param	typeIndex	- the type index to insert
+    * @param   typeIndex   - the type index to insert
     */
    public int addTypeIndex(int typeIndex)
    {
@@ -56,11 +59,9 @@ public class TokenTable implements Serializable
     * returns the corresponding type index of a token index
     * (the tokens position on the y- / or x-Axis).
     *
-    * @param tokenIndex - the index of the token to get the
-    *                   type index for.
+    * @param tokenIndex - the index of the token to get the type index for.
     *
-    * @return int			- the corresponding type index or
-    *         -1 for index not found.
+    * @return int         - the corresponding type index or -1 for index not found.
     */
    public int getTypeIndex(int tokenIndex)
    {
@@ -70,7 +71,7 @@ public class TokenTable implements Serializable
    /**
     * returns the number of tokens, the HashMap stores.
     *
-    * @return	int	the number of tokens
+    * @return int   the number of tokens
     */
    public int getNumberOfTokens()
    {

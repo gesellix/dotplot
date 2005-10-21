@@ -9,6 +9,10 @@ import org.dotplot.tokenizer.TokenizerException;
  */
 public class NoScannerException extends TokenizerException
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 3661370979786991750L;
 
    /**
     * Erzeugt eine neue <code>NoScannerException</code>.

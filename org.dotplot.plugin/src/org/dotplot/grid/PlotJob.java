@@ -14,6 +14,10 @@ import org.dotplot.image.QImageConfiguration;
  */
 public class PlotJob implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 8503709291982027179L;
    private QImageConfiguration imageConfig;
    private GridConfiguration gridConfig;
    private TypeTable typeTable;

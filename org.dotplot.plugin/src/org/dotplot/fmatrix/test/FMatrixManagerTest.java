@@ -9,7 +9,6 @@ import java.io.File;
 
 import org.dotplot.fmatrix.FMatrixManager;
 import org.dotplot.fmatrix.ITypeTableNavigator;
-import org.dotplot.fmatrix.Match;
 import org.dotplot.tokenizer.DefaultConfiguration;
 import org.dotplot.tokenizer.DefaultFileList;
 import org.dotplot.tokenizer.IConfiguration;
@@ -91,21 +90,18 @@ public class FMatrixManagerTest extends TestCase
 
    public void testRun()
    {
-      long startingTime = System.currentTimeMillis();
+//      long startingTime = System.currentTimeMillis();
       this.manager.addTokens();
-      /*
-      System.out.println("adding took " +
-                      ((float)(System.currentTimeMillis() - startingTime) / 1000) +
-                      " seconds."); */
+//      System.out.println("adding took " +
+//            ((float) (System.currentTimeMillis() - startingTime) / 1000) +
+//            " seconds.");
 
       ITypeTableNavigator navigator = this.manager.getTypeTableNavigator();
 
       //System.out.println("POSTINGS: " + navigator.getNumberOfAllMatches());
 
-      Match tempMatch;
       long countPostings = 0;
-
-      while ((tempMatch = navigator.getNextMatch()) != null)
+      while ((navigator.getNextMatch()) != null)
       {
          if ((countPostings % 5000000) == 0)
          {
@@ -118,11 +114,9 @@ public class FMatrixManagerTest extends TestCase
             navigator.getNumberOfAllMatches(),
             countPostings);
 
-      //System.out.println("found " + countPostings + " postings...");
-
-      /*
-      System.out.println("retreiving postings took " +
-                      ((float)(System.currentTimeMillis() - startingTime) / 1000) +
-                      " seconds.");*/
+//      System.out.println("found " + countPostings + " postings...");
+//      System.out.println("retreiving postings took " +
+//            ((float) (System.currentTimeMillis() - startingTime) / 1000) +
+//            " seconds.");
    }
 }

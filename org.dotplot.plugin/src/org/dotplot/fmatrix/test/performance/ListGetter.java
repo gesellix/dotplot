@@ -38,44 +38,38 @@ public class ListGetter
    public void iterateHashMapWithGet(HashMap hashMap)
    {
       int size = hashMap.size();
-      int res;
       for (int i = 0; i < size; i++)
       {
-         res = ((Integer) (hashMap.get(new Integer(i)))).intValue();
+         ((Integer) (hashMap.get(new Integer(i)))).intValue();
       }
    }
 
    public void iterateHashMapWithIterator(HashMap hashMap)
    {
       Iterator iterator = hashMap.entrySet().iterator();
-
-      int res;
       while (iterator.hasNext())
       {
          //res = ((Integer).intValue();
-         res = ((Integer) (((Map.Entry) (iterator.next())).getValue())).intValue();
+         ((Integer) (((Map.Entry) (iterator.next())).getValue())).intValue();
       }
    }
 
    public void iterateHashtableWithGet(Hashtable hashtable)
    {
       int size = hashtable.size();
-      int res;
       for (int i = 0; i < size; i++)
       {
-         res = ((Integer) (hashtable.get(new Integer(i)))).intValue();
+         ((Integer) (hashtable.get(new Integer(i)))).intValue();
       }
    }
 
    public void iterateHashtableWithIterator(Hashtable hashMap)
    {
       Iterator iterator = hashMap.entrySet().iterator();
-
-      int res;
       while (iterator.hasNext())
       {
          //res = ((Integer).intValue();
-         res = ((Integer) (((Map.Entry) (iterator.next())).getValue())).intValue();
+         ((Integer) (((Map.Entry) (iterator.next())).getValue())).intValue();
       }
    }
 

@@ -15,6 +15,10 @@ import java.util.Vector;
  */
 public class TokenType implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -7553622799263229124L;
    private Vector tokenPositions; // stores all token positions of this type.
    private String value; // stores the string corresponding to this type.
    private double weight; // weight for this type might be set by user.
@@ -74,7 +78,7 @@ public class TokenType implements Serializable
    /**
     * returns the string value for a TokenType object.
     *
-    * @return	String	- the value of this instance
+    * @return String   - the value of this instance
     */
    public String getValue()
    {
@@ -132,7 +136,7 @@ public class TokenType implements Serializable
    /**
     * overridden toString() method.
     *
-    * @return String	- instance as a string
+    * @return String   - instance as a string
     */
    public String toString()
    {

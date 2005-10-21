@@ -15,6 +15,11 @@ import java.util.Hashtable;
 public class LineInformation extends Hashtable implements Serializable
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 7913185742216121752L;
+
+   /**
     * adds a linenumber, its first index and last index.
     *
     * @param firstTokenIndex the first index
@@ -31,8 +36,7 @@ public class LineInformation extends Hashtable implements Serializable
     *
     * @param tokenIndex - the token index
     *
-    * @return	int			- the linenumber, the token is at.
-    * (-1 for not found)
+    * @return int         - the linenumber, the token is at. (-1 for not found)
     */
    public int getLineNumber(int tokenIndex)
    {
@@ -58,14 +62,18 @@ public class LineInformation extends Hashtable implements Serializable
     */
    private class LineInformationContainer implements Serializable
    {
+      /**
+       * for being Serializable
+       */
+      private static final long serialVersionUID = -4540120604945172975L;
       private int lineNumber;
       private int lastTokenIndex;
 
       /**
        * Default Constructor
        *
-       * @param	lineNumber		- the lineNumber
-       * @param	lastTokenIndex	- the tokenindex, the file ends with.
+       * @param lineNumber     - the lineNumber
+       * @param lastTokenIndex - the tokenindex, the file ends with.
        */
       public LineInformationContainer(int lineNumber, int lastTokenIndex)
       {
@@ -76,7 +84,7 @@ public class LineInformation extends Hashtable implements Serializable
       /**
        * returns the linenumber.
        *
-       * @return int	- the linenumber
+       * @return int   - the linenumber
        */
       public int getLineNumber()
       {
@@ -86,7 +94,7 @@ public class LineInformation extends Hashtable implements Serializable
       /**
        * returns the index of the last token in this row.
        *
-       * @return int	- the linenumber
+       * @return int   - the linenumber
        */
       public int getLastTokenIndex()
       {

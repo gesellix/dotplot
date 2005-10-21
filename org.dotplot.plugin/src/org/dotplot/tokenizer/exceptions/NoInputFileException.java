@@ -14,6 +14,11 @@ import org.dotplot.tokenizer.TokenizerException;
 public class NoInputFileException extends TokenizerException
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -5862557283150744830L;
+
+   /**
     * Erzeugt eine NoInputFileException.
     */
    public NoInputFileException()

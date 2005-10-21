@@ -32,6 +32,11 @@ import org.dotplot.ui.configuration.views.SelectTokenTypesView;
 public class GlobalConfiguration extends TreeMap implements IGlobalConfiguration
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -4537406651074473668L;
+
+   /**
     * The to be used dotplotCreator.
     * This is the model in the Model-View-Controller pattern.
     */

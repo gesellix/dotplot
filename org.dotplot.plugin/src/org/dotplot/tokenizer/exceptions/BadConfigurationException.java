@@ -14,6 +14,11 @@ import org.dotplot.tokenizer.TokenizerException;
 public class BadConfigurationException extends TokenizerException
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 9129331924470363972L;
+
+   /**
     * Erzeigt eine BadConfigurationException.
     */
    public BadConfigurationException()

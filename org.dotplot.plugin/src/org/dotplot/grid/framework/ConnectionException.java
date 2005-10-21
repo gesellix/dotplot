@@ -6,6 +6,11 @@ package org.dotplot.grid.framework;
 public class ConnectionException extends Exception
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -2273439752462613679L;
+
+   /**
     * Constructs a ConnectionException object.
     *
     * @param message a String explaining the error

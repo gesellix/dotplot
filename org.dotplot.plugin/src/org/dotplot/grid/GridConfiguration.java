@@ -12,6 +12,10 @@ import java.io.Serializable;
  */
 public class GridConfiguration implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -5989463110712043989L;
    private boolean enableGrid;
    private int serverPort;
 

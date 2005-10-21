@@ -11,7 +11,7 @@ import org.dotplot.ui.configuration.GlobalConfiguration;
 
 /**
  * Repräsentiert eine Dotplotdatei.
- * <p />
+ * <p/>
  * Da sich nicht jedes Dateiformat auf sinvolle weiese Tokenizen läßt müssen diese Dateien in
  * ein entsprechendes Format konvertiert werden. Dies geschieht mit Hilfe eines entsprechenden
  * <code>Konverters</code>. Um nun eine Beziehung zweichen konvertierter Datei und original Datei
@@ -33,6 +33,11 @@ import org.dotplot.ui.configuration.GlobalConfiguration;
  */
 public class DotplotFile extends File
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -8695941416042517495L;
+
    /**
     * Einfacher Converter, der einfach eine neue Datei anlegt...
     * nicht für den richtigen gebrauch gedacht.
@@ -366,7 +371,8 @@ public class DotplotFile extends File
    {
       if (this.convertedFile != null)
       {
-         if (!((Boolean) GlobalConfiguration.getInstance().get(GlobalConfiguration.KEY_TOKENIZER_SAVE_CONVERTED_FILES)).booleanValue())
+         if (!((Boolean) GlobalConfiguration.getInstance().get(GlobalConfiguration.KEY_TOKENIZER_SAVE_CONVERTED_FILES))
+               .booleanValue())
          {
             this.convertedFile.delete();
          }

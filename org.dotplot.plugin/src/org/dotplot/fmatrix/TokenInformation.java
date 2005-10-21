@@ -15,6 +15,10 @@ import java.util.Vector;
  */
 public class TokenInformation implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 5804235101860601425L;
    private Vector lineInformations; // holds lineInformation
    private Vector fileInformations; // hold fileInformation
    private int fileInfoNumber;
@@ -30,6 +34,7 @@ public class TokenInformation implements Serializable
    }
 
    // ------------------------- LineInformation Access Functions ---------------------------
+
    /**
     * adds a LineInformation(one per file).
     *

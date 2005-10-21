@@ -37,7 +37,7 @@ public class FileCopy
 
    /**
     * Copies a file to the given <code>dest_name</code>.
-    * <p />
+    * <p/>
     * overwriteMode can be one of the following values:
     * <ul>
     * <li>1 - ignore existing files, overwrite them</li>
@@ -238,6 +238,11 @@ public class FileCopy
 
 class FileCopyException extends IOException
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -4980379608190692063L;
+
    public FileCopyException(String msg)
    {
       super(msg);

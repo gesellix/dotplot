@@ -126,6 +126,11 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
          // this special File will provide more than one root, needed under Windows
          rootFolder = new File("/")
          {
+            /**
+             * for being Serializable
+             */
+            private static final long serialVersionUID = -612186735884992554L;
+
             public File[] listFiles(FileFilter filter)
             {
                ArrayList v = new ArrayList();
@@ -139,6 +144,11 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
                      // success, add to list
                      v.add(new File(path)
                      {
+                        /**
+                         * for being Serializable
+                         */
+                        private static final long serialVersionUID = -6160781320267803938L;
+
                         // overwrite getName() to let the name appear in the tree
                         public String getName()
                         {

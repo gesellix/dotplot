@@ -14,6 +14,11 @@ import org.dotplot.tokenizer.TokenizerException;
 public class TokenizerIOException extends TokenizerException
 {
    /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 3736921114912079335L;
+
+   /**
     * Erzeugt eine Tokenizer-IO-Exception.
     *
     * @param message - Fehlernachricht

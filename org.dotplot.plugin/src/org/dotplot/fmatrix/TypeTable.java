@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * This class is used as a datastorage for token types in the sense of the fMatrix.
  * It uses a Hashtable to implement datastructures(store TokenType objects)
  * and provides methods to access and modify data.
- * <p />
+ * <p/>
  * The implemented Hashtable will not take duplicate entries.
  *
  * @author Constantin von Zitzewitz, Thorsten Ruehl
@@ -22,6 +22,10 @@ import java.util.regex.Pattern;
  */
 public class TypeTable implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = 5849280153515840844L;
    private Hashtable typeTable; // holds the TokenTypes
    private Hashtable typeTableReversed;
 
@@ -99,7 +103,7 @@ public class TypeTable implements Serializable
    /**
     * returns the number of token types stored in this object.
     *
-    * @return int	- the number of types.
+    * @return int   - the number of types.
     */
    public int getNumberOfTypes()
    {
@@ -109,7 +113,7 @@ public class TypeTable implements Serializable
    /**
     * returns the number of tokens stored in the tokenTable field.
     *
-    * @return int	- the number of types.
+    * @return int   - the number of types.
     */
    int getNumberOfTokens()
    {
@@ -119,9 +123,9 @@ public class TypeTable implements Serializable
    /**
     * returns a new TypeTableNavigator object for a TypeTable.
     *
-    * @return TypeTableNavigatorObject	- the TypeTableNavigator object
+    * @return TypeTableNavigatorObject   - the TypeTableNavigator object
     *
-    * @see		<code>TypeTableNavigator</code>
+    * @see      <code>TypeTableNavigator</code>
     */
    public ITypeTableNavigator getNavigator()
    {
@@ -141,7 +145,7 @@ public class TypeTable implements Serializable
    /**
     * returns an Iterator object, to iterate the typeTable.
     *
-    * @return	Iterator	- the iterator object.
+    * @return Iterator   - the iterator object.
     */
    public Iterator getTypeTableIterator()
    {
@@ -209,7 +213,7 @@ public class TypeTable implements Serializable
     *
     * @param value the String value(of the token) to insert
     *
-    * @return	int		the index of the corresponding Type
+    * @return int      the index of the corresponding Type
     */
    public int addType(String value)
    {

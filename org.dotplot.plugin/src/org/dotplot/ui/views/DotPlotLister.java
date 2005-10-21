@@ -106,6 +106,10 @@ public class DotPlotLister extends ViewPart
     */
    private class SumFile extends File
    {
+      /**
+       * for being Serializable
+       */
+      private static final long serialVersionUID = -6910462730903187069L;
       long length;
 
       public SumFile(long length)

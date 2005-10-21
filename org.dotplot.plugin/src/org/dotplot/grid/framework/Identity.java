@@ -5,15 +5,19 @@ import java.util.Hashtable;
 
 /**
  * Source code from "Java Distributed Computing", by Jim Farley.
- * <p />
+ * <p/>
  * Class: Identity
  * Example: 9-2
  * Description: Representation of an agent identity.
- * <p />
+ * <p/>
  * Changes by Tobias Gesellchen
  */
 public class Identity implements Serializable
 {
+   /**
+    * for being Serializable
+    */
+   private static final long serialVersionUID = -1736874104450838025L;
    private Hashtable props = new Hashtable();
 
    /**
@@ -32,11 +36,10 @@ public class Identity implements Serializable
       if (o != null && o.getClass() == this.getClass())
       {
          Identity oi = (Identity) o;
-         if (oi == this ||
-               (oi.getId() == this.getId() &&
-               ((oi.getName() == null && this.getName() == null) ||
-               (oi.getName() != null && this.getName() != null &&
-               oi.getName().compareTo(this.getName()) == 0))))
+         if (oi == this
+               || (oi.getId() == this.getId()
+               && ((oi.getName() == null && this.getName() == null)
+               || (oi.getName() != null && this.getName() != null && oi.getName().compareTo(this.getName()) == 0))))
          {
             same = true;
          }
