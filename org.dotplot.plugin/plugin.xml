@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<!--
 <plugin
    id="org.dotplot.plugin"
    name="Matrix4.plot"
@@ -25,6 +27,8 @@
       <import plugin="org.eclipse.help"/>
       <import plugin="org.eclipse.compare"/>
    </requires>
+-->
+<plugin>
 
    <extension
       point="org.eclipse.ui.perspectives">
