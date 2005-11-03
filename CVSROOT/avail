@@ -1,5 +1,5 @@
 #alles sperren
-#unavail
+unavail
 
 #admin access
 avail|quibeldey
@@ -8,9 +8,9 @@ avail|lambda76
 avail|lolomat
 
 #test
-#unavail|lolomat|/org.dotplot.plugin/
+unavail|lolomat|/org.dotplot.plugin/
 
 #team access
 
 
-
+#blank line is mandatory
