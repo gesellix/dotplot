@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?>
+<?eclipse version="3.1"?>
 <!--
 <plugin
    id="org.dotplot.plugin"
@@ -26,9 +26,30 @@
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.help"/>
       <import plugin="org.eclipse.compare"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.text"/>
    </requires>
 -->
 <plugin>
+
+   <extension
+         id="DotplotApplication"
+         name="Dotplot Application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run class="org.dotplot.plugin.DotplotApplication"/>
+      </application>
+   </extension>
+   <extension
+         id="Dotploter"
+         name="Dotplot Product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.dotplot.plugin.DotplotApplication"
+            description="Dotplot"
+            name="org.dotplot.plugin.Dotploter"/>
+   </extension>
 
    <extension
       point="org.eclipse.ui.perspectives">
