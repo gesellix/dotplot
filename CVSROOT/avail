@@ -1,14 +1,14 @@
 #alles sperren
-unavail
+#unavail
 
 #admin access
 avail|quibeldey
 avail|gesellchen
 avail|lambda76
-#avail|lolomat
+avail|lolomat
 
 #test
-unavail|lolomat|/org.dotplot.plugin/
+#unavail|lolomat|/org.dotplot.plugin/
 
 #team access
 
