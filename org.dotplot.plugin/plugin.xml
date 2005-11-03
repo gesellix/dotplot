@@ -9,6 +9,7 @@
    class="org.dotplot.plugin.DotPlotPlugin"
    singleton="true">
 
+
    <runtime>
       <library name="plugin.jar"/>
       <library name="lib/jai_codec.jar"/>
