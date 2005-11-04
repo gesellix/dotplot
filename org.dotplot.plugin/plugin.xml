@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.1"?>
-<!--
+
 <plugin
    id="org.dotplot.plugin"
    name="Matrix4.plot"
@@ -31,8 +31,6 @@
       <import plugin="org.junit"/>
       <import plugin="org.eclipse.text"/>
    </requires>
--->
-<plugin>
 
    <extension
          id="DotplotApplication"
