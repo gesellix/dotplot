@@ -8,7 +8,7 @@
    provider-name="Matrix4.plot Team CS@FH-Giessen Germany"
    class="org.dotplot.plugin.DotPlotPlugin"
    singleton="true">
-
+ 
 
    <runtime>
       <library name="plugin.jar"/>
