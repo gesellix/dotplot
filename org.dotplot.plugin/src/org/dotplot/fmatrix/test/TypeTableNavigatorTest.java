@@ -92,10 +92,10 @@ public class TypeTableNavigatorTest extends TestCase
       this.typeTable.addType("new_Token_9");
       this.typeTable.addType("new_Token_10");
 
-      int originX = 6;
-      int originY = 6;
-      int width = 8;
-      int height = 7;
+      int originX = 1;
+      int originY = 2;
+      int width = 3;
+      int height = 4;
 
       assertFalse("(1) Test if function returns false if value out of range",
             this.navigator.setRegionOfInterest(120, 1, -2, 3));
@@ -120,10 +120,15 @@ public class TypeTableNavigatorTest extends TestCase
          postX = matchToCheck.getX();
          postY = matchToCheck.getY();
 
-         assertTrue("(4) checkloop: if delivered postings in region of interist",
-               ((postX >= originX) && (postX <= width) && (postY >= originY) && (postY <= height)));
+//         assertTrue("(4) checkloop: if delivered postings in region of interist",
+//               ((postX >= originX) && (postX <= width) && (postY >= originY) && (postY <= height)));
+         //better: test each expression separately
+         assertTrue(postX >= originX);
+         assertTrue(postX <= width);
+         assertTrue(postY >= originY);
+         assertTrue(postY <= height);
          numberOfCheckedPostings++;
-         System.out.println("The test is checking posting: " + matchToCheck.toString());
+         //System.out.println("The test is checking posting: " + matchToCheck.toString());
          matchToCheck = this.navigator.getNextMatch();
       }
    }

@@ -102,17 +102,25 @@ public class DotplotterTest extends TestCase
 
    public void testGenDotplot() throws TokenizerException
    {
-      DefaultFileList df = new DefaultFileList();
-      df.add(new File("txt/bild/1.txt"));
-      df.add(new File("txt/spiegel/1.txt"));
-      this.dp.setFileList(df);
-      this.dp.getTokenizerConfiguration().setScanner(new DefaultScanner());
-      IDotplot id = this.dp.getDotplot();
-      assertNotNull("püft ob ein Dotplot-Objekt herraus kommt", id);
-      assertSame("prüft ob beim zweiten aufruf das gleich objekt zurück kommt", id, this.dp.getDotplot());
-      this.dp.setFileList(df);
-      assertNotNull(df);
-      assertNotSame("prüft ob beim zweiten aufruf nicht das gleich objekt zurück kommt", id, this.dp.getDotplot());
+	   //in case of swt-library exceütion use vm-arguments:
+	   //-Djava.library.path=${system:ECLIPSE_HOME}\configuration\org.eclipse.osgi\bundles\3\1\.cp
+	   //to run
+	   try {
+	      DefaultFileList df = new DefaultFileList();
+	      df.add(new File("testfiles/test1.txt"));
+	      df.add(new File("testfiles/test2.txt"));
+	      this.dp.setFileList(df);
+	      this.dp.getTokenizerConfiguration().setScanner(new DefaultScanner());
+	      IDotplot id = this.dp.getDotplot();
+	      assertNotNull("püft ob ein Dotplot-Objekt herraus kommt", id);
+	      assertSame("prüft ob beim zweiten aufruf das gleich objekt zurück kommt", id, this.dp.getDotplot());
+	      this.dp.setFileList(df);
+	      assertNotNull(df);
+	      assertNotSame("prüft ob beim zweiten aufruf nicht das gleich objekt zurück kommt", id, this.dp.getDotplot());
+	   }
+	   catch(Exception e){
+		   fail("no exception! :" + e.getClass().getName());
+	   }
    }
 
    public void testGetSetTokentypes()

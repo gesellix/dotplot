@@ -57,8 +57,7 @@ public class SelectTokenScannerControllerTest extends TestCase
 
       d = (DotplotCreator) this.controller.getDotplotter();
       assertTrue("prüfen ob ein DotplotCreator zurückgegeben wurde", d instanceof DotplotCreator);
-      view = new SelectTokenScannerView(new DotplotCreator());
-      assertSame("prüfen ob das was rein ging auch wieder raus kommt", view, this.controller.getConfigurationView());
+      view = new SelectTokenScannerView(d);
 
       //update mit dem scanner "none";
       this.controller.update(view, null);
@@ -82,8 +81,7 @@ public class SelectTokenScannerControllerTest extends TestCase
 
       d = (DotplotCreator) this.controller.getDotplotter();
       assertTrue("prüfen ob ein DotplotCreator zurückgegeben wurde", d instanceof DotplotCreator);
-      view = new SelectTokenScannerView(new DotplotCreator());
-      assertSame("prüfen ob das was rein ging auch wieder raus kommt", view, this.controller.getConfigurationView());
+      view = new SelectTokenScannerView(d);
 
       //update mit dem scanner "JavaScanner";
       view.setSelectedScanner("JavaScanner");

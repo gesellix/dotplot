@@ -48,8 +48,8 @@ public class FMatrixManagerTest extends TestCase
       // this.fileList.add(new File("txt/bibel/bibel_halb.txt"));
       // this.fileList.add(new File("txt/bibel/bibel.txt"));
 
-      this.fileList.add(new File("txt/spiegel/1.txt"));
-      this.fileList.add(new File("txt/sueddeutsche/1.txt"));
+      this.fileList.add(new File("testfiles/test1.txt"));
+      this.fileList.add(new File("testfiles/test2.txt"));
 
       // this.fileList.add(new File("ChangeLog"));
       // this.fileList.add(new File("ChangeLog"));
@@ -60,7 +60,7 @@ public class FMatrixManagerTest extends TestCase
       //this.fileList.add(new File("PJunitTestFile.pdf"));
       //this.fileList.add(new File("PJunitTestFile.pdf"));
 
-      this.configuration.setFileList(fileList);
+      this.configuration.setFileList(this.fileList);
       this.configuration.setScanner(new DefaultScanner());
 
       this.tokenizer.setConfiguration(this.configuration);
@@ -76,6 +76,7 @@ public class FMatrixManagerTest extends TestCase
       }
 
       this.manager = new FMatrixManager(this.tokenStream);
+      this.manager.setFileList(this.fileList);
    }
 
    public void testSetUp()

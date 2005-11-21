@@ -124,10 +124,12 @@ public class Token
 
       if (this.type != -1)
       {
-         sb.append('(' + this.type + ')');
+    	  sb.append("(");
+    	  sb.append(this.type);
+    	  sb.append(")");
       }
 
-      sb.append(" \"" + this.value + '"');
+      sb.append(" \"" + this.value + "\"");
 
       if (this.line > -1)
       {

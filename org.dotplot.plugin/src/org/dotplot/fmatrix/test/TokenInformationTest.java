@@ -6,6 +6,7 @@ package org.dotplot.fmatrix.test;
 import junit.framework.TestCase;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.dotplot.fmatrix.FileInformation;
 import org.dotplot.fmatrix.LineInformation;
@@ -27,10 +28,15 @@ public class TokenInformationTest extends TestCase
    public void setUp()
    {
       this.tokenInformation = new TokenInformation();
-      file1 = new File("/home/smeo/temp/txt1.txt");
-      file2 = new File("/home/smeo/temp/txt2.txt");
-      file3 = new File("/home/smeo/temp/txt3.txt");
-
+      try {
+		file1 = File.createTempFile("txt1","txt");
+	    file2 = File.createTempFile("txt2","txt");
+	    file3 = File.createTempFile("txt3","txt");
+      }
+      catch (IOException e) {
+    	  // TODO Auto-generated catch block
+    	  e.printStackTrace();
+      }
       fileContainer = new FileInformation(0, file1);
       fContainer2 = new FileInformation(200, file2);
       fContainer3 = new FileInformation(300, file3);
@@ -38,6 +44,18 @@ public class TokenInformationTest extends TestCase
 
    }
 
+   public void tearDown(){
+	   if(file1.exists()){
+		   file1.delete();
+	   }
+	   if(file2.exists()){
+		   file2.delete();
+	   }
+	   if(file3.exists()){
+		   file3.delete();
+	   }
+   }
+   
    public void testSetUp()
    {
       assertNotNull("TokenInformation object must not be null!", this.tokenInformation);
@@ -65,16 +83,22 @@ public class TokenInformationTest extends TestCase
 
       assertEquals("(4) File ID from tokenindex 350 has to be 2", 2, this.tokenInformation.getFileIdByIndex(350));
 
+      try {
       assertEquals("(5) checking if filename of 1. entry is correct",
-            this.file1.getName(),
+            this.file1.getCanonicalPath(),
             this.tokenInformation.getFileNameByFileId(0));
 
       assertEquals("(6) checking if filename of 2. entry is correct",
-            this.file2.getName(),
+            this.file2.getCanonicalPath(),
             this.tokenInformation.getFileNameByFileId(1));
 
       assertEquals("(7) checking if filename of 3. entry is correct",
-            this.file3.getName(),
+            this.file3.getCanonicalPath(),
             this.tokenInformation.getFileNameByFileId(2));
+      
+      }
+      catch(Exception e){
+    	  fail("no exception should be thrown");
+      }
    }
 }

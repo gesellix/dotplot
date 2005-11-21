@@ -89,7 +89,7 @@ public class FileTokenizerTest extends TestCase
    public void testCooseScanner()
    {
       DefaultFileList fileList = new DefaultFileList();
-      fileList.add(new File("txt/bild/1.txt"));
+      fileList.add(new File("testfiles/test1.txt"));
       fileList.add(new File("src/org/dotplot/DotplotCreator.java"));
       fileList.add(new File("html/toc.html"));
 
@@ -108,7 +108,7 @@ public class FileTokenizerTest extends TestCase
 
             if (token instanceof EOFToken)
             {
-               if (token.getFile().equals(new File("txt/bild/1.txt")))
+               if (token.getFile().equals(new File("testfiles/test1.txt")))
                {
 
                   //with sending the EOFToken a new scanner is choosen

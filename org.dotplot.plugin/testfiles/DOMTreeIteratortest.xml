@@ -1,0 +1,18 @@
+<!DOCTYPE bla [
+  <!ELEMENT bla (test*)>
+  <!ELEMENT test (testchild*)>
+  <!ATTLIST test id CDATA "">
+  <!ELEMENT testchild (#PCDATA)>
+]>
+<bla>
+	<test id="erster test">
+		<testchild>blub bla bla</testchild>
+	</test>
+	<test id="zweiter test">
+		<testchild>blub bla bla</testchild>
+	</test>
+	<test id="dritter test">
+		<testchild>blub bla bla</testchild>
+		<testchild>blub bla bla</testchild>
+	</test>
+</bla>

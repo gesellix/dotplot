@@ -43,7 +43,7 @@ public class TokenizerTest extends TestCase
    {
       super.setUp();
       this.fileList = new DefaultFileList();
-      this.fileList.add(new File("txt/bild/1.txt"));
+      this.fileList.add(new File("testfiles/test1.txt"));
       this.tokenizer = new Tokenizer();
       this.tokenizer.getConfiguration().setFileList(this.fileList);
    }
