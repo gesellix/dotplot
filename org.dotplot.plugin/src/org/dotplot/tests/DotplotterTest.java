@@ -103,7 +103,10 @@ public class DotplotterTest extends TestCase
    public void testGenDotplot() throws TokenizerException
    {
 	   //in case of swt-library exceütion use vm-arguments:
-	   //-Djava.library.path=${system:ECLIPSE_HOME}\configuration\org.eclipse.osgi\bundles\3\1\.cp
+	   //windows:
+	   //-Djava.library.path=${system:ECLIPSE_HOME}/configuration/org.eclipse.osgi/bundles/3/1/.cp
+	   //motif
+	   //-Djava.library.path=${system:ECLIPSE_HOME}/configuration/org.eclipse.osgi/bundles/58/1/.cp
 	   //to run
 	   try {
 	      DefaultFileList df = new DefaultFileList();
