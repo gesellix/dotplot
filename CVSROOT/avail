@@ -4,10 +4,9 @@ avail|gesellchen
 avail|lambda76
 avail|lolomat
 
-#unavail|lolomat|org.dotplot.plugin
-
 #teams
 avail|abruch,pete_jensen|org.dotplot.plugin|Team_BruchPeter
 avail|truemmer,dimaratz|org.dotplot.plugin|Team_BruecknerRatz
 
-
+avail|hg14403,stadin,hg14412,thadude666|org.dotplot.plugin|Team_A
+avail|bjoernnebe,serial_2k,tall_ship|org.dotplot.plugin|Team_B
