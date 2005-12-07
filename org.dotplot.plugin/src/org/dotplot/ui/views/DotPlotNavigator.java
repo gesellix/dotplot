@@ -5,9 +5,16 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.dotplot.tokenizer.IFileList;
+import org.dotplot.ui.DotPlotPerspective;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceAdapter;
@@ -17,15 +24,13 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
-
-import org.dotplot.tokenizer.IFileList;
-import org.dotplot.ui.DotPlotPerspective;
 
 /**
  * <code>DotPlotNavigator</code> allows navigating your file-system and to
@@ -39,6 +44,7 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
    private boolean dirty;
 
    private CheckboxTreeViewer viewer;
+   private Action refreshAction;
 
    public DotPlotNavigator()
    {
@@ -105,6 +111,8 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
 //      initDnD(lister);
 
       viewer.getTree().forceFocus();
+      this.createActions();
+      this.createToolbar();
    }
 
    /**
@@ -347,4 +355,28 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
    {
       this.dirty = false;
    }
+   
+   /**
+    * Create toolbar, must be called from createPartControl
+    */
+   private void createToolbar() {
+           IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+           mgr.add(this.refreshAction);
+          
+   }
+   
+   /**
+    * init the refresh action, must be called from createPartControl
+    */
+   public void createActions() {
+	  refreshAction = new Action("Refresh!") {
+		   public void run () {
+			  viewer.setInput(getFileSystemRoot());
+		   }
+	   };
+	   
+	  //TODO Image for the refresh action
+	  //refreshAction.setImageDescriptor()
+   }
+   
 }
