@@ -99,7 +99,7 @@ public class FMatrixManager implements MonitorablePlotUnit
 //         token = tokenStream.getNextToken();
 //         file = token.getFile();
 
-         while (true))
+         while (true)
          {
             token = tokenStream.getNextToken();
             if(token instanceof EOSToken) break;
