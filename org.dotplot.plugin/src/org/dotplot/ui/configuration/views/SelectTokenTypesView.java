@@ -302,33 +302,32 @@ public class SelectTokenTypesView extends ConfigurationView
    private void drawKeywordTokenSettings(Composite parent)
    {
       GridData gd = new GridData();
-      gd.verticalSpan = 3;
+      gd.verticalSpan = 2;
 
       Group ng = new Group(parent, SWT.NONE);
       ng.setText("Keywordfilter");
       ng.setLayout(new GridLayout(3, true));
       ng.setLayoutData(gd);
 
-      gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+      gd = new GridData(SWT.LEAD, SWT.NONE, true, false, 1, 1);
       Label l1 = new Label(ng, SWT.NONE);
       l1.setText("none");
       l1.setToolTipText("no keyword will pass");
       l1.setLayoutData(gd);
 
-      gd = new GridData(GridData.HORIZONTAL_ALIGN_CENTER);
+      gd = new GridData(SWT.CENTER, SWT.NONE, true, false, 1, 1);
       Label l2 = new Label(ng, SWT.NONE);
       l2.setText("off");
       l2.setToolTipText("don't use the keywordfilter");
       l2.setLayoutData(gd);
 
-      gd = new GridData(GridData.HORIZONTAL_ALIGN_END);
+      gd = new GridData(SWT.TRAIL, SWT.NONE, true, false, 1, 1);
       Label l3 = new Label(ng, SWT.NONE);
       l3.setText("only");
       l3.setToolTipText("only keywords will pass");
       l3.setLayoutData(gd);
 
-      gd = new GridData();
-      gd.horizontalSpan = 3;
+      gd = new GridData(SWT.FILL, SWT.NONE, true, false, 3, 1);
       final Scale keyWordFilterSettings = new Scale(ng, SWT.HORIZONTAL);
       this.keyWordFilterSettings = keyWordFilterSettings;
       keyWordFilterSettings.setIncrement(1);
@@ -337,7 +336,6 @@ public class SelectTokenTypesView extends ConfigurationView
       keyWordFilterSettings.setMaximum(2);
       keyWordFilterSettings.setSelection(1);
       keyWordFilterSettings.setLayoutData(gd);
-
       keyWordFilterSettings.addSelectionListener(this.changeListener);
    }
 
@@ -360,7 +358,7 @@ public class SelectTokenTypesView extends ConfigurationView
                g = new Group(parent, SWT.NONE);
                g.setText(name);
 
-               GridData gd = new GridData(GridData.FILL);
+               GridData gd = new GridData(SWT.FILL);
                gd.widthHint = 450;
                g.setLayoutData(gd);
 

@@ -90,19 +90,14 @@ public class ConfigurationFramework
    public void draw(Composite parent)
    {
       Composite co = new Composite(parent, SWT.NONE);
-      Layout layout = new GridLayout(2, true);
+      Layout layout = new GridLayout(2, false);
       co.setLayout(layout);
-
-      GridData gd = new GridData(GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
-      // HORIZONTAL_ALIGN_FILL);
-      gd.horizontalSpan = 2;
-      gd.verticalSpan = 2;
 
       Label l1 = new Label(co, SWT.LEFT);
       l1.setText("Configure your dotpot");
 
       final TabFolder tf = new TabFolder(co, SWT.NULL);
-      tf.setLayoutData(gd);
+      tf.setLayoutData(new GridData(SWT.NONE, SWT.NONE, true, true, 2, 2));
 
       // add configuration views as tabs
       Iterator iter = cvs.values().iterator();
@@ -112,13 +107,13 @@ public class ConfigurationFramework
       }
 
       Composite c2 = new Composite(co, SWT.NONE);
-      GridData gd2 = new GridData(GridData.HORIZONTAL_ALIGN_END);
-      gd2.horizontalSpan = 2;
-      c2.setLayoutData(gd2);
       c2.setLayout(new RowLayout());
+      c2.setLayoutData(new GridData(SWT.END, SWT.NONE, false, false, 2, 1));
 
       Button btnPlot = new Button(c2, SWT.PUSH);
       btnPlot.setText("Plot");
+      Button btnCancel = new Button(c2, SWT.PUSH);
+      btnCancel.setText("Cancel");
 
       btnPlot.addSelectionListener(new SelectionAdapter()
       {
@@ -131,9 +126,6 @@ public class ConfigurationFramework
       // this has to be added _after_ the SelectionListener for the notification of the Oberservers
       // to let them apply changes made by the user before starting the plot.
       btnPlot.addSelectionListener(plotListener);
-
-      Button btnCancel = new Button(c2, SWT.PUSH);
-      btnCancel.setText("Cancel");
       btnCancel.addSelectionListener(cancelListener);
 
       co.pack(true);
@@ -149,7 +141,6 @@ public class ConfigurationFramework
    {
       Composite c1, c2, c3;
       TabItem ti;
-      GridData gd;
 
       ti = new TabItem(folder, SWT.NULL);
       ti.setText(view.getName());
@@ -161,13 +152,11 @@ public class ConfigurationFramework
       c2 = new Composite(c1, SWT.NONE);
       view.draw(c2);
 
-      gd = new GridData(GridData.FILL_BOTH);
-      c2.setLayoutData(gd);
+      c2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-      gd = new GridData(GridData.HORIZONTAL_ALIGN_END);
       c3 = new Composite(c1, SWT.NONE);
       c3.setLayout(new RowLayout());
-      c3.setLayoutData(gd);
+      c3.setLayoutData(new GridData(SWT.END, SWT.NONE, false, false));
 
       Button b = new Button(c3, SWT.PUSH);
       b.setText("Apply");
