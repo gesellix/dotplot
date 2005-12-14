@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -371,12 +372,15 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
    public void createActions() {
 	  refreshAction = new Action("Refresh!") {
 		   public void run () {
+			   IWorkbenchWindow window = Workbench.getInstance().getActiveWorkbenchWindow();
+			   DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
 			   viewer.refresh();
+			   lister.setInputFiles(getSelection()); 
 		   }
 	   };
 	   
 	  //TODO Image for the refresh action
-	  //refreshAction.setImageDescriptor()
+	   
    }
    
 }
