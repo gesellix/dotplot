@@ -371,7 +371,7 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
    public void createActions() {
 	  refreshAction = new Action("Refresh!") {
 		   public void run () {
-			  viewer.setInput(getFileSystemRoot());
+			   viewer.refresh();
 		   }
 	   };
 	   
