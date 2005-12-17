@@ -143,7 +143,7 @@ class InformationMural
          }
 
          counter++;
-         if (logger.isDebugEnabled() && ((counter % divider) == 0))
+         if (logger.isDebugEnabled() && divider > 0 && ((counter % divider) == 0))
          {
             logger.debug("matches processed: " + counter);
          }
