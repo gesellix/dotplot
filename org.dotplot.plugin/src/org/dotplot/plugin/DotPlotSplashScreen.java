@@ -50,7 +50,7 @@ public class DotPlotSplashScreen
    {
       try
       {
-         new DotPlotSplashScreen(DotPlotPlugin.getResource("icons/dp_splash_400x360_v0_2.jpg"));
+         new DotPlotSplashScreen(DotplotPlugin.getResource("icons/dp_splash_400x360_v0_2.jpg"));
       }
       catch (IOException e)
       {
@@ -169,7 +169,7 @@ public class DotPlotSplashScreen
          gc.drawImage(image, origin.x, origin.y);
 
          gc.setFont(new Font(shell.getDisplay(), new FontData(fontData.getName(), fontData.getHeight(), SWT.BOLD)));
-         gc.drawText(DotPlotPlugin.getVersionInfo(), x, y, true);
+         gc.drawText(DotplotPlugin.getVersionInfo(), x, y, true);
 
          if (marginWidth > 0)
          {

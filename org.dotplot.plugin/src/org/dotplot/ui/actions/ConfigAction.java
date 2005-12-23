@@ -50,7 +50,7 @@ public class ConfigAction implements IWorkbenchWindowActionDelegate
       config.setPlotListener(action);
       config.draw(shell);
 
-      shell.pack();
+      shell.pack(true);
       shell.open();
    }
 

@@ -4,12 +4,15 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.ListEditor;
+import org.eclipse.jface.preference.PathEditor;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import org.dotplot.plugin.DotPlotPlugin;
+import org.dotplot.plugin.DotplotPlugin;
 
 /**
  * This class represents a preference page that
@@ -33,12 +36,23 @@ public class DotPlotPreferencePage extends FieldEditorPreferencePage implements 
 
    public DotPlotPreferencePage()
    {
-      super(GRID);
+      super(FLAT);
 
-      setPreferenceStore(DotPlotPlugin.getDefault().getPreferenceStore());
-      setDescription("A demonstration of a preference page implementation");
+      try{
+    	  DotplotPlugin plugin = DotplotPlugin.getDefault();
+    	  if(plugin == null) System.out.println("plugin");
+    	  IPreferenceStore store = plugin.getPreferenceStore();
+    	  
+    	  if(store == null) System.out.println("null");
+    	  
+    	  setPreferenceStore(store);
+    	  setDescription("A demonstration of a preference page implementation");
 
-      initializeDefaults();
+    	  initializeDefaults();
+      }
+      catch(Exception e){
+    	  e.printStackTrace();
+      }
    }
 
    /**

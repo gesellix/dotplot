@@ -14,7 +14,7 @@ Bundle-SymbolicName: org.dotplot.plugin; singleton=true
 Bundle-Version: 2.1.1
 Bundle-Name: Matrix4.plot
 Bundle-Vendor: Matrix4.plot Team CS@FH-Giessen Germany
-Bundle-Activator: org.dotplot.plugin.DotPlotPlugin
+Bundle-Activator: org.dotplot.plugin.DotplotPlugin
 Bundle-ClassPath: lib/activation.jar,
  lib/clibwrapper_jiio.jar,
  lib/iText.jar,

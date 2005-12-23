@@ -13,5 +13,4 @@ public class DotplotApplication implements IPlatformRunnable {
 			? IPlatformRunnable.EXIT_RESTART
 			: IPlatformRunnable.EXIT_OK;		
 	}
-
 }

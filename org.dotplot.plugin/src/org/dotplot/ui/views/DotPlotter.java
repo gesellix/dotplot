@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.ui.part.ViewPart;
 
-import org.dotplot.plugin.DotPlotPlugin;
+import org.dotplot.plugin.DotplotPlugin;
 
 /**
  * <code>DotPlotter</code> shows the DotPlot.
@@ -153,7 +153,7 @@ public class DotPlotter extends ViewPart
          try
          {
             final ImageData splashdata = new ImageData(
-                  DotPlotPlugin.getResource("icons/dp_splash_400x360_v0_2.jpg").getFile());
+                  DotplotPlugin.getResource("icons/dp_splash_400x360_v0_2.jpg").getFile());
 
             currentImage = new Image(display, splashdata);
 
@@ -168,7 +168,7 @@ public class DotPlotter extends ViewPart
             gc.setForeground(new Color(display, 0, 0, 0));
 
             gc.setFont(new Font(shell.getDisplay(), new FontData(fontData.getName(), fontData.getHeight(), SWT.BOLD)));
-            gc.drawText(DotPlotPlugin.getVersionInfo(), 10, 10, false);
+            gc.drawText(DotplotPlugin.getVersionInfo(), 10, 10, false);
 
 //         gc.drawText("No image", 10, 10);
 

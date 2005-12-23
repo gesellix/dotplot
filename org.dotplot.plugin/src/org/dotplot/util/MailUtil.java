@@ -19,7 +19,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.dotplot.plugin.DotPlotPlugin;
+import org.dotplot.plugin.DotplotPlugin;
 
 public class MailUtil
 {
@@ -105,7 +105,7 @@ public class MailUtil
       msg.setRecipients(Message.RecipientType.TO, addressTo);
       msg.setSubject(subject);
       msg.setSentDate(new Date());
-      msg.setHeader("X-Mailer", DotPlotPlugin.getVersionInfo());
+      msg.setHeader("X-Mailer", DotplotPlugin.getVersionInfo());
 
       if (attachments != null)
       {
@@ -114,7 +114,7 @@ public class MailUtil
          BodyPart messageBodyPart;
 
          messageBodyPart = new MimeBodyPart();
-         messageBodyPart.setText(message + "\n\n-- \n" + DotPlotPlugin.getVersionInfo());
+         messageBodyPart.setText(message + "\n\n-- \n" + DotplotPlugin.getVersionInfo());
 
          multipart.addBodyPart(messageBodyPart);
 
@@ -142,7 +142,7 @@ public class MailUtil
       }
       else
       {
-         msg.setContent(message + "\n\n-- \n" + DotPlotPlugin.getVersionInfo(), "text/plain");
+         msg.setContent(message + "\n\n-- \n" + DotplotPlugin.getVersionInfo(), "text/plain");
       }
 
       Transport.send(msg);

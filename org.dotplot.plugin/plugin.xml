@@ -47,7 +47,11 @@
       <product
             application="org.dotplot.plugin.DotplotApplication"
             description="Dotplot"
-            name="org.dotplot.plugin.Dotploter"/>
+            name="Dotploter">
+         <property
+               name="windowImages"
+               value="icons/dp_32.gif"/>
+      </product>
    </extension>
 
    <extension
@@ -146,7 +150,7 @@
    </extension>
 
    <extension
-      point="org.eclipse.help.toc">
+         point="org.eclipse.help.toc">
       <toc
          file="toc.xml"
          primary="true">
@@ -166,6 +170,10 @@
       <toc
          file="toctasks.xml">
       </toc>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.dotplot.plugin.DotplotPreferenceInitializer"/>
    </extension>
 
 </plugin>
