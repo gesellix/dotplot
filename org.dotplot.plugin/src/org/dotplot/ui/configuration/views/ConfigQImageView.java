@@ -109,9 +109,14 @@ public class ConfigQImageView extends ConfigurationView
       gd.horizontalSpan = 2;
       this.chkUseInfoMural = new Button(_parent, SWT.CHECK);
       this.chkUseInfoMural.setLayoutData(gd);
-      this.chkUseInfoMural.setText("Use Information Mural");
+      this.chkUseInfoMural.setText("use Information Mural");
       this.chkUseInfoMural.setToolTipText("Use alternate algorithm");
       this.chkUseInfoMural.setSelection(useInfoMural);
+
+      this.chkShowFileSeparators = new Button(_parent, SWT.CHECK);
+      this.chkShowFileSeparators.setText("show file separators");
+      this.chkShowFileSeparators.setToolTipText("If checked, the generated DotPlot shows borders of the plotted files");
+      this.chkShowFileSeparators.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
       // Scaling Configuration
       Composite parent = createGroup(_parent, "Scaling", 2);
@@ -120,12 +125,12 @@ public class ConfigQImageView extends ConfigurationView
       gd.horizontalSpan = 2;
       this.btnScaleOff = new Button(parent, SWT.RADIO);
       this.btnScaleOff.setLayoutData(gd);
-      this.btnScaleOff.setText("No scaling");
+      this.btnScaleOff.setText("no scaling");
       this.btnScaleOff.setToolTipText("Switches scaling off");
 
       gd = new GridData();
       this.btnScaleWindowSize = new Button(parent, SWT.RADIO);
-      this.btnScaleWindowSize.setText("Fit to window size");
+      this.btnScaleWindowSize.setText("fit to window size");
       this.btnScaleWindowSize.setSelection(true);
       this.btnScaleWindowSize.setToolTipText("Scales the image to the size of the viewer");
       this.btnScaleWindowSize.setLayoutData(gd);
@@ -153,7 +158,7 @@ public class ConfigQImageView extends ConfigurationView
       gd.horizontalSpan = 2;
       this.cboLUT = new Combo(parent, SWT.DROP_DOWN);
       this.cboLUT.setItems(LUTs.availableLUTs);
-      this.cboLUT.setText("Choose your desired colors");
+      this.cboLUT.setText("choose your desired colors");
       this.cboLUT.setLayoutData(gd);
 
       // Lut-Canvas for changing the Color of the dotPlot
@@ -163,11 +168,6 @@ public class ConfigQImageView extends ConfigurationView
       this.colBarLUT.setLut(currentLut);
       this.colBarLUT.setToolTipText("Current Color for the DotPlot");
       this.colBarLUT.setLayoutData(gd);
-
-      this.chkShowFileSeparators = new Button(_parent, SWT.CHECK);
-      this.chkShowFileSeparators.setText("show file separators");
-      this.chkShowFileSeparators.setToolTipText("If checked, the generated DotPlot shows borders of the plotted files");
-      this.chkShowFileSeparators.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
    }
 
    private void initLayoutExportGroup(Composite parent)
@@ -200,7 +200,7 @@ public class ConfigQImageView extends ConfigurationView
       this.cboExportFormat.setLayoutData(gd);
 
       // Label (filename)
-      gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_CENTER);
+      gd = new GridData(GridData.VERTICAL_ALIGN_CENTER);
       label = new Label(parent, SWT.NONE);
       label.setText("Filename:");
       label.setLayoutData(gd);
