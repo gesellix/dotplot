@@ -24,11 +24,11 @@ public class LineInformation extends Hashtable implements Serializable
     *
     * @param firstTokenIndex the first index
     * @param lastTokenIndex  the last index
-    * @param lineNumber      the line number
+    * @param lineIndex      the line number
     */
-   public void addLineInformation(int firstTokenIndex, int lastTokenIndex, int lineNumber)
+   public void addLineInformation(int firstTokenIndex, int lastTokenIndex, int lineIndex)
    {
-      put(new Integer(firstTokenIndex), new LineInformationContainer(lineNumber, lastTokenIndex));
+      put(new Integer(firstTokenIndex), new LineInformationContainer(lineIndex, lastTokenIndex));
    }
 
    /**
@@ -38,9 +38,9 @@ public class LineInformation extends Hashtable implements Serializable
     *
     * @return int         - the linenumber, the token is at. (-1 for not found)
     */
-   public int getLineNumber(int tokenIndex)
+   public int getLineIndex(int tokenIndex)
    {
-      while (!containsKey(new Integer(tokenIndex)))
+      while (!(containsKey(new Integer(tokenIndex)) || tokenIndex < 0))
       {
          tokenIndex--;
       }
@@ -50,7 +50,7 @@ public class LineInformation extends Hashtable implements Serializable
          return -1;
       }
 
-      return ((LineInformationContainer) get(new Integer(tokenIndex))).getLineNumber();
+      return ((LineInformationContainer) get(new Integer(tokenIndex))).getLineIndex();
    }
 
    /**
@@ -66,18 +66,18 @@ public class LineInformation extends Hashtable implements Serializable
        * for being Serializable
        */
       private static final long serialVersionUID = -4540120604945172975L;
-      private int lineNumber;
+      private int lineIndex;
       private int lastTokenIndex;
 
       /**
        * Default Constructor
        *
-       * @param lineNumber     - the lineNumber
+       * @param lineIndex     - the lineIndex
        * @param lastTokenIndex - the tokenindex, the file ends with.
        */
-      public LineInformationContainer(int lineNumber, int lastTokenIndex)
+      public LineInformationContainer(int lineIndex, int lastTokenIndex)
       {
-         this.lineNumber = lineNumber;
+         this.lineIndex = lineIndex;
          this.lastTokenIndex = lastTokenIndex;
       }
 
@@ -86,9 +86,9 @@ public class LineInformation extends Hashtable implements Serializable
        *
        * @return int   - the linenumber
        */
-      public int getLineNumber()
+      public int getLineIndex()
       {
-         return lineNumber;
+         return lineIndex;
       }
 
       /**

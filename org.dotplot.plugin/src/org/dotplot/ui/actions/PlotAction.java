@@ -35,7 +35,9 @@ import org.dotplot.image.IDotplot;
 import org.dotplot.image.JAITools;
 import org.dotplot.image.QImageConfiguration;
 import org.dotplot.tokenizer.IFileList;
+import org.dotplot.tokenizer.ITokenFilter;
 import org.dotplot.tokenizer.TokenizerException;
+import org.dotplot.tokenizer.tokenfilter.TokenFilterContainer;
 import org.dotplot.ui.DotPlotPerspective;
 import org.dotplot.ui.configuration.GlobalConfiguration;
 import org.dotplot.ui.monitor.DotPlotProgressMonitor;
@@ -213,11 +215,38 @@ public class PlotAction implements IWorkbenchWindowActionDelegate, SelectionList
             }
 
             final ImageData data = (ImageData) dplot.getImage(IDotplot.IMG_SWT_IMAGEDATA);
-            // TODO enable only when no LINE-FILTER is active... or fix this bug ;-)
-//            view.setMouseMoveListener(new DotPlotMouseMoveListener(window, dotplotCreator, data, view, scale));
+            if (isFilterEnabled(dotplotCreator.getTokenizerConfiguration().getTokenFilter()))
+            {
+               view.removeMouseMoveListener();
+            }
+            else
+            {
+               view.setMouseMoveListener(new DotPlotMouseMoveListener(window, dotplotCreator, data, view, scale));
+            }
             view.showImage(data);
          }
       }
+   }
+
+   private boolean isFilterEnabled(ITokenFilter tokenFilter)
+   {
+      if (tokenFilter instanceof TokenFilterContainer)
+      {
+         ITokenFilter[] filters = ((TokenFilterContainer) tokenFilter).getTokenFilters();
+         for (int i = 0; i < filters.length; i++)
+         {
+            if (isFilterEnabled(filters[i]))
+            {
+               return true;
+            }
+         }
+      }
+      else if (tokenFilter != null)
+      {
+         return true;
+      }
+
+      return false;
    }
 
    /**

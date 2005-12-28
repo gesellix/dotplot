@@ -42,7 +42,7 @@ public class DefaultConfiguration implements IConfiguration
    /**
     * the Tokenfilter, which should be used
     */
-   private ITokenFilter TokenFilter;
+   private ITokenFilter tokenFilter;
 
    /**
     * Creates a base configuration.
@@ -52,7 +52,7 @@ public class DefaultConfiguration implements IConfiguration
    {
       this.scanner = new DefaultScanner();
       this.fileList = new DefaultFileList();
-      this.TokenFilter = null;
+      this.tokenFilter = null;
       this.useDefaultScanner = true;
       this.convertedFilesDirectory = null;
       this.convertFiles = false;
@@ -116,7 +116,7 @@ public class DefaultConfiguration implements IConfiguration
     */
    public ITokenFilter getTokenFilter()
    {
-      return this.TokenFilter;
+      return this.tokenFilter;
    }
 
    /**
@@ -129,7 +129,7 @@ public class DefaultConfiguration implements IConfiguration
     */
    public void setTokenFilter(ITokenFilter tokenFilter)
    {
-      this.TokenFilter = tokenFilter;
+      this.tokenFilter = tokenFilter;
    }
 
    /**

@@ -9,9 +9,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.dotplot.tokenizer.EOFToken;
-import org.dotplot.tokenizer.EOLToken;
-import org.dotplot.tokenizer.EOSToken;
 import org.dotplot.tokenizer.IFileList;
 import org.dotplot.tokenizer.ITokenStream;
 import org.dotplot.tokenizer.Token;
@@ -28,7 +25,7 @@ import org.dotplot.ui.monitor.MonitorablePlotUnit;
  * are controlled by this class.
  *
  * @author Constantin von Zitzewitz, Thorsten Ruehl
- * @version	0.4
+ * @version 0.4
  */
 public class FMatrixManager implements MonitorablePlotUnit
 {
@@ -81,83 +78,67 @@ public class FMatrixManager implements MonitorablePlotUnit
       LineInformation lineInformation = new LineInformation();
       File file = null;
 
-      int lineNumber = 0;
-      int lastLineNumber = 0;
+      int lineIndex = 0;
       int firstTokenInLine = 0;
-      int lastTokenInLine = 0;
+      int tokensInLine = 0;
       int tokenIndex = 0;
-      int fileIndex = 0; // counts the files
-
-      boolean addToken = true;
-      boolean processFirstFile = true;
+      int fileCount = 0; // counts the files
 
       // monitor message
       monitorMessage = "processing Tokens...";
 
       try
       {
-//         token = tokenStream.getNextToken();
-//         file = token.getFile();
-
          while (true)
          {
             token = tokenStream.getNextToken();
-            if(token instanceof EOSToken) break;
-            
-            // ------------ store fileinformation
-            if ((token != null) && (processFirstFile || (file != token.getFile())))
+            if (token == null)
             {
-               processFirstFile = false;
+               logger.error("token == null");
+               return false;
+            }
+
+            int tokenType = token.getType();
+            if (tokenType == Token.TYPE_EOS)
+            {
+               break;
+            }
+
+            // ------------ store fileinformation
+            if (file != token.getFile())
+            {
                file = token.getFile();
                tokenInformation.addFileInformation(new FileInformation(tokenIndex, file));
             }
 
-            lineNumber = token.getLine();
+            lineIndex = token.getLine();
 
-            if (lastLineNumber == lineNumber)
+            switch (tokenType)
             {
-               lastTokenInLine++;
+               case Token.TYPE_EOL:
+                  lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine, lineIndex);
+                  firstTokenInLine = tokenIndex;
+                  tokensInLine = 0;
+                  break;
+               case Token.TYPE_EOF:
+                  tokenInformation.addLineInformationContainer(lineInformation);
+                  lineInformation = new LineInformation();
+
+                  // count files for progress monitor
+                  fileCount++;
+                  progress = (fileCount / fileList.count() * 100);
+                  DotPlotProgressMonitor.getInstance().update();
+                  break;
+               default:
+                  typeTable.addType(token.getValue());
+                  tokenIndex++;
+                  tokensInLine++;
+                  break;
             }
-            else
-            {
-               lineInformation.addLineInformation(firstTokenInLine, lastTokenInLine, lineNumber);
-               firstTokenInLine = tokenIndex;
-               //lastTokenInLine  = 0;
-            }
-
-            lastLineNumber = lineNumber;
-
-            // skip linefeeds
-            if (token instanceof EOLToken)
-            {
-               addToken = false;
-            }
-
-            // take care of the LineInformation object
-            if (token instanceof EOFToken)
-            {
-               tokenInformation.addLineInformationContainer(lineInformation);
-               lineInformation = new LineInformation();
-               addToken = false;
-
-               // count files for progress monitor
-               fileIndex++;
-               progress = (fileIndex / fileList.count() * 100);
-               DotPlotProgressMonitor.getInstance().update();
-            }
-
-            if (addToken)
-            {
-               typeTable.addType(token.getValue());
-               tokenIndex++; // increment tokenIndex
-               lastLineNumber = lineNumber;
-            }
-
-            addToken = true;
          }
 
-         // mark end of fileInformationEntrys and register the FileInformation to the typetable
-         tokenInformation.addFileInformation(new FileInformation(tokenIndex, null));
+         // mark end of fileInformationEntries and register the FileInformation to the typetable
+//         tokenInformation.addFileInformation(new FileInformation(tokenIndex, null));
          typeTable.registerTokenInformation(tokenInformation);
       }
       catch (TokenizerException e)
@@ -166,7 +147,7 @@ public class FMatrixManager implements MonitorablePlotUnit
          return false;
       }
 
-      typeTable.setAllCalculatedWeight();
+      typeTable.updateCalculatedWeights();
       restoreConfiguration();
 
       return true;
@@ -193,16 +174,16 @@ public class FMatrixManager implements MonitorablePlotUnit
       iter = storedRegularExpressions.iterator();
       while (iter.hasNext())
       {
-         typeTable.addRegularExpressionType((String) iter.next(), 0.5);
+         typeTable.addRegularExpressionType((String) iter.next(), 0.75);
       }
    }
 
    /**
     * returns an ITypeTableNavigator object.
     *
-    * @return ITypeTableNavigator	- the object
+    * @return ITypeTableNavigator - the object
     *
-    * @see		<code>ITypeTableNavigator</code>
+    * @see <code>ITypeTableNavigator</code>
     */
    public ITypeTableNavigator getTypeTableNavigator()
    {
@@ -248,6 +229,13 @@ public class FMatrixManager implements MonitorablePlotUnit
    }
 
    /**
+    * @see org.dotplot.ui.monitor.MonitorablePlotUnit#cancel()
+    */
+   public void cancel()
+   {
+   }
+
+   /**
     * Specifies the file list value.
     *
     * @param fileList an IFileList object specifying the file list value
@@ -267,10 +255,8 @@ public class FMatrixManager implements MonitorablePlotUnit
       return new TypeTableManipulator(typeTable);
    }
 
-   /**
-    * @see org.dotplot.ui.monitor.MonitorablePlotUnit#cancel()
-    */
-   public void cancel()
+   public void printTypeTable()
    {
+      typeTable.print();
    }
 }

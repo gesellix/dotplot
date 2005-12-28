@@ -107,7 +107,7 @@ public class TypeTable implements Serializable
     */
    public int getNumberOfTypes()
    {
-      return (typeIndex);
+      return typeIndex;
    }
 
    /**
@@ -217,25 +217,25 @@ public class TypeTable implements Serializable
     */
    public int addType(String value)
    {
-      TokenType tempTokenType;
-      int currentTypeIndex = getTypeIndex(value);
-      if (currentTypeIndex > -1)
-      { // if type exists...
+      TokenType tokenType;
+      int typeIndex = getTypeIndex(value);
+      if (typeIndex > -1)
+      { // type exists
          // fetch tokenType object...
-         tempTokenType = getTokenType(currentTypeIndex);
+         tokenType = getTokenType(typeIndex);
          // add the token position to the tokenType...
-         numberOfMatches += tempTokenType.addTypePosition(tokenTable.addTypeIndex(currentTypeIndex));
-         return currentTypeIndex;
+         numberOfMatches += tokenType.addTypePosition(tokenTable.addTypeIndex(typeIndex));
       }
       else
-      { // if type is new
-         tempTokenType = new TokenType(value);
+      { // type is new
+         tokenType = new TokenType(value);
 
          // add the token position to the tokenType...
-         numberOfMatches += tempTokenType.addTypePosition(tokenTable.addTypeIndex(typeIndex));
+         numberOfMatches += tokenType.addTypePosition(tokenTable.addTypeIndex(getNumberOfTypes()));
 
-         return addTokenType(tempTokenType);
+         typeIndex = addTokenType(tokenType);
       }
+      return typeIndex;
    }
 
    private int addTokenType(TokenType tokenType)
@@ -254,14 +254,21 @@ public class TypeTable implements Serializable
    /**
     * Function to set all weightings to the calculated weight
     */
-   void setAllCalculatedWeight()
+   void updateCalculatedWeights()
    {
-      TokenType currentTokenType;
       Enumeration tokenTypes = typeTable.elements();
       while (tokenTypes.hasMoreElements())
       {
-         currentTokenType = (TokenType) tokenTypes.nextElement();
-         currentTokenType.setWeight(currentTokenType.getCalculatedWeight());
+         ((TokenType) tokenTypes.nextElement()).updateWeight();
+      }
+   }
+
+   public void print()
+   {
+      Enumeration tokenTypes = typeTable.elements();
+      while (tokenTypes.hasMoreElements())
+      {
+         System.out.println(tokenTypes.nextElement());
       }
    }
 }

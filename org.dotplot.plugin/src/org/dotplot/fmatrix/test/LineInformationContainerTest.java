@@ -41,8 +41,8 @@ public class LineInformationContainerTest extends TestCase
       this.container.addLineInformation(18, 47, 2);
       this.container.addLineInformation(48, 60, 3);
 
-      assertEquals("token 5 must return line 1", 1, this.container.getLineNumber(5));
-      assertEquals("token 35 must return line 2", 2, this.container.getLineNumber(35));
-      assertEquals("token 57 must return line 3", 3, this.container.getLineNumber(57));
+      assertEquals("token 5 must return line 1", 1, this.container.getLineIndex(5));
+      assertEquals("token 35 must return line 2", 2, this.container.getLineIndex(35));
+      assertEquals("token 57 must return line 3", 3, this.container.getLineIndex(57));
    }
 }

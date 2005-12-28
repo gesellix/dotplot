@@ -283,15 +283,15 @@ class Dotplot implements IDotplot
 
       logger.debug("fileIDs: " + xFileID + ", " + yFileID);
 
-      String xFile = tokenInfo.getFileNameByFileId(xFileID);
-      String yFile = tokenInfo.getFileNameByFileId(yFileID);
+      String xFile = tokenInfo.getFileName(xFileID);
+      String yFile = tokenInfo.getFileName(yFileID);
 
       int xLine = 0;
       int yLine = 0;
       try
       {
-         xLine = tokenInfo.getLineNumberByIndex(xFileID, xIndex);
-         yLine = tokenInfo.getLineNumberByIndex(yFileID, yIndex);
+         xLine = tokenInfo.getLineIndex(xFileID, xIndex);
+         yLine = tokenInfo.getLineIndex(yFileID, yIndex);
       }
       catch (Exception e)
       {

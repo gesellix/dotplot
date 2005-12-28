@@ -32,12 +32,12 @@ public interface IROIResult
     *
     * @return an int representing the XLine number value
     */
-   public int getXLineNumber();
+   public int getXLineIndex();
 
    /**
     * Line in getYFile().
     *
     * @return an int representing the YLine number value
     */
-   public int getYLineNumber();
+   public int getYLineIndex();
 }

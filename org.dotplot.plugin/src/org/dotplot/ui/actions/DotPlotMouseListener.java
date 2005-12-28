@@ -95,9 +95,9 @@ class DotPlotMouseListener extends MouseAdapter
             if (res != null)
             {
                merger.setText(res.getXFile(),
-                     res.getXLineNumber(),
+                     res.getXLineIndex(),
                      res.getYFile(),
-                     res.getYLineNumber(),
+                     res.getYLineIndex(),
                      this.getChoice());
                //TODO rectangle is experimental
                merger.getViewSite().getWorkbenchWindow().getActivePage().bringToTop(merger);

@@ -353,6 +353,21 @@ public class DotPlotter extends ViewPart
       }
    }
 
+   public void removeMouseMoveListener()
+   {
+      canvas.getDisplay().syncExec(new Runnable()
+      {
+         public void run()
+         {
+            if (mouseMoveListener != null)
+            {
+               canvas.removeMouseMoveListener(mouseMoveListener);
+               mouseMoveListener = null;
+            }
+         }
+      });
+   }
+
    /**
     * use this one if you want to provide regions of interest for mouse moves,
     * sets the canvas' MouseMoveListener.

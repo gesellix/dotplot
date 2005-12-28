@@ -63,14 +63,14 @@ public class TokenInformation implements Serializable
     *
     * @return an int representing the line number
     */
-   public int getLineNumberByIndex(int fileID, int index)
+   public int getLineIndex(int fileID, int index)
    {
       if (lineInformations.size() < 1)
       {
          return -1;
       }
 
-      return ((LineInformation) lineInformations.elementAt(fileID)).getLineNumber(index);
+      return ((LineInformation) lineInformations.elementAt(fileID)).getLineIndex(index);
    }
 
    // ------------------------- FileInformation Access Functions ---------------------------
@@ -84,29 +84,22 @@ public class TokenInformation implements Serializable
     */
    public int getFileIdByIndex(int index)
    {
-      int fileNumber = fileInformations.size();
-      if (fileNumber < 1)
+      int fileIndex = -1;
+      Iterator fileInfoIter = fileInformations.iterator();
+      while (fileInfoIter.hasNext())
       {
-         return -1;
+         FileInformation fileInfo = (FileInformation) fileInfoIter.next();
+         if (fileInfo.getStartIndex() <= index)
+         {
+            fileIndex++;
+         }
+         else
+         {
+            break;
+         }
       }
 
-      int currentFileID = 0;
-      FileInformation currentFileInformation;
-
-      long currentStartIndex = -1;
-
-      while ((currentFileID < fileNumber) && index > currentStartIndex)
-      {
-         currentFileInformation = (FileInformation) fileInformations.elementAt(currentFileID);
-         currentStartIndex = currentFileInformation.getStartIndex();
-         currentFileID++;
-      }
-
-      /*
-       * quick fix 2004-07-03, Tobias Gesellchen
-       */
-      return (currentFileID - ((index == 0) ? 1 : 2));
-      //return (currentFileID - 2);
+      return fileIndex;
    }
 
    /**
@@ -116,7 +109,7 @@ public class TokenInformation implements Serializable
     *
     * @return the corresponding filename
     */
-   public String getFileNameByFileId(int fileID)
+   public String getFileName(int fileID)
    {
       if (fileInformations.size() < 1)
       {
@@ -133,7 +126,7 @@ public class TokenInformation implements Serializable
     *
     * @return the corresponding file size
     */
-   public long getFileSizeByFileId(int fileID)
+   public long getFileSize(int fileID)
    {
       if (fileInformations.size() < 1)
       {
@@ -150,7 +143,7 @@ public class TokenInformation implements Serializable
     *
     * @return the corresponding start index
     */
-   public int getStartIndexByFileId(int fileID)
+   public int getStartIndex(int fileID)
    {
       if (fileInformations.size() < 1)
       {
@@ -169,19 +162,10 @@ public class TokenInformation implements Serializable
    {
       Vector indices = new Vector();
 
-      FileInformation fileInformation;
-
       Iterator fileInformationsIter = fileInformations.iterator();
       while (fileInformationsIter.hasNext())
       {
-         fileInformation = (FileInformation) fileInformationsIter.next();
-
-         // TODO are the return values correct?!
-         // tge, 2005-02-11: supress entries with "no" size
-         if (fileInformation.getFileSize() > 0)
-         {
-            indices.add(new Integer(fileInformation.getStartIndex()));
-         }
+         indices.add(new Integer(((FileInformation) fileInformationsIter.next()).getStartIndex()));
       }
 
       int i = 0;

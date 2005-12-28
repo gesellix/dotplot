@@ -17,8 +17,8 @@ class ROIResult implements IROIResult
    File xFileInROI = null;
    File yFileInROI = null;
 
-   int xLineNumber = 0;
-   int yLineNumber = 0;
+   int xLineIndex = 0;
+   int yLineIndex = 0;
 
    /**
     * Constructs a ROIResult object from the given parameters.
@@ -32,8 +32,8 @@ class ROIResult implements IROIResult
    {
       xFileInROI = xFile;
       yFileInROI = yFile;
-      xLineNumber = xLine;
-      yLineNumber = yLine;
+      xLineIndex = xLine;
+      yLineIndex = yLine;
    }
 
    /**
@@ -53,19 +53,19 @@ class ROIResult implements IROIResult
    }
 
    /**
-    * @see org.dotplot.image.IROIResult#getXLineNumber()
+    * @see org.dotplot.image.IROIResult#getXLineIndex()
     */
-   public int getXLineNumber()
+   public int getXLineIndex()
    {
-      return xLineNumber;
+      return xLineIndex;
    }
 
    /**
-    * @see org.dotplot.image.IROIResult#getYLineNumber()
+    * @see org.dotplot.image.IROIResult#getYLineIndex()
     */
-   public int getYLineNumber()
+   public int getYLineIndex()
    {
-      return yLineNumber;
+      return yLineIndex;
    }
 
    /**
@@ -73,9 +73,7 @@ class ROIResult implements IROIResult
     */
    public String toString()
    {
-      return "ROI " + "(" + xFileInROI.getAbsolutePath() + ":" + xLineNumber + ", " + yFileInROI.getAbsolutePath()
-            + ":"
-            + yLineNumber
-            + ")";
+      return "ROI " + "(" + xFileInROI.getAbsolutePath() + ":" + xLineIndex
+            + ", " + yFileInROI.getAbsolutePath() + ":" + yLineIndex + ")";
    }
 }

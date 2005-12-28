@@ -3,6 +3,8 @@
  */
 package org.dotplot.fmatrix;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -24,15 +26,17 @@ public class FileInformation implements Serializable
    private long filesize;
    private String filename;
 
+   private static final Logger logger = Logger.getLogger(FileInformation.class.getName());
+
    /**
     * Create a new FileInformation using the given values.
     *
-    * @param _startindex the startindex
-    * @param fileObject  the corresponding File
+    * @param startindex the startindex
+    * @param fileObject the corresponding File
     */
-   public FileInformation(int _startindex, File fileObject)
+   public FileInformation(int startindex, File fileObject)
    {
-      this.startindex = _startindex;
+      this.startindex = startindex;
       if (fileObject != null)
       {
          try
@@ -41,7 +45,7 @@ public class FileInformation implements Serializable
          }
          catch (IOException e)
          {
-            e.printStackTrace();
+            logger.error(e);
          }
          filesize = fileObject.length();
       }

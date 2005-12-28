@@ -450,8 +450,10 @@ public final class Util
 
       TokenInformation tokenInfo = nav.getTokenInformation();
 
-      int xIndex = Math.min(Math.max((int) (location.x / scale), 0), imageSize.width - 1);
-      int yIndex = Math.min(Math.max((int) (location.y / scale), 0), imageSize.height - 1);
+//      int xIndex = Math.min(Math.max((int) (location.x / scale), 0), imageSize.width - 1);
+//      int yIndex = Math.min(Math.max((int) (location.y / scale), 0), imageSize.height - 1);
+      int xIndex = Math.max((int) (location.x / scale), 0);
+      int yIndex = Math.max((int) (location.y / scale), 0);
 
 //      logger.debug("new ix: " + xIndex + ", " + yIndex);
 
@@ -460,15 +462,15 @@ public final class Util
 
 //      logger.debug("fileIDs: " + xFileID + ", " + yFileID);
 
-      String xFile = tokenInfo.getFileNameByFileId(xFileID);
-      String yFile = tokenInfo.getFileNameByFileId(yFileID);
+      String xFile = tokenInfo.getFileName(xFileID);
+      String yFile = tokenInfo.getFileName(yFileID);
 
-      int xLine = 0;
-      int yLine = 0;
+      int xLineIndex = 0;
+      int yLineIndex = 0;
       try
       {
-         xLine = tokenInfo.getLineNumberByIndex(xFileID, xIndex);
-         yLine = tokenInfo.getLineNumberByIndex(yFileID, yIndex);
+         xLineIndex = tokenInfo.getLineIndex(xFileID, xIndex);
+         yLineIndex = tokenInfo.getLineIndex(yFileID, yIndex);
       }
       catch (ArrayIndexOutOfBoundsException e)
       {
@@ -489,6 +491,6 @@ public final class Util
 //      }
 
 //      logger.debug(result);
-      return (IROIResult) new ROIResult(new File(xFile), new File(yFile), xLine, yLine);
+      return (IROIResult) new ROIResult(new File(xFile), new File(yFile), xLineIndex, yLineIndex);
    }
 }

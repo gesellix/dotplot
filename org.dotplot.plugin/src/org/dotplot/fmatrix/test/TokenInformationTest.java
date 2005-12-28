@@ -55,7 +55,7 @@ public class TokenInformationTest extends TestCase
 		   file3.delete();
 	   }
    }
-   
+
    public void testSetUp()
    {
       assertNotNull("TokenInformation object must not be null!", this.tokenInformation);
@@ -86,16 +86,16 @@ public class TokenInformationTest extends TestCase
       try {
       assertEquals("(5) checking if filename of 1. entry is correct",
             this.file1.getCanonicalPath(),
-            this.tokenInformation.getFileNameByFileId(0));
+            this.tokenInformation.getFileName(0));
 
       assertEquals("(6) checking if filename of 2. entry is correct",
             this.file2.getCanonicalPath(),
-            this.tokenInformation.getFileNameByFileId(1));
+            this.tokenInformation.getFileName(1));
 
       assertEquals("(7) checking if filename of 3. entry is correct",
             this.file3.getCanonicalPath(),
-            this.tokenInformation.getFileNameByFileId(2));
-      
+            this.tokenInformation.getFileName(2));
+
       }
       catch(Exception e){
     	  fail("no exception should be thrown");

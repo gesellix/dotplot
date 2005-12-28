@@ -248,6 +248,7 @@ public class DotplotCreator implements IDotplotCreator
 
       fMatrixController.setFileList(fileList);
       fMatrixController.addTokens();
+//      fMatrixController.printTypeTable();
 
       return fMatrixController.getTypeTableNavigator();
    }

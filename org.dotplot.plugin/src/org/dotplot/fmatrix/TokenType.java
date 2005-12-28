@@ -75,14 +75,9 @@ public class TokenType implements Serializable
       return weight;
    }
 
-   /**
-    * returns the string value for a TokenType object.
-    *
-    * @return String   - the value of this instance
-    */
-   public String getValue()
+   public void updateWeight()
    {
-      return this.value;
+      setWeight(getCalculatedWeight());
    }
 
    /**
@@ -121,6 +116,16 @@ public class TokenType implements Serializable
             ((Integer) tokenPositions.get(index % frequency)).intValue(),
             getWeight());
       //getCalculatedWeight());
+   }
+
+   /**
+    * returns the string value for a TokenType object.
+    *
+    * @return String   - the value of this instance
+    */
+   public String getValue()
+   {
+      return this.value;
    }
 
    /**
