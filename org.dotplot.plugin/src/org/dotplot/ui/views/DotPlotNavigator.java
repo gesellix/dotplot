@@ -3,8 +3,11 @@ package org.dotplot.ui.views;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import org.dotplot.plugin.DotPlotPlugin;
 import org.dotplot.tokenizer.IFileList;
 import org.dotplot.ui.DotPlotPerspective;
 import org.eclipse.jface.action.Action;
@@ -25,6 +28,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -32,6 +36,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.ViewPart;
+
+import sun.awt.image.URLImageSource;
 
 /**
  * <code>DotPlotNavigator</code> allows navigating your file-system and to
@@ -375,12 +381,17 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
 			   IWorkbenchWindow window = Workbench.getInstance().getActiveWorkbenchWindow();
 			   DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
 			   viewer.refresh();
-			   lister.setInputFiles(getSelection()); 
+			   lister.setInputFiles(getSelection());
 		   }
 	   };
-	   
-	  //TODO Image for the refresh action
-	   
+
+	   try {
+		refreshAction.setImageDescriptor(ImageDescriptor.createFromURL(DotPlotPlugin.getResource("icons/nav_refresh.gif")));
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
    }
    
 }
