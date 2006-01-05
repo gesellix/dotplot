@@ -3,21 +3,14 @@ package org.dotplot.ui.views;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import org.dotplot.plugin.DotPlotPlugin;
-import org.dotplot.tokenizer.IFileList;
-import org.dotplot.ui.DotPlotPerspective;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceAdapter;
@@ -27,8 +20,6 @@ import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -37,7 +28,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.ViewPart;
 
-import sun.awt.image.URLImageSource;
+import org.dotplot.plugin.DotplotPlugin;
+import org.dotplot.tokenizer.IFileList;
+import org.dotplot.ui.DotPlotPerspective;
 
 /**
  * <code>DotPlotNavigator</code> allows navigating your file-system and to
@@ -362,36 +355,39 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
    {
       this.dirty = false;
    }
-   
+
    /**
     * Create toolbar, must be called from createPartControl
     */
    private void createToolbar() {
-           IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-           mgr.add(this.refreshAction);
-          
+     IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+     mgr.add(this.refreshAction);
    }
-   
+
    /**
     * init the refresh action, must be called from createPartControl
     */
-   public void createActions() {
-	  refreshAction = new Action("Refresh!") {
-		   public void run () {
-			   IWorkbenchWindow window = Workbench.getInstance().getActiveWorkbenchWindow();
-			   DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
-			   viewer.refresh();
-			   lister.setInputFiles(getSelection());
-		   }
-	   };
+   public void createActions()
+   {
+      refreshAction = new Action("Refresh!")
+      {
+         public void run()
+         {
+            IWorkbenchWindow window = Workbench.getInstance().getActiveWorkbenchWindow();
+            DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
+            viewer.refresh();
+            lister.setInputFiles(getSelection());
+         }
+      };
 
-	   try {
-		refreshAction.setImageDescriptor(ImageDescriptor.createFromURL(DotPlotPlugin.getResource("icons/nav_refresh.gif")));
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-
+      try
+      {
+         refreshAction.setImageDescriptor(ImageDescriptor.createFromURL(DotplotPlugin.getResource("icons/nav_refresh.gif")));
+      }
+      catch (IOException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
    }
-   
 }
