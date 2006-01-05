@@ -278,8 +278,8 @@ class Dotplot implements IDotplot
 
       logger.debug("new ix: " + xIndex + ", " + yIndex);
 
-      int xFileID = tokenInfo.getFileIdByIndex(xIndex);
-      int yFileID = tokenInfo.getFileIdByIndex(yIndex);
+      int xFileID = tokenInfo.getFileIndex(xIndex);
+      int yFileID = tokenInfo.getFileIndex(yIndex);
 
       logger.debug("fileIDs: " + xFileID + ", " + yFileID);
 

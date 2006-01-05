@@ -14,11 +14,14 @@ import java.io.File;
  */
 class ROIResult implements IROIResult
 {
-   File xFileInROI = null;
-   File yFileInROI = null;
+   private File xFileInROI = null;
+   private File yFileInROI = null;
 
-   int xLineIndex = 0;
-   int yLineIndex = 0;
+   private int xLineIndex = 0;
+   private int yLineIndex = 0;
+
+   private String xToken;
+   private String yToken;
 
    /**
     * Constructs a ROIResult object from the given parameters.
@@ -66,6 +69,26 @@ class ROIResult implements IROIResult
    public int getYLineIndex()
    {
       return yLineIndex;
+   }
+
+   public String getXToken()
+   {
+      return xToken;
+   }
+
+   public String getYToken()
+   {
+      return yToken;
+   }
+
+   public void setXToken(String xToken)
+   {
+      this.xToken = xToken;
+   }
+
+   public void setYToken(String yToken)
+   {
+      this.yToken = yToken;
    }
 
    /**

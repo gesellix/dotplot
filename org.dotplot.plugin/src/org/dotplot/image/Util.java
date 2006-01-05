@@ -328,14 +328,14 @@ public final class Util
 
       final TiledImage image = createEmptyTiledImage(roi.getSize());
       synchronized (navigator)
-            {
-               navigator.reset();
-               navigator.setRegionOfInterest(roi.x, roi.y, roi.width, roi.height);
+      {
+         navigator.reset();
+         navigator.setRegionOfInterest(roi.x, roi.y, roi.width, roi.height);
 
-               logger.debug("reading matches in roi " + roi);
+         logger.debug("reading matches in roi " + roi);
 
-               createImage(navigator, lut, getImageCallback(image, roi));
-            }
+         createImage(navigator, lut, getImageCallback(image, roi));
+      }
 
 //      JAITools.saveJAI(JAITools.getWithLUT(image.createSnapshot(), lut), filename, JAITools.EXPORTFORMAT_JPEG);
       JAITools.saveJAI(image, filename, JAITools.EXPORTFORMAT_JPEG);
@@ -457,20 +457,22 @@ public final class Util
 
 //      logger.debug("new ix: " + xIndex + ", " + yIndex);
 
-      int xFileID = tokenInfo.getFileIdByIndex(xIndex);
-      int yFileID = tokenInfo.getFileIdByIndex(yIndex);
+      int xFileID = tokenInfo.getFileIndex(xIndex);
+      int yFileID = tokenInfo.getFileIndex(yIndex);
 
 //      logger.debug("fileIDs: " + xFileID + ", " + yFileID);
 
-      String xFile = tokenInfo.getFileName(xFileID);
-      String yFile = tokenInfo.getFileName(yFileID);
-
       int xLineIndex = 0;
       int yLineIndex = 0;
+      String xToken;
+      String yToken;
       try
       {
          xLineIndex = tokenInfo.getLineIndex(xFileID, xIndex);
          yLineIndex = tokenInfo.getLineIndex(yFileID, yIndex);
+
+         xToken = tokenInfo.getToken(xFileID, xIndex);
+         yToken = tokenInfo.getToken(yFileID, yIndex);
       }
       catch (ArrayIndexOutOfBoundsException e)
       {
@@ -491,6 +493,13 @@ public final class Util
 //      }
 
 //      logger.debug(result);
-      return (IROIResult) new ROIResult(new File(xFile), new File(yFile), xLineIndex, yLineIndex);
+      final ROIResult roiResult = new ROIResult(
+            new File(tokenInfo.getFileName(xFileID)),
+            new File(tokenInfo.getFileName(yFileID)),
+            xLineIndex,
+            yLineIndex);
+      roiResult.setXToken(xToken);
+      roiResult.setYToken(yToken);
+      return roiResult;
    }
 }

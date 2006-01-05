@@ -6,7 +6,9 @@ package org.dotplot.fmatrix;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.dotplot.tokenizer.IFileList;
@@ -80,8 +82,7 @@ public class FMatrixManager implements MonitorablePlotUnit
 
       int lineIndex = 0;
       int firstTokenInLine = 0;
-      int tokensInLine = 0;
-      int tokenIndex = 0;
+      List tokensInLine = new ArrayList();
       int fileCount = 0; // counts the files
 
       // monitor message
@@ -108,19 +109,32 @@ public class FMatrixManager implements MonitorablePlotUnit
             if (file != token.getFile())
             {
                file = token.getFile();
-               tokenInformation.addFileInformation(new FileInformation(tokenIndex, file));
+               tokenInformation.addFileInformation(new FileInformation(firstTokenInLine, file));
             }
 
-            lineIndex = token.getLine();
+            // ignore line setting for EOF
+            if (tokenType != Token.TYPE_EOF)
+            {
+               lineIndex = token.getLine();
+            }
 
             switch (tokenType)
             {
                case Token.TYPE_EOL:
-                  lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine, lineIndex);
-                  firstTokenInLine = tokenIndex;
-                  tokensInLine = 0;
+                  lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine.size(),
+                        token.getLine(), tokensInLine);
+                  firstTokenInLine += tokensInLine.size();
+                  tokensInLine = new ArrayList();
                   break;
                case Token.TYPE_EOF:
+                  // if EOF without EOL flush tokens before saving LineInformation
+                  if (tokensInLine.size() > 0)
+                  {
+                     lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine.size(),
+                           lineIndex, tokensInLine);
+                     firstTokenInLine += tokensInLine.size();
+                     tokensInLine = new ArrayList();
+                  }
                   tokenInformation.addLineInformationContainer(lineInformation);
                   lineInformation = new LineInformation();
 
@@ -131,8 +145,7 @@ public class FMatrixManager implements MonitorablePlotUnit
                   break;
                default:
                   typeTable.addType(token.getValue());
-                  tokenIndex++;
-                  tokensInLine++;
+                  tokensInLine.add(token);
                   break;
             }
          }

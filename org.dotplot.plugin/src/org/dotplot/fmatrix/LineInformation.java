@@ -5,6 +5,9 @@ package org.dotplot.fmatrix;
 
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.List;
+
+import org.dotplot.tokenizer.Token;
 
 /**
  * holds all line information per file.
@@ -24,11 +27,11 @@ public class LineInformation extends Hashtable implements Serializable
     *
     * @param firstTokenIndex the first index
     * @param lastTokenIndex  the last index
-    * @param lineIndex      the line number
+    * @param lineIndex       the line number
     */
-   public void addLineInformation(int firstTokenIndex, int lastTokenIndex, int lineIndex)
+   public void addLineInformation(int firstTokenIndex, int lastTokenIndex, int lineIndex, List tokensInLine)
    {
-      put(new Integer(firstTokenIndex), new LineInformationContainer(lineIndex, lastTokenIndex));
+      put(new Integer(firstTokenIndex), new LineInformationContainer(lineIndex, lastTokenIndex, tokensInLine));
    }
 
    /**
@@ -54,6 +57,29 @@ public class LineInformation extends Hashtable implements Serializable
    }
 
    /**
+    * returns the linenumber corresponding to a single token(index).
+    *
+    * @param tokenIndex - the token index
+    *
+    * @return int         - the linenumber, the token is at. (-1 for not found)
+    */
+   public String getToken(int tokenIndex)
+   {
+      int searchIx = tokenIndex;
+      while (!(containsKey(new Integer(searchIx)) || searchIx < 0))
+      {
+         searchIx--;
+      }
+
+      if (searchIx < 0)
+      {
+         return "";
+      }
+
+      return ((LineInformationContainer) get(new Integer(searchIx))).getToken(tokenIndex - searchIx);
+   }
+
+   /**
     * is a single entry for the parents class hashtable
     * (firstTokenIndex is the key of the hashtable entry).
     *
@@ -68,17 +94,19 @@ public class LineInformation extends Hashtable implements Serializable
       private static final long serialVersionUID = -4540120604945172975L;
       private int lineIndex;
       private int lastTokenIndex;
+      private List tokensInLine;
 
       /**
        * Default Constructor
        *
-       * @param lineIndex     - the lineIndex
+       * @param lineIndex      - the lineIndex
        * @param lastTokenIndex - the tokenindex, the file ends with.
        */
-      public LineInformationContainer(int lineIndex, int lastTokenIndex)
+      public LineInformationContainer(int lineIndex, int lastTokenIndex, List tokensInLine)
       {
          this.lineIndex = lineIndex;
          this.lastTokenIndex = lastTokenIndex;
+         this.tokensInLine = tokensInLine;
       }
 
       /**
@@ -89,6 +117,16 @@ public class LineInformation extends Hashtable implements Serializable
       public int getLineIndex()
       {
          return lineIndex;
+      }
+
+      public String getToken(int index)
+      {
+         Token t = null;
+         for (int i = 0; i <= index && i < tokensInLine.size(); i++)
+         {
+            t = (Token) tokensInLine.get(i);
+         }
+         return (t == null) ? "" : t.getValue();
       }
 
       /**

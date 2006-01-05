@@ -54,11 +54,16 @@ class DotPlotMouseMoveListener implements MouseMoveListener
 
       if (res != null)
       {
-         final String tooltip = res.getXFile() + " (" + (res.getXLineIndex() + 1) + ")"
-               + "\n" + res.getYFile() + " (" + (res.getYLineIndex() + 1) + ")";
+         final String tooltip =
+               res.getXFile() + "[" + (res.getXLineIndex() + 1) + "]" + ": " + res.getXToken() + "\n" +
+               res.getYFile() + "[" + (res.getYLineIndex() + 1) + "]" + ": " + res.getYToken();
 
 //         ToolTip tip = new ToolTip(plotterView.getCanvas(), tooltip);
          shell.setToolTipText(tooltip);
+      }
+      else
+      {
+         shell.setToolTipText(null);
       }
    }
 }

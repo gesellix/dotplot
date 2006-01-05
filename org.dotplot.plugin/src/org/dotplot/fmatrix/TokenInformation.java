@@ -55,22 +55,32 @@ public class TokenInformation implements Serializable
       return lineInformations.size();
    }
 
+   public String getToken(int fileIndex, int index)
+   {
+      if (getLineInfoSize() < 1)
+      {
+         return "";
+      }
+
+      return ((LineInformation) lineInformations.elementAt(fileIndex)).getToken(index);
+   }
+
    /**
     * Returns the line number by index.
     *
-    * @param fileID the file ID
-    * @param index  the index
+    * @param fileIndex the file ID
+    * @param index     the index
     *
     * @return an int representing the line number
     */
-   public int getLineIndex(int fileID, int index)
+   public int getLineIndex(int fileIndex, int index)
    {
-      if (lineInformations.size() < 1)
+      if (getLineInfoSize() < 1)
       {
          return -1;
       }
 
-      return ((LineInformation) lineInformations.elementAt(fileID)).getLineIndex(index);
+      return ((LineInformation) lineInformations.elementAt(fileIndex)).getLineIndex(index);
    }
 
    // ------------------------- FileInformation Access Functions ---------------------------
@@ -82,7 +92,7 @@ public class TokenInformation implements Serializable
     *
     * @return an int representing the file ID
     */
-   public int getFileIdByIndex(int index)
+   public int getFileIndex(int index)
    {
       int fileIndex = -1;
       Iterator fileInfoIter = fileInformations.iterator();
@@ -105,52 +115,52 @@ public class TokenInformation implements Serializable
    /**
     * Returns the file name by file id.
     *
-    * @param fileID the file ID
+    * @param fileIndex the file ID
     *
     * @return the corresponding filename
     */
-   public String getFileName(int fileID)
+   public String getFileName(int fileIndex)
    {
       if (fileInformations.size() < 1)
       {
          return null;
       }
 
-      return ((FileInformation) fileInformations.elementAt(fileID)).getFilename();
+      return ((FileInformation) fileInformations.elementAt(fileIndex)).getFilename();
    }
 
    /**
     * Returns the file size by file id.
     *
-    * @param fileID the file ID
+    * @param fileIndex the file ID
     *
     * @return the corresponding file size
     */
-   public long getFileSize(int fileID)
+   public long getFileSize(int fileIndex)
    {
       if (fileInformations.size() < 1)
       {
          return -1;
       }
 
-      return ((FileInformation) fileInformations.elementAt(fileID)).getFileSize();
+      return ((FileInformation) fileInformations.elementAt(fileIndex)).getFileSize();
    }
 
    /**
     * Returns the start index by file id.
     *
-    * @param fileID the file ID
+    * @param fileIndex the file ID
     *
     * @return the corresponding start index
     */
-   public int getStartIndex(int fileID)
+   public int getStartIndex(int fileIndex)
    {
       if (fileInformations.size() < 1)
       {
          return -1;
       }
 
-      return ((FileInformation) fileInformations.elementAt(fileID)).getStartIndex();
+      return ((FileInformation) fileInformations.elementAt(fileIndex)).getStartIndex();
    }
 
    /**

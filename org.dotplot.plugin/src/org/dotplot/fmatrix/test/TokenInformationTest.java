@@ -28,32 +28,37 @@ public class TokenInformationTest extends TestCase
    public void setUp()
    {
       this.tokenInformation = new TokenInformation();
-      try {
-		file1 = File.createTempFile("txt1","txt");
-	    file2 = File.createTempFile("txt2","txt");
-	    file3 = File.createTempFile("txt3","txt");
+      try
+      {
+         file1 = File.createTempFile("txt1", "txt");
+         file2 = File.createTempFile("txt2", "txt");
+         file3 = File.createTempFile("txt3", "txt");
       }
-      catch (IOException e) {
-    	  // TODO Auto-generated catch block
-    	  e.printStackTrace();
+      catch (IOException e)
+      {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
       }
       fileContainer = new FileInformation(0, file1);
       fContainer2 = new FileInformation(200, file2);
       fContainer3 = new FileInformation(300, file3);
       fContainer4 = new FileInformation(600, null);
-
    }
 
-   public void tearDown(){
-	   if(file1.exists()){
-		   file1.delete();
-	   }
-	   if(file2.exists()){
-		   file2.delete();
-	   }
-	   if(file3.exists()){
-		   file3.delete();
-	   }
+   public void tearDown()
+   {
+      if (file1.exists())
+      {
+         file1.delete();
+      }
+      if (file2.exists())
+      {
+         file2.delete();
+      }
+      if (file3.exists())
+      {
+         file3.delete();
+      }
    }
 
    public void testSetUp()
@@ -77,28 +82,29 @@ public class TokenInformationTest extends TestCase
 
       assertEquals("(1) The fileInfoNumber has to be 3", 3, this.tokenInformation.getFileInfoNumber());
 
-      assertEquals("(2) File ID from tokenindex 199 has to be 0", 0, this.tokenInformation.getFileIdByIndex(199));
+      assertEquals("(2) File ID from tokenindex 199 has to be 0", 0, this.tokenInformation.getFileIndex(199));
 
-      assertEquals("(3) File ID from tokenindex 250 has to be 1", 1, this.tokenInformation.getFileIdByIndex(250));
+      assertEquals("(3) File ID from tokenindex 250 has to be 1", 1, this.tokenInformation.getFileIndex(250));
 
-      assertEquals("(4) File ID from tokenindex 350 has to be 2", 2, this.tokenInformation.getFileIdByIndex(350));
+      assertEquals("(4) File ID from tokenindex 350 has to be 2", 2, this.tokenInformation.getFileIndex(350));
 
-      try {
-      assertEquals("(5) checking if filename of 1. entry is correct",
-            this.file1.getCanonicalPath(),
-            this.tokenInformation.getFileName(0));
+      try
+      {
+         assertEquals("(5) checking if filename of 1. entry is correct",
+               this.file1.getCanonicalPath(),
+               this.tokenInformation.getFileName(0));
 
-      assertEquals("(6) checking if filename of 2. entry is correct",
-            this.file2.getCanonicalPath(),
-            this.tokenInformation.getFileName(1));
+         assertEquals("(6) checking if filename of 2. entry is correct",
+               this.file2.getCanonicalPath(),
+               this.tokenInformation.getFileName(1));
 
-      assertEquals("(7) checking if filename of 3. entry is correct",
-            this.file3.getCanonicalPath(),
-            this.tokenInformation.getFileName(2));
-
+         assertEquals("(7) checking if filename of 3. entry is correct",
+               this.file3.getCanonicalPath(),
+               this.tokenInformation.getFileName(2));
       }
-      catch(Exception e){
-    	  fail("no exception should be thrown");
+      catch (Exception e)
+      {
+         fail("no exception should be thrown");
       }
    }
 }

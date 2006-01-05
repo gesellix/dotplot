@@ -40,4 +40,18 @@ public interface IROIResult
     * @return an int representing the YLine number value
     */
    public int getYLineIndex();
+
+   /**
+    * Token value for x-Axis.
+    *
+    * @return a String representing the XLine Token value
+    */
+   public String getXToken();
+
+   /**
+    * Token value for y-Axis.
+    *
+    * @return a String representing the YLine Token value
+    */
+   public String getYToken();
 }

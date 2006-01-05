@@ -3,6 +3,7 @@
  */
 package org.dotplot.ui.actions;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.eclipse.jface.action.MenuManager;
@@ -91,14 +92,15 @@ class DotPlotMouseListener extends MouseAdapter
 
          if (this.start != null)
          {
-            IROIResult res = dp.getDetailsForROI(this.getChoice(), null);
+            Rectangle choice = getChoice();
+            IROIResult res = dp.getDetailsForROI(choice, null);
             if (res != null)
             {
                merger.setText(res.getXFile(),
                      res.getXLineIndex(),
                      res.getYFile(),
                      res.getYLineIndex(),
-                     this.getChoice());
+                     choice);
                //TODO rectangle is experimental
                merger.getViewSite().getWorkbenchWindow().getActivePage().bringToTop(merger);
             }
@@ -109,6 +111,8 @@ class DotPlotMouseListener extends MouseAdapter
    // calculates the rectangle from two points
    private Rectangle getChoice()
    {
+      final int minDimension = 5;
+
       Point[] result = new Point[2];
 
       if (this.start != null && this.end != null)
@@ -117,9 +121,13 @@ class DotPlotMouseListener extends MouseAdapter
          result[1] = new Point(Math.max(start.x, end.x), (Math.max(start.y, end.y)));
       }
 
-      return new Rectangle(Math.max(0, result[0].x),
-            Math.max(0, result[0].y),
-            (result[1].x - result[0].x),
-            (result[1].y - result[0].y));
+      java.awt.Point origin = new java.awt.Point(
+            Math.max(0, result[0].x),
+            Math.max(0, result[0].y));
+      Dimension dimension = new Dimension(
+            Math.max(minDimension, (result[1].x - result[0].x)),
+            Math.max(minDimension, (result[1].y - result[0].y)));
+
+      return new Rectangle(origin, dimension);
    }
 }
