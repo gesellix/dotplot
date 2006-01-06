@@ -46,7 +46,7 @@
       <product
             application="org.dotplot.plugin.DotplotApplication"
             description="Dotplot"
-            name="Dotploter">
+            name="Matrix4.plot">
          <property
                name="windowImages"
                value="icons/dp_32.gif"/>
