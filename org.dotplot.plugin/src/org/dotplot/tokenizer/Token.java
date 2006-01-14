@@ -117,19 +117,19 @@ public class Token
       StringBuffer sb = new StringBuffer();
       if (this.file != null)
       {
-         sb.append(file.toString() + ' ');
+         sb.append(file.toString()).append(' ');
       }
 
       sb.append("Token");
 
       if (this.type != -1)
       {
-    	  sb.append("(");
-    	  sb.append(this.type);
-    	  sb.append(")");
+         sb.append("(");
+         sb.append(this.type);
+         sb.append(")");
       }
 
-      sb.append(" \"" + this.value + "\"");
+      sb.append(" \"").append(this.value).append("\"");
 
       if (this.line > -1)
       {
@@ -223,25 +223,6 @@ public class Token
    }
 
    /**
-    * Proves if two Token are equal.
-    *
-    * @param token the Toke which should be examined
-    *
-    * @return the result
-    */
-   public boolean equals(Token token)
-   {
-      if (token.getType() == this.getType() && token.getValue().equals(this.getValue()))
-      {
-         return true;
-      }
-      else
-      {
-         return false;
-      }
-   }
-
-   /**
     * Proves if two objects are equal.
     * <p />
     * It returns only a positiv resulst, if the objects are Token.
@@ -253,22 +234,12 @@ public class Token
     */
    public boolean equals(Object object)
    {
-      Token token;
       if (object instanceof Token)
       {
-         token = (Token) object;
+         Token token = ((Token) object);
+         return (token.getType() == this.getType() && token.getValue().equals(this.getValue()));
       }
-      else
-      {
-         return false;
-      }
-      if (token.getType() == this.getType() && token.getValue().equals(this.getValue()))
-      {
-         return true;
-      }
-      else
-      {
-         return false;
-      }
+
+      return false;
    }
 }

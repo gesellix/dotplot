@@ -80,7 +80,6 @@ public class FMatrixManager implements MonitorablePlotUnit
       LineInformation lineInformation = new LineInformation();
       File file = null;
 
-      int lineIndex = 0;
       int firstTokenInLine = 0;
       List tokensInLine = new ArrayList();
       int fileCount = 0; // counts the files
@@ -112,26 +111,26 @@ public class FMatrixManager implements MonitorablePlotUnit
                tokenInformation.addFileInformation(new FileInformation(firstTokenInLine, file));
             }
 
-            // ignore line setting for EOF
-            if (tokenType != Token.TYPE_EOF)
-            {
-               lineIndex = token.getLine();
-            }
-
             switch (tokenType)
             {
                case Token.TYPE_EOL:
-                  lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine.size(),
-                        token.getLine(), tokensInLine);
-                  firstTokenInLine += tokensInLine.size();
-                  tokensInLine = new ArrayList();
+                     lineInformation.addLineInformation(
+                           firstTokenInLine,
+                           firstTokenInLine + tokensInLine.size(),
+                           token.getLine(),
+                           tokensInLine);
+                     firstTokenInLine += tokensInLine.size();
+                     tokensInLine = new ArrayList();
                   break;
                case Token.TYPE_EOF:
                   // if EOF without EOL flush tokens before saving LineInformation
                   if (tokensInLine.size() > 0)
                   {
-                     lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine.size(),
-                           lineIndex, tokensInLine);
+                     lineInformation.addLineInformation(
+                           firstTokenInLine,
+                           firstTokenInLine + tokensInLine.size(),
+                           ((Token) tokensInLine.get(0)).getLine(),
+                           tokensInLine);
                      firstTokenInLine += tokensInLine.size();
                      tokensInLine = new ArrayList();
                   }
@@ -150,8 +149,6 @@ public class FMatrixManager implements MonitorablePlotUnit
             }
          }
 
-         // mark end of fileInformationEntries and register the FileInformation to the typetable
-//         tokenInformation.addFileInformation(new FileInformation(tokenIndex, null));
          typeTable.registerTokenInformation(tokenInformation);
       }
       catch (TokenizerException e)
