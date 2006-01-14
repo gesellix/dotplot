@@ -26,6 +26,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.WorkbenchException;
 
 import org.dotplot.DotplotCreator;
+import org.dotplot.fmatrix.ITypeTableNavigator;
 import org.dotplot.grid.GridCallback;
 import org.dotplot.grid.GridConfiguration;
 import org.dotplot.grid.GridPlotter;
@@ -58,8 +59,10 @@ public class PlotAction implements IWorkbenchWindowActionDelegate, SelectionList
 {
    private IWorkbenchWindow window;
 
-   protected static final String EMPTY_SELECTION = "Nothing to plot, select a plottable file in the DotPlot Navigator first!";
-   protected static final String ERROR_CREATING_VIEWS = "Error while creating views. Please try to close and reopen this perspective.";
+   protected static final String EMPTY_SELECTION
+         = "Nothing to plot, select a plottable file in the DotPlot Navigator first!";
+   protected static final String ERROR_CREATING_VIEWS
+         = "Error while creating views. Please try to close and reopen this perspective.";
    protected static final String ERROR_PARSING_FILES = "Error while parsing files.";
 
    private static final Logger logger = Logger.getLogger(PlotAction.class.getName());
@@ -177,12 +180,12 @@ public class PlotAction implements IWorkbenchWindowActionDelegate, SelectionList
                GlobalConfiguration.KEY_IMG_CONFIGURATION);
 
          boolean isGridWorking = false;
+         ITypeTableNavigator navigator = dotplotCreator.getFMatrixController().getTypeTableNavigator();
          if (gridConfig.isGridActive())
          {
             logger.info("grid active");
 
-            PlotJob plotJob = new PlotJob(imageConfig,
-                  dotplotCreator.getFMatrixController().getTypeTableNavigator().getTypeTable());
+            PlotJob plotJob = new PlotJob(imageConfig, navigator.getTypeTable());
 
             try
             {
@@ -207,11 +210,22 @@ public class PlotAction implements IWorkbenchWindowActionDelegate, SelectionList
             float scale = 1;
             if (imageConfig.getScaleMode() == 0)
             {
-               scale = dplot.setTargetSize(dotplotCreator.getFMatrixController().getTypeTableNavigator().getSize());
+               scale = dplot.setTargetSize(navigator.getSize());
             }
             else
             {
-               scale = dplot.setTargetSize(view.getSize());
+               int min = Math.min(view.getSize().width, view.getSize().height);
+               float testScale = Math.min(
+                     (float) min / (float) navigator.getSize().width,
+                     (float) min / (float) navigator.getSize().height);
+               if (!imageConfig.doScaleUp() && testScale >= 1.0)
+               {
+                  scale = dplot.setTargetSize(navigator.getSize());
+               }
+               else
+               {
+                  scale = dplot.setTargetSize(view.getSize());
+               }
             }
 
             final ImageData data = (ImageData) dplot.getImage(IDotplot.IMG_SWT_IMAGEDATA);

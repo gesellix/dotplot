@@ -127,7 +127,15 @@ class Dotplot implements IDotplot
          }
          else
          {
-            tSize = targetSize;
+            if ((config.doScaleUp()
+                  && scale[0] > 1 && scale[1] > 1) || (scale[0] < 1 && scale[1] < 1))
+            {
+               tSize = targetSize;
+            }
+            else
+            {
+               tSize = navigator.getSize();
+            }
          }
 
          navigator.reset();
