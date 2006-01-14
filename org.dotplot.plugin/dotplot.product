@@ -12,7 +12,7 @@
 
    <splash location="org.dotplot.plugin"/>
 
-   <launcher name="Dotplot">
+   <launcher name="dotplot">
       <solaris/>
       <win useIco="false">
          <bmp/>
