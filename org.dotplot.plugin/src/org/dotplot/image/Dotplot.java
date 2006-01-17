@@ -280,6 +280,10 @@ class Dotplot implements IDotplot
       */
 
       TokenInformation tokenInfo = navigator.getTokenInformation();
+      if (tokenInfo == null)
+      {
+         return null;
+      }
 
       int xIndex = Math.min(Math.max((int) (roi.x / scale[0]), 0), dotplotForScreen.width - 1);
       int yIndex = Math.min(Math.max((int) (roi.y / scale[1]), 0), dotplotForScreen.height - 1);

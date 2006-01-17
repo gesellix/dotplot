@@ -449,6 +449,10 @@ public final class Util
       }
 
       TokenInformation tokenInfo = nav.getTokenInformation();
+      if (tokenInfo == null)
+      {
+         return null;
+      }
 
 //      int xIndex = Math.min(Math.max((int) (location.x / scale), 0), imageSize.width - 1);
 //      int yIndex = Math.min(Math.max((int) (location.y / scale), 0), imageSize.height - 1);
