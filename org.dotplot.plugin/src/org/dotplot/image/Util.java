@@ -454,17 +454,11 @@ public final class Util
          return null;
       }
 
-//      int xIndex = Math.min(Math.max((int) (location.x / scale), 0), imageSize.width - 1);
-//      int yIndex = Math.min(Math.max((int) (location.y / scale), 0), imageSize.height - 1);
       int xIndex = Math.max((int) (location.x / scale), 0);
       int yIndex = Math.max((int) (location.y / scale), 0);
 
-//      logger.debug("new ix: " + xIndex + ", " + yIndex);
-
       int xFileID = tokenInfo.getFileIndex(xIndex);
       int yFileID = tokenInfo.getFileIndex(yIndex);
-
-//      logger.debug("fileIDs: " + xFileID + ", " + yFileID);
 
       int xLineIndex = 0;
       int yLineIndex = 0;
@@ -484,19 +478,6 @@ public final class Util
          return null;
       }
 
-//      logger.debug("Location ix: " + location.x + "-->" + xIndex + ", " + location.y + "-->" + yIndex);
-
-//      try
-//      {
-//         logger.debug("ROI File x: " + (new File(xFile)).getCanonicalPath());
-//         logger.debug("ROI File y: " + (new File(yFile)).getCanonicalPath());
-//      }
-//      catch (IOException e)
-//      {
-//         logger.error(e.getMessage(), e);
-//      }
-
-//      logger.debug(result);
       final ROIResult roiResult = new ROIResult(
             new File(tokenInfo.getFileName(xFileID)),
             new File(tokenInfo.getFileName(yFileID)),

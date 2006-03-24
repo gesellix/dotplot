@@ -120,7 +120,8 @@ public class DotPlotLister extends ViewPart
 
       public String getPath()
       {
-         return "sum (bytes):";
+         return "sum:";
+//         return "sum (bytes):";
       }
 
       public long length()

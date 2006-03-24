@@ -43,11 +43,39 @@ class DotPlotTableLabelProvider implements ITableLabelProvider
          }
          else if (index == 1)
          {
-            return Long.toString(((File) element).length());
+            if (((File) element).isDirectory())
+            {
+               // directories don't have a size (sum up the containing file sizes?)
+               return "";
+            }
+            else
+            {
+               return getHumanReadableSize(((File) element).length());
+            }
          }
       }
       //return super.getText(element);
       return "";
+   }
+
+   /**
+    * Creates a human readable String for the given size
+    */
+   private static String getHumanReadableSize(long size)
+   {
+//      return Long.toString(size);
+
+      final String[] fileSizeNames = new String[]{" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB"};
+      final int index = (int) Math.floor(Math.log(size) / Math.log(1024));
+
+      if (size == 0)
+      {
+         return size + fileSizeNames[0];
+      }
+      else
+      {
+         return ((double) Math.round((size / Math.pow(1024, index)) * 100)) / 100 + fileSizeNames[index];
+      }
    }
 
    /* (non-Javadoc)

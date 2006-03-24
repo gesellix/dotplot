@@ -92,6 +92,7 @@ public class DotplotCreator implements IDotplotCreator
    {
       if (args == null || args.length < 2)
       {
+         // missing: show possible VM-params
          System.err.println("Usage: " + DotplotCreator.class.getName() + " <PlotJob filename> <Destination image>");
          System.exit(1);
       }

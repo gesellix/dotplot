@@ -469,7 +469,9 @@ final public class JAITools
 
       for (int i = 0; i < samples.length; i += 3)
       {
-         ret[x++] = 0xff000000 | ((samples[i] << 16) & 0xFF) | ((samples[i + 1] << 8) & 0xFF)
+         ret[x++] = 0xff000000
+               | ((samples[i] << 16) & 0xFF)
+               | ((samples[i + 1] << 8) & 0xFF)
                | ((samples[i + 2] << 0) & 0xFF);
       }
 
@@ -508,11 +510,11 @@ final public class JAITools
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         logger.error("Error exporting image list.", e);
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         logger.error("Error exporting image list.", e);
       }
    }
 

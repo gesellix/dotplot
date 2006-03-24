@@ -171,6 +171,7 @@ public class PlotAction implements IWorkbenchWindowActionDelegate, SelectionList
       if (dplot == null)
       {
          view.showImage(null);
+         view.removeMouseMoveListener();
       }
       else
       {
@@ -190,6 +191,10 @@ public class PlotAction implements IWorkbenchWindowActionDelegate, SelectionList
             try
             {
                isGridWorking = GridPlotter.createPlot(plotJob, this);
+               if (!isGridWorking)
+               {
+                  logger.error("failed to plot over grid!");
+               }
             }
             catch (ConnectionException e)
             {

@@ -147,9 +147,6 @@ public class DotPlotter extends ViewPart
       // show "empty image"?
       if (currentImage == null)
       {
-//         int width = getSize().width;
-//         int height = getSize().height;
-//         currentImage = new Image(display, width, height);
          try
          {
             final ImageData splashdata = new ImageData(
@@ -157,20 +154,13 @@ public class DotPlotter extends ViewPart
 
             currentImage = new Image(display, splashdata);
 
-            GC gc = new GC(currentImage);
-
+            final GC gc = new GC(currentImage);
             final FontData fontData = gc.getFont().getFontData()[0];
 
-//         gc.fillRectangle(0, 0, splashdata.width, splashdata.height);
-//         gc.setForeground(new Color(display, 255, 0, 0));
-//         gc.drawLine(0, 0, splashdata.width, splashdata.height);
-//         gc.drawLine(0, splashdata.height, splashdata.width, 0);
             gc.setForeground(new Color(display, 0, 0, 0));
-
             gc.setFont(new Font(shell.getDisplay(), new FontData(fontData.getName(), fontData.getHeight(), SWT.BOLD)));
-            gc.drawText(DotplotPlugin.getVersionInfo(), 10, 10, false);
 
-//         gc.drawText("No image", 10, 10);
+            gc.drawText(DotplotPlugin.getVersionInfo(), 10, 10, false);
 
             gc.dispose();
          }

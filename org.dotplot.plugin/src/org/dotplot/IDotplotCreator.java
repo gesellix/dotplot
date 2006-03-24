@@ -15,7 +15,7 @@ import org.dotplot.tokenizer.TokenType;
  * erzeugt dann der DotplotCreator einen Dotplot, der mit Hilfe des IGUIDotplotter
  * Interface abgerufen werden kann.
  *
- * @author Christian Gerhardt <case42@gmx.net>
+ * @author Christian Gerhardt (case42@gmx.net)
  * @see org.dotplot.IGUIDotplotter
  */
 public interface IDotplotCreator extends IGUIDotplotter

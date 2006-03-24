@@ -31,9 +31,6 @@ public class DotPlotTable extends TableViewer
    private DotPlotFileList fileList = new DotPlotFileList();
    private final Table table = getTable();
 
-   private DragSource dragSource;
-   private DropTarget dropTarget;
-
    /**
     * Constructs a DotPlotTable object.
     *
@@ -63,9 +60,8 @@ public class DotPlotTable extends TableViewer
 
       //-------------------------------------------------
       //Dragsource
-      dragSource = new DragSource(table, DND.DROP_MOVE);
+      DragSource dragSource = new DragSource(table, DND.DROP_MOVE);
       dragSource.setTransfer(new Transfer[]{FileTransfer.getInstance()});
-
       dragSource.addDragListener(new DragSourceAdapter()
       {
          public void dragSetData(DragSourceEvent event)
@@ -95,9 +91,8 @@ public class DotPlotTable extends TableViewer
 
       //-------------------------------------------------
       //Droptarget
-      dropTarget = new DropTarget(table, DND.DROP_MOVE);
+      DropTarget dropTarget = new DropTarget(table, DND.DROP_MOVE);
       dropTarget.setTransfer(new Transfer[]{FileTransfer.getInstance()});
-
       dropTarget.addDropListener(new DropTargetAdapter()
       {
          //this event occurs when the user releases the mouse over the drop target
