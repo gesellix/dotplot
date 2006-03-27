@@ -1,0 +1,35 @@
+<!ELEMENT Dotplotplugin (Dependency*, Service*, (Job| Batchjob)*)>
+<!ATTLIST Dotplotplugin id CDATA #REQUIRED
+						name CDATA #REQUIRED
+						version CDATA #REQUIRED
+						provider CDATA #IMPLIED
+						info CDATA #IMPLIED>
+
+<!ELEMENT Dependency EMPTY>
+<!ATTLIST Dependency plugin CDATA #REQUIRED
+					 version CDATA #REQUIRED>
+
+<!ELEMENT Service (Extention*)>
+<!ATTLIST Service id CDATA #REQUIRED
+				  class CDATA #IMPLIED>
+
+<!ELEMENT Extention (Parameter*)>
+<!ATTLIST Extention hotspot CDATA #REQUIRED
+					class CDATA #REQUIRED
+					factory CDATA #IMPLIE>
+
+<!ELEMENT Parameter EMPTY>
+<!ATTLIST Parameter name CDATA #REQUIRED
+					value CDATA #REQUIRED>
+					
+<!ELEMENT Job EMPTY>
+<!ATTLIST Job id CDATA #REQUIRED
+			  class CDATA #REQUIRED>
+
+<!ELEMENT Batchjob (Task+)>
+<!ATTLIST Batchjob id CDATA #REQUIRED>
+
+<!ELEMENT Task EMPTY>
+<!ATTLIST Task serviceid CDATA #REQUIRED>
+
+					

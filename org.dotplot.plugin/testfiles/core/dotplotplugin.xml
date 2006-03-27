@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<Dotplotplugin 
+	id="org.dotplot.core.test"
+	name="testplugin"
+	version="1.0"	
+	provider="Christian Gerhardt"
+	info="EinfÃŒhrender Test fÃŒr die plugin.xml">
+	
+	<Dependency plugin="org.dotplot.testplugin" version="1.2"/>
+	
+	<Service
+		id="org.dotplot.core.pluginloader">
+		
+		<Extention hotspot="object1" class="java.lang.String"></Extention>
+		<Extention hotspot="object1" class="java.lang.String"></Extention>
+		<Extention hotspot="object2" class="java.lang.String">
+			<Parameter name="test" value="true" />
+		</Extention>
+		<Extention hotspot="object3" class="java.lang.String"></Extention>
+		
+	</Service>
+	
+	<Service
+		id="org.dotplot.core.pluginloader2"
+		class="org.dotplot.core.plugins.PluginLoadingService">
+		
+	</Service>
+	
+	<Job 
+		id="org.dotplot.test.testjob1" 
+		class="org.dotplot.core.services.BatchJob" />
+
+	<Job 
+		id="org.dotplot.test.testjob1" 
+		class="org.dotplot.core.services.BatchJob" />
+		
+	<Batchjob id="org.dotplot.test.testbatchjob">
+		<Task serviceid="org.dotplot.core.pluginloader2"/>
+	</Batchjob>
+
+	<Batchjob id="org.dotplot.test.testbatchjob">
+		<Task serviceid="org.dotplot.core.pluginloader2"/>
+	</Batchjob>
+
+	<Batchjob id="org.dotplot.test.testbatchjob2">
+		<Task serviceid="org.dotplot.pluginloader2"/>
+	</Batchjob>
+	
+	<Job 
+		id="org.dotplot.test.testjob2" 
+		class="org.dotplot.core.services.BatchJob" />
+		
+	<Job 
+		id="org.dotplot.test.testjob4" 
+		class="org.dotplot.core.services.BatchJob" />
+		
+</Dotplotplugin>

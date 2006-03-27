@@ -140,7 +140,12 @@ class DotPlotProgressDialog
                {
                   public void run()
                   {
-                     DotPlotProgressDialog.this.message.setText(message);
+                	  if(message != null){
+                		  DotPlotProgressDialog.this.message.setText(message);
+                	  }
+                	  else {
+                		  DotPlotProgressDialog.this.message.setText("no message");
+                	  }
                   }
                });
             }

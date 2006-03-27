@@ -5,281 +5,325 @@ package org.dotplot.grid;
 
 import java.io.Serializable;
 
+import org.dotplot.core.IConfiguration;
+
 /**
  * Container for settings of the grid module.
- *
+ * 
  * @author Tobias Gesellchen
  */
-public class GridConfiguration implements Serializable
-{
-   /**
-    * for being Serializable
-    */
-   private static final long serialVersionUID = -5989463110712043989L;
-   private boolean enableGrid;
-   private int serverPort;
+public class GridConfiguration implements Serializable, IConfiguration {
+	/**
+	 * for being Serializable
+	 */
+	private static final long serialVersionUID = -5989463110712043989L;
 
-   private String mediatorAddress;
-   private int mediatorPort;
+	private boolean enableGrid;
 
-   private transient GridClient gridClient;
-   private transient GridServer gridServer;
+	private int serverPort;
 
-   private transient boolean enableNotification = false;
-   private transient boolean notifyAttachImage;
-   private transient String notifySMTPHost;
-   private transient String notifySMTPUser;
-   private transient String notifySMTPPass;
-   private transient String notifyEmailFrom;
-   private transient String[] notifyEmailTo;
-   private transient String notifyEmailSubject;
+	private String mediatorAddress;
 
-   /**
-    * Creates a basic configuration for the grid module and uses the given settings.
-    *
-    * @param enableGrid      a boolean -- true if the grid is enabled
-    * @param serverPort      an int specifying the port of the server
-    * @param mediatorAddress a String containg the server address, the client wants to connect to
-    * @param mediatorPort    an int specifying the port of the server
-    */
-   public GridConfiguration(boolean enableGrid, int serverPort, String mediatorAddress, int mediatorPort)
-   {
-      setEnableGrid(enableGrid);
-      setServerPort(serverPort);
-      setMediatorAddress(mediatorAddress);
-      setMediatorPort(mediatorPort);
-   }
+	private int mediatorPort;
 
-   /**
-    * did the user activate the grid?
-    *
-    * @return true, if the grid is enabled.
-    */
-   public boolean isGridEnabled()
-   {
-      return enableGrid;
-   }
+	private transient GridClient gridClient;
 
-   /**
-    * enable the grid.
-    *
-    * @param enableGrid enable/disable
-    */
-   public void setEnableGrid(boolean enableGrid)
-   {
-      this.enableGrid = enableGrid;
-   }
+	private transient GridServer gridServer;
 
-   /**
-    * Is the grid enabled and a gridServer running?
-    *
-    * @return true if this object is grid active
-    */
-   public boolean isGridActive()
-   {
-      return isGridEnabled()
-            && ((gridServer != null && gridServer.isRunning())
-//            || (gridClient != null && gridClient.isRunning())
-      );
-   }
+	private transient boolean enableNotification = false;
 
-   /**
-    * returns the port of the server.
-    *
-    * @return the port of the server
-    *
-    * @see #setServerPort(int)
-    */
-   public int getServerPort()
-   {
-      return serverPort;
-   }
+	private transient boolean notifyAttachImage;
 
-   /**
-    * sets the port of the server.
-    *
-    * @param serverPort the port of the server
-    *
-    * @see #getServerPort()
-    */
-   public void setServerPort(int serverPort)
-   {
-      this.serverPort = serverPort;
-   }
+	private transient String notifySMTPHost;
 
-   /**
-    * returns the address of the server, the client wants to connect to.
-    *
-    * @return the address of the server
-    *
-    * @see #setMediatorAddress(String)
-    */
-   public String getMediatorAddress()
-   {
-      return mediatorAddress;
-   }
+	private transient String notifySMTPUser;
 
-   /**
-    * sets the address the client wants to connect to.
-    *
-    * @param mediatorAddress the address of the server
-    *
-    * @see #getMediatorAddress()
-    */
-   public void setMediatorAddress(String mediatorAddress)
-   {
-      this.mediatorAddress = mediatorAddress;
-   }
+	private transient String notifySMTPPass;
 
-   /**
-    * the port, the client wants to connect to.
-    *
-    * @return the port.
-    *
-    * @see #setMediatorPort(int)
-    */
-   public int getMediatorPort()
-   {
-      return mediatorPort;
-   }
+	private transient String notifyEmailFrom;
 
-   /**
-    * sets the port, the client wants to connect to.
-    *
-    * @param mediatorPort the port
-    *
-    * @see #getMediatorPort()
-    */
-   public void setMediatorPort(int mediatorPort)
-   {
-      this.mediatorPort = mediatorPort;
-   }
+	private transient String[] notifyEmailTo;
 
-   /**
-    * the current locally created GridClient.
-    *
-    * @return the GridClient
-    *
-    * @see #setGridClient(GridClient)
-    */
-   public GridClient getGridClient()
-   {
-      return gridClient;
-   }
+	private transient String notifyEmailSubject;
 
-   /**
-    * sets the local GridClient.
-    *
-    * @param gridClient the client
-    *
-    * @see #getGridClient()
-    */
-   public void setGridClient(GridClient gridClient)
-   {
-      this.gridClient = gridClient;
-   }
+	/**
+	 * Creates a new <code>GridConfiguration</code>.
+	 */
+	public GridConfiguration() {
+		this(false, 88, "0.0.0.0", 88);
+	}
 
-   /**
-    * the GridServer.
-    *
-    * @return the server
-    *
-    * @see #setGridServer(GridServer)
-    */
-   public GridServer getGridServer()
-   {
-      return gridServer;
-   }
+	/**
+	 * Creates a basic configuration for the grid module and uses the given
+	 * settings.
+	 * 
+	 * @param enableGrid
+	 *            a boolean -- true if the grid is enabled
+	 * @param serverPort
+	 *            an int specifying the port of the server
+	 * @param mediatorAddress
+	 *            a String containg the server address, the client wants to
+	 *            connect to
+	 * @param mediatorPort
+	 *            an int specifying the port of the server
+	 */
+	public GridConfiguration(boolean enableGrid, int serverPort,
+			String mediatorAddress, int mediatorPort) {
+		setEnableGrid(enableGrid);
+		setServerPort(serverPort);
+		setMediatorAddress(mediatorAddress);
+		setMediatorPort(mediatorPort);
+	}
 
-   /**
-    * sets the GridServer.
-    *
-    * @param gridServer the server
-    *
-    * @see #getGridServer()
-    */
-   public void setGridServer(GridServer gridServer)
-   {
-      this.gridServer = gridServer;
-   }
+	/**
+	 * did the user activate the grid?
+	 * 
+	 * @return true, if the grid is enabled.
+	 */
+	public boolean isGridEnabled() {
+		return enableGrid;
+	}
 
-   public boolean isEnableNotification()
-   {
-      return enableNotification;
-   }
+	/**
+	 * enable the grid.
+	 * 
+	 * @param enableGrid
+	 *            enable/disable
+	 */
+	public void setEnableGrid(boolean enableGrid) {
+		this.enableGrid = enableGrid;
+	}
 
-   public void setEnableNotification(boolean enableNotification)
-   {
-      this.enableNotification = enableNotification;
-   }
+	/**
+	 * Is the grid enabled and a gridServer running?
+	 * 
+	 * @return true if this object is grid active
+	 */
+	public boolean isGridActive() {
+		return isGridEnabled()
+				&& ((gridServer != null && gridServer.isRunning())
+				// || (gridClient != null && gridClient.isRunning())
+				);
+	}
 
-   public boolean isNotifyAttachImage()
-   {
-      return notifyAttachImage;
-   }
+	/**
+	 * returns the port of the server.
+	 * 
+	 * @return the port of the server
+	 * 
+	 * @see #setServerPort(int)
+	 */
+	public int getServerPort() {
+		return serverPort;
+	}
 
-   public void setNotifyAttachImage(boolean notifyAttachImage)
-   {
-      this.notifyAttachImage = notifyAttachImage;
-   }
+	/**
+	 * sets the port of the server.
+	 * 
+	 * @param serverPort
+	 *            the port of the server
+	 * 
+	 * @see #getServerPort()
+	 */
+	public void setServerPort(int serverPort) {
+		this.serverPort = serverPort;
+	}
 
-   public String getNotifyEmailFrom()
-   {
-      return notifyEmailFrom;
-   }
+	/**
+	 * returns the address of the server, the client wants to connect to.
+	 * 
+	 * @return the address of the server
+	 * 
+	 * @see #setMediatorAddress(String)
+	 */
+	public String getMediatorAddress() {
+		return mediatorAddress;
+	}
 
-   public void setNotifyEmailFrom(String notifyEmailFrom)
-   {
-      this.notifyEmailFrom = notifyEmailFrom;
-   }
+	/**
+	 * sets the address the client wants to connect to.
+	 * 
+	 * @param mediatorAddress
+	 *            the address of the server
+	 * 
+	 * @see #getMediatorAddress()
+	 */
+	public void setMediatorAddress(String mediatorAddress) {
+		this.mediatorAddress = mediatorAddress;
+	}
 
-   public String getNotifyEmailSubject()
-   {
-      return notifyEmailSubject;
-   }
+	/**
+	 * the port, the client wants to connect to.
+	 * 
+	 * @return the port.
+	 * 
+	 * @see #setMediatorPort(int)
+	 */
+	public int getMediatorPort() {
+		return mediatorPort;
+	}
 
-   public void setNotifyEmailSubject(String notifyEmailSubject)
-   {
-      this.notifyEmailSubject = notifyEmailSubject;
-   }
+	/**
+	 * sets the port, the client wants to connect to.
+	 * 
+	 * @param mediatorPort
+	 *            the port
+	 * 
+	 * @see #getMediatorPort()
+	 */
+	public void setMediatorPort(int mediatorPort) {
+		this.mediatorPort = mediatorPort;
+	}
 
-   public String[] getNotifyEmailTo()
-   {
-      return notifyEmailTo;
-   }
+	/**
+	 * the current locally created GridClient.
+	 * 
+	 * @return the GridClient
+	 * 
+	 * @see #setGridClient(GridClient)
+	 */
+	public GridClient getGridClient() {
+		return gridClient;
+	}
 
-   public void setNotifyEmailTo(String[] notifyEmailTo)
-   {
-      this.notifyEmailTo = notifyEmailTo;
-   }
+	/**
+	 * sets the local GridClient.
+	 * 
+	 * @param gridClient
+	 *            the client
+	 * 
+	 * @see #getGridClient()
+	 */
+	public void setGridClient(GridClient gridClient) {
+		this.gridClient = gridClient;
+	}
 
-   public String getNotifySMTPHost()
-   {
-      return notifySMTPHost;
-   }
+	/**
+	 * the GridServer.
+	 * 
+	 * @return the server
+	 * 
+	 * @see #setGridServer(GridServer)
+	 */
+	public GridServer getGridServer() {
+		return gridServer;
+	}
 
-   public void setNotifySMTPHost(String notifySMTPHost)
-   {
-      this.notifySMTPHost = notifySMTPHost;
-   }
+	/**
+	 * sets the GridServer.
+	 * 
+	 * @param gridServer
+	 *            the server
+	 * 
+	 * @see #getGridServer()
+	 */
+	public void setGridServer(GridServer gridServer) {
+		this.gridServer = gridServer;
+	}
 
-   public String getNotifySMTPPass()
-   {
-      return notifySMTPPass;
-   }
+	public boolean isEnableNotification() {
+		return enableNotification;
+	}
 
-   public void setNotifySMTPPass(String notifySMTPPass)
-   {
-      this.notifySMTPPass = notifySMTPPass;
-   }
+	public void setEnableNotification(boolean enableNotification) {
+		this.enableNotification = enableNotification;
+	}
 
-   public String getNotifySMTPUser()
-   {
-      return notifySMTPUser;
-   }
+	public boolean isNotifyAttachImage() {
+		return notifyAttachImage;
+	}
 
-   public void setNotifySMTPUser(String notifySMTPUser)
-   {
-      this.notifySMTPUser = notifySMTPUser;
-   }
+	public void setNotifyAttachImage(boolean notifyAttachImage) {
+		this.notifyAttachImage = notifyAttachImage;
+	}
+
+	public String getNotifyEmailFrom() {
+		return notifyEmailFrom;
+	}
+
+	public void setNotifyEmailFrom(String notifyEmailFrom) {
+		this.notifyEmailFrom = notifyEmailFrom;
+	}
+
+	public String getNotifyEmailSubject() {
+		return notifyEmailSubject;
+	}
+
+	public void setNotifyEmailSubject(String notifyEmailSubject) {
+		this.notifyEmailSubject = notifyEmailSubject;
+	}
+
+	public String[] getNotifyEmailTo() {
+		return notifyEmailTo;
+	}
+
+	public void setNotifyEmailTo(String[] notifyEmailTo) {
+		this.notifyEmailTo = notifyEmailTo;
+	}
+
+	public String getNotifySMTPHost() {
+		return notifySMTPHost;
+	}
+
+	public void setNotifySMTPHost(String notifySMTPHost) {
+		this.notifySMTPHost = notifySMTPHost;
+	}
+
+	public String getNotifySMTPPass() {
+		return notifySMTPPass;
+	}
+
+	public void setNotifySMTPPass(String notifySMTPPass) {
+		this.notifySMTPPass = notifySMTPPass;
+	}
+
+	public String getNotifySMTPUser() {
+		return notifySMTPUser;
+	}
+
+	public void setNotifySMTPUser(String notifySMTPUser) {
+		this.notifySMTPUser = notifySMTPUser;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.IConfiguration#copy()
+	 */
+	public IConfiguration copy() {
+		GridConfiguration copy = new GridConfiguration();
+		copy.enableGrid = this.enableGrid;
+		copy.serverPort = this.serverPort;
+
+		copy.mediatorAddress = this.mediatorAddress;
+		copy.mediatorPort = this.mediatorPort;
+
+		copy.gridClient = this.gridClient;
+		copy.gridServer = this.gridServer;
+
+		copy.enableNotification = this.enableNotification;
+		copy.notifyAttachImage = this.notifyAttachImage;
+		copy.notifySMTPHost = this.notifySMTPHost;
+		copy.notifySMTPUser = this.notifySMTPUser;
+		copy.notifySMTPPass = this.notifySMTPPass;
+		copy.notifyEmailFrom = this.notifyEmailFrom;
+		copy.notifyEmailTo = this.notifyEmailTo;
+		copy.notifyEmailSubject = this.notifyEmailSubject;
+		return copy;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.dotplot.core.IConfiguration#serializedForm()
+	 */
+	public String serializedForm() throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.dotplot.core.IConfiguration#objectForm(java.lang.String)
+	 */
+	public IConfiguration objectForm(String serivalizedForm) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
 }

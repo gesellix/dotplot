@@ -8,6 +8,8 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.dotplot.core.ITypeTable;
+
 /**
  * an object of this class allows to navigate through tokentypes
  * and all neccessary information.
@@ -238,7 +240,7 @@ public class TypeTableNavigator implements ITypeTableNavigator
    /**
     * @see org.dotplot.fmatrix.ITypeTableNavigator#getTypeTable()
     */
-   public TypeTable getTypeTable()
+   public ITypeTable getTypeTable()
    {
       return typeTable;
    }

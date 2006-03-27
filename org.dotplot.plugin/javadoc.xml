@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="javadoc">
+	<property name="home" value="${e.home}"></property>
+	
+<target name="javadoc">
+<javadoc 
+	access="private" 
+	author="true" 
+	classpath="
+	${home}\plugins\org.eclipse.compare_3.1.0.jar;
+	${home}\plugins\org.eclipse.help_3.1.0.jar;
+	${home}\plugins\org.junit_3.8.1\junit.jar;
+	${home}\plugins\org.eclipse.core.resources_3.1.0.jar;
+	${home}\plugins\org.eclipse.ui.workbench_3.1.0.jar;
+	lib/activation.jar;
+	${home}\plugins\org.eclipse.core.commands_3.1.0.jar;
+	${home}\plugins\org.eclipse.swt_3.1.0.jar;
+	lib/jai_core.jar;
+	lib/jai_codec.jar;
+	${home}\plugins\org.eclipse.jface_3.1.0.jar;
+	lib/jai_imageio.jar;
+	lib/mail.jar;
+	lib/jai_mlibwrapper.jar;
+	lib/log4j-1.2.8.jar;
+	${home}\plugins\org.eclipse.osgi_3.1.0.jar;
+	${home}\plugins\org.eclipse.core.runtime_3.1.0.jar;
+	${home}\plugins\org.eclipse.ui_3.1.0.jar;
+	lib/clibwrapper_jiio.jar;
+	lib/iText.jar;lib/PDFBox-0.7.2.jar;
+	${home}\plugins\org.eclipse.swt.win32.win32.x86_3.1.0.jar;
+	${home}\plugins\org.eclipse.text_3.1.0.jar"
+	
+	destdir="doc\api" 
+	doctitle="Matrix4.plot" 
+	nodeprecated="false" 
+	nodeprecatedlist="false" 
+	noindex="false" 
+	nonavbar="false" 
+	notree="false" 
+	packagenames="
+	org.dotplot,
+	org.dotplot.core,
+	org.dotplot.core.plugins,
+	org.dotplot.core.plugins.ressources,
+	org.dotplot.core.services,
+	org.dotplot.core.system,
+	org.dotplot.eclipse,
+	org.dotplot.eclipse.actions,
+	org.dotplot.eclipse.actions.contextMenu,
+	org.dotplot.eclipse.perspective,
+	org.dotplot.eclipse.preferences,
+	org.dotplot.eclipse.views,
+	org.dotplot.fmatrix,
+	org.dotplot.fmatrix.profiler,
+	org.dotplot.fmatrix.ui,
+	org.dotplot.grid,
+	org.dotplot.grid.framework,
+	org.dotplot.grid.ui,
+	org.dotplot.image,
+	org.dotplot.image.ui,
+	org.dotplot.tokenizer,
+	org.dotplot.tokenizer.converter,
+	org.dotplot.tokenizer.filter,
+	org.dotplot.tokenizer.filter.ui,
+	org.dotplot.tokenizer.service,
+	org.dotplot.tokenizer.service.ui,
+	org.dotplot.ui,
+	org.dotplot.ui.monitor,
+	org.dotplot.util
+	" 
+	source="1.5" 
+	sourcepath="src" 
+	splitindex="true" 
+	use="true" 
+	version="true"/>
+</target>
+</project>

@@ -5,17 +5,14 @@ package org.dotplot.fmatrix;
 
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
-import org.dotplot.tokenizer.IFileList;
-import org.dotplot.tokenizer.ITokenStream;
+import org.dotplot.core.IPlotSource;
+import org.dotplot.core.ISourceList;
+import org.dotplot.tokenizer.service.ITokenStream;
 import org.dotplot.tokenizer.Token;
 import org.dotplot.tokenizer.TokenizerException;
-import org.dotplot.ui.configuration.GlobalConfiguration;
 import org.dotplot.ui.monitor.DotPlotProgressMonitor;
 import org.dotplot.ui.monitor.MonitorablePlotUnit;
 
@@ -38,10 +35,10 @@ public class FMatrixManager implements MonitorablePlotUnit
    private int progress; // monitor progress
    private String monitorMessage; // monitor message
 
-   private IFileList fileList;
-   private Vector manualWeightedTokens;
-   private Vector storedRegularExpressions;
-
+   private ISourceList sourceList;
+   private List<WeightingEntry> manualWeightedTokens;
+   private List<String> storedRegularExpressions;
+   
    private final Logger logger = Logger.getLogger(FMatrixManager.class.getName());
 
    /**
@@ -50,18 +47,21 @@ public class FMatrixManager implements MonitorablePlotUnit
     *
     * @param tokenStream - the token stream(from tokenizer)
     */
-   public FMatrixManager(ITokenStream tokenStream)
+   public FMatrixManager(ITokenStream tokenStream, IFMatrixConfiguration config)
    {
       this.tokenStream = tokenStream;
       typeTable = new TypeTable(new TokenTable());
       tokenInformation = new TokenInformation();
       progress = 0;
       monitorMessage = null;
-      fileList = null;
+      sourceList = null;
 
-      GlobalConfiguration globalConfig = GlobalConfiguration.getInstance();
-      manualWeightedTokens = (Vector) globalConfig.get(GlobalConfiguration.KEY_FMATRIX_TOKEN_WEIGHTS);
-      storedRegularExpressions = (Vector) globalConfig.get(GlobalConfiguration.KEY_FMATRIX_REGULAR_EXPRESSIONS);
+//      GlobalConfiguration globalConfig = GlobalConfiguration.getInstance();
+//      manualWeightedTokens = (Vector) globalConfig.get(GlobalConfiguration.KEY_FMATRIX_TOKEN_WEIGHTS);
+//      storedRegularExpressions = (Vector) globalConfig.get(GlobalConfiguration.KEY_FMATRIX_REGULAR_EXPRESSIONS);
+      
+      this.manualWeightedTokens = config.getManualWeightedTokens();
+      this.storedRegularExpressions = config.getRegularExpressions();
    }
 
    /**
@@ -78,8 +78,9 @@ public class FMatrixManager implements MonitorablePlotUnit
 
       Token token;
       LineInformation lineInformation = new LineInformation();
-      File file = null;
+      IPlotSource source = null;
 
+      int lineIndex = 0;
       int firstTokenInLine = 0;
       List tokensInLine = new ArrayList();
       int fileCount = 0; // counts the files
@@ -105,32 +106,32 @@ public class FMatrixManager implements MonitorablePlotUnit
             }
 
             // ------------ store fileinformation
-            if (file != token.getFile())
+            if (source != token.getSource())
             {
-               file = token.getFile();
-               tokenInformation.addFileInformation(new FileInformation(firstTokenInLine, file));
+               source = token.getSource();
+               tokenInformation.addSourceInformation(new SourceInformation(firstTokenInLine, source));
+            }
+
+            // ignore line setting for EOF
+            if (tokenType != Token.TYPE_EOF)
+            {
+               lineIndex = token.getLine();
             }
 
             switch (tokenType)
             {
                case Token.TYPE_EOL:
-                     lineInformation.addLineInformation(
-                           firstTokenInLine,
-                           firstTokenInLine + tokensInLine.size(),
-                           token.getLine(),
-                           tokensInLine);
-                     firstTokenInLine += tokensInLine.size();
-                     tokensInLine = new ArrayList();
+                  lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine.size(),
+                        token.getLine(), tokensInLine);
+                  firstTokenInLine += tokensInLine.size();
+                  tokensInLine = new ArrayList();
                   break;
                case Token.TYPE_EOF:
                   // if EOF without EOL flush tokens before saving LineInformation
                   if (tokensInLine.size() > 0)
                   {
-                     lineInformation.addLineInformation(
-                           firstTokenInLine,
-                           firstTokenInLine + tokensInLine.size(),
-                           ((Token) tokensInLine.get(0)).getLine(),
-                           tokensInLine);
+                     lineInformation.addLineInformation(firstTokenInLine, firstTokenInLine + tokensInLine.size(),
+                           lineIndex, tokensInLine);
                      firstTokenInLine += tokensInLine.size();
                      tokensInLine = new ArrayList();
                   }
@@ -139,7 +140,12 @@ public class FMatrixManager implements MonitorablePlotUnit
 
                   // count files for progress monitor
                   fileCount++;
-                  progress = (fileCount / fileList.count() * 100);
+                  try{
+                	  progress = (fileCount / sourceList.size() * 100);
+                  }
+                  catch(ArithmeticException e){
+                	  progress = 100;
+                  }
                   DotPlotProgressMonitor.getInstance().update();
                   break;
                default:
@@ -149,6 +155,8 @@ public class FMatrixManager implements MonitorablePlotUnit
             }
          }
 
+         // mark end of fileInformationEntries and register the FileInformation to the typetable
+//         tokenInformation.addFileInformation(new FileInformation(tokenIndex, null));
          typeTable.registerTokenInformation(tokenInformation);
       }
       catch (TokenizerException e)
@@ -168,24 +176,16 @@ public class FMatrixManager implements MonitorablePlotUnit
     */
    private void restoreConfiguration()
    {
-      WeightingEntry weightingEntry;
       TokenType tokenType;
-      Iterator iter;
 
-      iter = manualWeightedTokens.iterator();
-      while (iter.hasNext())
-      {
-         weightingEntry = (WeightingEntry) iter.next();
-
-         tokenType = typeTable.getTokenType(weightingEntry.getTokenIndex());
-         tokenType.setWeight(weightingEntry.getWeight());
+      for(WeightingEntry weightingEntry : manualWeightedTokens ){
+    	  tokenType = typeTable.getTokenType(weightingEntry.getTokenIndex());
+          tokenType.setWeight(weightingEntry.getWeight()); 
       }
-
-      iter = storedRegularExpressions.iterator();
-      while (iter.hasNext())
-      {
-         typeTable.addRegularExpressionType((String) iter.next(), 0.75);
-      }
+      
+      for(String ex : storedRegularExpressions){
+    	  typeTable.addRegularExpressionType(ex, 0.75); 
+      }      
    }
 
    /**
@@ -197,7 +197,7 @@ public class FMatrixManager implements MonitorablePlotUnit
     */
    public ITypeTableNavigator getTypeTableNavigator()
    {
-      return typeTable.getNavigator();
+      return typeTable.createNavigator();
    }
 
    /**
@@ -248,11 +248,11 @@ public class FMatrixManager implements MonitorablePlotUnit
    /**
     * Specifies the file list value.
     *
-    * @param fileList an IFileList object specifying the file list value
+    * @param sourceList an IFileList object specifying the file list value
     */
-   public void setFileList(IFileList fileList)
+   public void setSourceList(ISourceList sourceList)
    {
-      this.fileList = fileList;
+      this.sourceList = sourceList;
    }
 
    /**
@@ -260,7 +260,7 @@ public class FMatrixManager implements MonitorablePlotUnit
     *
     * @return an ITypeTableManipulator object representing the type table manipulator value
     */
-   public ITypeTableManipulator getTypeTableManipulator()
+   public ITypeTableManipulator createTypeTableManipulator()
    {
       return new TypeTableManipulator(typeTable);
    }

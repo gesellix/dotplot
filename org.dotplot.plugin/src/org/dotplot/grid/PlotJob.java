@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import java.io.Serializable;
 import java.util.Vector;
 
-import org.dotplot.fmatrix.TypeTable;
-import org.dotplot.image.QImageConfiguration;
+import org.dotplot.core.ITypeTable;
+import org.dotplot.image.IQImageConfiguration;
 
 /**
  * Represents a Job. Mainly acts as wrapper for the TypeTable, say F-Matrix, and corresponding parameters.
@@ -18,9 +18,9 @@ public class PlotJob implements Serializable
     * for being Serializable
     */
    private static final long serialVersionUID = 8503709291982027179L;
-   private QImageConfiguration imageConfig;
+   private IQImageConfiguration imageConfig;
    private GridConfiguration gridConfig;
-   private TypeTable typeTable;
+   private ITypeTable typeTable;
    private Vector collaborators;
    private Dimension targetSize;
 
@@ -37,7 +37,7 @@ public class PlotJob implements Serializable
     * @param imageConfig a QImageConfiguration object
     * @param typeTable   a TypeTable object
     */
-   public PlotJob(QImageConfiguration imageConfig, TypeTable typeTable)
+   public PlotJob(IQImageConfiguration imageConfig, ITypeTable typeTable)
    {
       this(imageConfig, null, typeTable);
    }
@@ -49,7 +49,7 @@ public class PlotJob implements Serializable
     * @param gridConfig  a GridConfiguration object
     * @param typeTable   a TypeTable object
     */
-   public PlotJob(QImageConfiguration imageConfig, GridConfiguration gridConfig, TypeTable typeTable)
+   public PlotJob(IQImageConfiguration imageConfig, GridConfiguration gridConfig, ITypeTable typeTable)
    {
       this.imageConfig = imageConfig;
       this.gridConfig = gridConfig;
@@ -63,7 +63,7 @@ public class PlotJob implements Serializable
     *
     * @see #setImageConfig(org.dotplot.image.QImageConfiguration)
     */
-   public QImageConfiguration getImageConfig()
+   public IQImageConfiguration getImageConfig()
    {
       return imageConfig;
    }
@@ -75,7 +75,7 @@ public class PlotJob implements Serializable
     *
     * @see #getImageConfig()
     */
-   public void setImageConfig(QImageConfiguration imageConfig)
+   public void setImageConfig(IQImageConfiguration imageConfig)
    {
       this.imageConfig = imageConfig;
    }
@@ -111,7 +111,7 @@ public class PlotJob implements Serializable
     *
     * @see #setTypeTable(org.dotplot.fmatrix.TypeTable)
     */
-   public TypeTable getTypeTable()
+   public ITypeTable getTypeTable()
    {
       return typeTable;
    }
@@ -123,7 +123,7 @@ public class PlotJob implements Serializable
     *
     * @see #getTypeTable()
     */
-   public void setTypeTable(TypeTable typeTable)
+   public void setTypeTable(ITypeTable typeTable)
    {
       this.typeTable = typeTable;
    }
@@ -163,7 +163,7 @@ public class PlotJob implements Serializable
    {
       if (targetSize == null)
       {
-         targetSize = getTypeTable().getNavigator().getSize();
+         targetSize = getTypeTable().createNavigator().getSize();
       }
 
       return targetSize;

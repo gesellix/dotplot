@@ -1,0 +1,13 @@
+<!DOCTYPE plugin [
+  <!ELEMENT plugin (content*)>
+  <!ELEMENT content EMPTY>
+  <!ATTLIST content id CDATA #REQUIRED>
+  <!ATTLIST content class CDATA #IMPLIED>
+  <!ATTLIST content param CDATA #REQUIRED>
+]>
+<plugin>
+	<content id="test1" param="2" />
+	<content id="test1" param="4" />
+	<content id="test2" class="test.ReflectionTestImpl2" param="2" />
+	<content id="test2" param="4" />	
+</plugin>

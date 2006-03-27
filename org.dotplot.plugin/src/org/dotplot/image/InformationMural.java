@@ -12,7 +12,6 @@ import java.io.OutputStream;
 
 import org.dotplot.fmatrix.ITypeTableNavigator;
 import org.dotplot.fmatrix.Match;
-import org.dotplot.ui.configuration.GlobalConfiguration;
 
 /**
  * Provides the Information Mural algorithm. It can be used for efficient scaling and saving memory.
@@ -21,13 +20,13 @@ class InformationMural
 {
    private final static Logger logger = Logger.getLogger(InformationMural.class.getName());
 
-   static void getMural(ITypeTableNavigator navData, Dimension _targetSize, ImageCallback image)
+   static void getMural(ITypeTableNavigator navData, Dimension _targetSize, ImageCallback image, IQImageConfiguration config)
    {
       Dimension originalSize = navData.getSize();
       int minLen = Math.min(_targetSize.width, _targetSize.height);
       Dimension targetSize = new Dimension(minLen, minLen);
-      QImageConfiguration config = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION);
+//      IQImageConfiguration config = (IQImageConfiguration) GlobalConfiguration.getInstance().get(
+//            GlobalConfiguration.KEY_IMG_CONFIGURATION);
 
       logger.debug("size " + originalSize.width + "->" + targetSize.width);
 
@@ -76,7 +75,7 @@ class InformationMural
    }
 
    private static void transferToImage(
-         int[][] mural_array, ImageCallback image, float max_mural_array_value, QImageConfiguration config)
+         int[][] mural_array, ImageCallback image, float max_mural_array_value, IQImageConfiguration config)
    {
       logger.debug("converting to image...");
       int col;

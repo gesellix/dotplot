@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<Dotplotplugin
+	id="org.dotplot.examples"
+	name="Examples"
+	version="1.0"
+	provider="FH Giessen-Friedberg (www.fh-giessen.de)"
+	info="Examples of extention development for Matrix4.plot.">	
+
+	<Dependency plugin="org.dotplot.core.Standard" version="1.0"/>
+	
+	<Service id="org.dotplot.standard.Filter">
+			 
+		<Extention hotspot="org.dotplot.standard.Filter.newFilter"
+	    		   class="org.dotplot.examples.FourGrammFilter.FourGrammFilter">
+	    	<Parameter name="name" value="org.dotplot.filter.4GrammFilter"/>
+	    	<Parameter name="ui" value="org.dotplot.examples.FourGrammFilter.FourGrammFilterUI"/>
+	    </Extention>                    
+	     						 
+	</Service>
+	
+	<Service id="org.dotplot.standard.EclipseUI"
+			 class="org.dotplot.eclipse.EclipseUIService">
+			 
+		<Extention hotspot="org.dotplot.standard.EclipseUI.Menu"
+	    		   class="org.dotplot.core.services.Structure">
+	    	<Parameter name="id" value="org.dotplot.ui.menue.Jobs" />
+	    	<Parameter name="name" value="Jobs"/>
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.EclipseUI.Menu"
+	    		   class="org.dotplot.core.services.Structure">
+	    	<Parameter name="menu" value="org.dotplot.ui.menue.Jobs" />
+	    	<Parameter name="id" value="org.dotplot.ui.menue.TestJobs" />
+	    	<Parameter name="name" value="TestJobs"/>
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.EclipseUI.Entry"
+	    		   class="org.dotplot.core.services.Structure">	    		  
+	    	<Parameter name="menu" value="org.dotplot.ui.menue.Jobs" />
+	    	<Parameter name="name" value="TestJob1"/>
+	    	<Parameter name="job" value="org.dotplot.jobs.TestJob" />
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.EclipseUI.Entry"
+	    		   class="org.dotplot.core.services.Structure">	    		  
+	    	<Parameter name="menu" value="org.dotplot.ui.menue.TestJobs" />
+	    	<Parameter name="name" value="TestJob2"/>
+	    	<Parameter name="job" value="org.dotplot.jobs.TestJob" />
+	    </Extention>	    
+	</Service>
+	
+	<Job 
+		id="org.dotplot.jobs.TestJob" 
+		class="org.dotplot.examples.TestJob" />
+	
+</Dotplotplugin>

@@ -6,7 +6,7 @@
    name="Matrix4.plot"
    version="2.1.1"
    provider-name="Matrix4.plot Team CS@FH-Giessen Germany"
-   class="org.dotplot.plugin.DotplotPlugin"
+   class="org.dotplot.eclipse.DotplotPlugin"
    singleton="true">
 
    <runtime>
@@ -36,7 +36,7 @@
          name="Dotplot Application"
          point="org.eclipse.core.runtime.applications">
       <application>
-         <run class="org.dotplot.plugin.DotplotApplication"/>
+         <run class="org.dotplot.eclipse.DotplotApplication"/>
       </application>
    </extension>
    <extension
@@ -58,7 +58,7 @@
       <perspective
          name="DotPlot"
          icon="icons/dp_v0_73.gif"
-         class="org.dotplot.ui.DotPlotPerspective"
+         class="org.dotplot.eclipse.perspective.DotPlotPerspective"
          id="org.dotplot.plugin.perspective1">
       </perspective>
    </extension>
@@ -73,28 +73,28 @@
          name="DotPlotter"
          icon="icons/dp_v0_73.gif"
          category="org.dotplot.plugin.category1"
-         class="org.dotplot.ui.views.DotPlotter"
+         class="org.dotplot.eclipse.views.DotPlotter"
          id="org.dotplot.plugin.view1">
       </view>
       <view
          name="DotPlot Navigator"
          icon="icons/dp_navi_v0_11.gif"
          category="org.dotplot.plugin.category1"
-         class="org.dotplot.ui.views.DotPlotNavigator"
+         class="org.dotplot.eclipse.views.DotPlotNavigator"
          id="org.dotplot.plugin.view2">
       </view>
       <view
          name="DotPlot List"
          icon="icons/dp_list_v0_63.gif"
          category="org.dotplot.plugin.category1"
-         class="org.dotplot.ui.views.DotPlotLister"
+         class="org.dotplot.eclipse.views.DotPlotLister"
          id="org.dotplot.plugin.view3">
       </view>
       <view
          name="Diff @ DotPlot"
          icon="icons/dp_list_v0_63.gif"
          category="org.dotplot.plugin.category1"
-         class="org.dotplot.ui.views.MergeView"
+         class="org.dotplot.eclipse.views.MergeView"
          id="org.dotplot.merger">
       </view>
    </extension>
@@ -116,14 +116,14 @@
             label="&amp;Plot!"
             icon="icons/dp_v0_73.gif"
             tooltip="Build DotPlot of selected file(s)"
-            class="org.dotplot.ui.actions.PlotAction"
+            class="org.dotplot.eclipse.actions.PlotAction"
             menubarPath="org.dotplot.plugin.menu1/Plot"
             toolbarPath="org.dotplot.plugin.action1"
             id="org.dotplot.plugin.action1">
          </action>
          <action
             label="&amp;Configure DotPlot"
-            class="org.dotplot.ui.actions.ConfigAction"
+            class="org.dotplot.eclipse.actions.ConfigAction"
             menubarPath="org.dotplot.plugin.menu1/Plot"
             id="org.dotplot.plugin.action2">
          </action>
@@ -131,7 +131,7 @@
             label="Create &amp;Job"
             icon="icons/dp_v0_73.gif"
             tooltip="Create a PlotJob for distribution"
-            class="org.dotplot.ui.actions.PlotJobAction"
+            class="org.dotplot.eclipse.actions.PlotJobAction"
             menubarPath="org.dotplot.plugin.menu1/Plot"
             toolbarPath="org.dotplot.plugin.action3"
             id="org.dotplot.plugin.action3">
@@ -142,10 +142,16 @@
    <extension
       point="org.eclipse.ui.preferencePages">
       <page
-         name="DotPlot Preferences"
-         class="org.dotplot.plugin.preferences.DotPlotPreferencePage"
-         id="org.dotplot.plugin.preferences.DotPlotPreferencePage">
+         name="DotPlot"
+         class="org.dotplot.eclipse.preferences.DotPlotPreferencePage"
+         id="org.dotplot.preferences.Dotplot">
       </page>
+      <page
+            category="org.dotplot.preferences.Dotplot"
+            class="org.dotplot.eclipse.preferences.PluginOverviewPage"
+            id="org.dotplot.preferences.Dotplot.Plugins"
+            name="Plugins">
+       </page>
    </extension>
 
    <extension
@@ -172,7 +178,7 @@
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
-      <initializer class="org.dotplot.plugin.DotplotPreferenceInitializer"/>
+      <initializer class="org.dotplot.eclipse.DotplotPreferenceInitializer"/>
    </extension>
 
 </plugin>

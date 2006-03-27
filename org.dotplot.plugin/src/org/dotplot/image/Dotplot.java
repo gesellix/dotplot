@@ -13,9 +13,9 @@ import javax.media.jai.TiledImage;
 
 import org.eclipse.swt.graphics.ImageData;
 
+import org.dotplot.core.IDotplot;
 import org.dotplot.fmatrix.ITypeTableNavigator;
 import org.dotplot.fmatrix.TokenInformation;
-import org.dotplot.ui.configuration.GlobalConfiguration;
 
 /**
  * Implementation of IDotplot using JAI and Information Mural.
@@ -38,8 +38,7 @@ class Dotplot implements IDotplot
    private static Dimension targetSize;
    private static float[] scale = {1, 1};
 
-   private QImageConfiguration config = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-         GlobalConfiguration.KEY_IMG_CONFIGURATION);
+   //private IQImageConfiguration config;
 
    /**
     * @param nav     - ITypeTableNavigator providing data
@@ -61,7 +60,7 @@ class Dotplot implements IDotplot
    }
 
    /**
-    * @see org.dotplot.image.IDotplot#setTargetSize(Dimension)
+    * @see org.dotplot.core.IDotplot#setTargetSize(Dimension)
     */
    public float setTargetSize(Dimension newSize)
    {
@@ -98,7 +97,7 @@ class Dotplot implements IDotplot
       }
       else if (imageClass == IMG_JAI_PLANARIMAGE)
       {
-         image = getDotplotJAI();
+         image = getDotplotJAI(navigator.getSize());
       }
       else
       {
@@ -121,26 +120,18 @@ class Dotplot implements IDotplot
          logger.debug("creating new Dotplot for screen");
 
          Dimension tSize;
-         if (config.getScaleMode() == 0)
+         if (qImage.getConfiguration().getScaleMode() == 0)
          {
             tSize = navigator.getSize();
          }
          else
          {
-            if ((config.doScaleUp()
-                  && scale[0] > 1 && scale[1] > 1) || (scale[0] < 1 && scale[1] < 1))
-            {
-               tSize = targetSize;
-            }
-            else
-            {
-               tSize = navigator.getSize();
-            }
+            tSize = targetSize;
          }
 
          navigator.reset();
 
-         if (config.useInformationMural())
+         if (qImage.getConfiguration().useInformationMural())
          {
             dotplotForScreen = getImageDataScaledByInfoMural(tSize);
          }
@@ -180,7 +171,7 @@ class Dotplot implements IDotplot
       return dotplotForScreen;
    }
 
-   private TiledImage getDotplotJAI()
+   private TiledImage getDotplotJAI(Dimension size)
    {
       if (isDirty || tiledImage == null)
       {
@@ -188,7 +179,7 @@ class Dotplot implements IDotplot
 
          qImage.update(1, STEP_ALLOCATE_IMAGE);
 
-         tiledImage = Util.createEmptyTiledImage(navigator.getSize());
+         tiledImage = Util.createEmptyTiledImage(size);
 
          logger.debug("tiled image initiated.");
 
@@ -196,7 +187,7 @@ class Dotplot implements IDotplot
 
          navigator.reset();
 
-         Util.createImage(navigator, null, getImageCallback4JAI(tiledImage));
+         Util.createImage(navigator, null, getImageCallback4JAI(tiledImage), qImage.getConfiguration());
 
          isDirty = false;
       }
@@ -209,11 +200,21 @@ class Dotplot implements IDotplot
       final ImageData data = Util.createEmptyImageData(targetSize);
 
       final ImageCallback imageCallback = getImageCallback4ImageData(data);
-      InformationMural.getMural(navigator, targetSize, imageCallback);
+      InformationMural.getMural(navigator, targetSize, imageCallback, qImage.getConfiguration());
 
-      final int[] fileIndices = navigator.getTokenInformation().getAllStartIndices();
-      final boolean showFileSeparators = ((QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION)).showFileSeparators()
+
+      int[] indices = null;
+      
+      if(navigator.getTokenInformation() == null){
+    	 indices = new int[]{0};
+      }
+      else {
+    	 indices = navigator.getTokenInformation().getAllStartIndices();
+      }
+      
+      final int[] fileIndices = indices;
+      
+      final boolean showFileSeparators = qImage.getConfiguration().showFileSeparators()
             && (fileIndices.length > 1);
       if (showFileSeparators)
       {
@@ -226,10 +227,9 @@ class Dotplot implements IDotplot
 
    private ImageData getImageDataScaledByJAI()
    {
-      final QImageConfiguration imageConfig = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION);
+      final IQImageConfiguration imageConfig = qImage.getConfiguration();
       imageConfig.setUseLUT(false);
-      getDotplotJAI();
+      getDotplotJAI(navigator.getSize());
       imageConfig.setUseLUT(true);
 
       Raster raster = JAITools.getRasterWithLUT(tiledImage, scale, qImage);
@@ -246,14 +246,14 @@ class Dotplot implements IDotplot
    {
       final ImageData data = Util.createEmptyImageData(navigator.getSize());
 
-      Util.createImage(navigator, config.getLut(), getImageCallback4ImageData(data));
+      Util.createImage(navigator, qImage.getConfiguration().getLut(), getImageCallback4ImageData(data), qImage.getConfiguration());
 
       int minQuad = Math.min(targetSize.width, targetSize.height);
       return data.scaledTo(minQuad, minQuad);
    }
 
    /**
-    * @see org.dotplot.image.IDotplot#getDetailsForROI(Rectangle, ImageData)
+    * @see org.dotplot.core.IDotplot#getDetailsForROI(Rectangle, ImageData)
     *      TODO move to Util-class
     */
    public IROIResult getDetailsForROI(Rectangle roi, ImageData imgData)
@@ -280,10 +280,6 @@ class Dotplot implements IDotplot
       */
 
       TokenInformation tokenInfo = navigator.getTokenInformation();
-      if (tokenInfo == null)
-      {
-         return null;
-      }
 
       int xIndex = Math.min(Math.max((int) (roi.x / scale[0]), 0), dotplotForScreen.width - 1);
       int yIndex = Math.min(Math.max((int) (roi.y / scale[1]), 0), dotplotForScreen.height - 1);
@@ -425,4 +421,5 @@ class Dotplot implements IDotplot
          }
       };
    }
+
 }

@@ -26,13 +26,15 @@ public class TokenTable implements Serializable
     */
    private static final long serialVersionUID = -3232840680096821917L;
    private Vector tokenTable;
+   private int tokenIndex;
 
    /**
     * Default Constructor.
     */
    public TokenTable()
    {
-      this.tokenTable = new Vector();
+      this.tokenTable = new Vector(); // initiate tokenTable
+      this.tokenIndex = 0; // initiate tokenIndex
    }
 
    /**
@@ -47,8 +49,10 @@ public class TokenTable implements Serializable
     */
    public int addTypeIndex(int typeIndex)
    {
-      tokenTable.add(new Integer(typeIndex));
-      return tokenTable.size() - 1;
+      int tokenIndex = this.tokenIndex;
+      this.tokenTable.add(new Integer(typeIndex));
+      this.tokenIndex++;
+      return tokenIndex;
    }
 
    /**
@@ -61,7 +65,7 @@ public class TokenTable implements Serializable
     */
    public int getTypeIndex(int tokenIndex)
    {
-      return ((Integer) (tokenTable.get(tokenIndex))).intValue();
+      return ((Integer) (this.tokenTable.get(tokenIndex))).intValue();
    }
 
    /**
@@ -71,6 +75,6 @@ public class TokenTable implements Serializable
     */
    public int getNumberOfTokens()
    {
-      return tokenTable.size();
+      return this.tokenIndex + 1; // since index starts with 0 add 1.
    }
 }

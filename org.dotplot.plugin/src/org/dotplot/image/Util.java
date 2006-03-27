@@ -17,10 +17,10 @@ import javax.media.jai.TiledImage;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 
+import org.dotplot.core.IDotplot;
 import org.dotplot.fmatrix.ITypeTableNavigator;
 import org.dotplot.fmatrix.Match;
 import org.dotplot.fmatrix.TokenInformation;
-import org.dotplot.ui.configuration.GlobalConfiguration;
 
 /**
  * Container class for several "tools" used in the plugin.
@@ -113,10 +113,9 @@ public final class Util
       return percent;
    }
 
-   private static int convertToColor(double weight, int maxVal)
+   private static int convertToColor(double weight, int maxVal, boolean useLut)
    {
-      if (!((QImageConfiguration) GlobalConfiguration.getInstance().get(GlobalConfiguration.KEY_IMG_CONFIGURATION))
-            .useLUT())
+      if (!useLut)
       {
          return maxVal;
       }
@@ -132,10 +131,8 @@ public final class Util
       return (int) (Math.min(1.0, weight + 0.5) * maxVal);
    }
 
-   synchronized static void createImage(ITypeTableNavigator navData, int[][] lut, ImageCallback image)
+   synchronized static void createImage(ITypeTableNavigator navData, int[][] lut, ImageCallback image, final IQImageConfiguration imageConfig )
    {
-      final QImageConfiguration imageConfig = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION);
       int[] fileIndices = navData.getTokenInformation().getAllStartIndices();
 
       long count = navData.getNumberOfAllMatches();
@@ -161,8 +158,15 @@ public final class Util
          }
       }
 
+     
+      
       // if background color not "black", paint background color (lut[i][0]) on empty image
       final Dimension size = image.getSize();
+      
+      final long max = size.width * size.height;
+      long k = 0;
+      final long kstep = max / 25;
+      
       if (!(lut[0][0] == 0 && lut[1][0] == 0 && lut[2][0] == 0))
       {
          final int color = new Color(lut[0][0], lut[1][0], lut[2][0]).getRGB();
@@ -171,6 +175,12 @@ public final class Util
             for (int j = 0; j < size.height; j++)
             {
                image.setPixel(i, j, color);
+               if(logger.isDebugEnabled()){
+            	  k++;
+            	  if(kstep > 0 && (k % kstep) == 0){
+            		  logger.debug(k);
+            	  }
+               }
             }
          }
       }
@@ -180,7 +190,7 @@ public final class Util
       while ((match = navData.getNextMatch()) != null)
       {
          // Convert the weight value to an rgb (grayscale) value
-         col = convertToColor(match.getWeight(), MAX_COL_VAL);
+         col = convertToColor(match.getWeight(), MAX_COL_VAL, imageConfig.useLUT());
 
          // put current pixel into image
          image.setPixel(match.getX(), match.getY(), new Color(lut[0][col], lut[1][col], lut[2][col]).getRGB());
@@ -193,8 +203,7 @@ public final class Util
       }
       logger.debug("*");
 
-      final boolean showFileSeparators = ((QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION)).showFileSeparators() && (fileIndices.length > 1);
+      final boolean showFileSeparators = imageConfig.showFileSeparators() && (fileIndices.length > 1);
       if (showFileSeparators)
       {
          invertLines(fileIndices, image);
@@ -312,12 +321,9 @@ public final class Util
     * @param filename  the target
     */
    public static void exportDotplotInROI(
-         final ITypeTableNavigator navigator, final Rectangle roi, final String filename)
+         final ITypeTableNavigator navigator, final Rectangle roi, final String filename, final IQImageConfiguration imageConfig)
    {
       logger.debug(filename);
-
-      final QImageConfiguration imageConfig = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION);
 
       int[][] lut = null;
       if (imageConfig.useLUT())
@@ -334,7 +340,7 @@ public final class Util
 
          logger.debug("reading matches in roi " + roi);
 
-         createImage(navigator, lut, getImageCallback(image, roi));
+         createImage(navigator, lut, getImageCallback(image, roi), imageConfig);
       }
 
 //      JAITools.saveJAI(JAITools.getWithLUT(image.createSnapshot(), lut), filename, JAITools.EXPORTFORMAT_JPEG);
@@ -351,7 +357,7 @@ public final class Util
     * @param filename   the target
     */
    public static void exportDotplotInROIByInfoMural(
-         final ITypeTableNavigator navigator, final Dimension targetSize, final Rectangle roi, final String filename)
+         final ITypeTableNavigator navigator, final Dimension targetSize, final Rectangle roi, final String filename, final IQImageConfiguration config)
    {
       logger.debug(filename);
 
@@ -360,12 +366,12 @@ public final class Util
 
       navigator.reset();
 
-      InformationMural.getMural(navigator, targetSize, imageCallback);
+      InformationMural.getMural(navigator, targetSize, imageCallback, config);
 
       final int[] fileIndices = navigator.getTokenInformation().getAllStartIndices();
-      final boolean showFileSeparators = ((QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION)).showFileSeparators()
+      final boolean showFileSeparators = config.showFileSeparators()
             && (fileIndices.length > 1);
+      
       if (showFileSeparators)
       {
          final double scale = (double) imageCallback.getSize().getWidth() / (double) navigator.getSize().width;
@@ -449,16 +455,18 @@ public final class Util
       }
 
       TokenInformation tokenInfo = nav.getTokenInformation();
-      if (tokenInfo == null)
-      {
-         return null;
-      }
 
+//      int xIndex = Math.min(Math.max((int) (location.x / scale), 0), imageSize.width - 1);
+//      int yIndex = Math.min(Math.max((int) (location.y / scale), 0), imageSize.height - 1);
       int xIndex = Math.max((int) (location.x / scale), 0);
       int yIndex = Math.max((int) (location.y / scale), 0);
 
+//      logger.debug("new ix: " + xIndex + ", " + yIndex);
+
       int xFileID = tokenInfo.getFileIndex(xIndex);
       int yFileID = tokenInfo.getFileIndex(yIndex);
+
+//      logger.debug("fileIDs: " + xFileID + ", " + yFileID);
 
       int xLineIndex = 0;
       int yLineIndex = 0;
@@ -478,6 +486,19 @@ public final class Util
          return null;
       }
 
+//      logger.debug("Location ix: " + location.x + "-->" + xIndex + ", " + location.y + "-->" + yIndex);
+
+//      try
+//      {
+//         logger.debug("ROI File x: " + (new File(xFile)).getCanonicalPath());
+//         logger.debug("ROI File y: " + (new File(yFile)).getCanonicalPath());
+//      }
+//      catch (IOException e)
+//      {
+//         logger.error(e.getMessage(), e);
+//      }
+
+//      logger.debug(result);
       final ROIResult roiResult = new ROIResult(
             new File(tokenInfo.getFileName(xFileID)),
             new File(tokenInfo.getFileName(yFileID)),

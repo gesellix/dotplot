@@ -9,9 +9,12 @@
 	<classpathentry exported="true" kind="lib" path="lib/jai_mlibwrapper.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/mail.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/org.pdfbox.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/PDFBox-0.7.2.jar"/>
+	<classpathentry kind="src" path="std"/>
+	<classpathentry kind="src" path="examples"/>
+	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

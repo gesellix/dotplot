@@ -40,7 +40,7 @@ interface ImageCallback
     * @param curStep Step index, with one of org.dotplot.IDotplot.STEPS
     * @param msg     Log message, can be null
     *
-    * @see org.dotplot.image.IDotplot#STEPS
+    * @see org.dotplot.core.IDotplot#STEPS
     */
    void updateProgress(int diff, int curStep, String msg);
 

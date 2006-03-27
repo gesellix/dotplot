@@ -3,7 +3,7 @@
  */
 package org.dotplot.tokenizer;
 
-import java.io.File;
+import org.dotplot.core.IPlotSource;
 
 /**
  * End Of File Token.
@@ -17,12 +17,12 @@ public class EOFToken extends Token
    /**
     * Creates a EOF-Token for a special file.
     *
-    * @param file - the file
+    * @param source - the file
     */
-   public EOFToken(File file)
+   public EOFToken(IPlotSource source)
    {
       super("");
-      this.setFile(file);
+      this.setSource(source);
       this.setType(Token.TYPE_EOF);
    }
 
@@ -31,6 +31,6 @@ public class EOFToken extends Token
     */
    public String toString()
    {
-      return this.getFile().toString() + " EOFToken";
+      return this.getSource().toString() + " EOFToken";
    }
 }

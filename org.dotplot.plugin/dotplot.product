@@ -3,6 +3,7 @@
 
 <product name="Matrix4.plot" id="org.dotplot.plugin.Dotploter" application="org.dotplot.plugin.DotplotApplication" useFeatures="false">
 
+
    <configIni use="default"/>
 
    <launcherArgs>
@@ -12,7 +13,7 @@
 
    <splash location="org.dotplot.plugin"/>
 
-   <launcher name="dotplot">
+   <launcher name="Dotplot">
       <solaris/>
       <win useIco="false">
          <bmp/>

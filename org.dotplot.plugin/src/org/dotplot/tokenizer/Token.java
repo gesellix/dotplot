@@ -1,6 +1,6 @@
 package org.dotplot.tokenizer;
 
-import java.io.File;
+import org.dotplot.core.IPlotSource;
 
 /**
  * Representation type of a Token.
@@ -53,9 +53,9 @@ public class Token
    private String value;
 
    /**
-    * The file which contains the Token
+    * The source of the <code>Token</code>.
     */
-   private File file;
+   private IPlotSource source;
 
    /**
     * The line in which the Token occures
@@ -115,21 +115,21 @@ public class Token
    public String toString()
    {
       StringBuffer sb = new StringBuffer();
-      if (this.file != null)
+      if (this.source != null)
       {
-         sb.append(file.toString()).append(' ');
+         sb.append(source.toString() + ' ');
       }
 
       sb.append("Token");
 
       if (this.type != -1)
       {
-         sb.append("(");
-         sb.append(this.type);
-         sb.append(")");
+    	  sb.append("(");
+    	  sb.append(this.type);
+    	  sb.append(")");
       }
 
-      sb.append(" \"").append(this.value).append("\"");
+      sb.append(" \"" + this.value + "\"");
 
       if (this.line > -1)
       {
@@ -145,11 +145,11 @@ public class Token
     *
     * @return - The file
     *
-    * @see #setFile(java.io.File)
+    * @see #setSource(java.io.File)
     */
-   public File getFile()
+   public IPlotSource getSource()
    {
-      return this.file;
+      return this.source;
    }
 
    /**
@@ -163,15 +163,15 @@ public class Token
    }
 
    /**
-    * Sets the file which contains the Token.
+    * Sets the <code>PlotSource</code>of the Token.
     *
-    * @param file - the file
+    * @param source - the <code>PlotSource</code>
     *
-    * @see #getFile()
+    * @see #getSource()
     */
-   public void setFile(File file)
+   public void setSource(IPlotSource source)
    {
-      this.file = file;
+      this.source = source;
    }
 
    /**
@@ -223,6 +223,25 @@ public class Token
    }
 
    /**
+    * Proves if two Token are equal.
+    *
+    * @param token the Toke which should be examined
+    *
+    * @return the result
+    */
+   public boolean equals(Token token)
+   {
+      if (token.getType() == this.getType() && token.getValue().equals(this.getValue()))
+      {
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+   }
+
+   /**
     * Proves if two objects are equal.
     * <p />
     * It returns only a positiv resulst, if the objects are Token.
@@ -234,12 +253,22 @@ public class Token
     */
    public boolean equals(Object object)
    {
+      Token token;
       if (object instanceof Token)
       {
-         Token token = ((Token) object);
-         return (token.getType() == this.getType() && token.getValue().equals(this.getValue()));
+         token = (Token) object;
       }
-
-      return false;
+      else
+      {
+         return false;
+      }
+      if (token.getType() == this.getType() && token.getValue().equals(this.getValue()))
+      {
+         return true;
+      }
+      else
+      {
+         return false;
+      }
    }
 }

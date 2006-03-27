@@ -1,0 +1,90 @@
+Zuordnung der Schwerpunkt-Module zu den Schwerpunkten: 
+ 
+ 
+Nr. 
+ 
+Modul 
+ 
+Schwerpunkt 
+  
+ 
+IS101 Betriebssysteme II ST, TWA, MI, WI, MM 
+IS102 Datenbanksysteme II ST, TWA, MI, WI, MM 
+IS103 Mensch-Maschine-Kommunikation ST, TWA, MI, WI, MM 
+IS104 Sicherheit in der Informationsverarbeitung ST, TWA, MI, WI, MM 
+IS105 Softwarearchitektur und Anwendungsentwicklung ST, TWA, MI, WI, MM 
+IS106 Automaten & formale Sprachen ST, TWA, MI, WI, MM 
+IS107 Telekommunikation ST, TWA, MI, WI, MM 
+IS108 Neuronale Netze ST, TWA, MI, WI, MM 
+IS109 Projekt- und Qualitätsmanagement ST, TWA, MI, WI, MM 
+IS110 Expertensysteme ST, TWA, MI, WI, MM 
+IS111 Organisation von DV-Projekten ST, TWA, MI, WI, MM 
+IS112 Informationsmanagement ST, TWA, MI, WI, MM 
+IS113 Methoden der KI ST, TWA, MI, WI, MM 
+IS114 Verteilte Systeme ST, TWA, MI, WI, MM 
+IS115 Bildverarbeitung TWA, MM 
+IS116 Digitale Signalverarbeitung und Kompressionsverfahren TWA 
+IS117 Elektronischer Handel ST, WI, MM 
+IS118 Prozessrechentechnik ST, TWA 
+IS119 Signalverarbeitung ST, 
+IS120 Simulation ST, TWA, WI 
+IS121 Statistik MI, WI 
+IS122 Ausgewählte Kapitel des Compilerbaus ST 
+IS123 Mess- und Regelungstechnik TWA 
+IS124 Mustererkennung TWA
+IS125 Robotik TWA 
+IS126 CAD TWA 
+IS127 FEM TWA 
+IS128 Organisationslehre WI 
+IS129 Kommerzielle Anwendungssysteme I WI 
+IS130 Kommerzielle Anwendungssysteme II WI 
+IS131 Operations Research WI 
+IS132 Marktforschung WI 
+IS133 Data Warehouse WI 
+IS134 Medizinische Terminologie MI 
+IS135 Medizinisch diagnostische und therap. Verfahren MI 
+IS136 Krankenhausorganisation und -betriebslehre MI 
+IS137 Klinik-Informationssysteme MI 
+IS138 Bildgebende Verfahren in der Medizin MI 
+IS139 Simulation biomedizinischer Systeme MI 
+IS140 Bio-Signalverarbeitung MI 
+IS141 Biomathematische Verfahren MI 
+IS142 Einführung in das Gesundheitswesen MI 
+IS143 Multimedia I MM 
+IS144 Multimedia II MM 
+IS145 Programmierung von Multimediasystemen I WI, MM 
+IS146 Programmierung von Multimediasystemen II WI, MM 
+ 
+Nr. 
+ 
+Modul 
+ 
+Schwerpunkt 
+IS147 Mediengestaltung und -psychologie MM 
+IS148 Methodische Aspekte multimedialer Publikationen MM 
+IS149 Ausgewählte Kapitel der Wirtschafts-Informatik WI 
+IS150 Theoretische Informatik ST, TWA, MI, WI, MM 
+IS151 C# und .Net ST, TWA, MI, WI, MM 
+IS152 Webperformance ST, WI, MM 
+IS153 Numerik (Datenanalyse) TWA, MI, WI 
+IS154 Open Source Portale ST, WI, MM 
+IS155 Business Intelligence ST, TWA, MI, WI, MM 
+IS156 Multimediales Publizieren MM 
+ 
+IS001 Praktikum Bildverarbeitung TWA, MM 
+IS002 Praktikum Prozessrechentechnik ST, TWA 
+IS003 Praktikum Betriebssysteme ST 
+IS004 Praktikum Rechnernetze ST 
+IS005 Praktikum Künstliche Intelligenz TWA 
+IS006 Praktikum Wirtschafts-Informatik WI 
+IS007 Praktikum Medizinische Informatik MI 
+IS008 Praktikum Multimedia MM 
+IS009 Praktikum Systemtechnik ST 
+IS010 Praktikum Techn. Wiss. Anwendung TWA 
+   
+IS050 Seminar Systemtechnik ST 
+IS051 Seminar techn.-wiss. Anwendung TWA 
+IS052 Seminar Wirtschafts-Informatik WI 
+IS053 Seminar Medizinische Informatik MI 
+IS054 Seminar Multimedia MM 
+ 

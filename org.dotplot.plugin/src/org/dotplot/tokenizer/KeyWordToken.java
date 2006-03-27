@@ -3,6 +3,7 @@
  */
 package org.dotplot.tokenizer;
 
+
 /**
  * Token for marking of keywords.
  *

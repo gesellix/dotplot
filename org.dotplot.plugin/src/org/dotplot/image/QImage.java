@@ -4,146 +4,161 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 
+import org.dotplot.core.IDotplot;
 import org.dotplot.fmatrix.ITypeTableNavigator;
-import org.dotplot.ui.configuration.GlobalConfiguration;
 import org.dotplot.ui.monitor.DotPlotProgressMonitor;
 import org.dotplot.ui.monitor.MonitorablePlotUnit;
 
 /**
- * The QImage gets the 2D-Floatingpoint-Array of the QMatrix and paints
- * it on the screen. The maxX value represents the width of the Matrix,
- * the maxY value the heigth.
- *
+ * The QImage gets the 2D-Floatingpoint-Array of the QMatrix and paints it on
+ * the screen. The maxX value represents the width of the Matrix, the maxY value
+ * the heigth.
+ * 
  * @author Tobias Gesellchen
  */
-public class QImage implements MonitorablePlotUnit
-{
-   private static Logger logger = Logger.getLogger(QImage.class.getName());
+public class QImage implements MonitorablePlotUnit {
+	private static Logger logger = Logger.getLogger(QImage.class.getName());
 
-   private Dotplot dotplot = null;
+	private Dotplot dotplot = null;
 
-   private int progress = 0;
-   private int currentStep = 1;
+	private int progress = 0;
 
-   /**
-    * Initialization of the QImage controller with an ITypeTableNavigator
-    * containing the current Dotplot data.
-    *
-    * @param nav navigator for the current data
-    */
-   public QImage(ITypeTableNavigator nav)
-   {
-      logger.debug("lib-path:   " + System.getProperty("java.library.path"));
-      logger.debug("user-dir:   " + System.getProperty("user.dir"));
+	private int currentStep = 1;
 
-      dotplot = new Dotplot(nav, this);
+	private IQImageConfiguration config;
 
-      runGC();
-   }
+	/**
+	 * Initialization of the QImage controller with an ITypeTableNavigator
+	 * containing the current Dotplot data.
+	 * 
+	 * @param nav
+	 *            navigator for the current data
+	 */
+	public QImage(ITypeTableNavigator nav, IQImageConfiguration config) {
+		logger.debug("lib-path:   " + System.getProperty("java.library.path"));
+		logger.debug("user-dir:   " + System.getProperty("user.dir"));
 
-   /**
-    * returns the dotplot for the currently set ITypeTableNavigator.
-    *
-    * @return the dotplot
-    */
-   public IDotplot getDotplot()
-   {
-      return getDotplot(false);
-   }
+		this.config = config;
 
-   private IDotplot getDotplot(boolean onlyExport)
-   {
-      QImageConfiguration config = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION);
+		dotplot = new Dotplot(nav, this);
+		runGC();
+	}
 
-      if (config.isExportDotplot())
-      {
-         // TODO remove "invalid thread access" on monitor when ownThread is set to true
-         saveDotplot(dotplot, false);
+	/**
+	 * returns the dotplot for the currently set ITypeTableNavigator.
+	 * 
+	 * @return the dotplot
+	 */
+	public IDotplot getDotplot() {
+		return getDotplot(false);
+	}
 
-         if (onlyExport)
-         {
-            update(100, IDotplot.STEP_CONVERT_DATA);
-            return null;
-         }
-      }
+	private IDotplot getDotplot(boolean onlyExport) {
+		// IQImageConfiguration config = (IQImageConfiguration)
+		// GlobalConfiguration.getInstance().get(
+		// GlobalConfiguration.KEY_IMG_CONFIGURATION);
 
-      return dotplot;
-   }
+		if (config.isExportDotplotToFile()) {
+			// TODO remove "invalid thread access" on monitor when ownThread is
+			// set to true
+			saveDotplot(dotplot, false, config);
 
-   /**
-    * exports the dotplot to the file, that has been set in the plugin configuration.
-    *
-    * @param dotplot      the dotplot to be exported
-    * @param useOwnThread export in an own Thread to minimize blocking of the whole application
-    */
-   public static void saveDotplot(IDotplot dotplot, boolean useOwnThread)
-   {
-      QImageConfiguration config = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION);
+			if (onlyExport) {
+				update(100, IDotplot.STEP_CONVERT_DATA);
+				return null;
+			}
+		}
 
-      String formatSelection = JAITools.EXPORT_FORMATS[config.getExportFormat()];
-      String exportFileName = config.getExportFilename();
-      int[][] currentLut = config.getLut();
+		return dotplot;
+	}
 
-      JAITools.saveDotplot(dotplot,
-            new File(exportFileName + '.' + formatSelection),
-            formatSelection,
-            currentLut,
-            useOwnThread);
-   }
+	/**
+	 * exports the dotplot to the file, that has been set in the plugin
+	 * configuration.
+	 * 
+	 * @param dotplot
+	 *            the dotplot to be exported
+	 * @param useOwnThread
+	 *            export in an own Thread to minimize blocking of the whole
+	 *            application
+	 */
+	public static void saveDotplot(IDotplot dotplot, boolean useOwnThread,
+			IQImageConfiguration config) {
+		// IQImageConfiguration config = (IQImageConfiguration)
+		// GlobalConfiguration.getInstance().get(
+		// GlobalConfiguration.KEY_IMG_CONFIGURATION);
 
-   /**
-    * Invokes the Garbage Collector to get more available memory.
-    */
-   static void runGC()
-   {
-      Runtime rt = Runtime.getRuntime();
-      rt.gc();
-      if (logger.isDebugEnabled())
-      {
-         logger.debug("Free Mem: " + rt.freeMemory());
-      }
-   }
+		String formatSelection = JAITools.EXPORT_FORMATS[config
+				.getExportFormat()];
+		String exportFileName = config.getExportFilename();
+		int[][] currentLut = config.getLut();
 
-   ////////// MonitorablePlotUnit
-   public String nameOfUnit()
-   {
-      return "Imaging";
-   }
+		JAITools.saveDotplot(dotplot, new File(exportFileName + '.'
+				+ formatSelection), formatSelection, currentLut,config.isOnlyExport(), useOwnThread);
+	}
 
-   public int getProgress()
-   {
-      return progress;
-   }
+	/**
+	 * Invokes the Garbage Collector to get more available memory.
+	 */
+	static void runGC() {
+		Runtime rt = Runtime.getRuntime();
+		rt.gc();
+		if (logger.isDebugEnabled()) {
+			logger.debug("Free Mem: " + rt.freeMemory());
+		}
+	}
 
-   public String getMonitorMessage()
-   {
-      return IDotplot.STEPS[currentStep];
-   }
+	// //////// MonitorablePlotUnit
+	public String nameOfUnit() {
+		return "Imaging";
+	}
 
-   public void cancel()
-   {
-      // TODO implement cancel?!
-   }
+	public int getProgress() {
+		return progress;
+	}
 
-   void update(int diff, int curStep)
-   {
-      update(diff, curStep, null);
-   }
+	public String getMonitorMessage() {
+		return IDotplot.STEPS[currentStep];
+	}
 
-   void update(int diff, int curStep, String msg)
-   {
-      this.currentStep = curStep;
-      this.progress += diff;
-      this.progress = Math.min(100, progress);
+	public void cancel() {
+		// TODO implement cancel?!
+	}
 
-      if (logger.isDebugEnabled())
-      {
-         logger.debug(msg);
-         logger.debug("Progress -- " + progress + " " + IDotplot.STEPS[currentStep]);
-      }
+	void update(int diff, int curStep) {
+		update(diff, curStep, null);
+	}
 
-      DotPlotProgressMonitor.getInstance().update();
-   }
+	void update(int diff, int curStep, String msg) {
+		this.currentStep = curStep;
+		this.progress += diff;
+		this.progress = Math.min(100, progress);
+
+		if (logger.isDebugEnabled()) {
+			logger.debug(msg);
+			logger.debug("Progress -- " + progress + " "
+					+ IDotplot.STEPS[currentStep]);
+		}
+
+		DotPlotProgressMonitor.getInstance().update();
+	}
+
+	/**
+	 * Returns the config.
+	 * 
+	 * @return - the config.
+	 */
+	public IQImageConfiguration getConfiguration() {
+		return config;
+	}
+
+	/**
+	 * Sets the config.
+	 * 
+	 * @param config
+	 *            The config to set.
+	 */
+	public void setConfiguration(IQImageConfiguration config) {
+		this.config = config;
+	}
 }

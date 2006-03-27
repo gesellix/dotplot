@@ -19,8 +19,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import org.dotplot.grid.PlotJob;
-import org.dotplot.image.QImageConfiguration;
-import org.dotplot.ui.configuration.GlobalConfiguration;
+import org.dotplot.image.IQImageConfiguration;
 
 /**
  * Provides several static methods for file handling, like im-/export or display of Dialogs.
@@ -156,20 +155,20 @@ public class FileUtil
     *
     * @param file source
     */
-   public static void importQImageConfig(File file)
+   public static IQImageConfiguration importQImageConfig(File file)
    {
+	   IQImageConfiguration config = null;
       try
       {
-         GlobalConfiguration.getInstance().put(GlobalConfiguration.KEY_IMG_CONFIGURATION,
-               (QImageConfiguration) importGZIPed(new FileInputStream(file)));
+         config =  (IQImageConfiguration)importGZIPed(new FileInputStream(file));
       }
       catch (Exception e)
       {
          logger.error("error importing QImageConfiguration", e);
-         return;
       }
 
-      logger.debug("QImageConfiguration import successful");
+      if(config != null) logger.debug("QImageConfiguration import successful");
+      return config;
    }
 
    /**
@@ -177,12 +176,11 @@ public class FileUtil
     *
     * @param file target
     */
-   public static void exportQImageConfig(File file)
+   public static void exportQImageConfig(File file, IQImageConfiguration config)
    {
       try
       {
-         exportGZIPed(new FileOutputStream(file),
-               (QImageConfiguration) GlobalConfiguration.getInstance().get(GlobalConfiguration.KEY_IMG_CONFIGURATION));
+         exportGZIPed(new FileOutputStream(file),config);
       }
       catch (Exception e)
       {

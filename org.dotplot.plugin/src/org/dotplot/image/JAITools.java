@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
@@ -50,8 +49,11 @@ import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TiledImage;
 
-import org.dotplot.tokenizer.IFileList;
-import org.dotplot.ui.configuration.GlobalConfiguration;
+import org.dotplot.core.ContextFactory;
+import org.dotplot.core.DotplotContext;
+import org.dotplot.core.IDotplot;
+import org.dotplot.core.IPlotSource;
+import org.dotplot.core.ISourceList;
 
 /**
  * Class containing several tools handling images through JAI (imaging) and iText (PDF).
@@ -60,6 +62,12 @@ import org.dotplot.ui.configuration.GlobalConfiguration;
  */
 final public class JAITools
 {
+	
+	public static final int PDF = 0;
+	public static final int JPG = 1;
+	public static final int PNG = 2;
+	public static final int TIFF = 3;
+	
    /**
     * for internal configuration of TiledImage.
     */
@@ -91,8 +99,7 @@ final public class JAITools
 
    static Raster getRasterWithLUT(TiledImage tiledImage, float[] scale, QImage qImage)
    {
-      QImageConfiguration config = (QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION);
+      IQImageConfiguration config = qImage.getConfiguration();
 
       int scaleMode = config.getScaleMode();
       boolean scaleUp = config.doScaleUp();
@@ -218,7 +225,7 @@ final public class JAITools
     * @param useThread - save in an external thread (background)
     */
    static void saveDotplot(
-         final IDotplot dotplot, final File target, final String format, final int[][] lut, boolean useThread)
+         final IDotplot dotplot, final File target, final String format, final int[][] lut,final boolean isOnlyExport, boolean useThread)
    {
       if (useThread)
       {
@@ -226,17 +233,17 @@ final public class JAITools
          {
             public void run()
             {
-               save(dotplot, target, format, lut);
+               save(dotplot, target, format, lut, isOnlyExport);
             }
          }.start();
       }
       else
       {
-         save(dotplot, target, format, lut);
+         save(dotplot, target, format, lut, isOnlyExport);
       }
    }
 
-   private static void save(final IDotplot dotplot, final File target, final String format, final int[][] lut)
+   private static void save(final IDotplot dotplot, final File target, final String format, final int[][] lut, boolean isOnlyExport)
    {
       logger.debug("preparing image for file '" + target.getName() + "'...");
 
@@ -250,7 +257,7 @@ final public class JAITools
          saveJAI(imageWithLUT, filename, EXPORTFORMAT_JPEG);
 
          logger.debug("export to PDF...");
-         savePDF(filename, EXPORTFORMAT_JPEG);
+         savePDF(filename, EXPORTFORMAT_JPEG, isOnlyExport);
 
          return;
       }
@@ -323,10 +330,8 @@ final public class JAITools
       }
    }
 
-   private static void savePDF(String file, String format)
+   private static void savePDF(String file, String format, boolean isOnlyExport)
    {
-      final QImageConfiguration imageConfig = ((QImageConfiguration) GlobalConfiguration.getInstance().get(
-            GlobalConfiguration.KEY_IMG_CONFIGURATION));
 
       Document document = new Document();
 
@@ -374,25 +379,22 @@ final public class JAITools
                FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12));
 
          // plotted files
-         final IFileList iFileList = ((IFileList) GlobalConfiguration.getInstance().get(
-               GlobalConfiguration.KEY_DOTPLOTTER_FILELIST));
+         DotplotContext context = ContextFactory.getContext();
+         final ISourceList iFileList = context.getSourceList();
 
          final Font fileNameFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
          final Paragraph files = new Paragraph();
          if (iFileList != null)
          {
-            Enumeration fileList = iFileList.getEnumeration();
-
-            while (fileList.hasMoreElements())
-            {
-               String fileName = '\n' + fileList.nextElement().toString();
+        	 for(IPlotSource source: iFileList){        		 
+               String fileName = '\n' + source.toString();
                files.add(new Phrase(fileName, fileNameFont));
             }
          }
          else
          {
             files.add(new Phrase("No FileList provided.", fileNameFont));
-            if (imageConfig.isOnlyExport())
+            if (isOnlyExport)
             {
                files.add(new Phrase("\nThis file has been created outside the eclipse environment.", fileNameFont));
             }
@@ -469,9 +471,7 @@ final public class JAITools
 
       for (int i = 0; i < samples.length; i += 3)
       {
-         ret[x++] = 0xff000000
-               | ((samples[i] << 16) & 0xFF)
-               | ((samples[i + 1] << 8) & 0xFF)
+         ret[x++] = 0xff000000 | ((samples[i] << 16) & 0xFF) | ((samples[i + 1] << 8) & 0xFF)
                | ((samples[i + 2] << 0) & 0xFF);
       }
 
@@ -510,11 +510,11 @@ final public class JAITools
       }
       catch (FileNotFoundException e)
       {
-         logger.error("Error exporting image list.", e);
+         e.printStackTrace();
       }
       catch (IOException e)
       {
-         logger.error("Error exporting image list.", e);
+         e.printStackTrace();
       }
    }
 

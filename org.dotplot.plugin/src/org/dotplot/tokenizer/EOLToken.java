@@ -3,7 +3,7 @@
  */
 package org.dotplot.tokenizer;
 
-import java.io.File;
+import org.dotplot.core.IPlotSource;
 
 /**
  * End Of Line Token.
@@ -17,13 +17,13 @@ public class EOLToken extends Token
    /**
     * Creates an EOL-Token with a special behaviour in special line.
     *
-    * @param file - the file in which the token occures
+    * @param source - the file in which the token occures
     * @param line - the line in which the token occures
     */
-   public EOLToken(File file, int line)
+   public EOLToken(IPlotSource source, int line)
    {
       super("\n", Token.TYPE_EOL, line);
-      this.setFile(file);
+      this.setSource(source);
    }
 
    /**
@@ -43,9 +43,9 @@ public class EOLToken extends Token
    {
       String s = new String();
 
-      if (this.getFile() != null)
+      if (this.getSource() != null)
       {
-         s = this.getFile().toString();
+         s = this.getSource().toString();
       }
 
       return s + " EOLToken";

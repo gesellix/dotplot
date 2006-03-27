@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Batchjob">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Task" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Dependency">
+    <xs:complexType>
+      <xs:attribute name="version" type="xs:string" use="required" />
+      <xs:attribute name="plugin" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Dotplotplugin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Dependency" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="Service" minOccurs="0" maxOccurs="unbounded" />
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="Job" />
+          <xs:element ref="Batchjob" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:string" use="required" />
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="info" type="xs:string" use="optional" />
+      <xs:attribute name="provider" type="xs:string" use="optional" />
+      <xs:attribute name="id" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Extention">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Parameter" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="hotspot" type="xs:string" use="required" />
+      <xs:attribute name="class" type="xs:string" use="required" />
+      <xs:attribute	name="factory" type="xs:string" use="optional" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Job">
+    <xs:complexType>
+      <xs:attribute name="class" type="xs:string" use="required" />
+      <xs:attribute name="id" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Parameter">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="value" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Service">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Extention" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="class" type="xs:string" use="optional" />
+      <xs:attribute name="id" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Task">
+    <xs:complexType>
+      <xs:attribute name="serviceid" type="xs:string" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

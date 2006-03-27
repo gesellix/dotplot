@@ -5,6 +5,8 @@ package org.dotplot.fmatrix;
 
 import java.util.Enumeration;
 
+import org.dotplot.core.ITypeTable;
+
 /**
  * The class holds several functions to maniplate the typeTable.
  *
@@ -13,14 +15,14 @@ import java.util.Enumeration;
  */
 public class TypeTableManipulator implements ITypeTableManipulator
 {
-   private TypeTable typeTable;
+   private ITypeTable typeTable;
 
    /**
     * Constructs a TypeTableManipulator object.
     *
     * @param typeTable a TypeTable object to be manipulated
     */
-   public TypeTableManipulator(TypeTable typeTable)
+   public TypeTableManipulator(ITypeTable typeTable)
    {
       this.typeTable = typeTable;
    }

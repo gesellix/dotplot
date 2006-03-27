@@ -3,6 +3,7 @@
  */
 package org.dotplot.tokenizer;
 
+
 /**
  * This Token signs the end of a token stream.
  *

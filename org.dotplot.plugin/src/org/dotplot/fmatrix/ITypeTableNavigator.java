@@ -5,6 +5,8 @@ package org.dotplot.fmatrix;
 
 import java.awt.Dimension;
 
+import org.dotplot.core.ITypeTable;
+
 /**
  * interface for TypeTableNavigator.
  *
@@ -85,7 +87,7 @@ public interface ITypeTableNavigator
     *
     * @see #setTypeTable
     */
-   public TypeTable getTypeTable();
+   public ITypeTable getTypeTable();
 
    /**
     * Specifies the new type table.

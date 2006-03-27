@@ -98,7 +98,7 @@ public class TokenInformation implements Serializable
       Iterator fileInfoIter = fileInformations.iterator();
       while (fileInfoIter.hasNext())
       {
-         FileInformation fileInfo = (FileInformation) fileInfoIter.next();
+         SourceInformation fileInfo = (SourceInformation) fileInfoIter.next();
          if (fileInfo.getStartIndex() <= index)
          {
             fileIndex++;
@@ -126,7 +126,7 @@ public class TokenInformation implements Serializable
          return null;
       }
 
-      return ((FileInformation) fileInformations.elementAt(fileIndex)).getFilename();
+      return ((SourceInformation) fileInformations.elementAt(fileIndex)).getSourcename();
    }
 
    /**
@@ -143,7 +143,7 @@ public class TokenInformation implements Serializable
          return -1;
       }
 
-      return ((FileInformation) fileInformations.elementAt(fileIndex)).getFileSize();
+      return ((SourceInformation) fileInformations.elementAt(fileIndex)).getSize();
    }
 
    /**
@@ -160,7 +160,7 @@ public class TokenInformation implements Serializable
          return -1;
       }
 
-      return ((FileInformation) fileInformations.elementAt(fileIndex)).getStartIndex();
+      return ((SourceInformation) fileInformations.elementAt(fileIndex)).getStartIndex();
    }
 
    /**
@@ -175,7 +175,7 @@ public class TokenInformation implements Serializable
       Iterator fileInformationsIter = fileInformations.iterator();
       while (fileInformationsIter.hasNext())
       {
-         indices.add(new Integer(((FileInformation) fileInformationsIter.next()).getStartIndex()));
+         indices.add(new Integer(((SourceInformation) fileInformationsIter.next()).getStartIndex()));
       }
 
       int i = 0;
@@ -194,10 +194,10 @@ public class TokenInformation implements Serializable
     *
     * @param container a FileInformation object
     */
-   public void addFileInformation(FileInformation container)
+   public void addSourceInformation(SourceInformation container)
    {
       fileInformations.add(container);
-      if (container.getFileSize() > -1)
+      if (container.getSize() > -1)
       {
          fileInfoNumber++;
       }

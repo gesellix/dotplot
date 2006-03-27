@@ -11,8 +11,8 @@ import org.dotplot.fmatrix.ITypeTableNavigator;
 import org.dotplot.grid.framework.ConnectionException;
 import org.dotplot.grid.framework.Identity;
 import org.dotplot.grid.framework.MessageCollaborator;
+import org.dotplot.image.IQImageConfiguration;
 import org.dotplot.image.Util;
-import org.dotplot.ui.configuration.GlobalConfiguration;
 import org.dotplot.util.FileUtil;
 
 /**
@@ -137,13 +137,13 @@ public class GridClient extends MessageCollaborator
 
    private boolean startPlotExport(File target)
    {
-      if (plotjob.getImageConfig() != null)
-      {
-         GlobalConfiguration.getInstance().put(GlobalConfiguration.KEY_IMG_CONFIGURATION, plotjob.getImageConfig());
-      }
+//      if (plotjob.getImageConfig() != null)
+//      {
+//         GlobalConfiguration.getInstance().put(GlobalConfiguration.KEY_IMG_CONFIGURATION, plotjob.getImageConfig());
+//      }
 
       final Dimension targetSize = plotjob.getTargetSize();
-      final ITypeTableNavigator navigator = plotjob.getTypeTable().getNavigator();
+      final ITypeTableNavigator navigator = plotjob.getTypeTable().createNavigator();
 
       final Identity identity = getIdentity();
       final int index = plotjob.getCollaborators().indexOf(identity);
@@ -172,7 +172,7 @@ public class GridClient extends MessageCollaborator
       logger.debug("ID: " + identity.getId() + ", ROI: " + (index + 1) + " " + roi);
       logger.debug("starting export...");
 
-      if (!export(navigator, targetSize, roi, target.getAbsolutePath(), scaleImage(targetSize, navigator)))
+      if (!export(navigator, targetSize, roi, target.getAbsolutePath(), scaleImage(targetSize, navigator), plotjob.getImageConfig()))
       {
          return false;
       }
@@ -196,17 +196,17 @@ public class GridClient extends MessageCollaborator
 
    private synchronized boolean export(
          final ITypeTableNavigator navigator, final Dimension targetSize, final Rectangle roi, final String filename,
-         boolean scale)
+         boolean scale, final IQImageConfiguration config)
    {
       try
       {
          if (scale)
          {
-            Util.exportDotplotInROIByInfoMural(navigator, targetSize, roi, filename);
+            Util.exportDotplotInROIByInfoMural(navigator, targetSize, roi, filename, config);
          }
          else
          {
-            Util.exportDotplotInROI(navigator, roi, filename);
+            Util.exportDotplotInROI(navigator, roi, filename, config);
          }
       }
       catch (Exception e)

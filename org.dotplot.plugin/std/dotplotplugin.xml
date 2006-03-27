@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<Dotplotplugin
+	id="org.dotplot.core.Standard"
+	name="Standard"
+	version="1.0"
+	provider="FH Giessen-Friedberg (www.fh-giessen.de)"
+	info="Standard extentions of Matrix4.plot.">	
+
+	<Service id="org.dotplot.standard.Converter" 
+			 class="org.dotplot.tokenizer.converter.ConverterService">
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.XMLType">
+			 <Parameter name="name" value="org.dotplot.types.Text.XML" />
+			 <Parameter name="suffix" value=".xml" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.HTMLType">
+			 <Parameter name="name" value="org.dotplot.types.Text.HTML" />
+			 <Parameter name="suffix" value=".htm" />
+		</Extention>
+		
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.HTMLType">
+			 <Parameter name="name" value="org.dotplot.types.Text.HTML" />
+			 <Parameter name="suffix" value=".html" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".css" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".cs" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".hpp" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".py" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".conf" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".properties" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".csv" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".doc" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".rtf" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".tex" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".js" />
+		</Extention>
+		
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".log" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".ini" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.TextType">
+			 <Parameter name="name" value="org.dotplot.types.Text" />
+			 <Parameter name="suffix" value=".cfg" />
+		</Extention>
+		 
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.CType">
+			 <Parameter name="name" value="org.dotplot.types.Text.C" />
+			 <Parameter name="suffix" value=".c" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.CType">
+			 <Parameter name="name" value="org.dotplot.types.Text.C" />
+			 <Parameter name="suffix" value=".cc" />
+		</Extention>
+		
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.CType">
+			 <Parameter name="name" value="org.dotplot.types.Text.C" />
+			 <Parameter name="suffix" value=".h" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.CPlusPlusType">
+			 <Parameter name="name" value="org.dotplot.types.Text.C++" />
+			 <Parameter name="suffix" value=".cpp" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.JavaType">
+			 <Parameter name="name" value="org.dotplot.types.Text.Java" />
+			 <Parameter name="suffix" value=".java" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Converter.newType"
+			 	   class="org.dotplot.tokenizer.service.PHPType">
+			 <Parameter name="name" value="org.dotplot.types.Text.PHP" />
+			 <Parameter name="suffix" value=".php" />
+		</Extention>
+						
+	</Service>
+
+
+	<Service id="org.dotplot.standard.Tokenizer"
+			 class="org.dotplot.tokenizer.service.TokenizerService">
+	
+		<Extention hotspot="org.dotplot.standard.Tokenizer.newTokenizer" 
+				   class="org.dotplot.tokenizer.service.TextScanner">
+			<Parameter name="id" value="org.dotplot.tokenizer.TextTokenizer" />
+			<Parameter name="name" value="Text Tokenizer" />
+		</Extention>
+		
+		<Extention hotspot="org.dotplot.standard.Tokenizer.newTokenizer" 
+				   class="org.dotplot.tokenizer.service.JavaScanner">
+			<Parameter name="id" value="org.dotplot.tokenizer.JavaTokenizer" />
+			<Parameter name="name" value="Java Tokenizer" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Tokenizer.newTokenizer" 
+				   class="org.dotplot.tokenizer.service.CScanner">
+			<Parameter name="id" value="org.dotplot.tokenizer.CTokenizer" />
+			<Parameter name="name" value="C Tokenizer" />			
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Tokenizer.newTokenizer" 
+				   class="org.dotplot.tokenizer.service.CPlusPlusScanner">
+			<Parameter name="id" value="org.dotplot.tokenizer.CPPTokenizer" />
+			<Parameter name="name" value="C++ Tokenizer" />
+		</Extention>
+
+		<Extention hotspot="org.dotplot.standard.Tokenizer.newTokenizer" 
+				   class="org.dotplot.tokenizer.service.PHPScanner">
+			<Parameter name="id" value="org.dotplot.tokenizer.PHPTokenizer" />
+			<Parameter name="name" value="PHP Tokenizer" />
+		</Extention>
+		
+	</Service>
+	
+	<Service id="org.dotplot.standard.Filter"
+			 class="org.dotplot.tokenizer.filter.FilterService">
+			 
+		<Extention hotspot="org.dotplot.standard.Filter.newFilter"
+	    		   class="org.dotplot.tokenizer.filter.LineFilter">
+	    	<Parameter name="name" value="org.dotplot.filter.LineFilter"/>
+	    	<Parameter name="ui" value="org.dotplot.tokenizer.filter.ui.LineFilterUI"/>
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.Filter.newFilter"
+	    		   class="org.dotplot.tokenizer.filter.SentenceFilter">
+	    	<Parameter name="name" value="org.dotplot.filter.SentenceFilter"/>
+	    	<Parameter name="ui" value="org.dotplot.tokenizer.filter.ui.SentenceFilterUI"/>
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.Filter.newFilter"
+	    		   class="org.dotplot.tokenizer.filter.KeyWordFilter">
+	    	<Parameter name="name" value="org.dotplot.filter.KeyWordFilter"/>
+	    	<Parameter name="ui" value="org.dotplot.tokenizer.filter.ui.KeyWordFilterUI"/>
+	    </Extention>
+	     						 
+	</Service>
+	
+	<Service id="org.dotplot.standard.FMatrix"
+			 class="org.dotplot.fmatrix.FMatrixService">
+	</Service>
+
+	<Service id="org.dotplot.standard.QImage"
+			 class="org.dotplot.image.QImageService">
+	</Service>
+
+	<Service id="org.dotplot.standard.EclipseUI"
+			 class="org.dotplot.eclipse.EclipseUIService">
+			 	    
+		<Extention hotspot="org.dotplot.standard.EclipseUI.View"
+	    		   class="org.dotplot.tokenizer.service.ui.SelectTokenizerView">
+	    	<Parameter name="id" value="01_Scanner"/>	    		   
+	    </Extention>
+	    
+		<Extention hotspot="org.dotplot.standard.EclipseUI.View"
+	    		   class="org.dotplot.tokenizer.filter.ui.SelectFilterView">
+	    	<Parameter name="id" value="02_Filter"/>	    		   
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.EclipseUI.View"
+	    		   class="org.dotplot.fmatrix.ui.FMatrixConfigurationView">
+	    	<Parameter name="id" value="03_FMatrix"/>	    		   
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.EclipseUI.View"
+	    		   class="org.dotplot.image.ui.ConfigQImageView">
+	    	<Parameter name="id" value="04_QImage"/>	    		   
+	    </Extention>
+
+		<Extention hotspot="org.dotplot.standard.EclipseUI.View"
+	    		   class="org.dotplot.grid.ui.ConfigGridView">
+	    	<Parameter name="id" value="05_Grid"/>	    		   
+	    </Extention>	    	    
+	</Service>
+
+	<Job 
+		id="org.dotplot.jobs.PlotterJob" 
+		class="org.dotplot.core.PlotterJob" />
+		
+	<Job 
+		id="org.dotplot.jobs.ImagerJob" 
+		class="org.dotplot.core.ImagerJob" />
+	
+</Dotplotplugin>
