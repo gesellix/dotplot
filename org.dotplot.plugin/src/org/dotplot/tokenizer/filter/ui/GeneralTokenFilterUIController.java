@@ -46,7 +46,7 @@ public class GeneralTokenFilterUIController extends FilterViewController {
 			IFilterConfiguration config;
 			try {
 				config = (IFilterConfiguration) registry
-						.get(FilterService.FILTER_CONFIGURATION_ID);
+						.get(FilterService.ID_CONFIGURATION_FILTER);
 				config.getFilterList().remove(ui.getFilterID());				
 				Map<String, Object> parameter = new TreeMap<String, Object>();
 				int[] types = ui.getCheckedTypes();

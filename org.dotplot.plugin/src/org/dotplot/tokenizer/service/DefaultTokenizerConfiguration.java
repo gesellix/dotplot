@@ -6,7 +6,7 @@ import org.dotplot.core.IConfiguration;
  * Default implemtation of the <code>ITokenizerConfiguration</code>
  * interfacese.
  * <p>
- * The {@link TokenizerService#DEFAULT_TOKENIZER_ID} is used as default
+ * The {@link TokenizerService#ID_TOKENIZER_DEFAULT} is used as default
  * tokenizer.
  * </p>
  * 
@@ -24,7 +24,7 @@ public class DefaultTokenizerConfiguration implements ITokenizerConfiguration {
 	 * Creates a new <code>DefaultTokenizerConfiguration</code>.
 	 */
 	public DefaultTokenizerConfiguration() {
-		this.tokenizerID = TokenizerService.DEFAULT_TOKENIZER_ID;
+		this.tokenizerID = TokenizerService.ID_TOKENIZER_DEFAULT;
 	}
 
 	/**

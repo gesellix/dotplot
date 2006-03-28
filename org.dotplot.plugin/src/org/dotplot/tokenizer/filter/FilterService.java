@@ -41,9 +41,9 @@ public class FilterService extends DotplotService {
 	 */
 	private static Logger logger = Logger.getLogger(FilterService.class.getName());
 	
-	private final static String FILTER_HOTSPOT_ID 		= ".newFilter";
-	public  final static String FILTER_CONFIGURATION_ID = "org.dotplot.filter.Configuration";
-	public	final static String GENERAL_TOKEN_FILTER_ID	= "org.dotplot.filter.GeneralFilter";
+	private final static String ID_HOTSPOT_FILTER 		= ".newFilter";
+	public  final static String ID_CONFIGURATION_FILTER = "org.dotplot.filter.Configuration";
+	public	final static String ID_FILTER_GENERAL_TOKEN_FILTER	= "org.dotplot.filter.GeneralFilter";
 	
 	private Map<String, ITokenFilter> filter;
 	private List<IFilterUI> uis;
@@ -53,7 +53,7 @@ public class FilterService extends DotplotService {
 	 */
 	public FilterService(String id) {
 		super(id);
-		this.addHotSpot(new PluginHotSpot(id + FILTER_HOTSPOT_ID, ITokenFilter.class));
+		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_FILTER, ITokenFilter.class));
 		this.filter = new TreeMap<String, ITokenFilter>();
 		this.uis = new ArrayList<IFilterUI>();
 	}
@@ -75,7 +75,7 @@ public class FilterService extends DotplotService {
 			this.uis.clear();
 			
 			//fill storrage objects
-			for(Extention e : this.getHotSpot(this.getID() + FILTER_HOTSPOT_ID).getActiveExtentions()){
+			for(Extention e : this.getHotSpot(this.getID() + ID_HOTSPOT_FILTER).getActiveExtentions()){
 				name = e.getParameter("name");
 				uiClass = e.getParameter("ui");
 				if(name != null){
@@ -105,9 +105,9 @@ public class FilterService extends DotplotService {
 			}
 			
 			//standard input
-			this.filter.put(GENERAL_TOKEN_FILTER_ID, new GeneralTokenFilter());
+			this.filter.put(ID_FILTER_GENERAL_TOKEN_FILTER, new GeneralTokenFilter());
 			IFilterUI ui = new GeneralTokenFilterUI();
-			ui.setFilterID(GENERAL_TOKEN_FILTER_ID);
+			ui.setFilterID(ID_FILTER_GENERAL_TOKEN_FILTER);
 			ui.setSourceType(BaseType.type);
 			this.uis.add(ui);
 		}
@@ -128,7 +128,7 @@ public class FilterService extends DotplotService {
 	public void registerDefaultConfiguration(IConfigurationRegistry registry) {
 		if(registry == null) throw new NullPointerException();
 		try {
-			registry.register(FILTER_CONFIGURATION_ID, new DefaultFilterConfiguration());
+			registry.register(ID_CONFIGURATION_FILTER, new DefaultFilterConfiguration());
 		}
 		catch (DuplicateRegistrationException e) {
 			this.getErrorHandler().warning(this, e);
@@ -175,7 +175,7 @@ public class FilterService extends DotplotService {
 		
 		IFilterConfiguration config;
 		try {
-			config = (IFilterConfiguration)this.frameworkContext.getConfigurationRegistry().get(FILTER_CONFIGURATION_ID);
+			config = (IFilterConfiguration)this.frameworkContext.getConfigurationRegistry().get(ID_CONFIGURATION_FILTER);
 			task.addPart(new FilterTaskPart("Part 1",this.getRegisteredFilters(),config	));
 		}
 		catch (UnknownIDException e) {

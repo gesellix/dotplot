@@ -44,7 +44,7 @@ public class FourGrammFilterUIController extends FilterViewController{
 			IFilterConfiguration config;
 			try {
 				config = (IFilterConfiguration) registry
-						.get(FilterService.FILTER_CONFIGURATION_ID);
+						.get(FilterService.ID_CONFIGURATION_FILTER);
 				config.getFilterList().remove(ui.getFilterID());
 				
 				if(ui.getUseFilter()){

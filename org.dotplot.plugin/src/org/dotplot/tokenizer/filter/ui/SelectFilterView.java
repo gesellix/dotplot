@@ -81,9 +81,9 @@ public class SelectFilterView extends ConfigurationView {
 		IFilterConfiguration filterConfig;
 		try {
 			filterConfig = (IFilterConfiguration) registry
-					.get(FilterService.FILTER_CONFIGURATION_ID);
+					.get(FilterService.ID_CONFIGURATION_FILTER);
 			ITokenizerConfiguration tokenizerConfig = (ITokenizerConfiguration) registry
-					.get(TokenizerService.TOKENIZER_CONFIGURATION_ID);
+					.get(TokenizerService.ID_CONFIGURATION_TOKENIZER);
 			TokenizerService tokenService = (TokenizerService)this.context.getServiceRegistry().get("org.dotplot.standard.Tokenizer");
 			ITokenizer tokenizer = tokenService.getRegisteredTokenizer().get(tokenizerConfig.getTokenizerID());
 			if(tokenizer != null){
@@ -177,7 +177,7 @@ public class SelectFilterView extends ConfigurationView {
 
 		try {
 			filterConfig = (IFilterConfiguration) this.getRegistry().get(
-					FilterService.FILTER_CONFIGURATION_ID);
+					FilterService.ID_CONFIGURATION_FILTER);
 
 			for (IFilterUI ui : this.uis) {
 				ui.reset(filterConfig);

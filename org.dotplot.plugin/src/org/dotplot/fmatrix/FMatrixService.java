@@ -24,7 +24,7 @@ import org.dotplot.util.UnknownIDException;
  */
 public class FMatrixService extends DotplotService {
 
-	public static final String ID_FMATRIX_CONFIGURATION = "org.dotplot.fmatrix.Configuration";
+	public static final String ID_CONFIGURATION_FMATRIX = "org.dotplot.fmatrix.Configuration";
 	
 	/**
 	 * @param id
@@ -40,7 +40,7 @@ public class FMatrixService extends DotplotService {
 	public void registerDefaultConfiguration(IConfigurationRegistry registry) {
 		if(registry == null) throw new NullPointerException();
 		try {
-			registry.register(ID_FMATRIX_CONFIGURATION, new DefaultFMatrixConfiguration());
+			registry.register(ID_CONFIGURATION_FMATRIX, new DefaultFMatrixConfiguration());
 		}
 		catch (DuplicateRegistrationException e) {
 			this.getErrorHandler().warning(this, e);
@@ -75,7 +75,7 @@ public class FMatrixService extends DotplotService {
 				return taskResult.get(PART_ID);
 			}} ,false);
 		
-			IFMatrixConfiguration config = (IFMatrixConfiguration)this.frameworkContext.getConfigurationRegistry().get(ID_FMATRIX_CONFIGURATION);
+			IFMatrixConfiguration config = (IFMatrixConfiguration)this.frameworkContext.getConfigurationRegistry().get(ID_CONFIGURATION_FMATRIX);
 			ITokenStream stream = ((TokenStreamContext)this.getWorkingContext()).getTokenStream();
 			ISourceList list = ((TokenStreamContext)this.getWorkingContext()).getSourceList();
 			FMatrixTaskPart part = new FMatrixTaskPart(PART_ID,stream, config);

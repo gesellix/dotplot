@@ -54,7 +54,7 @@ public class PlotJobAction extends PlotAction {
 		IQImageConfiguration config;
 		try {
 			config = (IQImageConfiguration) context.getConfigurationRegistry()
-					.get(QImageService.QIMAGE_CONFIGURATION_ID);
+					.get(QImageService.ID_CONFIGURATION_QIMAGE);
 		}
 		catch (UnknownIDException e) {
 			config = new QImageConfiguration();
@@ -64,7 +64,7 @@ public class PlotJobAction extends PlotAction {
 		try {
 			gridconfig = (GridConfiguration) ContextFactory.getContext()
 					.getConfigurationRegistry().get(
-							QImageService.ID_GRID_CONFIGURATION);
+							QImageService.ID_CONFIGURATION_GRID);
 		}
 		catch (UnknownIDException e) {
 			gridconfig = new GridConfiguration();

@@ -803,7 +803,7 @@ public void draw(Composite parent)
 				
 		GridConfiguration config;		
 		try {
-			config = (GridConfiguration)this.getRegistry().get(QImageService.ID_GRID_CONFIGURATION);
+			config = (GridConfiguration)this.getRegistry().get(QImageService.ID_CONFIGURATION_GRID);
 		}
 		catch (UnknownIDException e) {
 			config = new GridConfiguration();
@@ -845,7 +845,7 @@ public void draw(Composite parent)
 	private void onStartStopGridClient() {
 		GridConfiguration config;		
 		try {
-			config = (GridConfiguration)this.getRegistry().get(QImageService.ID_GRID_CONFIGURATION);
+			config = (GridConfiguration)this.getRegistry().get(QImageService.ID_CONFIGURATION_GRID);
 		}
 		catch (UnknownIDException e) {
 			config = new GridConfiguration();
@@ -927,7 +927,7 @@ public void draw(Composite parent)
 	private void showCurrentConfig() {
 		GridConfiguration config;		
 		try {
-			config = (GridConfiguration)this.getRegistry().get(QImageService.ID_GRID_CONFIGURATION);
+			config = (GridConfiguration)this.getRegistry().get(QImageService.ID_CONFIGURATION_GRID);
 		}
 		catch (UnknownIDException e) {
 			config = new GridConfiguration();

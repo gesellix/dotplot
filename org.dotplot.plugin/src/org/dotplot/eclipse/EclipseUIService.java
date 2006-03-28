@@ -89,17 +89,17 @@ public class EclipseUIService extends DotplotService implements IGuiService{
 	/**
 	 * ID extention for the menu hotspot. 
 	 */
-	private static final String HOTSPOT_ID_MENU  = ".Menu";
+	private static final String ID_HOTSPOT_MENU  = ".Menu";
 	
 	/**
 	 * ID extention for the entry hotspot. 
 	 */
-	private static final String HOTSPOT_ID_ENTRY = ".Entry";
+	private static final String ID_HOTSPOT_ENTRY = ".Entry";
 	
 	/**
 	 * ID extention for the view hotspot. 
 	 */
-	private static final String HOTSPOT_ID_VIEWS = ".View";
+	private static final String ID_HOTSPOT_VIEWS = ".View";
 	
 	/**
 	 * 
@@ -176,9 +176,9 @@ public class EclipseUIService extends DotplotService implements IGuiService{
 	 */
 	public EclipseUIService(String id) {
 		super(id);
-		this.addHotSpot(new PluginHotSpot(id + HOTSPOT_ID_ENTRY, Structure.class));
-		this.addHotSpot(new PluginHotSpot(id + HOTSPOT_ID_MENU, Structure.class));
-		this.addHotSpot(new PluginHotSpot(id + HOTSPOT_ID_VIEWS, ConfigurationView.class));
+		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_ENTRY, Structure.class));
+		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_MENU, Structure.class));
+		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_VIEWS, ConfigurationView.class));
 		this.menus = new TreeMap<String, MenuEntry>();
 		this.views = new ConfigurationViews();
 	}
@@ -208,7 +208,7 @@ public class EclipseUIService extends DotplotService implements IGuiService{
 		MenuEntry entry, parent;
 		
 		try {
-			Collection<Extention> extentions = this.getHotSpot(this.getID() + HOTSPOT_ID_MENU).getActiveExtentions();
+			Collection<Extention> extentions = this.getHotSpot(this.getID() + ID_HOTSPOT_MENU).getActiveExtentions();
 			for(Extention e : extentions){
 				name = e.getParameter("name");
 				id = e.getParameter("id");
@@ -234,7 +234,7 @@ public class EclipseUIService extends DotplotService implements IGuiService{
 			//sollte nicht vorkommen
 		}
 		try {
-			Collection<Extention> extentions = this.getHotSpot(this.getID() + HOTSPOT_ID_ENTRY).getActiveExtentions();
+			Collection<Extention> extentions = this.getHotSpot(this.getID() + ID_HOTSPOT_ENTRY).getActiveExtentions();
 			for(Extention e : extentions){
 				name = e.getParameter("name");
 				job = e.getParameter("job");
@@ -255,7 +255,7 @@ public class EclipseUIService extends DotplotService implements IGuiService{
 		}
 		
 		try {
-			Collection<Extention> extentions = this.getHotSpot(this.getID() + HOTSPOT_ID_VIEWS).getActiveExtentions();
+			Collection<Extention> extentions = this.getHotSpot(this.getID() + ID_HOTSPOT_VIEWS).getActiveExtentions();
 			for(Extention e : extentions){
 				id = e.getParameter("id");
 				if(id != null){

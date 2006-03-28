@@ -89,7 +89,7 @@ public class SelectTokenizerView extends ConfigurationView {
 	public SelectTokenizerView(DotplotContext context) {
 		super(context);
 		this.setName("Tokenizer settings");
-		this.selectedTokenizer = TokenizerService.DEFAULT_TOKENIZER_ID;
+		this.selectedTokenizer = TokenizerService.ID_TOKENIZER_DEFAULT;
 		this.conversionDirectory = new String(".");
 		this.keepConvertedFiles = false;
 		this.convertFiles = false;
@@ -335,7 +335,7 @@ public class SelectTokenizerView extends ConfigurationView {
 	public void refresh(){IConverterConfiguration converterConfig = null;			
 	
 		try {
-			converterConfig = (IConverterConfiguration)this.getRegistry().get(ConverterService.CONVERTER_CONFIGURATION_ID);
+			converterConfig = (IConverterConfiguration)this.getRegistry().get(ConverterService.ID_CONFIGURATION_CONVERTER);
 		}
 		catch (UnknownIDException e) {
 			converterConfig = new DefaultConverterConfiguration();
@@ -345,7 +345,7 @@ public class SelectTokenizerView extends ConfigurationView {
 		ITokenizerConfiguration tokenizerConfig;
 		
 		try {
-			tokenizerConfig = (ITokenizerConfiguration)this.getRegistry().get(TokenizerService.TOKENIZER_CONFIGURATION_ID);
+			tokenizerConfig = (ITokenizerConfiguration)this.getRegistry().get(TokenizerService.ID_CONFIGURATION_TOKENIZER);
 		}
 		catch (UnknownIDException e) {
 			tokenizerConfig = new DefaultTokenizerConfiguration();

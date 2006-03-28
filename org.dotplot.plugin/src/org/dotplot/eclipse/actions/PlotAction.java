@@ -182,7 +182,7 @@ public class PlotAction implements IWorkbenchWindowActionDelegate,
 
 		IQImageConfiguration tempConfig;
 		try {
-			tempConfig = (IQImageConfiguration)context.getConfigurationRegistry().get(QImageService.QIMAGE_CONFIGURATION_ID);
+			tempConfig = (IQImageConfiguration)context.getConfigurationRegistry().get(QImageService.ID_CONFIGURATION_QIMAGE);
 		}
 		catch (UnknownIDException e1) {
 			tempConfig = new QImageConfiguration();
@@ -199,7 +199,7 @@ public class PlotAction implements IWorkbenchWindowActionDelegate,
 			GridConfiguration config;
 			try {
 				config = (GridConfiguration) context.getConfigurationRegistry().get(
-						QImageService.ID_GRID_CONFIGURATION);
+						QImageService.ID_CONFIGURATION_GRID);
 			}
 			catch (UnknownIDException e) {
 				config = new GridConfiguration();
@@ -244,7 +244,7 @@ public class PlotAction implements IWorkbenchWindowActionDelegate,
 				try {
 					filterconfig = (IFilterConfiguration) context
 							.getConfigurationRegistry().get(
-									FilterService.FILTER_CONFIGURATION_ID);
+									FilterService.ID_CONFIGURATION_FILTER);
 				}
 				catch (UnknownIDException e) {
 					filterconfig = new DefaultFilterConfiguration();
@@ -300,7 +300,7 @@ public class PlotAction implements IWorkbenchWindowActionDelegate,
 		GridConfiguration config = null;
 		try {
 			context.getConfigurationRegistry().get(
-					QImageService.ID_GRID_CONFIGURATION);
+					QImageService.ID_CONFIGURATION_GRID);
 		}
 		catch (UnknownIDException e) {
 			config = new GridConfiguration();

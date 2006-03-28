@@ -447,7 +447,7 @@ public class ConfigQImageView extends ConfigurationView {
 		IQImageConfiguration config;
 		try {
 			config = (IQImageConfiguration) this.getRegistry().get(
-							QImageService.QIMAGE_CONFIGURATION_ID);
+							QImageService.ID_CONFIGURATION_QIMAGE);
 		}
 		catch (UnknownIDException e) {
 			e.printStackTrace();

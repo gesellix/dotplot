@@ -32,7 +32,7 @@ public class ConfigGridController extends ViewController
       if (o instanceof ConfigGridView)
       {
          ConfigGridView gridView = (ConfigGridView) o;
-         gridView.getRegistry().unregister(QImageService.ID_GRID_CONFIGURATION);
+         gridView.getRegistry().unregister(QImageService.ID_CONFIGURATION_GRID);
          
          final GridConfiguration gridConfig = new GridConfiguration(
                gridView.isEnableGrid(),
@@ -53,7 +53,7 @@ public class ConfigGridController extends ViewController
          gridConfig.setNotifyEmailSubject(gridView.getNotifyEmailSubject());
 
          try {
-			gridView.getRegistry().register(QImageService.ID_GRID_CONFIGURATION, gridConfig);
+			gridView.getRegistry().register(QImageService.ID_CONFIGURATION_GRID, gridConfig);
 		}
 		catch (DuplicateRegistrationException e) {
 			//sollte nicht vorkommen

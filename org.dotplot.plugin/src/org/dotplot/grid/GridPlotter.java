@@ -82,7 +82,7 @@ public class GridPlotter {
 		try {
 			config = (GridConfiguration) ContextFactory.getContext()
 					.getConfigurationRegistry().get(
-							QImageService.ID_GRID_CONFIGURATION);
+							QImageService.ID_CONFIGURATION_GRID);
 		}
 		catch (UnknownIDException e) {
 			config = new GridConfiguration();

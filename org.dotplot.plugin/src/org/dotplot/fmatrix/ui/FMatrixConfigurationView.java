@@ -256,7 +256,7 @@ public class FMatrixConfigurationView extends ConfigurationView {
 		IFMatrixConfiguration config;
 		try {
 			config = (IFMatrixConfiguration) this.registry
-					.get(FMatrixService.ID_FMATRIX_CONFIGURATION);
+					.get(FMatrixService.ID_CONFIGURATION_FMATRIX);
 			this.tokenWeights = config.getManualWeightedTokens();
 		}
 		catch (UnknownIDException e) {

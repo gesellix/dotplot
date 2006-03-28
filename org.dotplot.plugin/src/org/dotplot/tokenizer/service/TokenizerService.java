@@ -31,9 +31,9 @@ import org.dotplot.util.UnknownIDException;
  */
 public class TokenizerService extends DotplotService {
 
-	private static final String TOKENIZER_HOTSPOT_ID = ".newTokenizer";
-	public  static final String TOKENIZER_CONFIGURATION_ID = "org.dotplot.tokenizer.Configuration";
-	public  static final String DEFAULT_TOKENIZER_ID = "org.dotplot.tokenizer.DefaultTokenizer";
+	private static final String ID_HOTSPOT_TOKENIZER = ".newTokenizer";
+	public  static final String ID_CONFIGURATION_TOKENIZER = "org.dotplot.tokenizer.Configuration";
+	public  static final String ID_TOKENIZER_DEFAULT = "org.dotplot.tokenizer.DefaultTokenizer";
 	
 	private Map<String, ITokenizer> tokenizers;
 	
@@ -43,7 +43,7 @@ public class TokenizerService extends DotplotService {
 	public TokenizerService(String id) {
 		super(id);
 		this.tokenizers = new TreeMap<String, ITokenizer>();
-		this.addHotSpot(new PluginHotSpot(id + TOKENIZER_HOTSPOT_ID, ITokenizer.class));		
+		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_TOKENIZER, ITokenizer.class));		
 	}
 
 	/* (non-Javadoc)
@@ -64,8 +64,8 @@ public class TokenizerService extends DotplotService {
 		
 		try {
 			this.tokenizers = new TreeMap<String, ITokenizer>();
-			this.tokenizers.put(DEFAULT_TOKENIZER_ID, new DefaultScanner());
-			for(Extention e : this.getHotSpot(this.getID() + TOKENIZER_HOTSPOT_ID).getActiveExtentions()){
+			this.tokenizers.put(ID_TOKENIZER_DEFAULT, new DefaultScanner());
+			for(Extention e : this.getHotSpot(this.getID() + ID_HOTSPOT_TOKENIZER).getActiveExtentions()){
 				id = e.getParameter("id");				
 				name = e.getParameter("name");
 				if(name != null && id != null){
@@ -103,7 +103,7 @@ public class TokenizerService extends DotplotService {
 		IConfiguration configuration = null;
 		
 		try {
-			configuration = this.frameworkContext.getConfigurationRegistry().get(TOKENIZER_CONFIGURATION_ID);
+			configuration = this.frameworkContext.getConfigurationRegistry().get(ID_CONFIGURATION_TOKENIZER);
 			String tokenizerid = ((ITokenizerConfiguration)configuration).getTokenizerID();
 			tokenizer = this.tokenizers.get(tokenizerid);
 			if(tokenizer == null) throw new UnknownIDException(tokenizerid);
@@ -139,7 +139,7 @@ public class TokenizerService extends DotplotService {
 	public void registerDefaultConfiguration(IConfigurationRegistry registry) {
 		if(registry == null) throw new NullPointerException();
 		try {
-			registry.register(TOKENIZER_CONFIGURATION_ID, new DefaultTokenizerConfiguration());
+			registry.register(ID_CONFIGURATION_TOKENIZER, new DefaultTokenizerConfiguration());
 		}
 		catch (DuplicateRegistrationException e) {
 			this.getErrorHandler().warning(this, e);

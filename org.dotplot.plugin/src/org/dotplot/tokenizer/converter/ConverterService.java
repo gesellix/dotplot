@@ -49,15 +49,15 @@ public class ConverterService extends DotplotService {
 	private static Logger logger = Logger.getLogger(ConverterService.class
 			.getName());
 	
-	public static final String CONVERTER_CONFIGURATION_ID = "org.dotplot.converter.Cofiguration";
+	public static final String ID_CONFIGURATION_CONVERTER = "org.dotplot.converter.Cofiguration";
 	
-	public static final String CONVERTER_HOTSPOT_ID = ".newConverter";
-	public static final String TYPE_HOTSPOT_ID = ".newType";
+	public static final String ID_HOTSPOT_CONVERTER = ".newConverter";
+	public static final String ID_HOTSPOT_TYPE = ".newType";
 	
-	public static final String TYPE_TEXT_ID = "org.dotplot.types.Text";
-	public static final String TYPE_PDF_ID = "org.dotplot.types.Pdf";
+	public static final String ID_TYPE_TEXT = "org.dotplot.types.Text";
+	public static final String ID_TYPE_PDF = "org.dotplot.types.Pdf";
 	
-	public static final String CONVERTER_PDF_TO_TEXT_ID = "org.dotplot.converter.Pdf2txt";
+	public static final String ID_CONVERTER_PDF_TO_TEXT = "org.dotplot.converter.Pdf2txt";
 	
 	private Map<String, IConverter> converters;	
 	
@@ -68,8 +68,8 @@ public class ConverterService extends DotplotService {
 	 */
 	public ConverterService(String id) {
 		super(id);
-		this.addHotSpot(new PluginHotSpot(id + CONVERTER_HOTSPOT_ID, IConverter.class));
-		this.addHotSpot(new PluginHotSpot(id + TYPE_HOTSPOT_ID, ISourceType.class));
+		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_CONVERTER, IConverter.class));
+		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_TYPE, ISourceType.class));
 		
 		this.converters = new TreeMap<String, IConverter>();
 	}
@@ -92,19 +92,19 @@ public class ConverterService extends DotplotService {
 		ITypeRegistry types = this.frameworkContext.getTypeRegistry();
 		ITypeBindingRegistry bindings = this.frameworkContext.getTypeBindingRegistry();
 		try {
-			types.register(TYPE_TEXT_ID, TextType.type);
-			types.register(TYPE_PDF_ID, PdfType.type);
+			types.register(ID_TYPE_TEXT, TextType.type);
+			types.register(ID_TYPE_PDF, PdfType.type);
 			
-			bindings.register(".txt", TYPE_TEXT_ID);
-			bindings.register(".pdf", TYPE_PDF_ID);
+			bindings.register(".txt", ID_TYPE_TEXT);
+			bindings.register(".pdf", ID_TYPE_PDF);
 			
-			this.converters.put(CONVERTER_PDF_TO_TEXT_ID, new PDFtoTxtConverter());
+			this.converters.put(ID_CONVERTER_PDF_TO_TEXT, new PDFtoTxtConverter());
 		}
 		catch (DuplicateRegistrationException e) {
 			this.getErrorHandler().error(this, e);
 		}
 		try {
-			for(Extention e : this.getHotSpot(this.getID() + CONVERTER_HOTSPOT_ID).getAllExtentions()){
+			for(Extention e : this.getHotSpot(this.getID() + ID_HOTSPOT_CONVERTER).getAllExtentions()){
 				try {
 					name = e.getParameter("name");
 					if(name == null){
@@ -124,7 +124,7 @@ public class ConverterService extends DotplotService {
 				}
 			}
 			
-			for(Extention e : this.getHotSpot(this.getID() + TYPE_HOTSPOT_ID).getAllExtentions()){
+			for(Extention e : this.getHotSpot(this.getID() + ID_HOTSPOT_TYPE).getAllExtentions()){
 				name = e.getParameter("name");
 				suffix = e.getParameter("suffix");
 				if(name == null){
@@ -175,7 +175,7 @@ public class ConverterService extends DotplotService {
 		String converterid;
 		
 		try{
-			IConverterConfiguration config = (IConverterConfiguration)this.frameworkContext.getConfigurationRegistry().get(CONVERTER_CONFIGURATION_ID); 
+			IConverterConfiguration config = (IConverterConfiguration)this.frameworkContext.getConfigurationRegistry().get(ID_CONFIGURATION_CONVERTER); 
 			ISourceType targetType = config.getTargetType();
 			SourceListContext context = (SourceListContext)this.getWorkingContext();
 			
@@ -255,7 +255,7 @@ public class ConverterService extends DotplotService {
 	 */
 	public void registerDefaultConfiguration(IConfigurationRegistry registry) {
 		try {
-			registry.register(CONVERTER_CONFIGURATION_ID, new DefaultConverterConfiguration());
+			registry.register(ID_CONFIGURATION_CONVERTER, new DefaultConverterConfiguration());
 		}
 		catch (DuplicateRegistrationException e) {
 			this.getErrorHandler().warning(this, e);

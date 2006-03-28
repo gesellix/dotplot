@@ -134,8 +134,8 @@ public class ContextFactoryTest extends TestCase {
 		ITypeRegistry typeRegistry = context.getTypeRegistry();
 		Map<String, ISourceType> types = typeRegistry.getAll();
 		assertEquals(8, types.size());
-		assertEquals(TextType.type, types.get(ConverterService.TYPE_TEXT_ID));
-		assertEquals(PdfType.type, types.get(ConverterService.TYPE_PDF_ID));
+		assertEquals(TextType.type, types.get(ConverterService.ID_TYPE_TEXT));
+		assertEquals(PdfType.type, types.get(ConverterService.ID_TYPE_PDF));
 		assertEquals(JavaType.type, types.get("org.dotplot.types.Text.Java"));
 		assertEquals(CType.type, types.get("org.dotplot.types.Text.C"));
 		assertEquals(XMLType.type, types.get("org.dotplot.types.Text.XML"));
@@ -146,39 +146,39 @@ public class ContextFactoryTest extends TestCase {
 		ITypeBindingRegistry bindingRegistry = context.getTypeBindingRegistry();
 		Map<String, String> bindings = bindingRegistry.getAll();
 		assertEquals(25, bindings.size());
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".txt"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".log"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".ini"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".conf"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".properties"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".txt"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".log"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".ini"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".conf"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".properties"));
 		assertEquals("org.dotplot.types.Text.XML",bindings.get(".xml"));
 		assertEquals("org.dotplot.types.Text.HTML",bindings.get(".htm"));
 		assertEquals("org.dotplot.types.Text.HTML",bindings.get(".html"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".py"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".css"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".cs"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".hpp"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".csv"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".doc"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".rtf"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".tex"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".js"));
-		assertEquals(ConverterService.TYPE_TEXT_ID,bindings.get(".cfg"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".py"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".css"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".cs"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".hpp"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".csv"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".doc"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".rtf"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".tex"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".js"));
+		assertEquals(ConverterService.ID_TYPE_TEXT,bindings.get(".cfg"));
 		assertEquals("org.dotplot.types.Text.Java",bindings.get(".java"));
 		assertEquals("org.dotplot.types.Text.C", bindings.get(".c"));
 		assertEquals("org.dotplot.types.Text.C", bindings.get(".cc"));
 		assertEquals("org.dotplot.types.Text.C", bindings.get(".h"));
 		assertEquals("org.dotplot.types.Text.C++", bindings.get(".cpp"));
 		assertEquals("org.dotplot.types.Text.PHP", bindings.get(".php"));
-		assertEquals(ConverterService.TYPE_PDF_ID, bindings.get(".pdf"));
+		assertEquals(ConverterService.ID_TYPE_PDF, bindings.get(".pdf"));
 		
 		try {
 			ConverterService converterService = (ConverterService)services.get("org.dotplot.standard.Converter");
 			Map<String, IConverter> converters = converterService.getRegisteredConverter();
 			assertNotNull(converters);
 			assertEquals(1, converters.size());
-			assertTrue(converters.containsKey(ConverterService.CONVERTER_PDF_TO_TEXT_ID));
-			assertTrue(converters.get(ConverterService.CONVERTER_PDF_TO_TEXT_ID) instanceof PDFtoTxtConverter);
+			assertTrue(converters.containsKey(ConverterService.ID_CONVERTER_PDF_TO_TEXT));
+			assertTrue(converters.get(ConverterService.ID_CONVERTER_PDF_TO_TEXT) instanceof PDFtoTxtConverter);
 			
 		}
 		catch (Exception e) {

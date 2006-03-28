@@ -88,7 +88,7 @@ public class QImageServiceTest extends TestCase {
 		assertEquals(NullContext.context, this.service.getResultContext());
 		DotplotContext context = new DotplotContext(".", "./plugins");
 		try {
-			context.getConfigurationRegistry().register(QImageService.QIMAGE_CONFIGURATION_ID, this.config);
+			context.getConfigurationRegistry().register(QImageService.ID_CONFIGURATION_QIMAGE, this.config);
 			this.service.setFrameworkContext(context);
 			this.service.setWorkingContext(this.workingContext);
 			this.service.run();
@@ -117,7 +117,7 @@ public class QImageServiceTest extends TestCase {
 	public void testCreateTask() {
 		DotplotContext context = new DotplotContext(".", "./plugins");
 		try {
-			context.getConfigurationRegistry().register(QImageService.QIMAGE_CONFIGURATION_ID, this.config);
+			context.getConfigurationRegistry().register(QImageService.ID_CONFIGURATION_QIMAGE, this.config);
 			this.service.setFrameworkContext(context);
 			this.service.setWorkingContext(this.workingContext);
 			ITask task = this.service.createTask();
@@ -139,7 +139,7 @@ public class QImageServiceTest extends TestCase {
 	public void testRegisterDefaultConfiguration() {
 		IConfigurationRegistry registry = new ConfigurationRegistry();
 		try {
-			registry.get(QImageService.QIMAGE_CONFIGURATION_ID);
+			registry.get(QImageService.ID_CONFIGURATION_QIMAGE);
 			fail("Exception must be thrown");
 		}
 		catch (UnknownIDException e) {
@@ -151,7 +151,7 @@ public class QImageServiceTest extends TestCase {
 		
 		try {
 			this.service.registerDefaultConfiguration(registry);
-			IConfiguration config = registry.get(QImageService.QIMAGE_CONFIGURATION_ID);
+			IConfiguration config = registry.get(QImageService.ID_CONFIGURATION_QIMAGE);
 			assertNotNull(config);
 			assertTrue(config instanceof IQImageConfiguration);
 		}

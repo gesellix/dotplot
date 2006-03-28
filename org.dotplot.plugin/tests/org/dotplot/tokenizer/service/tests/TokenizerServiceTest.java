@@ -186,7 +186,7 @@ public class TokenizerServiceTest extends TestCase {
 
 	public void testRegisterDefaultConfiguration(){
 		try {
-			this.context.getConfigurationRegistry().get(TokenizerService.TOKENIZER_CONFIGURATION_ID);
+			this.context.getConfigurationRegistry().get(TokenizerService.ID_CONFIGURATION_TOKENIZER);
 			fail("UnknownIDException must be thrown");
 		}
 		catch (UnknownIDException e) {
@@ -200,8 +200,8 @@ public class TokenizerServiceTest extends TestCase {
 		try {
 			
 			this.service.registerDefaultConfiguration(this.context.getConfigurationRegistry());
-			assertNotNull(this.context.getConfigurationRegistry().get(TokenizerService.TOKENIZER_CONFIGURATION_ID));
-			assertTrue(this.context.getConfigurationRegistry().get(TokenizerService.TOKENIZER_CONFIGURATION_ID) instanceof DefaultTokenizerConfiguration);
+			assertNotNull(this.context.getConfigurationRegistry().get(TokenizerService.ID_CONFIGURATION_TOKENIZER));
+			assertTrue(this.context.getConfigurationRegistry().get(TokenizerService.ID_CONFIGURATION_TOKENIZER) instanceof DefaultTokenizerConfiguration);
 
 		}
 		catch (Exception e) {

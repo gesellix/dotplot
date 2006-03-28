@@ -101,16 +101,16 @@ public class FilterServiceTest extends TestCase {
 			this.service.init();
 			this.service.setWorkingContext(context);
 			
-			config = (IFilterConfiguration)this.context.getConfigurationRegistry().get(FilterService.FILTER_CONFIGURATION_ID);
+			config = (IFilterConfiguration)this.context.getConfigurationRegistry().get(FilterService.ID_CONFIGURATION_FILTER);
 			
-			config.getFilterList().add(FilterService.GENERAL_TOKEN_FILTER_ID);
+			config.getFilterList().add(FilterService.ID_FILTER_GENERAL_TOKEN_FILTER);
 			
 			Map<String,Collection<Integer>> params = new TreeMap<String, Collection<Integer>>();
 			Collection<Integer> p = new Vector<Integer>();
 			p.add(new Integer(2));
 			p.add(new Integer(3));
 			params.put(GeneralTokenFilter.PARAM, p);
-			config.setFilterParameter(FilterService.GENERAL_TOKEN_FILTER_ID, params);
+			config.setFilterParameter(FilterService.ID_FILTER_GENERAL_TOKEN_FILTER, params);
 			
 			assertEquals(NullContext.context, this.service.getResultContext());
 			this.service.run();
@@ -180,8 +180,8 @@ public class FilterServiceTest extends TestCase {
 	 */
 	public void testRegisterDefaultConfiguration() {
 		this.service.registerDefaultConfiguration(this.context.getConfigurationRegistry());
-		assertTrue(this.context.getConfigurationRegistry().getAll().containsKey(FilterService.FILTER_CONFIGURATION_ID));
-		assertNotNull(this.context.getConfigurationRegistry().getAll().get(FilterService.FILTER_CONFIGURATION_ID));
+		assertTrue(this.context.getConfigurationRegistry().getAll().containsKey(FilterService.ID_CONFIGURATION_FILTER));
+		assertNotNull(this.context.getConfigurationRegistry().getAll().get(FilterService.ID_CONFIGURATION_FILTER));
 	}
 
 	/*

@@ -78,7 +78,7 @@ public class SentenceFilterUI extends AbstractFilterUI {
 		if(this.view != null){
 			try {
 				DotplotContext context = ContextFactory.getContext();
-				ITokenizerConfiguration config = (ITokenizerConfiguration)this.view.getRegistry().get(TokenizerService.TOKENIZER_CONFIGURATION_ID);
+				ITokenizerConfiguration config = (ITokenizerConfiguration)this.view.getRegistry().get(TokenizerService.ID_CONFIGURATION_TOKENIZER);
 				TokenizerService service = (TokenizerService)context.getServiceRegistry().get("org.dotplot.standard.Tokenizer");
 				ITokenizer tokenizer = service.getRegisteredTokenizer().get(config.getTokenizerID());
 				return tokenizer.getTokenTypes();

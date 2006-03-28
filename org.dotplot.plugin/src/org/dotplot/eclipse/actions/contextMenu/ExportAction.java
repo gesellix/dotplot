@@ -53,7 +53,7 @@ public class ExportAction extends Action {
 		IQImageConfiguration config;
 		try {
 			config = (IQImageConfiguration) context.getConfigurationRegistry()
-					.get(QImageService.QIMAGE_CONFIGURATION_ID);
+					.get(QImageService.ID_CONFIGURATION_QIMAGE);
 		}
 		catch (UnknownIDException e) {
 			config = new QImageConfiguration();

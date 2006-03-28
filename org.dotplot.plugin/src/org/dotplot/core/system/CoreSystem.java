@@ -127,8 +127,8 @@ public class CoreSystem extends Plugin {
 			
 			//register extentions
 			try {
-				initializer.addExtention(InitializerService.HOTSPOT_ID_STARTUP, new Extention(this,new UsePreferenceJob()));
-				initializer.addExtention(InitializerService.HOTSPOT_ID_SHUTDOWN, new Extention(this,new StorePreferencesJob()));
+				initializer.addExtention(InitializerService.ID_HOTSPOT_STARTUP, new Extention(this,new UsePreferenceJob()));
+				initializer.addExtention(InitializerService.ID_HOTSPOT_SHUTDOWN, new Extention(this,new StorePreferencesJob()));
 			}
 			catch (UnknownServiceHotSpotException e) {
 				//sollte nicht vorkommen

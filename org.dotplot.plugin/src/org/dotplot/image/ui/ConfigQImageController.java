@@ -41,7 +41,7 @@ public class ConfigQImageController extends ViewController
         	 IConfigurationRegistry registry = qImageView.getRegistry();
         	 
         	 try {
-				IQImageConfiguration config = (QImageConfiguration) registry.get(QImageService.QIMAGE_CONFIGURATION_ID);
+				IQImageConfiguration config = (QImageConfiguration) registry.get(QImageService.ID_CONFIGURATION_QIMAGE);
 				config.setExportDotplotToFile(qImageView.isExportDotplot());
 				config.setExportFormat(qImageView.getSelectedFormat());
 				config.setExportFilename(qImageView.getExportFileName().getCanonicalPath());

@@ -62,9 +62,9 @@ public class SelectTokenizerController extends ViewController {
 			IConfigurationRegistry registry = stsv.getRegistry();
 			
 			try {
-				 tokenizerConfig = (ITokenizerConfiguration)registry.get(TokenizerService.TOKENIZER_CONFIGURATION_ID);
-				 converterConfig = (IConverterConfiguration)registry.get(ConverterService.CONVERTER_CONFIGURATION_ID);
-				 filterConfig = (IFilterConfiguration)registry.get(FilterService.FILTER_CONFIGURATION_ID);
+				 tokenizerConfig = (ITokenizerConfiguration)registry.get(TokenizerService.ID_CONFIGURATION_TOKENIZER);
+				 converterConfig = (IConverterConfiguration)registry.get(ConverterService.ID_CONFIGURATION_CONVERTER);
+				 filterConfig = (IFilterConfiguration)registry.get(FilterService.ID_CONFIGURATION_FILTER);
 			}
 			catch (UnknownIDException e1) {
 				 tokenizerConfig = new DefaultTokenizerConfiguration();
@@ -101,7 +101,7 @@ public class SelectTokenizerController extends ViewController {
 				else {
 					converterConfig.setTargetType(TextType.type);
 				}
-				converterConfig.setConverter(PdfType.type, ConverterService.CONVERTER_PDF_TO_TEXT_ID);				
+				converterConfig.setConverter(PdfType.type, ConverterService.ID_CONVERTER_PDF_TO_TEXT);				
 			}
 			else {
 				converterConfig.setTargetType(BaseType.type);

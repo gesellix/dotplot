@@ -40,7 +40,7 @@ public class FilterTaskPartTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		Map<String, ITokenFilter> filters = new TreeMap<String, ITokenFilter>();
-		filters.put(FilterService.GENERAL_TOKEN_FILTER_ID, new GeneralTokenFilter());
+		filters.put(FilterService.ID_FILTER_GENERAL_TOKEN_FILTER, new GeneralTokenFilter());
 		
 		this.stream = new ITokenStream(){
 
@@ -63,14 +63,14 @@ public class FilterTaskPartTest extends TestCase {
 			}};
 			
 		this.config = new DefaultFilterConfiguration();
-		this.config.getFilterList().add(FilterService.GENERAL_TOKEN_FILTER_ID);
+		this.config.getFilterList().add(FilterService.ID_FILTER_GENERAL_TOKEN_FILTER);
 		
 		Map<String,Collection<Integer>> params = new TreeMap<String, Collection<Integer>>();
 		Collection<Integer> p = new Vector<Integer>();
 		p.add(new Integer(2));
 		p.add(new Integer(3));
 		params.put(GeneralTokenFilter.PARAM, p);
-		this.config.setFilterParameter(FilterService.GENERAL_TOKEN_FILTER_ID, params);
+		this.config.setFilterParameter(FilterService.ID_FILTER_GENERAL_TOKEN_FILTER, params);
 		
 		this.part = new FilterTaskPart("testpart",filters,this.config);
 		

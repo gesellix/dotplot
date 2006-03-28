@@ -46,7 +46,7 @@ public class FMatrixManagerTest extends TestCase
 	   
 //      this.tokenizer = new Tokenizer();
       try {
-		this.configuration = (ITokenizerConfiguration) context.getConfigurationRegistry().get(TokenizerService.TOKENIZER_CONFIGURATION_ID);
+		this.configuration = (ITokenizerConfiguration) context.getConfigurationRegistry().get(TokenizerService.ID_CONFIGURATION_TOKENIZER);
       }
       catch (UnknownIDException e1) {
     	  // TODO Auto-generated catch block
@@ -72,7 +72,7 @@ public class FMatrixManagerTest extends TestCase
       //this.fileList.add(new File("PJunitTestFile.pdf"));
 
       //this.configuration.setSourceList(this.fileList);
-      this.configuration.setTokenizerID(TokenizerService.DEFAULT_TOKENIZER_ID);
+      this.configuration.setTokenizerID(TokenizerService.ID_TOKENIZER_DEFAULT);
 
 //      this.tokenizer.setConfiguration(this.configuration);
 

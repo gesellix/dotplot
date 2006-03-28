@@ -43,7 +43,7 @@ public class DefaultTokenizerConfigurationTest extends TestCase {
 
 	public void testDefaultTokenizerConfiguration() {
 		DefaultTokenizerConfiguration config = new DefaultTokenizerConfiguration();
-		assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, config
+		assertEquals(TokenizerService.ID_TOKENIZER_DEFAULT, config
 				.getTokenizerID());
 	}
 
@@ -56,11 +56,11 @@ public class DefaultTokenizerConfigurationTest extends TestCase {
 	}
 
 	public void testSerializedForm() {
-		assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, this.defCon
+		assertEquals(TokenizerService.ID_TOKENIZER_DEFAULT, this.defCon
 				.getTokenizerID());
 		
 		try {
-			assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, this.defCon
+			assertEquals(TokenizerService.ID_TOKENIZER_DEFAULT, this.defCon
 					.serializedForm());					
 		}
 		catch (Exception e) {

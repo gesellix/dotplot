@@ -208,7 +208,7 @@ public class FMatrixServiceTest extends TestCase {
 		
 		ConfigurationRegistry registry = new ConfigurationRegistry();
 		try {
-			registry.get(FMatrixService.ID_FMATRIX_CONFIGURATION);
+			registry.get(FMatrixService.ID_CONFIGURATION_FMATRIX);
 			fail("UnknownIDException must be thrown");
 		}
 		catch (UnknownIDException e) {
@@ -221,7 +221,7 @@ public class FMatrixServiceTest extends TestCase {
 		this.service.registerDefaultConfiguration(registry);
 		
 		try {
-			IConfiguration config = registry.get(FMatrixService.ID_FMATRIX_CONFIGURATION);
+			IConfiguration config = registry.get(FMatrixService.ID_CONFIGURATION_FMATRIX);
 			assertNotNull(config);
 			assertTrue(config instanceof DefaultFMatrixConfiguration);
 		}

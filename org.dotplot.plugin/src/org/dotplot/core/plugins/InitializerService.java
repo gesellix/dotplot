@@ -26,8 +26,8 @@ import org.dotplot.core.services.UnknownServiceHotSpotException;
  */
 public class InitializerService extends PlugableService<IPluginContext> {
 
-	public static final String HOTSPOT_ID_STARTUP = "org.dotplot.core.init.StartUp";
-	public static final String HOTSPOT_ID_SHUTDOWN = "org.dotplot.core.init.ShutDown";
+	public static final String ID_HOTSPOT_STARTUP = "org.dotplot.core.init.StartUp";
+	public static final String ID_HOTSPOT_SHUTDOWN = "org.dotplot.core.init.ShutDown";
 	
 	private Collection<IJob> startUpjobs;
 	private Collection<IJob> shutdownjobs;
@@ -39,8 +39,8 @@ public class InitializerService extends PlugableService<IPluginContext> {
 		super(id);
 		this.startUpjobs = new Vector<IJob>();
 		this.shutdownjobs = new Vector<IJob>();
-		this.addHotSpot(new PluginHotSpot(HOTSPOT_ID_STARTUP, IJob.class));
-		this.addHotSpot(new PluginHotSpot(HOTSPOT_ID_SHUTDOWN, IJob.class));
+		this.addHotSpot(new PluginHotSpot(ID_HOTSPOT_STARTUP, IJob.class));
+		this.addHotSpot(new PluginHotSpot(ID_HOTSPOT_SHUTDOWN, IJob.class));
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class InitializerService extends PlugableService<IPluginContext> {
 	public void init() {
 		this.startUpjobs.clear();
 		try {
-			IPluginHotSpot spot = this.getHotSpot(HOTSPOT_ID_STARTUP);
+			IPluginHotSpot spot = this.getHotSpot(ID_HOTSPOT_STARTUP);
 			for(Object o : spot.getObjectsFromActivatedExtentions()){
 				this.startUpjobs.add((IJob)o);
 			}
@@ -83,7 +83,7 @@ public class InitializerService extends PlugableService<IPluginContext> {
 		
 		this.shutdownjobs.clear();
 		try {
-			IPluginHotSpot spot = this.getHotSpot(HOTSPOT_ID_SHUTDOWN);
+			IPluginHotSpot spot = this.getHotSpot(ID_HOTSPOT_SHUTDOWN);
 			for(Object o : spot.getObjectsFromActivatedExtentions()){
 				this.shutdownjobs.add((IJob)o);
 			}

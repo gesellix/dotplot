@@ -24,12 +24,12 @@ import org.dotplot.util.UnknownIDException;
  */
 public class QImageService extends DotplotService {
 
-	public static final String QIMAGE_CONFIGURATION_ID = "org.dotplot.qimage.Configuration";
+	public static final String ID_CONFIGURATION_QIMAGE = "org.dotplot.qimage.Configuration";
 	
 	/**
 	 * Id of the grid configuration.
 	 */
-	public static final String ID_GRID_CONFIGURATION = "org.dotplot.grid.Configuration";
+	public static final String ID_CONFIGURATION_GRID = "org.dotplot.grid.Configuration";
 
 	/**
 	 * Creates a new <code>QImageService</code>.
@@ -47,10 +47,10 @@ public class QImageService extends DotplotService {
 	public void registerDefaultConfiguration(IConfigurationRegistry registry) {
 		if(registry == null) throw new NullPointerException();
 		try {
-			registry.register(QIMAGE_CONFIGURATION_ID, new QImageConfiguration());
+			registry.register(ID_CONFIGURATION_QIMAGE, new QImageConfiguration());
 			//grid configuration wird hier registriert bis das grid auch 
 			//aushalb des image benutzt werden kann.
-			registry.register(ID_GRID_CONFIGURATION, new GridConfiguration());
+			registry.register(ID_CONFIGURATION_GRID, new GridConfiguration());
 		}
 		catch (DuplicateRegistrationException e) {
 			//dann eben nicht
@@ -86,7 +86,7 @@ public class QImageService extends DotplotService {
 		
 		IQImageConfiguration config;
 		try {
-			config = (IQImageConfiguration)this.frameworkContext.getConfigurationRegistry().get(QIMAGE_CONFIGURATION_ID);
+			config = (IQImageConfiguration)this.frameworkContext.getConfigurationRegistry().get(ID_CONFIGURATION_QIMAGE);
 		}
 		catch (UnknownIDException e) {
 			this.getErrorHandler().fatal(this, e);

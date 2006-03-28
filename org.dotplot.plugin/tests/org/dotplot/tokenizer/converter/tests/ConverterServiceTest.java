@@ -78,23 +78,23 @@ public class ConverterServiceTest extends TestCase {
 			ITypeRegistry types = this.context.getTypeRegistry();
 			ITypeBindingRegistry bindings = this.context.getTypeBindingRegistry();
 			
-			assertTrue(types.getAll().containsKey(ConverterService.TYPE_PDF_ID));
-			assertTrue(types.getAll().containsKey(ConverterService.TYPE_TEXT_ID));
+			assertTrue(types.getAll().containsKey(ConverterService.ID_TYPE_PDF));
+			assertTrue(types.getAll().containsKey(ConverterService.ID_TYPE_TEXT));
 
-			assertEquals(TextType.type, types.get(ConverterService.TYPE_TEXT_ID));
-			assertEquals(PdfType.type, types.get(ConverterService.TYPE_PDF_ID));
+			assertEquals(TextType.type, types.get(ConverterService.ID_TYPE_TEXT));
+			assertEquals(PdfType.type, types.get(ConverterService.ID_TYPE_PDF));
 			
 			assertTrue(bindings.getAll().containsKey(".txt"));
 			assertTrue(bindings.getAll().containsKey(".pdf"));
 			
-			assertEquals(ConverterService.TYPE_PDF_ID, bindings.get(".pdf"));
-			assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".txt"));
+			assertEquals(ConverterService.ID_TYPE_PDF, bindings.get(".pdf"));
+			assertEquals(ConverterService.ID_TYPE_TEXT, bindings.get(".txt"));
 			
 			Map<String, IConverter> converters = this.service.getRegisteredConverter();
 			
 			assertNotNull(converters);
-			assertTrue(converters.containsKey(ConverterService.CONVERTER_PDF_TO_TEXT_ID));
-			assertTrue(converters.get(ConverterService.CONVERTER_PDF_TO_TEXT_ID) instanceof PDFtoTxtConverter);
+			assertTrue(converters.containsKey(ConverterService.ID_CONVERTER_PDF_TO_TEXT));
+			assertTrue(converters.get(ConverterService.ID_CONVERTER_PDF_TO_TEXT) instanceof PDFtoTxtConverter);
 		}
 		catch (Exception e) {
 			fail("no exception:" + e.getClass().getName() + ":"
@@ -117,8 +117,8 @@ public class ConverterServiceTest extends TestCase {
 			this.service.setFrameworkContext(this.context);
 			this.service.init();
 			
-			DefaultConverterConfiguration config = (DefaultConverterConfiguration)this.context.getConfigurationRegistry().get(ConverterService.CONVERTER_CONFIGURATION_ID);
-			config.getConverterRegistry().put(PdfType.type, ConverterService.CONVERTER_PDF_TO_TEXT_ID);
+			DefaultConverterConfiguration config = (DefaultConverterConfiguration)this.context.getConfigurationRegistry().get(ConverterService.ID_CONFIGURATION_CONVERTER);
+			config.getConverterRegistry().put(PdfType.type, ConverterService.ID_CONVERTER_PDF_TO_TEXT);
 			config.setTargetType(TextType.type);
 			config.setConvertedFilesDirectory(new File("./testfiles/converter"));			
 						
@@ -174,8 +174,8 @@ public class ConverterServiceTest extends TestCase {
 			this.service.setFrameworkContext(this.context);
 			this.service.init();
 			
-			DefaultConverterConfiguration config = (DefaultConverterConfiguration)this.context.getConfigurationRegistry().get(ConverterService.CONVERTER_CONFIGURATION_ID);
-			config.setConverter(PdfType.type, ConverterService.CONVERTER_PDF_TO_TEXT_ID);
+			DefaultConverterConfiguration config = (DefaultConverterConfiguration)this.context.getConfigurationRegistry().get(ConverterService.ID_CONFIGURATION_CONVERTER);
+			config.setConverter(PdfType.type, ConverterService.ID_CONVERTER_PDF_TO_TEXT);
 			config.setTargetType(TextType.type);
 			config.setConvertedFilesDirectory(new File("./testfiles/converter"));			
 						
@@ -242,8 +242,8 @@ public class ConverterServiceTest extends TestCase {
 			this.service.setFrameworkContext(this.context);
 			this.service.init();
 			
-			DefaultConverterConfiguration config = (DefaultConverterConfiguration)this.context.getConfigurationRegistry().get(ConverterService.CONVERTER_CONFIGURATION_ID);
-			config.getConverterRegistry().put(PdfType.type, ConverterService.CONVERTER_PDF_TO_TEXT_ID);
+			DefaultConverterConfiguration config = (DefaultConverterConfiguration)this.context.getConfigurationRegistry().get(ConverterService.ID_CONFIGURATION_CONVERTER);
+			config.getConverterRegistry().put(PdfType.type, ConverterService.ID_CONVERTER_PDF_TO_TEXT);
 			config.setTargetType(TextType.type);
 			config.setConvertedFilesDirectory(new File("./testfiles/converter"));			
 			
@@ -289,7 +289,7 @@ public class ConverterServiceTest extends TestCase {
 	
 	public void testRegisterDefaultConfiguration(){
 		try {
-			this.context.getConfigurationRegistry().get(ConverterService.CONVERTER_CONFIGURATION_ID);
+			this.context.getConfigurationRegistry().get(ConverterService.ID_CONFIGURATION_CONVERTER);
 			fail("UnknownIDException must be thrown");
 		}
 		catch (UnknownIDException e) {
@@ -301,7 +301,7 @@ public class ConverterServiceTest extends TestCase {
 
 		try {
 			this.service.registerDefaultConfiguration(this.context.getConfigurationRegistry());
-			IConfiguration config = this.context.getConfigurationRegistry().get(ConverterService.CONVERTER_CONFIGURATION_ID);
+			IConfiguration config = this.context.getConfigurationRegistry().get(ConverterService.ID_CONFIGURATION_CONVERTER);
 			assertNotNull(config);
 			assertTrue(config instanceof DefaultConverterConfiguration);
 		}

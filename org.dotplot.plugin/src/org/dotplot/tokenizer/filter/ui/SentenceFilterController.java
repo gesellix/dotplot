@@ -46,7 +46,7 @@ class SentenceFilterController extends FilterViewController {
 
 			try {
 				IFilterConfiguration config = (IFilterConfiguration) registry
-						.get(FilterService.FILTER_CONFIGURATION_ID);
+						.get(FilterService.ID_CONFIGURATION_FILTER);
 
 				 ;
 				Map<String, Object> parameter;
