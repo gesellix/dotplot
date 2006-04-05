@@ -292,17 +292,30 @@ public class DotplotContext extends PluginContext<Plugin>{
 	public boolean executeJob(IJob job){
 		if(job == null) throw new NullPointerException();
 		job.setTaskProcessor(this.getTaskProcessor());
-		if(!job.process(this)){
-			try {
-				IGuiService gui = this.getGuiService();
-				if(! this.isNoGui()){
-					gui.showErrorMessage("Job Error",job.getErrorHandler().toString());
-				}
-				return false;
+		IGuiService gui = null;
+		try {
+			gui = this.getGuiService();
+		}
+		catch (UnknownIDException e1) {
+			//null problemo
+		}
+		
+		boolean result = false;
+		
+		if((job instanceof IJobWithProgress) && gui != null){
+			IJobWithProgress jwp = (IJobWithProgress) job;
+			jwp.setContext(this);
+			result = gui.executeJobWithProgress(jwp);
+		}
+		else {
+			result = job.process(this);
+		}
+		
+		if(!result){
+			if((! this.isNoGui()) && gui != null){
+				gui.showErrorMessage("Job Error",job.getErrorHandler().toString());
 			}
-			catch (UnknownIDException e) {
-				//dann eben nicht
-			}
+			return false;
 		}
 		return true;
 	}

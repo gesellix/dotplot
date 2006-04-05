@@ -25,7 +25,10 @@ class DotPlotLabelProvider extends LabelProvider
       if (element instanceof File)
       {
          File curr = (File) element;
-         if (curr.isDirectory())
+         if(curr.getParent() == null){
+        	 return IMG_FOLDER;
+         }
+         else if (curr.isDirectory())
          {
             return IMG_FOLDER;
          }

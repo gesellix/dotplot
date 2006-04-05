@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.internal.Workbench;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import org.dotplot.core.ContextFactory;
@@ -379,7 +379,7 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener
       {
          public void run()
          {
-            IWorkbenchWindow window = Workbench.getInstance().getActiveWorkbenchWindow();
+            IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
             DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
             viewer.refresh();
             lister.setInputFiles(getSelection());

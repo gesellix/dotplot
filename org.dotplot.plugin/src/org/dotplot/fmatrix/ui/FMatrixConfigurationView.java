@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -38,7 +37,6 @@ import org.dotplot.util.UnknownIDException;
  * @author Thorsten Ruehl
  */
 public class FMatrixConfigurationView extends ConfigurationView {
-	private Composite parent;
 
 	private TokenType displayedTokenType;
 
@@ -70,7 +68,7 @@ public class FMatrixConfigurationView extends ConfigurationView {
 	 * 
 	 * @see org.dotplot.ui.ConfigurationView#draw(org.eclipse.swt.widgets.Composite)
 	 */
-	public FMatrixConfigurationView(DotplotContext context) {
+	public FMatrixConfigurationView(final DotplotContext context) {
 		super(context);
 		this.setName("FMatrix settings");
 
@@ -85,18 +83,25 @@ public class FMatrixConfigurationView extends ConfigurationView {
 					displayedTokenType.setWeight(weight);
 				}
 				catch (NumberFormatException ex) {
-					System.err.println("invalid user entry");
+					try {
+						context.getGuiService().showErrorMessage("invalid user entry");
+					}
+					catch (UnknownIDException e1) {
+						//dann eben nicht -> nachricht ins nirvana
+					}
 				}
 			}
 		});
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see org.dotplot.ui.ConfigurationView#draw(org.eclipse.swt.widgets.Composite)
+	 */
 	public void draw(final Composite parent) {
 		this.deleteObservers();
 		this.addObserver(new FMatrixViewController(this));
 
-		
-		this.parent = parent;
 		readConfig();
 
 		if (context.getCurrentTypeTable().getNumberOfTypes() == 0) {
@@ -152,8 +157,12 @@ public class FMatrixConfigurationView extends ConfigurationView {
 				if (weight != null) {
 					weight = weight.trim();
 					if (weight.equals("")) {
-						MessageDialog.openInformation(parent.getShell(),
-								"FMatrix", "Please enter a valid number");
+						try {
+							getContext().getGuiService().showMessage("Please enter a valid number");
+						}
+						catch (UnknownIDException e2) {
+							//dann eben nicht -> nirvana
+						}
 						return;
 					}
 				}
@@ -163,8 +172,12 @@ public class FMatrixConfigurationView extends ConfigurationView {
 							regExpValue.getText(), Double.parseDouble(weight));
 				}
 				catch (NumberFormatException e1) {
-					MessageDialog.openInformation(parent.getShell(), "FMatrix",
-							"Please enter a valid number");
+					try {
+						getContext().getGuiService().showMessage("Please enter a valid number");
+					}
+					catch (UnknownIDException e2) {
+						//dann eben nicht -> nirvana
+					}
 				}
 				// storedRegularExpressionVec.add(regExpValue.getText());
 			}

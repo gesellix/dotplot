@@ -12,21 +12,23 @@ import java.util.TreeMap;
  */
 public class TaskProcessor implements ITaskProcessor<Object> {
 
+	protected ITaskMonitor monitor;
+	
 	/**
 	 * Storrage for result of single taskparts.
 	 */
-	private Map<String, Object> jobResults = new TreeMap<String, Object>();
+	protected Map<String, Object> jobResults = new TreeMap<String, Object>();
 	
 	/**
 	 * Contains the result of the last processed <code>Job</code>.
 	 */
-	private Object result = null;
+	protected Object result = null;
 	
 	/**
 	 * The invoker of the <code>TaskProcessor</code>.
 	 * @see  #processTask(ITask, Object)
 	 */
-	private Object invoker;
+	protected Object invoker;
 	
 	/**
 	 * Contains the current <code>ProcessingErrorHandler</code>.
@@ -36,12 +38,12 @@ public class TaskProcessor implements ITaskProcessor<Object> {
 	/**
 	 * Indicates is the processing is interuped.
 	 */
-	private boolean interupted = false;
+	protected boolean interupted = false;
 	
 	/**
 	 * The currently processed <code>ITaslPart</code>.
 	 */
-	private ITaskPart currentPart;
+	protected ITaskPart currentPart;
 	
 	/**
 	 * Returns the current errorhandler.
@@ -64,19 +66,44 @@ public class TaskProcessor implements ITaskProcessor<Object> {
 	 * @param task - the <code>Task</code> to be processed.
 	 * @return <code>true</code> if the processing was successfull, <code>false</code> otherwise.
 	 */
-	private boolean processTask(ITask task){
+	protected boolean processTask(ITask task){
 		if(task == null) throw new NullPointerException();
+		
 		this.interupted = false;
 		this.jobResults.clear();
 		
 		this.result = null;
+		
+		double delta = 0.0;
+				
+		if(this.monitor != null){
+			monitor.setTaskName(task.getID());
+			if(! task.isPartless()){
+				delta = 1.0 / task.countParts();
+			}
+			else {
+				monitor.worked(1.0);
+			}
+		}
+		
 		for(ITaskPart part : task.getParts()){
 			if(this.interupted){
 				return false;
 			}
+			if(monitor != null){
+				if(monitor.isCanceled()){
+					return false;
+				}
+				else {
+					monitor.worked(delta);
+				}
+			}
 			this.currentPart = part;
 			try {
 				this.currentPart.setLocalRessources(this.currentPart.getRessources());
+				if(monitor != null){
+					monitor.setTaskPartName(part.getID());
+				}
 				this.currentPart.run();
 				if(this.currentPart.errorOccured()){
 					this.currentPart = null;
@@ -145,5 +172,12 @@ public class TaskProcessor implements ITaskProcessor<Object> {
 		boolean result = this.processTask(task);
 		this.invoker = invokingObject;	//nach process, falls task == null ist
 		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.dotplot.core.services.ITaskProcessor#setTaskMonitor(org.dotplot.core.services.ITaskMonitor)
+	 */
+	public void setTaskMonitor(ITaskMonitor monitor) {
+		this.monitor = monitor;
 	}
 }

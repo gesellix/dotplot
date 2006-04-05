@@ -9,12 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dotplot.core.IPlotSource;
-import org.dotplot.core.ISourceList;
 import org.dotplot.tokenizer.service.ITokenStream;
 import org.dotplot.tokenizer.Token;
 import org.dotplot.tokenizer.TokenizerException;
-import org.dotplot.ui.monitor.DotPlotProgressMonitor;
-import org.dotplot.ui.monitor.MonitorablePlotUnit;
 
 /**
  * controller class for the x- and y-Dimension of
@@ -26,16 +23,12 @@ import org.dotplot.ui.monitor.MonitorablePlotUnit;
  * @author Constantin von Zitzewitz, Thorsten Ruehl
  * @version 0.4
  */
-public class FMatrixManager implements MonitorablePlotUnit
+public class FMatrixManager
 {
    private TypeTable typeTable;
    private ITokenStream tokenStream;
    private TokenInformation tokenInformation;
 
-   private int progress; // monitor progress
-   private String monitorMessage; // monitor message
-
-   private ISourceList sourceList;
    private List<WeightingEntry> manualWeightedTokens;
    private List<String> storedRegularExpressions;
    
@@ -52,9 +45,6 @@ public class FMatrixManager implements MonitorablePlotUnit
       this.tokenStream = tokenStream;
       typeTable = new TypeTable(new TokenTable());
       tokenInformation = new TokenInformation();
-      progress = 0;
-      monitorMessage = null;
-      sourceList = null;
 
 //      GlobalConfiguration globalConfig = GlobalConfiguration.getInstance();
 //      manualWeightedTokens = (Vector) globalConfig.get(GlobalConfiguration.KEY_FMATRIX_TOKEN_WEIGHTS);
@@ -83,10 +73,6 @@ public class FMatrixManager implements MonitorablePlotUnit
       int lineIndex = 0;
       int firstTokenInLine = 0;
       List tokensInLine = new ArrayList();
-      int fileCount = 0; // counts the files
-
-      // monitor message
-      monitorMessage = "processing Tokens...";
 
       try
       {
@@ -138,15 +124,6 @@ public class FMatrixManager implements MonitorablePlotUnit
                   tokenInformation.addLineInformationContainer(lineInformation);
                   lineInformation = new LineInformation();
 
-                  // count files for progress monitor
-                  fileCount++;
-                  try{
-                	  progress = (fileCount / sourceList.size() * 100);
-                  }
-                  catch(ArithmeticException e){
-                	  progress = 100;
-                  }
-                  DotPlotProgressMonitor.getInstance().update();
                   break;
                default:
                   typeTable.addType(token.getValue());
@@ -212,47 +189,6 @@ public class FMatrixManager implements MonitorablePlotUnit
    public int addRegularExpressionType(String regExp, double weighting)
    {
       return typeTable.addRegularExpressionType(regExp, weighting);
-   }
-
-   /**
-    * @see org.dotplot.ui.monitor.MonitorablePlotUnit#nameOfUnit()
-    */
-   public String nameOfUnit()
-   {
-      return "FMatrix Module";
-   }
-
-   /**
-    * @see org.dotplot.ui.monitor.MonitorablePlotUnit#getProgress()
-    */
-   public int getProgress()
-   {
-      return progress;
-   }
-
-   /**
-    * @see org.dotplot.ui.monitor.MonitorablePlotUnit#getMonitorMessage()
-    */
-   public String getMonitorMessage()
-   {
-      return monitorMessage;
-   }
-
-   /**
-    * @see org.dotplot.ui.monitor.MonitorablePlotUnit#cancel()
-    */
-   public void cancel()
-   {
-   }
-
-   /**
-    * Specifies the file list value.
-    *
-    * @param sourceList an IFileList object specifying the file list value
-    */
-   public void setSourceList(ISourceList sourceList)
-   {
-      this.sourceList = sourceList;
    }
 
    /**

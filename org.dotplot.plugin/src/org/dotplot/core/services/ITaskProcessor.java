@@ -12,6 +12,12 @@ package org.dotplot.core.services;
 public interface ITaskProcessor<Invoker> {
 	
 	/**
+	 * Sets the <code>TaskMonitor</code>.
+	 * @param monitor - the <code>TaskMonitor</code> to set.
+	 */
+	public void setTaskMonitor(ITaskMonitor monitor);
+	
+	/**
 	 * Stops processing. 
 	 */
 	public void stop();

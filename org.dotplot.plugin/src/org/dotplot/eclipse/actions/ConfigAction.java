@@ -84,8 +84,7 @@ public class ConfigAction implements IWorkbenchWindowActionDelegate {
 			public void widgetSelected(SelectionEvent e) {
 				// die veränderungen die im dialog gemacht wurden auf die
 				// original registry anwenden
-				registry.getAll().putAll(registryCopy.getAll());
-				action.plot();
+				registry.getAll().putAll(registryCopy.getAll());				
 				Control control = (Control) e.widget;
 				if (!control.isDisposed()) {
 					Shell shell = control.getShell();
@@ -93,6 +92,8 @@ public class ConfigAction implements IWorkbenchWindowActionDelegate {
 						shell.dispose();
 					}
 				}
+				//und plotten
+				action.plot();
 			}
 
 		});

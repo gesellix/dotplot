@@ -5,6 +5,7 @@ package org.dotplot.core.services.tests;
 
 import org.dotplot.core.services.AbstractJob;
 import org.dotplot.core.services.DefaultErrorHandler;
+import org.dotplot.core.services.ITaskMonitor;
 import org.dotplot.core.services.TaskProcessor;
 import org.dotplot.core.services.IErrorHandler;
 import org.dotplot.core.services.IFrameworkContext;
@@ -102,6 +103,9 @@ public class AbstractJobTest extends TestCase {
 				}
 
 				public void stop() {
+				}
+
+				public void setTaskMonitor(ITaskMonitor monitor) {
 				}};
 			
 			job.setTaskProcessor(processor);

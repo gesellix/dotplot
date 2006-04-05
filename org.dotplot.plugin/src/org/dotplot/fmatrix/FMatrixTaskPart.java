@@ -76,7 +76,7 @@ public class FMatrixTaskPart extends AbstractTaskPart {
 	 */
 	public void run() {
 		FMatrixManager manager = new FMatrixManager(this.tokenStream, this.config);	    
-		manager.setSourceList(this.sourceList);
+		//manager.setSourceList(this.sourceList);
 		manager.addTokens();
 		this.result = manager.getTypeTableNavigator();
 	}

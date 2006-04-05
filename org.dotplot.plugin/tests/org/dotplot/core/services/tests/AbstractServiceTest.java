@@ -20,6 +20,7 @@ import org.dotplot.core.services.IServiceExtentionActivator;
 import org.dotplot.core.services.IServiceHotSpot;
 import org.dotplot.core.services.IServiceRegistry;
 import org.dotplot.core.services.ITask;
+import org.dotplot.core.services.ITaskMonitor;
 import org.dotplot.core.services.ITaskPart;
 import org.dotplot.core.services.ITaskProcessor;
 import org.dotplot.core.services.ITaskResultMarshaler;
@@ -634,6 +635,9 @@ public class AbstractServiceTest extends TestCase {
 			}
 
 			public void stop() {
+			}
+
+			public void setTaskMonitor(ITaskMonitor monitor) {
 			}
 			};
 				

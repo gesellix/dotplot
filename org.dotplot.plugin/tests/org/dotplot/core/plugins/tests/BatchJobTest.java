@@ -17,6 +17,7 @@ import org.dotplot.core.services.IErrorHandler;
 import org.dotplot.core.services.IFrameworkContext;
 import org.dotplot.core.services.IServiceRegistry;
 import org.dotplot.core.services.ITask;
+import org.dotplot.core.services.ITaskMonitor;
 import org.dotplot.core.services.ITaskProcessor;
 import org.dotplot.core.services.ITaskResultMarshaler;
 import org.dotplot.core.services.InsufficientRessourcesException;
@@ -623,6 +624,9 @@ public class BatchJobTest extends TestCase {
 				}
 
 				public void stop() {
+				}
+
+				public void setTaskMonitor(ITaskMonitor monitor) {
 				}
 				});
 		}

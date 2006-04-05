@@ -87,7 +87,6 @@ public class FMatrixManagerTest extends TestCase
       }
 
       this.manager = new FMatrixManager(this.tokenStream, new DefaultFMatrixConfiguration());
-      this.manager.setSourceList(this.fileList);
    }
 
    public void tearDown(){

@@ -16,6 +16,7 @@ import org.dotplot.core.plugins.IPluginRegistry;
 import org.dotplot.core.services.IServiceRegistry;
 import org.dotplot.core.system.CoreSystem;
 import org.dotplot.eclipse.EclipseUIService;
+import org.dotplot.examples.FourGrammFilter.FourGrammFilter;
 import org.dotplot.tokenizer.converter.ConverterService;
 import org.dotplot.tokenizer.converter.IConverter;
 import org.dotplot.tokenizer.converter.PDFtoTxtConverter;
@@ -68,9 +69,10 @@ public class ContextFactoryTest extends TestCase {
 		
 		IPluginRegistry<?> plugins = context.getPluginRegistry();
 		assertNotNull(plugins);
-		assertEquals(2, plugins.getAll().size());
+		assertEquals(3, plugins.getAll().size());
 		assertTrue(plugins.getAll().containsKey(CoreSystem.CORE_SYSTEM_ID));
 		assertTrue(plugins.getAll().containsKey("org.dotplot.core.Standard"));
+		assertTrue(plugins.getAll().containsKey("org.dotplot.examples"));
 		
 		IServiceRegistry services = context.getServiceRegistry();
 		assertNotNull(services);
@@ -99,12 +101,13 @@ public class ContextFactoryTest extends TestCase {
 		
 		IJobRegistry jobs = context.getJobRegistry();
 		assertNotNull(jobs);
-		assertEquals(5, jobs.getAll().size());
+		assertEquals(6, jobs.getAll().size());
 		assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_PLUGIN_LOADER_ID));
 		assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_SHUTDOWN_ID));
 		assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_STARTUP_ID));
 		assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.PlotterJob"));
 		assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.ImagerJob"));
+		assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.TestJob"));
 		
 		try {
 			TokenizerService tokenizerService = (TokenizerService)services.get("org.dotplot.standard.Tokenizer");
@@ -119,11 +122,12 @@ public class ContextFactoryTest extends TestCase {
 		
 			FilterService filterService = (FilterService)services.get("org.dotplot.standard.Filter");
 			Map<String, ITokenFilter> filters =  filterService.getRegisteredFilters();
-			assertEquals(4, filters.size());
+			assertEquals(5, filters.size());
 			assertTrue(filters.get("org.dotplot.filter.GeneralFilter") instanceof GeneralTokenFilter);			
 			assertTrue(filters.get("org.dotplot.filter.KeyWordFilter") instanceof KeyWordFilter);			
 			assertTrue(filters.get("org.dotplot.filter.LineFilter") instanceof LineFilter);
 			assertTrue(filters.get("org.dotplot.filter.SentenceFilter") instanceof SentenceFilter);
+			assertTrue(filters.get("org.dotplot.filter.4GrammFilter") instanceof FourGrammFilter);
 			
 		}
 		catch (Exception e) {

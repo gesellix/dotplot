@@ -46,7 +46,6 @@ import org.dotplot.tokenizer.filter.DefaultFilterConfiguration;
 import org.dotplot.tokenizer.filter.FilterService;
 import org.dotplot.tokenizer.filter.IFilterConfiguration;
 import org.dotplot.tokenizer.TokenizerException;
-import org.dotplot.ui.monitor.DotPlotProgressMonitor;
 import org.dotplot.util.FileCopy;
 import org.dotplot.util.FileUtil;
 import org.dotplot.util.MailUtil;
@@ -307,8 +306,6 @@ public class PlotAction implements IWorkbenchWindowActionDelegate,
 		}
 		
 		final GridConfiguration gridConfig = config;
-
-		DotPlotProgressMonitor.getInstance().close();
 
 		final Shell shell = window.getShell();
 

@@ -45,7 +45,11 @@ class DotPlotFilter extends ViewerFilter {
 				fileending = "";
 			}
 
-			return (file.isDirectory() || this.endings.contains(fileending));
+			if(file.getParent() == null){
+				return true;
+			}
+			boolean result = file.isDirectory() || this.endings.contains(fileending);
+			return result;
 
 		}
 

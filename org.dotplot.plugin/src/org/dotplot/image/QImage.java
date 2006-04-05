@@ -6,8 +6,6 @@ import java.io.File;
 
 import org.dotplot.core.IDotplot;
 import org.dotplot.fmatrix.ITypeTableNavigator;
-import org.dotplot.ui.monitor.DotPlotProgressMonitor;
-import org.dotplot.ui.monitor.MonitorablePlotUnit;
 
 /**
  * The QImage gets the 2D-Floatingpoint-Array of the QMatrix and paints it on
@@ -16,7 +14,7 @@ import org.dotplot.ui.monitor.MonitorablePlotUnit;
  * 
  * @author Tobias Gesellchen
  */
-public class QImage implements MonitorablePlotUnit {
+public class QImage {
 	private static Logger logger = Logger.getLogger(QImage.class.getName());
 
 	private Dotplot dotplot = null;
@@ -64,7 +62,7 @@ public class QImage implements MonitorablePlotUnit {
 			saveDotplot(dotplot, false, config);
 
 			if (onlyExport) {
-				update(100, IDotplot.STEP_CONVERT_DATA);
+//				update(100, IDotplot.STEP_CONVERT_DATA);
 				return null;
 			}
 		}
@@ -108,23 +106,6 @@ public class QImage implements MonitorablePlotUnit {
 		}
 	}
 
-	// //////// MonitorablePlotUnit
-	public String nameOfUnit() {
-		return "Imaging";
-	}
-
-	public int getProgress() {
-		return progress;
-	}
-
-	public String getMonitorMessage() {
-		return IDotplot.STEPS[currentStep];
-	}
-
-	public void cancel() {
-		// TODO implement cancel?!
-	}
-
 	void update(int diff, int curStep) {
 		update(diff, curStep, null);
 	}
@@ -140,7 +121,6 @@ public class QImage implements MonitorablePlotUnit {
 					+ IDotplot.STEPS[currentStep]);
 		}
 
-		DotPlotProgressMonitor.getInstance().update();
 	}
 
 	/**

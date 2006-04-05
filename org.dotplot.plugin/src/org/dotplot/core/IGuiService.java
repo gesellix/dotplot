@@ -33,4 +33,11 @@ public interface IGuiService {
 	 * @param message The message.
 	 */
 	public void appendToLog(String message);
+	
+	/**
+	 * 
+	 * @param job
+	 * @return
+	 */
+	public boolean executeJobWithProgress(IJobWithProgress job);
 }

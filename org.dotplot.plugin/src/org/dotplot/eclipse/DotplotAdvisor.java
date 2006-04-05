@@ -59,8 +59,7 @@ public class DotplotAdvisor extends WorkbenchAdvisor {
 						
 			ContextFactory.setPluginDirectory(depPluginsURL.getPath());
 			ContextFactory.setShemaFile(depShemaURL.getPath());
-			ContextFactory.getContext();
-			
+			DotplotContext context = ContextFactory.getContext();
 		}
 		catch (IOException e) {
 			/*very evil*/
