@@ -5,9 +5,9 @@ avail|lambda76
 avail|lolomat
 
 #teams
-avail|abruch,pete_jensen|org.dotplot.plugin|Team_BruchPeter
-avail|truemmer,dimaratz|org.dotplot.plugin|Team_BruecknerRatz
+#avail|abruch,pete_jensen|org.dotplot.plugin|Team_BruchPeter
+#avail|truemmer,dimaratz|org.dotplot.plugin|Team_BruecknerRatz
 
-avail|hg14403,stadin,hg14412,thadude666|org.dotplot.plugin|Team_A
-avail|bjoernnebe,serial_2k,tall_ship|org.dotplot.plugin|Team_B
-avail|gulse,cihank,luca_hofmann|org.dotplot.plugin|Team_C
+avail|sascha1975,|org.dotplot.plugin|BioJava
+avail|bayer-dba,krampetz-wkr,bjoernwilken|org.dotplot.plugin|Parser
+avail|dennisstr,joachim,mibrau|org.dotplot.plugin|Preferences
