@@ -1,8 +1,8 @@
 package org.dotplot.util;
 
 import java.io.File;
-import java.util.Properties;
 import java.util.Date;
+import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -23,44 +23,12 @@ import org.dotplot.eclipse.DotplotPlugin;
 
 public class MailUtil
 {
-   private static final String SMTP_HOST_NAME = "mailserv.fh-giessen.de";
-   private static final String SMTP_AUTH_USER = "dotplot";
-   private static final String SMTP_AUTH_PWD = "";
-
-   private static final String emailMsgTxt = "Your DotPlot has been completed."
-         + "\nPlease do not answer to this mail, as it is generated automatically.\n";
-   private static final String emailSubjectTxt = "Dotplot notification";
-   private static final String emailFromAddress = "tobias.gesellchen@mni.fh-giessen.de";
-
-   // Add List of Email address to who email needs to be sent to
-   private static final String[] emailList = {"tobias.gesellchen@mni.fh-giessen.de"};
-
-   public static void main(String[] args) throws Exception
-   {
-      postMail(emailFromAddress, emailList, emailSubjectTxt, emailMsgTxt);
-      System.out.println("Successfully sent mail");
-   }
-
-   public static void postMail(String from, String[] recipients, String subject, String message)
-         throws MessagingException
-   {
-      postMailBySMTP(SMTP_HOST_NAME, SMTP_AUTH_USER, SMTP_AUTH_PWD, from, recipients, subject, message);
-   }
-
    public static void postMailBySMTP(
          String smtpHost, String smtpUser, String smtpPass, String from, String[] recipients, String subject,
          String message)
          throws MessagingException
    {
-      postMailBySMTP(smtpHost, smtpUser, smtpPass, from, recipients, subject, message, null);
-   }
-
-   public static void postMailBySMTP(
-         String smtpHost, String smtpUser, String smtpPass, String from, String[] recipients, String subject,
-         String message, File[] attachments)
-         throws MessagingException
-   {
-      postMailBySMTP(smtpHost, smtpUser, smtpPass, from, recipients, subject, message, attachments, null);
+      postMailBySMTP(smtpHost, smtpUser, smtpPass, from, recipients, subject, message, null, null);
    }
 
    public static void postMailBySMTP(
