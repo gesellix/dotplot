@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import javax.imageio.ImageIO;
@@ -60,14 +59,13 @@ import org.dotplot.core.ISourceList;
  *
  * @author Tobias Gesellchen
  */
-final public class JAITools
-{
-	
-	public static final int PDF = 0;
-	public static final int JPG = 1;
-	public static final int PNG = 2;
-	public static final int TIFF = 3;
-	
+final public class JAITools {
+
+   public static final int PDF = 0;
+   public static final int JPG = 1;
+   public static final int PNG = 2;
+   public static final int TIFF = 3;
+
    /**
     * for internal configuration of TiledImage.
     */
@@ -92,13 +90,12 @@ final public class JAITools
     * Collection of supported fileformats.
     */
    public static final String[] EXPORT_FORMATS = new String[]{
-      EXPORTFORMAT_PDF, EXPORTFORMAT_JPEG, EXPORTFORMAT_PNG, EXPORTFORMAT_TIFF
+         EXPORTFORMAT_PDF, EXPORTFORMAT_JPEG, EXPORTFORMAT_PNG, EXPORTFORMAT_TIFF
    };
 
    private final static Logger logger = Logger.getLogger(JAITools.class.getName());
 
-   static Raster getRasterWithLUT(TiledImage tiledImage, float[] scale, QImage qImage)
-   {
+   static Raster getRasterWithLUT(TiledImage tiledImage, float[] scale, QImage qImage) {
       IQImageConfiguration config = qImage.getConfiguration();
 
       int scaleMode = config.getScaleMode();
@@ -110,21 +107,18 @@ final public class JAITools
       PlanarImage displayImage;
       Raster imageData;
 
-      if (scaleMode == 0)
-      {
+      if (scaleMode == 0) {
          qImage.update(0, IDotplot.STEP_SCALING, "no scaling.");
          scale[0] = scale[1] = 1;
 
          // no scaling
          displayImage = tiledImage.createSnapshot();
       }
-      else if ((scaleUp && scale[0] > 1 && scale[1] > 1) || (scale[0] < 1 && scale[1] < 1))
-      {
+      else if ((scaleUp && scale[0] > 1 && scale[1] > 1) || (scale[0] < 1 && scale[1] < 1)) {
          // apply targetSize/scale factor
          displayImage = getScaled(tiledImage, scale).createSnapshot();
       }
-      else
-      {
+      else {
          // if nothing was true...
          displayImage = tiledImage.createSnapshot();
       }
@@ -143,12 +137,10 @@ final public class JAITools
       return imageData;
    }
 
-   static RenderedOp getWithLUT(PlanarImage image, int[][] lut)
-   {
+   static RenderedOp getWithLUT(PlanarImage image, int[][] lut) {
       logger.debug("performing lookup (color conversion)...");
 
-      if (lut == null)
-      {
+      if (lut == null) {
          logger.debug("using lut 'gray'");
          lut = LUTs.gray(); // "identity" / no color conversion
       }
@@ -164,8 +156,7 @@ final public class JAITools
       return luttedImage;
    }
 
-   static RenderedOp makeTiledImage(PlanarImage img)
-   {
+   static RenderedOp makeTiledImage(PlanarImage img) {
       ImageLayout tileLayout = new ImageLayout(img);
       tileLayout.setTileWidth(MAX_TILE_EDGE);
       tileLayout.setTileHeight(MAX_TILE_EDGE);
@@ -175,20 +166,17 @@ final public class JAITools
       return JAI.create("format", pb, tileHints);
    }
 
-   static ROI[] createROIFromImage(RenderedImage img)
-   {
+   static ROI[] createROIFromImage(RenderedImage img) {
       int numbands = img.getSampleModel().getNumBands();
       ROI[] roi = new ROI[numbands];
 
-      if (numbands == 1)
-      {
+      if (numbands == 1) {
          roi[0] = new ROI(img);
          return roi;
       }
 
       int[] bandindices = new int[1];
-      for (int i = 0; i < numbands; i++)
-      {
+      for (int i = 0; i < numbands; i++) {
          bandindices[0] = i;
          RenderedOp opImage = JAI.create("bandselect", img, bandindices);
          roi[i] = new ROI((PlanarImage) opImage);
@@ -197,8 +185,7 @@ final public class JAITools
       return roi;
    }
 
-   static RenderedOp getScaled(PlanarImage image, float[] scale)
-   {
+   static RenderedOp getScaled(PlanarImage image, float[] scale) {
       logger.debug("scaling...");
 
       ParameterBlock pbScale = new ParameterBlock();
@@ -218,40 +205,36 @@ final public class JAITools
    /**
     * Saves the given DotPlot to given file.
     *
-    * @param dotplot   - the DotPlot image information, must not be <code>null</code>
-    * @param target    - target file
-    * @param format    - file format (jpeg, png, pdf, ...)
-    * @param lut       - look up table for color conversion
-    * @param useThread - save in an external thread (background)
+    * @param dotplot      - the DotPlot image information, must not be <code>null</code>
+    * @param target       - target file
+    * @param format       - file format (jpeg, png, pdf, ...)
+    * @param lut          - look up table for color conversion
+    * @param useThread    - save in an external thread (background)
+    * @param isOnlyExport - used for PDF export to handle empty fileList
     */
    static void saveDotplot(
-         final IDotplot dotplot, final File target, final String format, final int[][] lut,final boolean isOnlyExport, boolean useThread)
-   {
-      if (useThread)
-      {
-         new Thread()
-         {
-            public void run()
-            {
+         final IDotplot dotplot, final File target, final String format, final int[][] lut, final boolean isOnlyExport,
+         boolean useThread) {
+      if (useThread) {
+         new Thread() {
+            public void run() {
                save(dotplot, target, format, lut, isOnlyExport);
             }
          }.start();
       }
-      else
-      {
+      else {
          save(dotplot, target, format, lut, isOnlyExport);
       }
    }
 
-   private static void save(final IDotplot dotplot, final File target, final String format, final int[][] lut, boolean isOnlyExport)
-   {
+   private static void save(
+         final IDotplot dotplot, final File target, final String format, final int[][] lut, boolean isOnlyExport) {
       logger.debug("preparing image for file '" + target.getName() + "'...");
 
       final RenderedOp imageWithLUT = getWithLUT((PlanarImage) dotplot.getImage(IDotplot.IMG_JAI_PLANARIMAGE), lut);
 
       // if save as PDF ==> we need a temporary JPEG file
-      if (format.equalsIgnoreCase(EXPORTFORMAT_PDF))
-      {
+      if (format.equalsIgnoreCase(EXPORTFORMAT_PDF)) {
          String filename = createFilename(target.getAbsolutePath(), EXPORTFORMAT_JPEG);
 
          saveJAI(imageWithLUT, filename, EXPORTFORMAT_JPEG);
@@ -261,23 +244,19 @@ final public class JAITools
 
          return;
       }
-      else
-      {
+      else {
          // save a simple image (no PDF)
          saveJAI(imageWithLUT, target.getAbsolutePath(), format);
       }
    }
 
-   static void saveJAI(final PlanarImage image, final String target, final String format)
-   {
+   static void saveJAI(final PlanarImage image, final String target, final String format) {
       logger.debug("saving to " + target);
 
-      if (format.equals(EXPORTFORMAT_JPEG))
-      {
+      if (format.equals(EXPORTFORMAT_JPEG)) {
          saveJPEG(image, target);
       }
-      else
-      {
+      else {
 //      saveIIO(image, target, format);
          JAI.create("filestore", image, target, format);
       }
@@ -285,60 +264,49 @@ final public class JAITools
       logger.debug("file saved to " + new File(target).getAbsolutePath());
    }
 
-   private static BufferedImage readJPEG(String filename) throws IOException
-   {
+   private static BufferedImage readJPEG(String filename) throws IOException {
       FileInputStream fileInputStream = new FileInputStream(filename);
       JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(fileInputStream);
       return decoder.decodeAsBufferedImage();
    }
 
-   private static void saveJPEG(final PlanarImage image, final String target)
-   {
+   private static void saveJPEG(final PlanarImage image, final String target) {
       FileOutputStream fileOutputStream = null;
-      try
-      {
+      try {
          fileOutputStream = new FileOutputStream(new File(target));
       }
-      catch (FileNotFoundException e)
-      {
+      catch (FileNotFoundException e) {
          logger.error("Output file could not be created.", e);
          return;
       }
 
       JPEGEncodeParam encodeParam = new JPEGEncodeParam();
       encodeParam.setQuality(0.90F);
-      try
-      {
+      try {
          ImageCodec.createImageEncoder("JPEG", fileOutputStream, encodeParam).encode(image);
          fileOutputStream.close();
       }
-      catch (IOException e)
-      {
+      catch (IOException e) {
          logger.error("IOException while encoding image", e);
       }
    }
 
-   private static void saveIIO(final RenderedOp image, final String target, final String format)
-   {
-      try
-      {
+   private static void saveIIO(final RenderedOp image, final String target, final String format) {
+      try {
          ImageIO.write(image, format, new File(target));
       }
-      catch (IOException e)
-      {
+      catch (IOException e) {
          e.printStackTrace();
       }
    }
 
-   private static void savePDF(String file, String format, boolean isOnlyExport)
-   {
+   private static void savePDF(String file, String format, boolean isOnlyExport) {
 
       Document document = new Document();
 
       String filename = file.substring(0, file.lastIndexOf(format.toLowerCase()) - 1);
 
-      try
-      {
+      try {
          // we create a writer that listens to the document
          // and directs a PDF-stream to a file
          PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(filename));
@@ -347,13 +315,10 @@ final public class JAITools
          htmlWriter.setImagepath("./");
 
          pdfWriter.setViewerPreferences(PdfWriter.FitWindow);
-         pdfWriter.setPageEvent(new PdfPageEventHelper()
-         {
-            public void onStartPage(PdfWriter pdfWriter, Document document)
-            {
+         pdfWriter.setPageEvent(new PdfPageEventHelper() {
+            public void onStartPage(PdfWriter pdfWriter, Document document) {
                // remove empty 2nd page
-               if (document.getPageNumber() > 1)
-               {
+               if (document.getPageNumber() > 1) {
                   return;
                }
 
@@ -384,18 +349,15 @@ final public class JAITools
 
          final Font fileNameFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
          final Paragraph files = new Paragraph();
-         if (iFileList != null)
-         {
-        	 for(IPlotSource source: iFileList){        		 
+         if (iFileList != null) {
+            for (IPlotSource source : iFileList) {
                String fileName = '\n' + source.toString();
                files.add(new Phrase(fileName, fileNameFont));
             }
          }
-         else
-         {
+         else {
             files.add(new Phrase("No FileList provided.", fileNameFont));
-            if (isOnlyExport)
-            {
+            if (isOnlyExport) {
                files.add(new Phrase("\nThis file has been created outside the eclipse environment.", fileNameFont));
             }
          }
@@ -419,14 +381,11 @@ final public class JAITools
          document.add(date);
          document.add(files);
       }
-      catch (Exception exc)
-      {
+      catch (Exception exc) {
          logger.error("error creating PDF", exc);
       }
-      finally
-      {
-         if (document.isOpen())
-         {
+      finally {
+         if (document.isOpen()) {
             document.close();
          }
       }
@@ -434,43 +393,34 @@ final public class JAITools
       logger.debug("PDF saved.");
    }
 
-   private static String createFilename(String file, String extension)
-   {
-      if (file.endsWith(extension))
-      {
+   private static String createFilename(String file, String extension) {
+      if (file.endsWith(extension)) {
          return file;
       }
 
-      if (file.endsWith("."))
-      {
-         if (extension.startsWith("."))
-         {
+      if (file.endsWith(".")) {
+         if (extension.startsWith(".")) {
             return file + extension.substring(1);
          }
-         else
-         {
+         else {
             return file + extension;
          }
       }
 
-      if (extension.startsWith("."))
-      {
+      if (extension.startsWith(".")) {
          return file + extension;
       }
-      else
-      {
+      else {
          return file + "." + extension;
       }
    }
 
-   static int[] convert3BandTo1Band(int[] samples)
-   {
+   static int[] convert3BandTo1Band(int[] samples) {
       int[] ret = new int[samples.length / 3];
 
       int x = 0;
 
-      for (int i = 0; i < samples.length; i += 3)
-      {
+      for (int i = 0; i < samples.length; i += 3) {
          ret[x++] = 0xff000000 | ((samples[i] << 16) & 0xFF) | ((samples[i + 1] << 8) & 0xFF)
                | ((samples[i + 2] << 0) & 0xFF);
       }
@@ -481,24 +431,22 @@ final public class JAITools
    /**
     * Exports the list of images, that needs to be aggregated.
     * The exported file will help the user to combine the images himself.
+    *
+    * @param images key: indices, value: image.
+    * @param target target file for file list
     */
-   private static void exportImageMap(Map images, File target)
-   {
-      try
-      {
+   private static void exportImageMap(Map images, File target) {
+      try {
          OutputStream fout = new FileOutputStream(target);
 
          Vector indexVector = new Vector();
-         Iterator indexIter = images.keySet().iterator();
-         while (indexIter.hasNext())
-         {
-            indexVector.add(indexIter.next());
+         for (Object o : images.keySet()) {
+            indexVector.add(o);
          }
          Integer[] indices = (Integer[]) indexVector.toArray(new Integer[0]);
          Arrays.sort(indices);
 
-         for (int i = 0; i < indices.length; i++)
-         {
+         for (int i = 0; i < indices.length; i++) {
             Integer index = indices[i];
             fout.write((index + ": ").getBytes());
             fout.write(((File) images.get(index)).toString().getBytes());
@@ -508,13 +456,11 @@ final public class JAITools
          fout.flush();
          fout.close();
       }
-      catch (FileNotFoundException e)
-      {
-         e.printStackTrace();
+      catch (FileNotFoundException e) {
+         logger.error("Error exporting image list.", e);
       }
-      catch (IOException e)
-      {
-         e.printStackTrace();
+      catch (IOException e) {
+         logger.error("Error exporting image list.", e);
       }
    }
 
@@ -530,17 +476,14 @@ final public class JAITools
     * @throws IOException if an error occurs
     */
    public static File aggregateImages(Map indexedImages, Dimension size, boolean deleteFileAutomatically)
-         throws IOException
-   {
-      if (indexedImages.size() == 1)
-      {
+         throws IOException {
+      if (indexedImages.size() == 1) {
          // if only one file to process, we can use it directly
          return ((File) indexedImages.values().toArray()[0]);
       }
 
       File targetFile = File.createTempFile("grid_aggregated", ".jpeg");
-      if (deleteFileAutomatically)
-      {
+      if (deleteFileAutomatically) {
          targetFile.deleteOnExit();
       }
 
@@ -554,30 +497,25 @@ final public class JAITools
 //      img = readJPEG(((File) indexedImages.get(new Integer(0))).getAbsolutePath());
 
       Vector indexVector = new Vector();
-      Iterator indexIter = indexedImages.keySet().iterator();
-      while (indexIter.hasNext())
-      {
-         indexVector.add(indexIter.next());
+      for (Object o : indexedImages.keySet()) {
+         indexVector.add(o);
       }
       Integer[] indices = (Integer[]) indexVector.toArray(new Integer[0]);
       Arrays.sort(indices);
 
       double x = 0;
-      for (int i = 0; i < indices.length; i++)
-      {
+      for (int i = 0; i < indices.length; i++) {
          logger.debug("reading file " + (i + 1) + "/" + indices.length);
          final Object obj = indexedImages.get(indices[i]);
          img = readJPEG(((File) obj).getAbsolutePath());
-         if (img != null)
-         {
+         if (img != null) {
             logger.debug("file read, translate to target offset (x-axis): " + x);
             AffineTransform atx = new AffineTransform();
             atx.setToTranslation(x, 0);
             tg2d.drawRenderedImage(img, atx);
             x += img.getWidth();
          }
-         else
-         {
+         else {
             logger.error("file " + obj + " could not be read!");
          }
       }
