@@ -23,136 +23,128 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * a special table that shows the selected input files to plot.
- * 
+ *
  * @author Roland Helmrich
  */
 public class DotPlotTable extends TableViewer {
-	
-	private DotPlotFileList fileList = new DotPlotFileList();
 
-	private Table table;
+   private DotPlotFileList fileList = new DotPlotFileList();
 
-	private DragSource dragSource;
+   private Table table;
 
-	private DropTarget dropTarget;
+   /**
+    * Constructs a DotPlotTable object.
+    *
+    * @param parent the Composite that shows the table (e.g. a window)
+    * @param style  SWT Style
+    */
+   public DotPlotTable(Composite parent, int style) {
+      super(parent, style);
 
-	/**
-	 * Constructs a DotPlotTable object.
-	 * 
-	 * @param parent
-	 *            the Composite that shows the table (e.g. a window)
-	 * @param style
-	 *            SWT Style
-	 */
-	public DotPlotTable(Composite parent, int style) {
-		super(parent, style);
+      this.table = this.getTable();
 
-		this.table = this.getTable();
-		
-		DotPlotTableContentProvider contentProvider = new DotPlotTableContentProvider();
-		DotPlotTableLabelProvider labelProvider = new DotPlotTableLabelProvider();
+      DotPlotTableContentProvider contentProvider = new DotPlotTableContentProvider();
+      DotPlotTableLabelProvider labelProvider = new DotPlotTableLabelProvider();
 
-		setContentProvider(contentProvider);
-		setLabelProvider(labelProvider);
+      setContentProvider(contentProvider);
+      setLabelProvider(labelProvider);
 
-		TableColumn columnNames = new TableColumn(table, SWT.LEFT);
-		columnNames.setText("Filename");
+      TableColumn columnNames = new TableColumn(table, SWT.LEFT);
+      columnNames.setText("Filename");
 
-		TableColumn columnSizes = new TableColumn(table, SWT.RIGHT);
-		columnSizes.setText("Size");
+      TableColumn columnSizes = new TableColumn(table, SWT.RIGHT);
+      columnSizes.setText("Size");
 
-		columnNames.setWidth(500);
-		columnSizes.setWidth(100);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+      columnNames.setWidth(500);
+      columnSizes.setWidth(100);
+      table.setHeaderVisible(true);
+      table.setLinesVisible(true);
 
-		// -------------------------------------------------
-		// Dragsource
-		dragSource = new DragSource(table, DND.DROP_MOVE);
-		dragSource.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+      // -------------------------------------------------
+      // Dragsource
+      DragSource dragSource = new DragSource(table, DND.DROP_MOVE);
+      dragSource.setTransfer(new Transfer[]{FileTransfer.getInstance()});
 
-		dragSource.addDragListener(new DragSourceAdapter() {
-			
-			/*
-			 *  (non-Javadoc)
-			 * @see org.eclipse.swt.dnd.DragSourceListener#dragSetData(org.eclipse.swt.dnd.DragSourceEvent)
-			 */
-			public void dragSetData(DragSourceEvent event) {
-				// Examine whether the action one supports
-				if (FileTransfer.getInstance().isSupportedType(event.dataType)) {
-					TableItem[] items = table.getSelection();
-					String[] data = new String[items.length];
+      dragSource.addDragListener(new DragSourceAdapter() {
 
-					for (int i = 0; i < items.length; i++) {
-						data[i] = ((File) items[i].getData()).getAbsolutePath();
-					}
-					event.data = data;
-				}
-			}
+         /*
+             *  (non-Javadoc)
+             * @see org.eclipse.swt.dnd.DragSourceListener#dragSetData(org.eclipse.swt.dnd.DragSourceEvent)
+             */
+         public void dragSetData(DragSourceEvent event) {
+            // Examine whether the action one supports
+            if (FileTransfer.getInstance().isSupportedType(event.dataType)) {
+               TableItem[] items = table.getSelection();
+               String[] data = new String[items.length];
 
-			/*
-			 *  (non-Javadoc)
-			 * @see org.eclipse.swt.dnd.DragSourceListener#dragFinished(org.eclipse.swt.dnd.DragSourceEvent)
-			 */
-			public void dragFinished(DragSourceEvent event) {
-				if (event.detail == DND.DROP_MOVE) {
-					table.remove(table.getSelectionIndex());
-				}
-			}
-		});
+               for (int i = 0; i < items.length; i++) {
+                  data[i] = ((File) items[i].getData()).getAbsolutePath();
+               }
+               event.data = data;
+            }
+         }
 
-		// -------------------------------------------------
-		// Droptarget
-		dropTarget = new DropTarget(table, DND.DROP_MOVE);
-		dropTarget.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+         /*
+             *  (non-Javadoc)
+             * @see org.eclipse.swt.dnd.DragSourceListener#dragFinished(org.eclipse.swt.dnd.DragSourceEvent)
+             */
+         public void dragFinished(DragSourceEvent event) {
+            if (event.detail == DND.DROP_MOVE) {
+               table.remove(table.getSelectionIndex());
+            }
+         }
+      });
 
-		dropTarget.addDropListener(new DropTargetAdapter() {
-			// this event occurs when the user releases the mouse over the drop
-			// target
-			public void drop(DropTargetEvent event) {
-				int index = 0;
+      // -------------------------------------------------
+      // Droptarget
+      DropTarget dropTarget = new DropTarget(table, DND.DROP_MOVE);
+      dropTarget.setTransfer(new Transfer[]{FileTransfer.getInstance()});
 
-				if (event.data == null) {
-					event.detail = DND.DROP_NONE;
-					return;
-				}
+      dropTarget.addDropListener(new DropTargetAdapter() {
+         // this event occurs when the user releases the mouse over the drop
+         // target
+         public void drop(DropTargetEvent event) {
+            int index = 0;
 
-				String[] saFiles = (String[]) event.data;
+            if (event.data == null) {
+               event.detail = DND.DROP_NONE;
+               return;
+            }
 
-				for (int i = 0; i < saFiles.length; ++i) {
-					File f = new File(saFiles[i]);
+            String[] saFiles = (String[]) event.data;
 
-					if (!f.exists()) {
-						continue;
-					}
+            for (int i = 0; i < saFiles.length; ++i) {
+               File f = new File(saFiles[i]);
 
-					TableItem item = (TableItem) event.item;
-					index = table.indexOf(item);
-					insertItem(f, index);
-					table.update();
-				}
-			}
-		});
-	}
+               if (!f.exists()) {
+                  continue;
+               }
 
-	/**
-	 * inserts a file into the table.
-	 * 
-	 * @param f
-	 *            file to insert
-	 * @param idx
-	 *            position where to insert the file
-	 */
-	public void insertItem(File f, int idx) {
-		super.insert(f, idx);
-	}
+               TableItem item = (TableItem) event.item;
+               index = table.indexOf(item);
+               insertItem(f, index);
+               table.update();
+            }
+         }
+      });
+   }
 
-	/**
-	 * gives a plottable filelist.
-	 * 
-	 * @return the list of plottable files
-	 */
-	public DotPlotFileList getFileList() {
-		return this.fileList;
-	}
+   /**
+    * inserts a file into the table.
+    *
+    * @param f   file to insert
+    * @param idx position where to insert the file
+    */
+   public void insertItem(File f, int idx) {
+      super.insert(f, idx);
+   }
+
+   /**
+    * gives a plottable filelist.
+    *
+    * @return the list of plottable files
+    */
+   public DotPlotFileList getFileList() {
+      return this.fileList;
+   }
 }
