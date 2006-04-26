@@ -3,12 +3,11 @@ avail|quibeldey
 avail|gesellchen
 avail|lambda76
 avail|lolomat
+avail|abruch
 
 #teams
 #avail|abruch,pete_jensen|org.dotplot.plugin|Team_BruchPeter
 #avail|truemmer,dimaratz|org.dotplot.plugin|Team_BruecknerRatz
-
-avail|abruch|org.dotplot.plugin|Team_BruchPeter
 
 avail|sascha1975,jan_schaefer|org.dotplot.plugin|BioJava
 avail|bayer-dba,krampetz-wkr,bjoernwilken|org.dotplot.plugin|Parser
