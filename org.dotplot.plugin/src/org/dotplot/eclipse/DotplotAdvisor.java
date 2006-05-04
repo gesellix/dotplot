@@ -10,6 +10,7 @@ import org.dotplot.core.system.CoreSystem;
 import org.dotplot.util.UnknownIDException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -63,7 +64,7 @@ public class DotplotAdvisor extends WorkbenchAdvisor {
 		}
 		catch (IOException e) {
 			/*very evil*/
-		}
+		}		
 	}
 
 	/*

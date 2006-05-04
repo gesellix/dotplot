@@ -35,7 +35,11 @@ public class DotplotActionBarAdvisor extends ActionBarAdvisor {
 	public void makeActions(IWorkbenchWindow window){
 		this.register(ActionFactory.QUIT.create(window));
 		this.register(ActionFactory.ABOUT.create(window));
-		this.register(ActionFactory.PREFERENCES.create(window));		
+		this.register(ActionFactory.PREFERENCES.create(window));
+		
+		this.register(ActionFactory.HELP_CONTENTS.create(window));
+		this.register(ActionFactory.HELP_SEARCH.create(window));		
+		this.register(ActionFactory.DYNAMIC_HELP.create(window));		
 	}
 
 	/*
@@ -45,12 +49,17 @@ public class DotplotActionBarAdvisor extends ActionBarAdvisor {
 	public void fillMenuBar(IMenuManager menuBar){
 		
 		MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
-		
-		menuBar.add(fileMenu);
+		MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
 		
 		fileMenu.add(this.getAction(ActionFactory.PREFERENCES.getId()));
 		fileMenu.add(this.getAction(ActionFactory.ABOUT.getId()));
 		fileMenu.add(this.getAction(ActionFactory.QUIT.getId()));
+		
+		helpMenu.add(this.getAction(ActionFactory.HELP_CONTENTS.getId()));
+		helpMenu.add(this.getAction(ActionFactory.HELP_SEARCH.getId()));
+		helpMenu.add(this.getAction(ActionFactory.DYNAMIC_HELP.getId()));
+
+		menuBar.add(fileMenu);
 		
 		DotplotContext context = ContextFactory.getContext();
 		try {
@@ -59,6 +68,8 @@ public class DotplotActionBarAdvisor extends ActionBarAdvisor {
 		}
 		catch (UnknownIDException e) {
 			//dann eben nicht
-		}		
+		}
+		
+		menuBar.add(helpMenu);
 	}
 }
