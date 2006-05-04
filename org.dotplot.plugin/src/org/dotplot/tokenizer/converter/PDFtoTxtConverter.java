@@ -216,12 +216,12 @@ public class PDFtoTxtConverter implements IConverter
 		if(source == null) throw new NullPointerException();
 		if(source instanceof DotplotFile){
 			DotplotFile file = (DotplotFile)source;
-			if(file.getType().getClass() != this.getSourceTye().getClass()){
+			if(file.getType().getClass() != this.getSourceType().getClass()){
 				throw new IllegalArgumentException();
 			}
 			else {
 				File result = this.convert(file.getFile());
-				return new DotplotFile(result, this.getTargetTye());
+				return new DotplotFile(result, this.getTargetType());
 			}
 		}
 		return null;
@@ -234,12 +234,12 @@ public class PDFtoTxtConverter implements IConverter
 		if(source == null || directory == null) throw new NullPointerException();
 		if(source instanceof DotplotFile){
 			DotplotFile file = (DotplotFile)source;
-			if(file.getType().getClass() != this.getSourceTye().getClass()){
+			if(file.getType().getClass() != this.getSourceType().getClass()){
 				throw new IllegalArgumentException();
 			}
 			else {
 				File result = this.convert(file.getFile(), directory);
-				return new DotplotFile(result, this.getTargetTye());
+				return new DotplotFile(result, this.getTargetType());
 			}
 		}
 		return null;
@@ -248,14 +248,14 @@ public class PDFtoTxtConverter implements IConverter
 	/* (non-Javadoc)
 	 * @see org.dotplot.tokenizer.converter.IConverter#getSourceTye()
 	 */
-	public ISourceType getSourceTye() {
+	public ISourceType getSourceType() {
 		return PdfType.type;
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.dotplot.tokenizer.converter.IConverter#getTargetTye()
 	 */
-	public ISourceType getTargetTye() {
+	public ISourceType getTargetType() {
 		return TextType.type;
 	}
 

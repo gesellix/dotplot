@@ -107,11 +107,11 @@ public class PDFtoTxtConverterTest extends TestCase {
 	}
 
 	public void testGetSourceType() {
-		assertEquals(PdfType.type, this.pttc.getSourceTye());
+		assertEquals(PdfType.type, this.pttc.getSourceType());
 	}
 
 	public void testGetTargetType() {
-		assertEquals(TextType.type, this.pttc.getTargetTye());
+		assertEquals(TextType.type, this.pttc.getTargetType());
 	}
 
 	public void testConvertIPlotSource() {

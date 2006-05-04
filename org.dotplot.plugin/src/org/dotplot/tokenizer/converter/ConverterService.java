@@ -225,8 +225,8 @@ public class ConverterService extends DotplotService {
 					converter = converter.getClass().newInstance();
 					
 					//letztes überprüfen der convertertypen
-					if(sourceType.getClass().isAssignableFrom(converter.getSourceTye().getClass()) 
-							&& targetType.getClass().isAssignableFrom(converter.getTargetTye().getClass())){
+					if(sourceType.getClass().isAssignableFrom(converter.getSourceType().getClass()) 
+							&& targetType.getClass().isAssignableFrom(converter.getTargetType().getClass())){
 						//taskpart erstellen
 						ressources = new Vector<IPlotSource>();
 						ressources.add(s);
