@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<project default="simian">
+
+	<import file="ant.properties.xml" />
+
+	<path id="simian.lib">
+		<pathelement location="${simian.home}" />
+		<fileset dir="${simian.home}/bin">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+
+	<target name="clean">
+		<delete dir="${report.output.dir}/simian" />
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${report.output.dir}/simian" />
+	</target>
+
+
+	<target name="simian" depends="init">
+
+		<taskdef resource="simiantask.properties">
+			<classpath refid="simian.lib" />
+		</taskdef>
+
+		<simian>
+			<fileset dir="${sources}" includes="**/*.java" />
+			<formatter type="xml" toFile="${report.output.dir}/simian/simian_report.xml" />
+
+		</simian>
+	</target>
+
+</project>
+

@@ -4,7 +4,7 @@
 	name="testplugin"
 	version="1.0"	
 	provider="Christian Gerhardt"
-	info="EinfÃŒhrender Test fÃŒr die plugin.xml">
+	info="Einführender Test für die plugin.xml">
 	
 	<Dependency plugin="org.dotplot.testplugin" version="1.2"/>
 	

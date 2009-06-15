@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<project default="emma">
+
+	<import file="ant.properties.xml" />
+
+	<path id="emma.lib">
+		<pathelement location="${emma.home}" />
+		<fileset dir="${emma.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${report.output.dir}/emma" />
+		<delete dir="${tmpdir}/emma" />
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${report.output.dir}/emma" />
+		<mkdir dir="${tmpdir}/emma" />
+	</target>
+
+	<target name="emma" depends="init">
+		<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+
+		<emma enabled="true">
+			<instr instrpath="${destdir}" destdir="${tmpdir}/emma" metadatafile="${report.output.dir}/emma/metadata.emma" merge="true" />
+		</emma>
+
+		<java classname="org.dotplot.DotplotCreator" fork="true">
+			<classpath>
+				<!--
+				First element has to be the instrumented class files,
+				but not all classes are instrumented and as a result of this 
+				the directory with all classes have to be referenced
+				
+				-->
+				<pathelement location="${tmpdir}/emma" />
+				<path refid="project.classpath" />
+				<path refid="emma.lib" />
+				<pathelement location="${tmpdir}/bin" />
+			</classpath>
+			
+			<jvmarg value="-Demma.coverage.out.file=${report.output.dir}/emma/coverage.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=false" />
+		</java>
+
+		<emma enabled="true">
+			<report sourcepath="${sources}" sort="+block,+name,+method,+class" metrics="method:70,block:80,line:80,class:100">
+				<fileset dir="${report.output.dir}/emma/">
+					<include name="*.emma" />
+				</fileset>
+
+				<xml outfile="${report.output.dir}/emma/coverage.xml" depth="all" columns="class,method,block,line,name" />
+			</report>
+		</emma>
+
+		<emma>
+			<report sourcepath="${sources}">
+				<fileset dir="${report.output.dir}/emma">
+					<include name="*.emma" />
+				</fileset>
+				<xml outfile="${report.output.dir}/emma/coverage.xml" depth="all" />
+			</report>
+		</emma>
+
+	</target>
+
+</project>
+

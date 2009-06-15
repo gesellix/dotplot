@@ -1,7 +1,5 @@
 package org.dotplot.image;
 
-import org.apache.log4j.Logger;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
@@ -10,157 +8,141 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.apache.log4j.Logger;
 import org.dotplot.fmatrix.ITypeTableNavigator;
 import org.dotplot.fmatrix.Match;
 
 /**
- * Provides the Information Mural algorithm. It can be used for efficient scaling and saving memory.
+ * Provides the Information Mural algorithm. It can be used for efficient
+ * scaling and saving memory.
  */
-class InformationMural
-{
-   private final static Logger logger = Logger.getLogger(InformationMural.class.getName());
+class InformationMural {
+    private final static Logger logger = Logger
+	    .getLogger(InformationMural.class.getName());
 
-   static void getMural(ITypeTableNavigator navData, Dimension _targetSize, ImageCallback image, IQImageConfiguration config)
-   {
-      Dimension originalSize = navData.getSize();
-      int minLen = Math.min(_targetSize.width, _targetSize.height);
-      Dimension targetSize = new Dimension(minLen, minLen);
-//      IQImageConfiguration config = (IQImageConfiguration) GlobalConfiguration.getInstance().get(
-//            GlobalConfiguration.KEY_IMG_CONFIGURATION);
+    private static float fillMuralArray(Dimension targetSize,
+	    Dimension originalSize, ITypeTableNavigator navData,
+	    int[][] mural_array) {
+	logger.debug("reading data...");
+	long counter = 0;
+	long divider = (originalSize.width * originalSize.height) / 100;
 
-      logger.debug("size " + originalSize.width + "->" + targetSize.width);
+	Match p;
+	int mural_x, mural_y;
+	float max_mural_array_value = 0;
 
-      // initialize the mural array
-      int[][] mural_array = initMuralArray(targetSize);
+	float xFactor = (float) targetSize.width / (float) originalSize.width;
+	float yFactor = (float) targetSize.height / (float) originalSize.height;
 
-      // fill mural array including scaling (on-the-fly)
-      float max_mural_array_value = fillMuralArray(targetSize, originalSize, navData, mural_array);
+	while ((p = navData.getNextMatch()) != null) {
+	    // calculate target indices
+	    mural_x = (int) (p.getX() * xFactor);
+	    mural_y = (int) (p.getY() * yFactor);
 
-      logger.debug("MaxMural: " + max_mural_array_value);
+	    // algorithm uses boolean values
+	    mural_array[mural_x][mural_y]++;
 
-//      transferToCSV(mural_array, new File("infomural.csv"));
+	    // update max_value
+	    if (mural_array[mural_x][mural_y] > max_mural_array_value) {
+		max_mural_array_value = mural_array[mural_x][mural_y];
+	    }
 
-      // fill image with mural values
-      transferToImage(mural_array, image, max_mural_array_value, config);
-   }
+	    counter++;
+	    if (logger.isDebugEnabled() && divider > 0
+		    && ((counter % divider) == 0)) {
+		logger.debug("matches processed: " + counter);
+	    }
+	}
+	return max_mural_array_value;
+    }
 
-   /**
-    * Exports the values from the mural_array into a file, each value separated by comma.
-    * Used for debugging only.
-    */
-   private static void transferToCSV(int[][] mural_array, File target)
-   {
-      try
-      {
-         OutputStream fout = new FileOutputStream(target);
-         for (int x = 0; x < mural_array.length; x++)
-         {
-            for (int y = 0; y < mural_array[x].length; y++)
-            {
-               fout.write((mural_array[x][y] + ",").getBytes());
-            }
-            fout.write('\n');
-         }
-         fout.flush();
-         fout.close();
-      }
-      catch (FileNotFoundException e)
-      {
-         e.printStackTrace();
-      }
-      catch (IOException e)
-      {
-         e.printStackTrace();
-      }
-   }
+    static void getMural(ITypeTableNavigator navData, Dimension _targetSize,
+	    ImageCallback image, IQImageConfiguration config) {
+	Dimension originalSize = navData.getSize();
+	int minLen = Math.min(_targetSize.width, _targetSize.height);
+	Dimension targetSize = new Dimension(minLen, minLen);
+	// IQImageConfiguration config = (IQImageConfiguration)
+	// GlobalConfiguration.getInstance().get(
+	// GlobalConfiguration.KEY_IMG_CONFIGURATION);
 
-   private static void transferToImage(
-         int[][] mural_array, ImageCallback image, float max_mural_array_value, IQImageConfiguration config)
-   {
-      logger.debug("converting to image...");
-      int col;
-      float maxColVal = Util.COLOR_COUNT_PER_BAND - 1;
+	logger.debug("size " + originalSize.width + "->" + targetSize.width);
 
-      // cached values to improve performance
-      int colBackground = config.getLutBackground().getRGB();
-      int colForeground = config.getLutForeground().getRGB();
-      int[][] lut = config.getLut();
+	// initialize the mural array
+	int[][] mural_array = initMuralArray(targetSize);
 
-      for (int x = 0; x < mural_array.length; x++)
-      {
-         for (int y = 0; y < mural_array[x].length; y++)
-         {
-            if (mural_array[x][y] == 0)
-            {
-               image.setPixel(x, y, colBackground);
-            }
-            else if (mural_array[x][y] == max_mural_array_value)
-            {
-               image.setPixel(x, y, colForeground);
-            }
-            else
-            {
-               col = (int) ((float) mural_array[x][y] / (float) max_mural_array_value * (float) maxColVal);
-               image.setPixel(x, y, new Color(lut[0][col], lut[1][col], lut[2][col]).getRGB());
-            }
-         }
+	// fill mural array including scaling (on-the-fly)
+	float max_mural_array_value = fillMuralArray(targetSize, originalSize,
+		navData, mural_array);
 
-         if ((x % 100) == 0)
-         {
-            logger.debug("(" + x + "/" + mural_array.length + ")...");
-         }
-      }
-   }
+	logger.debug("MaxMural: " + max_mural_array_value);
 
-   private static float fillMuralArray(
-         Dimension targetSize, Dimension originalSize, ITypeTableNavigator navData, int[][] mural_array)
-   {
-      logger.debug("reading data...");
-      long counter = 0;
-      long divider = (originalSize.width * originalSize.height) / 100;
+	// transferToCSV(mural_array, new File("infomural.csv"));
 
-      Match p;
-      int mural_x, mural_y;
-      float max_mural_array_value = 0;
+	// fill image with mural values
+	transferToImage(mural_array, image, max_mural_array_value, config);
+    }
 
-      float xFactor = (float) targetSize.width / (float) originalSize.width;
-      float yFactor = (float) targetSize.height / (float) originalSize.height;
+    private static int[][] initMuralArray(Dimension targetSize) {
+	logger.debug("init with size " + targetSize);
+	int[][] mural_array = new int[targetSize.width][targetSize.height];
+	for (int i = 0; i < targetSize.width; i++) {
+	    for (int j = 0; j < targetSize.height; j++) {
+		mural_array[i][j] = 0;
+	    }
+	}
+	return mural_array;
+    }
 
-      while ((p = navData.getNextMatch()) != null)
-      {
-         // calculate target indices
-         mural_x = (int) ((float) p.getX() * xFactor);
-         mural_y = (int) ((float) p.getY() * yFactor);
+    /**
+     * Exports the values from the mural_array into a file, each value separated
+     * by comma. Used for debugging only.
+     */
+    private static void transferToCSV(int[][] mural_array, File target) {
+	try {
+	    OutputStream fout = new FileOutputStream(target);
+	    for (int x = 0; x < mural_array.length; x++) {
+		for (int y = 0; y < mural_array[x].length; y++) {
+		    fout.write((mural_array[x][y] + ",").getBytes());
+		}
+		fout.write('\n');
+	    }
+	    fout.flush();
+	    fout.close();
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
 
-         // algorithm uses boolean values
-         mural_array[mural_x][mural_y]++;
+    private static void transferToImage(int[][] mural_array,
+	    ImageCallback image, float max_mural_array_value,
+	    IQImageConfiguration config) {
+	logger.debug("converting to image...");
+	int col;
+	float maxColVal = Util.COLOR_COUNT_PER_BAND - 1;
 
-         // update max_value
-         if (mural_array[mural_x][mural_y] > max_mural_array_value)
-         {
-            max_mural_array_value = mural_array[mural_x][mural_y];
-         }
+	// cached values to improve performance
+	int colBackground = config.getLutBackground().getRGB();
+	int colForeground = config.getLutForeground().getRGB();
+	int[][] lut = config.getLut();
 
-         counter++;
-         if (logger.isDebugEnabled() && divider > 0 && ((counter % divider) == 0))
-         {
-            logger.debug("matches processed: " + counter);
-         }
-      }
-      return max_mural_array_value;
-   }
+	for (int x = 0; x < mural_array.length; x++) {
+	    for (int y = 0; y < mural_array[x].length; y++) {
+		if (mural_array[x][y] == 0) {
+		    image.setPixel(x, y, colBackground);
+		} else if (mural_array[x][y] == max_mural_array_value) {
+		    image.setPixel(x, y, colForeground);
+		} else {
+		    col = (int) (mural_array[x][y] / max_mural_array_value * maxColVal);
+		    image.setPixel(x, y, new Color(lut[0][col], lut[1][col],
+			    lut[2][col]).getRGB());
+		}
+	    }
 
-   private static int[][] initMuralArray(Dimension targetSize)
-   {
-      logger.debug("init with size " + targetSize);
-      int[][] mural_array = new int[targetSize.width][targetSize.height];
-      for (int i = 0; i < targetSize.width; i++)
-      {
-         for (int j = 0; j < targetSize.height; j++)
-         {
-            mural_array[i][j] = 0;
-         }
-      }
-      return mural_array;
-   }
+	    if ((x % 100) == 0) {
+		logger.debug("(" + x + "/" + mural_array.length + ")...");
+	    }
+	}
+    }
 }

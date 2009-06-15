@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<project default="findbugs">
+
+	<import file="ant.properties.xml"/>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${report.output.dir}/findbugs"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${report.output.dir}/findbugs"/>
+	</target>
+
+
+
+	<target name="findbugs" depends="init" >
+		<path id="findbugs.lib">
+			<fileset dir="${findbugs.home}/lib">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+
+		<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
+			<classpath refid="findbugs.lib" />
+		</taskdef>
+
+		<!--            <path id="classpath">
+                        <path refid="project.classpath"/>
+                        <pathelement location="${destdir}"/>
+                </classpath>
+                -->
+
+		<findbugs home="${findbugs.home}"
+                      output="xml"
+                      outputFile="${report.output.dir}/findbugs/findbugs_report.xml" >
+			<sourcePath path="${sources}" />
+			<class location="${tmpdir}/bin" />
+			<auxClasspath refid="project.classpath" />
+		</findbugs>
+	</target>
+
+
+</project>
+

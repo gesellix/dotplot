@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<project default="cobertura">
+
+	<import file="ant.properties.xml"/>
+
+	<path id="cobertura.lib">
+		<pathelement location="${cobertura.home}"/>
+		<fileset dir="${cobertura.home}">
+			<include name="cobertura.jar" />
+			<include name="lib/**/*.jar"/>
+		</fileset>
+	</path>
+
+
+	<target name="clean">
+	</target>
+
+	<target name="init" depends="clean">
+	</target>
+
+	<target name="cobertura" depends="init">
+		<taskdef classpathref="cobertura.lib" resource="tasks.properties" />
+
+		<cobertura-instrument todir="${tmpdir}/cobertura/bin">
+			<ignore regex="org.apache.log4j.*" />
+			<fileset dir="${tmpdir}/cobertura/bin">
+				<include name="**/*.class" />
+				<exclude name="**/*Test.class" />
+			</fileset>
+		</cobertura-instrument>
+
+		<cobertura-report format="xml" destdir="${report.output.dir}/cobertura/" srcdir="${sources}" />
+	</target>
+
+</project>
+

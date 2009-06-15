@@ -12,56 +12,55 @@ import org.dotplot.tokenizer.Token;
 
 /**
  * Test Class for an EOLToken
- *
+ * 
  * @author hg12201
  * @version 1.0
  */
-public class EOLTokenTest extends TestCase
-{
+public class EOLTokenTest extends TestCase {
 
-   EOLToken eolt;
-   IPlotSource file;
+    EOLToken eolt;
 
-   /**
-    * Constructor for EOLTokenTest.
-    *
-    * @param arg0 - the first argument
-    */
-   public EOLTokenTest(String arg0)
-   {
-      super(arg0);
-   }
+    IPlotSource file;
 
-   /*
-    * @see TestCase#setUp()
-    */
-   protected void setUp() throws Exception
-   {
-      super.setUp();
-      this.file = new DotplotFile("./testfiles/tokenizer/test.txt");
-      this.eolt = new EOLToken(this.file, 2);
-   }
+    /**
+     * Constructor for EOLTokenTest.
+     * 
+     * @param arg0
+     *            - the first argument
+     */
+    public EOLTokenTest(String arg0) {
+	super(arg0);
+    }
 
-   /*
-    * @see TestCase#tearDown()
-    */
-   protected void tearDown() throws Exception
-   {
-      super.tearDown();
-   }
+    /*
+     * @see TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception {
+	super.setUp();
+	this.file = new DotplotFile("./testfiles/tokenizer/test.txt");
+	this.eolt = new EOLToken(this.file, 2);
+    }
 
-   public void testGetFile()
-   {
-      assertTrue("pruefen ob die Datei stimmt", this.eolt.getSource() == this.file);
-   }
+    /*
+     * @see TestCase#tearDown()
+     */
+    @Override
+    protected void tearDown() throws Exception {
+	super.tearDown();
+    }
 
-   public void testGetLine()
-   {
-      assertEquals("pruefen ob die Zeile stimmt", this.eolt.getLine(), 2);
-   }
+    public void testGetFile() {
+	assertTrue("pruefen ob die Datei stimmt",
+		this.eolt.getSource() == this.file);
+    }
 
-   public void testGetType()
-   {
-      assertEquals("pruefen ob der typ stimmt", this.eolt.getType(), Token.TYPE_EOL);
-   }
+    public void testGetLine() {
+	assertEquals("pruefen ob die Zeile stimmt", this.eolt.getLine(), 2);
+    }
+
+    public void testGetType() {
+	assertEquals("pruefen ob der typ stimmt", this.eolt.getType(),
+		Token.TYPE_EOL);
+    }
 }

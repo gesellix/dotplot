@@ -1,7 +1,5 @@
 package org.dotplot.grid.framework;
 
-import org.apache.log4j.Logger;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -15,387 +13,333 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 /**
  * Source code from "Java Distributed Computing", by Jim Farley.
  * <p/>
- * Classes: MessageHandler, AgentConnection, AgentHandler
- * Example: 9-1
+ * Classes: MessageHandler, AgentConnection, AgentHandler Example: 9-1
  * Description: A new version of message handler that handles each remote client
  * with a separate thread.
  * <p/>
  * Changed by Tobias Gesellchen
  */
-class MessageHandler implements Runnable
-{
-   // A global MessageHandler, for applications where one central handler is used.
-   public static MessageHandler current = null;
+class MessageHandler implements Runnable {
+    private class AgentConnection {
+	private Socket socket;
 
-   private Hashtable agents = new Hashtable();
-   private Hashtable handlers = new Hashtable();
-   private Vector msgPrototypes = new Vector();
+	public AgentConnection(Socket socket) {
+	    this.socket = socket;
+	}
 
-   private final Logger logger = Logger.getLogger(MessageHandler.class.getName());
+	synchronized InputStream getInputStream() throws IOException {
+	    return socket.getInputStream();
+	}
 
-   synchronized public int getNewAgentID()
-   {
-      return agents.size();
-   }
+	synchronized OutputStream getOutputStream() throws IOException {
+	    return socket.getOutputStream();
+	}
+    }
 
-   synchronized public Vector getAgentIds()
-   {
-      Vector ids = new Vector();
-      Enumeration e = agents.keys();
-      while (e.hasMoreElements())
-      {
-         ids.addElement(e.nextElement());
-      }
-      return ids;
-   }
+    private class AgentHandler implements Runnable {
+	int peerId;
 
-   synchronized protected int addAgent(Socket socket) throws IOException
-   {
-      final int id = getNewAgentID();
-      final Integer key = new Integer(id);
+	MessageHandler handler;
 
-      agents.put(new Identity(id), new AgentConnection(socket));
+	boolean stop = false;
 
-      AgentHandlerThread phThread = new AgentHandlerThread(new AgentHandler(id, this));
-      handlers.put(key, phThread);
+	public AgentHandler(int id, MessageHandler h) {
+	    peerId = id;
+	    handler = h;
+	}
 
-      startAgentHandler(id);
+	public void run() {
+	    final Logger logger = Logger
+		    .getLogger(AgentHandler.class.getName());
 
-      return id;
-   }
+	    logger.debug("ah: Starting peer handler for peer " + peerId);
+	    while (!stop) {
+		try {
+		    logger.debug("ah: waiting for messages...");
+		    Message m = handler.readMsg(peerId);
+		    logger.debug("ah: read message " + m);
+		    if (m != null) {
+			logger.debug("ah: Got a message from peer " + peerId);
+			m.Do();
+		    }
+		} catch (IOException e) {
+		    logger.debug("ah: error reading message from peer "
+			    + peerId, e);
+		}
+	    }
+	}
 
-   synchronized private void startAgentHandler(int id)
-   {
-      AgentHandlerThread agentHandler = (AgentHandlerThread) handlers.get(new Integer(id));
-      if (agentHandler != null)
-      {
-         logger.debug("AgentHandler(id=" + id + ").start()...");
-         agentHandler.start();
-      }
-      else
-      {
-         logger.error("No AgentHandlerThread found for id " + id);
-      }
-   }
+	public void stop() {
+	    stop = true;
+	}
+    }
 
-   synchronized public boolean removeAgent(int id)
-   {
-      boolean success = false;
+    private class AgentHandlerThread extends Thread {
+	private AgentHandler target;
 
-      final Identity identityByInt = getByInt(id);
-      if (identityByInt == null)
-      {
-         return false;
-      }
+	public AgentHandlerThread(AgentHandler target) {
+	    super(target);
+	    this.target = target;
+	}
 
-      final Integer key = new Integer(identityByInt.getId());
+	public void halt() {
+	    target.stop();
+	}
+    }
 
-      AgentHandlerThread hThread = (AgentHandlerThread) handlers.remove(key);
-      if (hThread != null && agents.remove(identityByInt) != null)
-      {
-         hThread.halt();
-         success = true;
-      }
+    // A global MessageHandler, for applications where one central handler is
+    // used.
+    public static MessageHandler current = null;
 
-      return success;
-   }
+    private Hashtable agents = new Hashtable();
 
-   synchronized protected AgentConnection getAgent(int id)
-   {
-      try
-      {
-         return (AgentConnection) agents.get(getByInt(id));
-      }
-      catch (NullPointerException e)
-      {
-         logger.warn("could not find Identity with id=" + id, e);
-         return null;
-      }
-   }
+    private Hashtable handlers = new Hashtable();
 
-   synchronized protected void updateAgentID(Identity newID)
-   {
-      final Identity oldID = getByInt(newID.getId());
-      final Object value = agents.get(oldID);
-      if (oldID == null || value == null)
-      {
-         logger.warn("could not find agent for id=" + newID.getId());
-         return;
-      }
+    private Vector msgPrototypes = new Vector();
 
-      // delete old entry, put value with new ID in list
-      agents.put(newID, agents.remove(oldID));
-   }
+    private final Logger logger = Logger.getLogger(MessageHandler.class
+	    .getName());
 
-   private synchronized Identity getByInt(int id)
-   {
-      Identity identity;
-      Iterator idIter = getAgentIds().iterator();
-      while (idIter.hasNext())
-      {
-         identity = (Identity) idIter.next();
-         if (identity.getId() == id)
-         {
-            return identity;
-         }
-      }
-      return null;
-   }
+    synchronized protected int addAgent(Socket socket) throws IOException {
+	final int id = getNewAgentID();
+	final Integer key = new Integer(id);
 
-   public void addMessageType(Message prototype)
-   {
-      synchronized (msgPrototypes)
-      {
-         msgPrototypes.addElement(prototype);
-      }
-   }
+	agents.put(new Identity(id), new AgentConnection(socket));
 
-   public Message readMsg(int id) throws IOException
-   {
-      Message msg = null;
+	AgentHandlerThread phThread = new AgentHandlerThread(new AgentHandler(
+		id, this));
+	handlers.put(key, phThread);
 
-      AgentConnection conn = getAgent(id);
-      if (conn != null)
-      {
-         try
-         {
-            logger.debug("mh: Trying to get lock on input stream of peer " + id);
-            final InputStream in = conn.getInputStream();
-            synchronized (in)  // get exclusive access to InputStream
-            {
-               logger.debug("mh: Got lock on input stream of peer " + id);
+	startAgentHandler(id);
 
-               DataInputStream din = new DataInputStream(in);
-               String msgId = din.readUTF();
+	return id;
+    }
 
-               logger.debug("mh: Got message id " + msgId);
+    public void addMessageType(Message prototype) {
+	synchronized (msgPrototypes) {
+	    msgPrototypes.addElement(prototype);
+	}
+    }
 
-               msg = buildMessage(msgId);
-               if (msg != null)
-               {
-                  if (!msg.readArgs(in))
-                  {
-                     logger.error("mh: Error reading arguments");
-                     removeAgent(id);
-                     msg = null;
-                  }
-                  logger.debug("mh: Received complete message id=" + msg.id);
-               }
-            }
-         }
-         catch (SocketException s)
-         {
-            logger.error("mh: Lost connection to peer " + id);
-            removeAgent(id);
-            msg = null;
-         }
-         catch (EOFException eof)
-         {
-            logger.fatal("mh: EOF on peer " + id);
-            removeAgent(id);
-            msg = null;
-         }
-         catch (Exception e)
-         {
-            logger.error("mh: Error reading message", e);
-            msg = null;
-         }
-      }
+    protected Message buildMessage(String msgId) {
+	Message msg = null;
+	int numMTypes = msgPrototypes.size();
+	for (int i = 0; i < numMTypes; i++) {
+	    Message m = null;
+	    synchronized (msgPrototypes) {
+		m = (Message) msgPrototypes.elementAt(i);
+	    }
 
-      return msg;
-   }
+	    logger.debug("mh: message prototype: " + m.getClass().getName());
 
-   /**
-    * Send a message to a specific agent.
-    */
-   public boolean sendMsg(Message msg, int receiverID) throws IOException
-   {
-      boolean success = false;
+	    if (m.handles(msgId)) {
+		logger.debug("mh: message prototype used: "
+			+ m.getClass().getName());
+		msg = m.newCopy();
+		msg.setMessageId(msgId);
+		break;
+	    }
+	}
 
-      AgentConnection conn = getAgent(receiverID);
-      if (conn != null)
-      {
-         try
-         {
-            logger.debug("mh: Trying to get lock on output stream of peer " + receiverID);
-            final OutputStream out = conn.getOutputStream();
-            synchronized (out)  // get exclusive access to OutputStream
-            {
-               logger.debug("mh: Got lock on output stream of peer " + receiverID);
+	return msg;
+    }
 
-               DataOutputStream dout = new DataOutputStream(out);
+    synchronized protected AgentConnection getAgent(int id) {
+	try {
+	    return (AgentConnection) agents.get(getByInt(id));
+	} catch (NullPointerException e) {
+	    logger.warn("could not find Identity with id=" + id, e);
+	    return null;
+	}
+    }
 
-               logger.debug("mh: Printing message id...");
-               dout.writeUTF(msg.getMessageID());
-               dout.flush();
+    synchronized public Vector getAgentIds() {
+	Vector ids = new Vector();
+	Enumeration e = agents.keys();
+	while (e.hasMoreElements()) {
+	    ids.addElement(e.nextElement());
+	}
+	return ids;
+    }
 
-               logger.debug("mh: Printing message args...");
-               msg.writeArgs(out);
+    private synchronized Identity getByInt(int id) {
+	Identity identity;
+	Iterator idIter = getAgentIds().iterator();
+	while (idIter.hasNext()) {
+	    identity = (Identity) idIter.next();
+	    if (identity.getId() == id) {
+		return identity;
+	    }
+	}
+	return null;
+    }
 
-               out.flush();
-               success = true;
-            }
-         }
-         catch (SocketException s)
-         {
-            logger.error("mh: Lost connection to peer " + receiverID);
-            removeAgent(receiverID);
+    synchronized public int getNewAgentID() {
+	return agents.size();
+    }
 
-            success = false;
-         }
-         catch (Exception e)
-         {
-            logger.error("mh: error sending message to peer " + receiverID, e);
-            success = false;
-         }
-      }
-      else
-      {
-         logger.error(
-               "mh: No connection to peer " + receiverID + " found. Message '" + msg.getMessageID() + "' not sent!");
-         success = false;
-      }
+    public Message readMsg(int id) throws IOException {
+	Message msg = null;
 
-      return success;
-   }
+	AgentConnection conn = getAgent(id);
+	if (conn != null) {
+	    try {
+		logger.debug("mh: Trying to get lock on input stream of peer "
+			+ id);
+		final InputStream in = conn.getInputStream();
+		synchronized (in) { // get exclusive access to InputStream
+		    logger.debug("mh: Got lock on input stream of peer " + id);
 
-   /**
-    * Broadcast a message to all connected agents.
-    */
-   public boolean sendMsg(Message msg) throws IOException
-   {
-      Enumeration ids = agents.keys();
-      boolean success = true;
-      while (ids.hasMoreElements())
-      {
-         Identity id = (Identity) ids.nextElement();
-         logger.debug("mh: Attempting send to peer " + id);
-         if (!sendMsg(msg, id.getId()))
-         {
-            logger.error("mh: Sending failed. Peer: " + id);
-            success = false;
-         }
-         else
-         {
-            logger.debug("mh: Sent message to peer " + id);
-         }
-      }
+		    DataInputStream din = new DataInputStream(in);
+		    String msgId = din.readUTF();
 
-      return success;
-   }
+		    logger.debug("mh: Got message id " + msgId);
 
-   /**
-    * Default run() method does nothing...
-    */
-   public void run()
-   {
-   }
+		    msg = buildMessage(msgId);
+		    if (msg != null) {
+			if (!msg.readArgs(in)) {
+			    logger.error("mh: Error reading arguments");
+			    removeAgent(id);
+			    msg = null;
+			}
+			logger.debug("mh: Received complete message id="
+				+ msg.id);
+		    }
+		}
+	    } catch (SocketException s) {
+		logger.error("mh: Lost connection to peer " + id);
+		removeAgent(id);
+		msg = null;
+	    } catch (EOFException eof) {
+		logger.fatal("mh: EOF on peer " + id);
+		removeAgent(id);
+		msg = null;
+	    } catch (Exception e) {
+		logger.error("mh: Error reading message", e);
+		msg = null;
+	    }
+	}
 
-   protected Message buildMessage(String msgId)
-   {
-      Message msg = null;
-      int numMTypes = msgPrototypes.size();
-      for (int i = 0; i < numMTypes; i++)
-      {
-         Message m = null;
-         synchronized (msgPrototypes)
-         {
-            m = (Message) msgPrototypes.elementAt(i);
-         }
+	return msg;
+    }
 
-         logger.debug("mh: message prototype: " + m.getClass().getName());
+    synchronized public boolean removeAgent(int id) {
+	boolean success = false;
 
-         if (m.handles(msgId))
-         {
-            logger.debug("mh: message prototype used: " + m.getClass().getName());
-            msg = m.newCopy();
-            msg.setMessageId(msgId);
-            break;
-         }
-      }
+	final Identity identityByInt = getByInt(id);
+	if (identityByInt == null) {
+	    return false;
+	}
 
-      return msg;
-   }
+	final Integer key = new Integer(identityByInt.getId());
 
-   private class AgentHandler implements Runnable
-   {
-      int peerId;
-      MessageHandler handler;
-      boolean stop = false;
+	AgentHandlerThread hThread = (AgentHandlerThread) handlers.remove(key);
+	if (hThread != null && agents.remove(identityByInt) != null) {
+	    hThread.halt();
+	    success = true;
+	}
 
-      public AgentHandler(int id, MessageHandler h)
-      {
-         peerId = id;
-         handler = h;
-      }
+	return success;
+    }
 
-      public void run()
-      {
-         final Logger logger = Logger.getLogger(AgentHandler.class.getName());
+    /**
+     * Default run() method does nothing...
+     */
+    public void run() {
+    }
 
-         logger.debug("ah: Starting peer handler for peer " + peerId);
-         while (!stop)
-         {
-            try
-            {
-               logger.debug("ah: waiting for messages...");
-               Message m = handler.readMsg(peerId);
-               logger.debug("ah: read message " + m);
-               if (m != null)
-               {
-                  logger.debug("ah: Got a message from peer " + peerId);
-                  m.Do();
-               }
-            }
-            catch (IOException e)
-            {
-               logger.debug("ah: error reading message from peer " + peerId, e);
-            }
-         }
-      }
+    /**
+     * Broadcast a message to all connected agents.
+     */
+    public boolean sendMsg(Message msg) throws IOException {
+	Enumeration ids = agents.keys();
+	boolean success = true;
+	while (ids.hasMoreElements()) {
+	    Identity id = (Identity) ids.nextElement();
+	    logger.debug("mh: Attempting send to peer " + id);
+	    if (!sendMsg(msg, id.getId())) {
+		logger.error("mh: Sending failed. Peer: " + id);
+		success = false;
+	    } else {
+		logger.debug("mh: Sent message to peer " + id);
+	    }
+	}
 
-      public void stop()
-      {
-         stop = true;
-      }
-   }
+	return success;
+    }
 
-   private class AgentHandlerThread extends Thread
-   {
-      private AgentHandler target;
+    /**
+     * Send a message to a specific agent.
+     */
+    public boolean sendMsg(Message msg, int receiverID) throws IOException {
+	boolean success = false;
 
-      public AgentHandlerThread(AgentHandler target)
-      {
-         super(target);
-         this.target = target;
-      }
+	AgentConnection conn = getAgent(receiverID);
+	if (conn != null) {
+	    try {
+		logger.debug("mh: Trying to get lock on output stream of peer "
+			+ receiverID);
+		final OutputStream out = conn.getOutputStream();
+		synchronized (out) { // get exclusive access to OutputStream
+		    logger.debug("mh: Got lock on output stream of peer "
+			    + receiverID);
 
-      public void halt()
-      {
-         target.stop();
-      }
-   }
+		    DataOutputStream dout = new DataOutputStream(out);
 
-   private class AgentConnection
-   {
-      private Socket socket;
+		    logger.debug("mh: Printing message id...");
+		    dout.writeUTF(msg.getMessageID());
+		    dout.flush();
 
-      public AgentConnection(Socket socket)
-      {
-         this.socket = socket;
-      }
+		    logger.debug("mh: Printing message args...");
+		    msg.writeArgs(out);
 
-      synchronized InputStream getInputStream() throws IOException
-      {
-         return socket.getInputStream();
-      }
+		    out.flush();
+		    success = true;
+		}
+	    } catch (SocketException s) {
+		logger.error("mh: Lost connection to peer " + receiverID);
+		removeAgent(receiverID);
 
-      synchronized OutputStream getOutputStream() throws IOException
-      {
-         return socket.getOutputStream();
-      }
-   }
+		success = false;
+	    } catch (Exception e) {
+		logger.error("mh: error sending message to peer " + receiverID,
+			e);
+		success = false;
+	    }
+	} else {
+	    logger.error("mh: No connection to peer " + receiverID
+		    + " found. Message '" + msg.getMessageID() + "' not sent!");
+	    success = false;
+	}
+
+	return success;
+    }
+
+    synchronized private void startAgentHandler(int id) {
+	AgentHandlerThread agentHandler = (AgentHandlerThread) handlers
+		.get(new Integer(id));
+	if (agentHandler != null) {
+	    logger.debug("AgentHandler(id=" + id + ").start()...");
+	    agentHandler.start();
+	} else {
+	    logger.error("No AgentHandlerThread found for id " + id);
+	}
+    }
+
+    synchronized protected void updateAgentID(Identity newID) {
+	final Identity oldID = getByInt(newID.getId());
+	final Object value = agents.get(oldID);
+	if (oldID == null || value == null) {
+	    logger.warn("could not find agent for id=" + newID.getId());
+	    return;
+	}
+
+	// delete old entry, put value with new ID in list
+	agents.put(newID, agents.remove(oldID));
+    }
 }

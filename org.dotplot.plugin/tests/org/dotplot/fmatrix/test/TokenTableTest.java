@@ -9,69 +9,63 @@ import org.dotplot.fmatrix.TokenTable;
 
 /**
  * test functionality of TokenTable
- *
+ * 
  * @author Constantin von Zitzewitz
  * @version 0.2
  */
-public class TokenTableTest extends TestCase
-{
+public class TokenTableTest extends TestCase {
 
-   private TokenTable tokenTable;
+    private TokenTable tokenTable;
 
-   public void setUp()
-   {
-      this.tokenTable = new TokenTable();
-   }
+    @Override
+    public void setUp() {
+	this.tokenTable = new TokenTable();
+    }
 
-   public void testSetUp()
-   {
-      assertNotNull("TokenTable object must not be null!", this.tokenTable);
-   }
+    public void testAdding() {
+	int someTypeIndex = 5;
+	int tokenIndex = 0;
+	assertTrue("a successfully added index must return inserted index!",
+		this.tokenTable.addTypeIndex(someTypeIndex) == tokenIndex);
 
-   public void testAdding()
-   {
-      int someTypeIndex = 5;
-      int tokenIndex = 0;
-      assertTrue("a successfully added index must return inserted index!",
-            this.tokenTable.addTypeIndex(someTypeIndex) == tokenIndex);
+	someTypeIndex = 17;
+	tokenIndex++;
+	assertTrue("a successfully added index must return inserted index!",
+		this.tokenTable.addTypeIndex(someTypeIndex) == tokenIndex);
+    }
 
-      someTypeIndex = 17;
-      tokenIndex++;
-      assertTrue("a successfully added index must return inserted index!",
-            this.tokenTable.addTypeIndex(someTypeIndex) == tokenIndex);
-   }
+    public void testGetNumberOfTokens() {
+	int i;
+	int someTypeIndex = 67;
 
-   public void testGetting()
-   {
+	for (i = 0; i < 100; i++) {
+	    assertEquals("added index must be equal to simulated index", i,
+		    this.tokenTable.addTypeIndex(someTypeIndex));
+	    someTypeIndex++;
+	}
 
-      // add some
-      int someTypeIndex = 5;
-      int tokenIndex = 0;
-      this.tokenTable.addTypeIndex(someTypeIndex);
-      assertTrue("previously added index must be returned successfully!",
-            this.tokenTable.getTypeIndex(tokenIndex) == someTypeIndex);
+	assertEquals("method must return same result, as calculated number",
+		(i + 1), this.tokenTable.getNumberOfTokens());
+    }
 
-      someTypeIndex = 99;
-      tokenIndex++;
-      this.tokenTable.addTypeIndex(someTypeIndex);
+    public void testGetting() {
 
-      assertTrue("previously added index must be returned successfully!",
-            this.tokenTable.getTypeIndex(tokenIndex) == someTypeIndex);
-   }
+	// add some
+	int someTypeIndex = 5;
+	int tokenIndex = 0;
+	this.tokenTable.addTypeIndex(someTypeIndex);
+	assertTrue("previously added index must be returned successfully!",
+		this.tokenTable.getTypeIndex(tokenIndex) == someTypeIndex);
 
-   public void testGetNumberOfTokens()
-   {
-      int i;
-      int someTypeIndex = 67;
+	someTypeIndex = 99;
+	tokenIndex++;
+	this.tokenTable.addTypeIndex(someTypeIndex);
 
-      for (i = 0; i < 100; i++)
-      {
-         assertEquals("added index must be equal to simulated index", i, this.tokenTable.addTypeIndex(someTypeIndex));
-         someTypeIndex++;
-      }
+	assertTrue("previously added index must be returned successfully!",
+		this.tokenTable.getTypeIndex(tokenIndex) == someTypeIndex);
+    }
 
-      assertEquals("method must return same result, as calculated number",
-            (i + 1),
-            this.tokenTable.getNumberOfTokens());
-   }
+    public void testSetUp() {
+	assertNotNull("TokenTable object must not be null!", this.tokenTable);
+    }
 }

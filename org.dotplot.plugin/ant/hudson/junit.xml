@@ -1,0 +1,120 @@
+<?xml version="1.0" ?>
+<project default="JUnitTests">
+
+	<import file="ant.properties.xml" />
+
+	<property name="classes" value="${tmpdir}/junit/bin" />
+	<property name="cobertura.classes" value="${tmpdir}/cobertura/bin" />
+
+	<path id="cobertura.lib">
+		<pathelement location="${cobertura.home}" />
+		<fileset dir="${cobertura.home}">
+			<include name="cobertura.jar" />
+			<include name="lib/**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${classes}" />
+		<mkdir dir="${cobertura.classes}" />
+		<mkdir dir="${report.output.dir}/junit" />
+		<mkdir dir="${report.output.dir}/cobertura" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${classes}" />
+		<delete dir="${cobertura.classes}" />
+		<delete dir="${report.output.dir}/junit" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac destdir="${classes}" srcdir="${sources}" debug="on" nowarn="off">
+			<include name="**/*.java" />
+			<classpath refid="project.classpath" />
+		</javac>
+
+	</target>
+
+
+	<target name="compile.cobertura">
+		<javac destdir="${cobertura.classes}" srcdir="${sources}" debug="on" nowarn="off">
+			<include name="**/*.java" />
+			<classpath refid="project.classpath" />
+		</javac>
+	</target>
+
+
+	<target name="copyTestFiles">
+		<copy todir="${classes}" overwrite="yes">
+			<fileset dir="${org.dotplot.plugin.location}">
+				<include name="testfiles/**/*" />
+				<include name="ressources/**/*" />
+			</fileset>
+		</copy>
+
+		<copy todir="${cobertura.classes}" overwrite="yes">
+			<fileset dir="${org.dotplot.plugin.location}">
+				<include name="testfiles/**/*" />
+				<include name="ressources/**/*" />
+			</fileset>
+		</copy>
+
+
+	</target>
+	<target name="JUnitTests" depends="compile,copyTestFiles">
+		<junit fork="off" printsummary="yes" haltonfailure="false" showoutput="yes">
+			<!--
+				Ant Scripte beziehen sich immer auf ${base.dir} Java Programme auf ${user.dir}
+				Deshalb wird hier das user.dir für die Tests angepasst. Dies hat keine auswirkungen
+				auf den Rest des Skripts, nur der Batchtest ist davon betroffen.
+							
+			-->
+		
+			<sysproperty key="user.dir" value="${user.dir}/../../../../tmp/junit/bin" />
+			<sysproperty key="basedir" value="${classes}" />
+
+			<classpath>
+				<path refid="project.classpath" />
+				<pathelement location="${classes}" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest todir="${report.output.dir}/junit">
+				<!--    <fileset dir="/usr/share/hudson/programs/" includes="junit-4.6.jar"/> -->
+				<fileset dir="${classes}" includes="**/*Test.class" />
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="junit-cobertura" depends="compile.cobertura">
+		<junit fork="off" haltonfailure="false" failureProperty="test.failed" showoutput="yes">
+			<!--
+				Ant Scripte beziehen sich immer auf ${base.dir} Java Programme auf ${user.dir}
+				Deshalb wird hier das user.dir für die Tests angepasst. Dies hat keine auswirkungen
+				auf den Rest des Skripts, nur der Batchtest ist davon betroffen.
+			-->
+			<sysproperty key="user.dir" value="${user.dir}/../../../../tmp/junit/bin" />
+			<sysproperty key="basedir" value="${classes}" />
+
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${report.output.dir}/cobertura/cobertura.ser" />
+
+			<classpath>
+				<path refid="project.classpath" />
+				<path refid="cobertura.lib" />
+				<pathelement location="${cobertura.classes}" />
+			</classpath>
+
+			<formatter type="xml" />
+			<test name="${testcase}" todir="${report.output.dir}/cobertura" if="testcase" />
+			<batchtest todir="${report.output.dir}/cobertura" unless="testcase">
+				<fileset dir="${cobertura.classes}" includes="**/*Test.class" />
+			</batchtest>
+		</junit>
+	</target>
+
+</project>
+
+
+
+
+
+

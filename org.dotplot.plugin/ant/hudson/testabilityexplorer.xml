@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<project default="testability">
+
+	<import file="ant.properties.xml" />
+
+	<path id="testability.lib">
+		<pathelement location="${testability.home}" />
+		<fileset dir="${testability.home}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="testability" classname="com.google.ant.TestabilityTask"
+		classpathref="testability.lib" />
+
+	<target name="init">
+		<delete dir="${report.output.dir}/testability/" />
+		<mkdir dir="${report.output.dir}/testability/" />
+	</target>
+
+	<target name="testability" depends="init">
+		<testability filter=""
+			resultfile="${report.output.dir}/testability/testability.result.xml"
+			printdepth="2" print="xml" mincost="1" maxexcellentcost="50"
+			maxacceptablecost="100" worstoffendercount="25">
+			<classpath>
+				<path refid="project.classpath" />
+				<pathelement location="${tmpdir}/bin" />
+			</classpath>
+		</testability>
+	</target>
+
+</project>

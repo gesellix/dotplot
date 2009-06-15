@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<project default="sloccount">
+
+	<import file="ant.properties.xml" />
+
+	<target name="sloccount">
+		<delete file="${report.output.dir}/sloccount/report.sc" />
+		<mkdir dir="${report.output.dir}/sloccount" />
+		<exec executable="sloccount" dir="${sources}"
+			output="${report.output.dir}/sloccount/report.sc" failonerror="true">
+			<arg line="--duplicates --wide --details --addlangall ." />
+		</exec>
+	</target>
+
+</project>

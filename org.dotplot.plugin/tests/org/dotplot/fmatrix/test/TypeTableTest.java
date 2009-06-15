@@ -12,93 +12,92 @@ import org.dotplot.fmatrix.TypeTable;
 
 /**
  * test funcionality of TypeTable class
- *
+ * 
  * @author Constantin von Zitzewitz, Thorsten Ruehl
  * @version 0.3
  */
-public class TypeTableTest extends TestCase
-{
+public class TypeTableTest extends TestCase {
 
-   private ITypeTable typeTable;
-   private TokenTable tokenTable;
+    private ITypeTable typeTable;
 
-   public void setUp()
-   {
-      this.tokenTable = new TokenTable();
-      this.typeTable = new TypeTable(this.tokenTable);
-   }
+    private TokenTable tokenTable;
 
-   public void testSetUp()
-   {
-      assertNotNull("TypeTable object must not be null!", this.typeTable);
-      assertNotNull("TokenTable object must not be null!", this.tokenTable);
-   }
+    @Override
+    public void setUp() {
+	this.tokenTable = new TokenTable();
+	this.typeTable = new TypeTable(this.tokenTable);
+    }
 
-   public void testAddRegularExpressionType()
-   {
+    public void testAddRegularExpressionType() {
 
-      this.typeTable.addType("aaa eee cat");
-      this.typeTable.addType(" ffff ggg cat");
-      this.typeTable.addType("ddd cat");
-      this.typeTable.addType("look at this complete line");
-      this.typeTable.addType("unique");
+	this.typeTable.addType("aaa eee cat");
+	this.typeTable.addType(" ffff ggg cat");
+	this.typeTable.addType("ddd cat");
+	this.typeTable.addType("look at this complete line");
+	this.typeTable.addType("unique");
 
+	assertEquals("(1)  Function returns -1 on no match", -1, this.typeTable
+		.addRegularExpressionType("could not be found", 1.0));
 
-      assertEquals("(1)  Function returns -1 on no match",
-                -1,
-                  this.typeTable.addRegularExpressionType("could not be found", 1.0));
+	int typeIndex = typeTable.addRegularExpressionType("cat", 0.5);
 
-      int typeIndex = typeTable.addRegularExpressionType("cat",0.5);
+	assertTrue("(2) New Type is added to Type Table", (typeIndex > 0));
 
+	assertEquals(
+		"(3) If the number of found postings is rigth - should be 9",
+		9, this.typeTable.getTokenType(typeIndex).getNumberOfMatches());
 
-      assertTrue("(2) New Type is added to Type Table", (typeIndex > 0));
+	assertTrue("(4) If the weight-value is set correct - should be 0.5",
+		(this.typeTable.getTokenType(typeIndex).getWeight() == 0.5));
 
-      assertEquals("(3) If the number of found postings is rigth - should be 9",
-                    9,
-                    this.typeTable.getTokenType(typeIndex).getNumberOfMatches());
+    }
 
-      assertTrue("(4) If the weight-value is set correct - should be 0.5",
-               (this.typeTable.getTokenType(typeIndex).getWeight() == 0.5));
-      
-   }
+    public void testAddToken() {
+	// Tokens...
+	assertEquals("addType must return expected typeindex on success!", 0,
+		this.typeTable.addType("new Token 1"));
+	assertEquals("addType must return expected typeindex on success!", 0,
+		this.typeTable.addType("new Token 1"));
+	assertEquals("addType must return expected typeindex on success!", 1,
+		this.typeTable.addType("new Token 2"));
+    }
 
-   public void testAddToken()
-   {
-      // Tokens...
-      assertEquals("addType must return expected typeindex on success!", 0, this.typeTable.addType("new Token 1"));
-      assertEquals("addType must return expected typeindex on success!", 0, this.typeTable.addType("new Token 1"));
-      assertEquals("addType must return expected typeindex on success!", 1, this.typeTable.addType("new Token 2"));
-   }
+    public void testGetNavigator() {
+	assertNotNull("navigator object must not be null!", this.typeTable
+		.createNavigator());
 
-   public void testGetTokenType()
-   {
-      assertNull("get token type on empty table must return null!", this.typeTable.getTokenType(0));
-      // add some...
-      this.typeTable.addType("new token");
-      assertNotNull("tokentype of previously inserted token must not be null!", this.typeTable.getTokenType(0));
-   }
+	assertTrue("must return an ITypeTableNavigator", this.typeTable
+		.createNavigator() instanceof ITypeTableNavigator);
+    }
 
-   public void testGetNumberOfTypes()
-   {
-      // add some(40 types)
-      for (int i = 0; i < 20; i++)
-      {
-         this.typeTable.addType("yToken_No_" + i);
-         this.typeTable.addType("xToken_No_" + i);
-      }
+    public void testGetNumberOfTypes() {
+	// add some(40 types)
+	for (int i = 0; i < 20; i++) {
+	    this.typeTable.addType("yToken_No_" + i);
+	    this.typeTable.addType("xToken_No_" + i);
+	}
 
-      assertEquals("added 40 types - now expecting 40 types from typeTable", 40, this.typeTable.getNumberOfTypes());
-   }
+	assertEquals("added 40 types - now expecting 40 types from typeTable",
+		40, this.typeTable.getNumberOfTypes());
+    }
 
-   public void testGetNavigator()
-   {
-      assertNotNull("navigator object must not be null!", this.typeTable.createNavigator());
+    public void testGetTokenType() {
+	assertNull("get token type on empty table must return null!",
+		this.typeTable.getTokenType(0));
+	// add some...
+	this.typeTable.addType("new token");
+	assertNotNull(
+		"tokentype of previously inserted token must not be null!",
+		this.typeTable.getTokenType(0));
+    }
 
-      assertTrue("must return an ITypeTableNavigator", this.typeTable.createNavigator() instanceof ITypeTableNavigator);
-   }
+    public void testGetTypeTableIterator() {
+	assertNotNull("iterator object must not be null!", this.typeTable
+		.getTypeTableIterator());
+    }
 
-   public void testGetTypeTableIterator()
-   {
-      assertNotNull("iterator object must not be null!", this.typeTable.getTypeTableIterator());
-   }
+    public void testSetUp() {
+	assertNotNull("TypeTable object must not be null!", this.typeTable);
+	assertNotNull("TokenTable object must not be null!", this.tokenTable);
+    }
 }

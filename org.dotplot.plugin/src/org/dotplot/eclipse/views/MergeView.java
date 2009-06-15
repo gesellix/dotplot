@@ -14,111 +14,105 @@ import org.eclipse.ui.part.ViewPart;
 
 /**
  * <code>Merge View</code> shows Diff.
- *
+ * 
  * @author Sascha Hemminger
  * @see org.eclipse.compare.contentmergeviewer.TextMergeViewer
  */
-public class MergeView extends ViewPart
-{
-   private TextDiffViewer merger;
-   private CompareConfiguration config;
+public class MergeView extends ViewPart {
+    private TextDiffViewer merger;
 
-   public MergeView()
-   {
-      this.config = new CompareConfiguration();
-      this.config.setLeftEditable(false);
-      this.config.setRightEditable(false);
-   }
+    private CompareConfiguration config;
 
-   /**
-    * creates the control.
-    *
-    * @param parent the parent composite
-    *
-    * @see ViewPart#createPartControl
-    */
-   public void createPartControl(Composite parent)
-   {
-      this.merger = new TextDiffViewer(parent, this.config);
-   }
+    public MergeView() {
+	this.config = new CompareConfiguration();
+	this.config.setLeftEditable(false);
+	this.config.setRightEditable(false);
+    }
 
-   /**
-    * empty implementation.
-    *
-    * @see ViewPart#setFocus
-    */
-   public void setFocus()
-   {
-   }
+    /**
+     * creates the control.
+     * 
+     * @param parent
+     *            the parent composite
+     * 
+     * @see ViewPart#createPartControl
+     */
+    @Override
+    public void createPartControl(Composite parent) {
+	this.merger = new TextDiffViewer(parent, this.config);
+    }
 
-   //TODO dont't know how good the rectangle thing works...
-   /**
-    * the core of the diff, calculates which rows to show.
-    *
-    * @param textLeft  left text to compare
-    * @param lineLeft  from which line on
-    * @param textRight right text to compare
-    * @param lineRight from which line on
-    * @param choice    a rectangular region of interest
-    */
-   public void setText(File textLeft, int lineLeft, File textRight, int lineRight, Rectangle choice)
-   {
-      Document docLeft = null;
-      Document docRight = null;
-      BufferedReader left = null, right = null;
+    /**
+     * empty implementation.
+     * 
+     * @see ViewPart#setFocus
+     */
+    @Override
+    public void setFocus() {
+    }
 
-      try
-      {
-         left = new BufferedReader(new FileReader(textLeft));
-         right = new BufferedReader(new FileReader(textRight));
+    // TODO dont't know how good the rectangle thing works...
+    /**
+     * the core of the diff, calculates which rows to show.
+     * 
+     * @param textLeft
+     *            left text to compare
+     * @param lineLeft
+     *            from which line on
+     * @param textRight
+     *            right text to compare
+     * @param lineRight
+     *            from which line on
+     * @param choice
+     *            a rectangular region of interest
+     */
+    public void setText(File textLeft, int lineLeft, File textRight,
+	    int lineRight, Rectangle choice) {
+	Document docLeft = null;
+	Document docRight = null;
+	BufferedReader left = null, right = null;
 
-         for (int i = 0; i < lineLeft; ++i)
-         {
-            left.readLine();
-         }
+	try {
+	    left = new BufferedReader(new FileReader(textLeft));
+	    right = new BufferedReader(new FileReader(textRight));
 
-         StringBuffer leftContent = new StringBuffer();
+	    for (int i = 0; i < lineLeft; ++i) {
+		left.readLine();
+	    }
 
-         for (int i = 0; i < choice.width; ++i)
-         {
-            String line = left.readLine();
-            if (line == null)
-            {
-               break;
-            }
-            leftContent.append(line + "\n");
-         }
+	    StringBuffer leftContent = new StringBuffer();
 
-         right = new BufferedReader(new FileReader(textRight));
+	    for (int i = 0; i < choice.width; ++i) {
+		String line = left.readLine();
+		if (line == null) {
+		    break;
+		}
+		leftContent.append(line + "\n");
+	    }
 
-         for (int i = 0; i < lineRight; ++i)
-         {
-            right.readLine();
-         }
+	    right = new BufferedReader(new FileReader(textRight));
 
-         StringBuffer rightContent = new StringBuffer();
+	    for (int i = 0; i < lineRight; ++i) {
+		right.readLine();
+	    }
 
-         for (int i = 0; i < choice.height; ++i)
-         {
-            String line = right.readLine();
-            if (line == null)
-            {
-               break;
-            }
-            rightContent.append(line + "\n");
-         }
+	    StringBuffer rightContent = new StringBuffer();
 
-         docLeft = new Document(new String(leftContent));
-         docRight = new Document(new String(rightContent));
-      }
-      catch (FileNotFoundException e)
-      {
-         e.printStackTrace();
-      }
-      catch (IOException e)
-      {
-      }
+	    for (int i = 0; i < choice.height; ++i) {
+		String line = right.readLine();
+		if (line == null) {
+		    break;
+		}
+		rightContent.append(line + "\n");
+	    }
 
-      this.merger.setText(docLeft, docRight);
-   }
+	    docLeft = new Document(new String(leftContent));
+	    docRight = new Document(new String(rightContent));
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	}
+
+	this.merger.setText(docLeft, docRight);
+    }
 }

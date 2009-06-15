@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="compile">
+
+	<import file="ant.properties.xml" />
+
+	<target name="init" depends="clean">
+		<mkdir dir="${tmpdir}/bin" />
+	</target>
+
+	<target name="clean">
+		<delete dir="${tmpdir}/bin" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac destdir="${tmpdir}/bin" srcdir="${sources}" debug="on" nowarn="off" deprecation="on">
+			<compilerarg value="-Xlint:unchecked"/>
+			<include name="**/*.java" />
+			<exclude name="**/tests/**/*.java" />
+			<classpath refid="project.classpath" />
+		</javac>
+	</target>
+	
+</project>

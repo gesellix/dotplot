@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<project default="javancss">
+
+	<import file="ant.properties.xml"/>
+
+	<path id="javancss.lib">
+		<pathelement location="${javancss.home}"/>
+		<fileset dir="${javancss.home}/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+
+	<target name="clean">
+		<delete dir="${report.output.dir}/javancss"/>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${report.output.dir}/javancss"/>
+	</target>
+
+
+	<target name="javancss" depends="init">
+
+		<taskdef name="javancss" classname="javancss.JavancssAntTask" >
+			<classpath refid="javancss.lib" />
+		</taskdef>
+
+		<javancss srcdir="${sources}"
+                        abortOnFail="false" 
+                        includes="**/*.java"
+                        generateReport="true"
+                        outputfile="${report.output.dir}/javancss/javancss_metrics.xml"
+                        format="xml"/>
+	</target>
+
+</project>
+

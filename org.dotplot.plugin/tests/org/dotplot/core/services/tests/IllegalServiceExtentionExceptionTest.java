@@ -5,70 +5,74 @@ package org.dotplot.core.services.tests;
 
 import java.util.Collection;
 
+import junit.framework.TestCase;
+
 import org.dotplot.core.services.Extention;
 import org.dotplot.core.services.IServiceHotSpot;
 import org.dotplot.core.services.IllegalServiceExtentionException;
 
-import junit.framework.TestCase;
-
 /**
  * @author Christian Gerhardt <case42@gmx.net>
- *
+ * 
  */
 public class IllegalServiceExtentionExceptionTest extends TestCase {
 
-	IServiceHotSpot spot;
-	
-	/*
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		this.spot = new IServiceHotSpot(){
+    IServiceHotSpot spot;
 
-			public String getID() {
-				return "org.dotplot.test.testspot";
-			}
+    /*
+     * @see TestCase#setUp()
+     */
+    @Override
+    protected void setUp() throws Exception {
+	super.setUp();
 
-			public Class getExtentionClass() {
-				return null;
-			}
+	this.spot = new IServiceHotSpot() {
 
-			public boolean isValidExtention(Extention extention) {
-				return false;
-			}
+	    public void addExtention(Extention extention) {
+	    }
 
-			public boolean isValidExtention(Class extentionClass) {
-				return false;
-			}
+	    public Collection<Extention> getActiveExtentions() {
+		return null;
+	    }
 
-			public Collection<Extention> getAllExtentions() {
-				return null;
-			}
+	    public Collection<Extention> getAllExtentions() {
+		return null;
+	    }
 
-			public Collection<Extention> getActiveExtentions() {
-				return null;
-			}
+	    public Class getExtentionClass() {
+		return null;
+	    }
 
-			public void addExtention(Extention extention) {}
+	    public String getID() {
+		return "org.dotplot.test.testspot";
+	    }
 
-			public void removeExtention(Extention extention) {}
+	    public Collection<Object> getObjectsFromActivatedExtentions() {
+		return null;
+	    }
 
-			public Collection<Object> getObjectsFromActivatedExtentions() {
-				return null;
-			}
+	    public boolean isValidExtention(Class extentionClass) {
+		return false;
+	    }
 
-			
-		};
-	}
+	    public boolean isValidExtention(Extention extention) {
+		return false;
+	    }
 
-	/*
-	 * Test method for 'org.dotplot.services.IllegalServiceExtentionException.IllegalServiceExtentionException(IServiceHotSpot)'
-	 */
-	public void testIllegalServiceExtentionException() {
-		Exception e = new IllegalServiceExtentionException(this.spot);
-		assertEquals("Illegal extention for org.dotplot.test.testspot", e.getMessage());
-	}
+	    public void removeExtention(Extention extention) {
+	    }
+
+	};
+    }
+
+    /*
+     * Test method for
+     * 'org.dotplot.services.IllegalServiceExtentionException.IllegalServiceExtentionException(IServiceHotSpot)'
+     */
+    public void testIllegalServiceExtentionException() {
+	Exception e = new IllegalServiceExtentionException(this.spot);
+	assertEquals("Illegal extention for org.dotplot.test.testspot", e
+		.getMessage());
+    }
 
 }

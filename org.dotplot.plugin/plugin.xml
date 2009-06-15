@@ -14,8 +14,8 @@
       <library name="lib/jai_codec.jar"/>
       <library name="lib/jai_core.jar"/>
       <library name="lib/jai_mlibwrapper.jar"/>
-      <library name="lib/log4j-1.2.8.jar"/>
-      <library name="lib/iText.jar"/>
+      <library name="lib/log4j-1.2.15.jar"/>
+      <library name="lib/iText-2.1.5.jar"/>
       <library name="lib/org.pdfbox.jar"/>
       <library name="lib/activation.jar"/>
       <library name="lib/mail.jar"/>
@@ -29,6 +29,7 @@
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.junit"/>
       <import plugin="org.eclipse.text"/>
+      <import plugin="org.eclipse.core.runtime.compatibility.auth"/>
    </requires>
 
    <extension
@@ -50,16 +51,21 @@
          <property
                name="windowImages"
                value="icons/dp_32.gif"/>
+         <property
+               name="appName"
+               value="Matrix4.plot">
+         </property>
       </product>
    </extension>
 
    <extension
       point="org.eclipse.ui.perspectives">
       <perspective
-         name="DotPlot"
-         icon="icons/dp_v0_73.gif"
-         class="org.dotplot.eclipse.perspective.DotPlotPerspective"
-         id="org.dotplot.plugin.perspective1">
+            class="org.dotplot.eclipse.perspective.DotPlotPerspective"
+            fixed="true"
+            icon="icons/dp_v0_73.gif"
+            id="org.dotplot.plugin.perspective1"
+            name="DotPlot">
       </perspective>
    </extension>
 
@@ -159,21 +165,6 @@
       <toc
          file="toc.xml"
          primary="true">
-      </toc>
-      <toc
-         file="tocconcepts.xml">
-      </toc>
-      <toc
-         file="tocgettingstarted.xml">
-      </toc>
-      <toc
-         file="tocreference.xml">
-      </toc>
-      <toc
-         file="tocsamples.xml">
-      </toc>
-      <toc
-         file="toctasks.xml">
       </toc>
    </extension>
    <extension

@@ -1,126 +1,134 @@
 package org.dotplot.grid.framework;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 import java.util.Properties;
+
+import org.apache.log4j.Logger;
 
 /**
  * Source code from "Java Distributed Computing", by Jim Farley.
  * <p />
- * Class: Collaborator
- * Example: 9-3
- * Description: Interface for a participant in a remote collaboration.
+ * Class: Collaborator Example: 9-3 Description: Interface for a participant in
+ * a remote collaboration.
  * <p />
  * Changed by Tobias Gesellchen 2005-03-13
  */
-public abstract class Collaborator extends GridNode
-{
-   private final Logger logger = Logger.getLogger(Collaborator.class.getName());
+public abstract class Collaborator extends GridNode {
+    private final Logger logger = Logger
+	    .getLogger(Collaborator.class.getName());
 
-   protected int mediatorID;
+    protected int mediatorID;
 
-   /**
-    * Returns the mediator identity.
-    *
-    * @return an Identity object representing the mediator identity
-    */
-   public Identity getMediatorIdentity()
-   {
-      return new Identity(mediatorID);
-   }
+    /**
+     * Send data to all clients in this grid.
+     * 
+     * @param tag
+     *            label for the message
+     * @param data
+     *            the data
+     * 
+     * @return success information
+     * 
+     * @throws IOException
+     *             when send had problems
+     */
+    public boolean broadcast(String tag, Object data) throws IOException {
+	boolean success = true;
+	Message m = new Message(AbstractMessage.MSG_TYPE_BROADCAST);
+	m.addArg(getIdentity());
+	m.addArg(tag);
 
-   /**
-    * Connect to a mediator - subclasses dictate properties needed.
-    *
-    * @param p a Properties object containing host and port of the mediator
-    *
-    * @return true if connection successful
-    */
-   public abstract boolean connect(Properties p);
+	// removed: Objects are recognized automatically by
+	// Message.writeArgs(OutputStream outs)
+	// m.addArg(Message.OBJECT_SIGNAL);
+	m.addArg(data);
 
-   /**
-    * Disconnect from the mediator.
-    */
-   public abstract void disconnect();
+	logger.debug("mc: Sending broadcast message \"" + tag + "\"");
+	success = handler.sendMsg(m);
 
-   /**
-    * Returns informations about the connection.
-    *
-    * @return null, if no connection active.
-    */
-   public abstract String getConnectionInfo();
+	logger.debug("mc: success = " + success);
+	return success;
+    }
 
-   /**
-    * Outgoing messages/data to a single client in this grid.
-    *
-    * @param tag  label for the message
-    * @param data the data
-    * @param dst  the destination client
-    *
-    * @return success information
-    *
-    * @throws IOException when send had problems
-    */
-   public boolean send(String tag, Object data, Identity dst) throws IOException
-   {
-      boolean success = false;
-      Message m = new Message(Message.MSG_TYPE_SEND);
-      m.addArg(getIdentity());
-      m.addArg(dst);
-      m.addArg(tag);
+    /**
+     * Connect to a mediator - subclasses dictate properties needed.
+     * 
+     * @param p
+     *            a Properties object containing host and port of the mediator
+     * 
+     * @return true if connection successful
+     */
+    public abstract boolean connect(Properties p);
 
-//      removed: Objects are recognized automatically by Message.writeArgs(OutputStream outs)
-//      m.addArg(Message.OBJECT_SIGNAL);
-      m.addArg(data);
-      success = handler.sendMsg(m, dst.getId());
-      return success;
-   }
+    /**
+     * Disconnect from the mediator.
+     */
+    public abstract void disconnect();
 
-   /**
-    * Send data to all clients in this grid.
-    *
-    * @param tag  label for the message
-    * @param data the data
-    *
-    * @return success information
-    *
-    * @throws IOException when send had problems
-    */
-   public boolean broadcast(String tag, Object data) throws IOException
-   {
-      boolean success = true;
-      Message m = new Message(Message.MSG_TYPE_BROADCAST);
-      m.addArg(getIdentity());
-      m.addArg(tag);
+    /**
+     * Returns informations about the connection.
+     * 
+     * @return null, if no connection active.
+     */
+    public abstract String getConnectionInfo();
 
-//      removed: Objects are recognized automatically by Message.writeArgs(OutputStream outs)
-//      m.addArg(Message.OBJECT_SIGNAL);
-      m.addArg(data);
+    /**
+     * Returns the mediator identity.
+     * 
+     * @return an Identity object representing the mediator identity
+     */
+    public Identity getMediatorIdentity() {
+	return new Identity(mediatorID);
+    }
 
-      logger.debug("mc: Sending broadcast message \"" + tag + "\"");
-      success = handler.sendMsg(m);
+    // Incoming messages/data
+    @Override
+    public boolean notify(String tag, Object data, Identity src)
+	    throws IOException {
+	logger.debug(getIdentity() + ": received \"" + tag + "\" object \""
+		+ data + "\" from " + src.getName() + " (" + src.getId() + ")");
 
-      logger.debug("mc: success = " + success);
-      return success;
-   }
+	return true;
+    }
 
-   // Incoming messages/data
-   public boolean notify(String tag, Object data, Identity src) throws IOException
-   {
-      logger.debug(getIdentity() + ": received \"" + tag + "\" object \"" + data
-            + "\" from " + src.getName() + " (" + src.getId() + ")");
+    /**
+     * Outgoing messages/data to a single client in this grid.
+     * 
+     * @param tag
+     *            label for the message
+     * @param data
+     *            the data
+     * @param dst
+     *            the destination client
+     * 
+     * @return success information
+     * 
+     * @throws IOException
+     *             when send had problems
+     */
+    public boolean send(String tag, Object data, Identity dst)
+	    throws IOException {
+	boolean success = false;
+	Message m = new Message(AbstractMessage.MSG_TYPE_SEND);
+	m.addArg(getIdentity());
+	m.addArg(dst);
+	m.addArg(tag);
 
-      return true;
-   }
+	// removed: Objects are recognized automatically by
+	// Message.writeArgs(OutputStream outs)
+	// m.addArg(Message.OBJECT_SIGNAL);
+	m.addArg(data);
+	success = handler.sendMsg(m, dst.getId());
+	return success;
+    }
 
-   public String setIdentity(Identity identity)
-   {
-      id = identity;
+    @Override
+    public String setIdentity(Identity identity) {
+	id = identity;
 
-      logger.debug("MID: " + mediatorID);
-      logger.debug("CID: " + id.getId());
+	logger.debug("MID: " + mediatorID);
+	logger.debug("CID: " + id.getId());
 
-      return id.getName();
-   }
+	return id.getName();
+    }
 }

@@ -5,9 +5,15 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.dotplot.core.ContextFactory;
+import org.dotplot.core.DotplotContext;
+import org.dotplot.core.ISourceList;
+import org.dotplot.eclipse.DotplotPlugin;
+import org.dotplot.eclipse.perspective.DotPlotPerspective;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
@@ -25,375 +31,348 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
 import org.eclipse.ui.part.ViewPart;
-
-import org.dotplot.core.ContextFactory;
-import org.dotplot.core.DotplotContext;
-import org.dotplot.core.ISourceList;
-import org.dotplot.eclipse.DotplotPlugin;
-import org.dotplot.eclipse.perspective.DotPlotPerspective;
 
 /**
  * <code>DotPlotNavigator</code> allows navigating your file-system and to
  * choose files to plot.
- *
+ * 
  * @author Sascha Hemminger & Roland Helmrich
  * @see ViewPart
  */
-public class DotPlotNavigator extends ViewPart implements ICheckStateListener
-{
-   private boolean dirty;
+public class DotPlotNavigator extends ViewPart implements ICheckStateListener {
+    private boolean dirty;
 
-   private CheckboxTreeViewer viewer;
-   private Action refreshAction;
+    private CheckboxTreeViewer viewer;
 
-   public DotPlotNavigator()
-   {
-      this.dirty = false;
-   }
+    private Action refreshAction;
 
-   /**
-    * called when a state has changed.
-    *
-    * @param event the event
-    *
-    * @see org.eclipse.jface.viewers.ICheckStateListener#checkStateChanged(org.eclipse.jface.viewers.CheckStateChangedEvent)
-    */
-   public void checkStateChanged(CheckStateChangedEvent event)
-   {
-      IWorkbenchWindow window = this.getSite().getWorkbenchWindow();
-      DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
-      Object changed = event.getElement();
+    public DotPlotNavigator() {
+	this.dirty = false;
+    }
 
-      try
-      {
-         window.getActivePage().showView(DotPlotPerspective.DOTPLOTLIST);
-      }
-      catch (PartInitException e)
-      {
-         e.printStackTrace();
-      }
+    /**
+     * called when a state has changed.
+     * 
+     * @param event
+     *            the event
+     * 
+     * @see org.eclipse.jface.viewers.ICheckStateListener#checkStateChanged(org.eclipse.jface.viewers.CheckStateChangedEvent)
+     */
+    public void checkStateChanged(CheckStateChangedEvent event) {
+	IWorkbenchWindow window = this.getSite().getWorkbenchWindow();
+	DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(
+		DotPlotPerspective.DOTPLOTLIST);
+	Object changed = event.getElement();
 
-      if (event.getSource() == this.viewer)
-      {
-         if (this.viewer.getChecked(changed))
-         {
-            markChildren(changed, this.viewer);
-         }
-         else
-         {
-            demarkChildren(changed, this.viewer);
-         }
-         lister.setInputFiles(this.getSelection());
-      }
+	try {
+	    window.getActivePage().showView(DotPlotPerspective.DOTPLOTLIST);
+	} catch (PartInitException e) {
+	    e.printStackTrace();
+	}
 
-      this.dirty = true;
-   }
+	if (event.getSource() == this.viewer) {
+	    if (this.viewer.getChecked(changed)) {
+		markChildren(changed, this.viewer);
+	    } else {
+		demarkChildren(changed, this.viewer);
+	    }
+	    lister.setInputFiles(this.getSelection());
+	}
 
-   /**
-    * creates the control.
-    *
-    * @param parent the parent
-    *
-    * @see ViewPart#createPartControl
-    */
-   public void createPartControl(Composite parent)
-   {
-      viewer = new CheckboxTreeViewer(parent);
-      viewer.setContentProvider(new DotPlotContentProvider(true));
-      viewer.setLabelProvider(new DotPlotLabelProvider());
-      viewer.addFilter(new DotPlotFilter());
-      viewer.setInput(getFileSystemRoot());
-      viewer.addCheckStateListener(this);
+	this.dirty = true;
+    }
 
-      // TODO window.getActivePage() throws NullPointerException so that under Eclipse 3.x the navigator won't start
-//      IWorkbenchWindow window = getSite().getWorkbenchWindow();
-//      final DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
-//      initDnD(lister);
+    /**
+     * init the refresh action, must be called from createPartControl
+     */
+    public void createActions() {
+	refreshAction = new Action("Refresh!") {
+	    @Override
+	    public void run() {
+		IWorkbenchWindow window = Workbench.getInstance()
+			.getActiveWorkbenchWindow();
+		DotPlotLister lister = (DotPlotLister) window.getActivePage()
+			.findView(DotPlotPerspective.DOTPLOTLIST);
+		viewer.refresh();
+		lister.setInputFiles(getSelection());
+	    }
+	};
 
-      viewer.getTree().forceFocus();
-      this.createActions();
-      this.createToolbar();
-   }
+	try {
+	    refreshAction.setImageDescriptor(ImageDescriptor
+		    .createFromURL(DotplotPlugin
+			    .getResource("icons/nav_refresh.gif")));
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+    }
 
-   /**
-    * Will return the root File for the file system.
-    * On Windows, there are more than one root, in this case, a special File will
-    * be returned that provides access to all Windows-"drives".
-    *
-    * @return the file system root(s)
-    */
-   private File getFileSystemRoot()
-   {
-      // default
-      File rootFolder = new File("/");
+    /**
+     * creates the control.
+     * 
+     * @param parent
+     *            the parent
+     * 
+     * @see ViewPart#createPartControl
+     */
+    @Override
+    public void createPartControl(Composite parent) {
+	viewer = new CheckboxTreeViewer(parent);
+	viewer.setContentProvider(new DotPlotContentProvider(true));
+	viewer.setLabelProvider(new DotPlotLabelProvider());
+	viewer.addFilter(new DotPlotFilter());
+	viewer.setInput(getFileSystemRoot());
+	viewer.addCheckStateListener(this);
 
-      // On Windows systems, there are more than one root (drives C:, D:, ...)
-      final File[] roots = File.listRoots();
-      if (roots.length > 1)
-      {
-         // this special File will provide more than one root, needed under Windows
-         rootFolder = new File("/")
-         {
-            /**
-             * for being Serializable
-             */
-            private static final long serialVersionUID = -612186735884992554L;
+	// TODO window.getActivePage() throws NullPointerException so that under
+	// Eclipse 3.x the navigator won't start
+	// IWorkbenchWindow window = getSite().getWorkbenchWindow();
+	// final DotPlotLister lister = (DotPlotLister)
+	// window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
+	// initDnD(lister);
 
-            public File[] listFiles(FileFilter filter)
-            {
-               ArrayList v = new ArrayList();
-               for (int i = 0; i < roots.length; i++)
-               {
-            	   
-                  try
-                  {
-                	  
-                     // try to open drive (it could be invalid)
-                     String path = roots[i].getCanonicalPath();
+	viewer.getTree().forceFocus();
+	this.createActions();
+	this.createToolbar();
+    }
 
-                     // success, add to list
-                     v.add(new File(path)
-                     {
-                        /**
-                         * for being Serializable
-                         */
-                        private static final long serialVersionUID = -6160781320267803938L;
+    /**
+     * Create toolbar, must be called from createPartControl
+     */
+    private void createToolbar() {
+	IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+	mgr.add(this.refreshAction);
+    }
 
-                        // overwrite getName() to let the name appear in the tree
-                        public String getName()
-                        {
-                           return super.toString();
-                        }
-                     });
-                  }
-                  catch (IOException ioExc)
-                  {
-                     // TODO suppress "Drive not ready" message (only with SWT??)
+    /**
+     * <code>demarkChildren</code> unchecks all children of a selected element.
+     * 
+     * @param selection
+     *            an element that could have children
+     * @param viewer
+     *            the treeviewer you want to manipulate
+     */
+    private void demarkChildren(Object selection, CheckboxTreeViewer viewer) {
+	viewer.setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
+	viewer.setSubtreeChecked(selection, false);
+    }
 
-                     // drive not ready, ignore
-                     continue;
-                  }
-               }
+    /**
+     * <code>getFileList</code> creates a IFileList from the selected elements.
+     * 
+     * @return an IFileList with files from the chosen viewer
+     * 
+     * @see org.dotplot.core.ISourceList
+     */
+    public ISourceList getFileList() {
+	DotplotContext context = ContextFactory.getContext();
 
-               return (File[]) (v.toArray(new File[0]));
-            }
+	DotPlotFileList actualList = new DotPlotFileList();
+	Object[] selection = this.getSelection();
 
-            public boolean isDirectory()
-            {
-               return true;
-            }
-         };
-      }
+	for (int i = 0; i < selection.length; i++) {
+	    if (!((File) selection[i]).isDirectory()) {
+		actualList.add(context.createDotplotFile((File) selection[i]));
+	    }
+	}
 
-      return rootFolder;
-   }
+	return actualList;
+    }
 
-   private void initDnD(final DotPlotLister lister)
-   {
-      DragSource dragSource = new DragSource(this.viewer.getControl(), DND.DROP_COPY | DND.DROP_MOVE);
-      DropTarget dropTarget = new DropTarget(this.viewer.getControl(), DND.DROP_COPY | DND.DROP_MOVE);
+    /**
+     * Will return the root File for the file system. On Windows, there are more
+     * than one root, in this case, a special File will be returned that
+     * provides access to all Windows-"drives".
+     * 
+     * @return the file system root(s)
+     */
+    private File getFileSystemRoot() {
+	// default
+	File rootFolder = new File("/");
 
-      dragSource.setTransfer(new Transfer[]{FileTransfer.getInstance()});
-      dropTarget.setTransfer(new Transfer[]{FileTransfer.getInstance()});
+	// On Windows systems, there are more than one root (drives C:, D:, ...)
+	final File[] roots = File.listRoots();
+	if (roots.length > 1) {
+	    // this special File will provide more than one root, needed under
+	    // Windows
+	    rootFolder = new File("/") {
+		/**
+		 * for being Serializable
+		 */
+		private static final long serialVersionUID = -612186735884992554L;
 
-      dragSource.addDragListener(new DragSourceAdapter()
-      {
-         public void dragSetData(DragSourceEvent event)
-         {
-            event.data = viewer.getSelection();
-         }
-      });
+		@Override
+		public boolean isDirectory() {
+		    return true;
+		}
 
-      dropTarget.addDropListener(new DropTargetAdapter()
-      {
-         //this event occurs when the user releases the mouse over the drop target
-         public void drop(DropTargetEvent event)
-         {
-            DotPlotTable dotPlotTable = lister.getTable();
-            Table table = dotPlotTable.getTable();
-            String[] saFiles = (String[]) event.data;
-            int index = 0;
+		@Override
+		public File[] listFiles(FileFilter filter) {
+		    ArrayList v = new ArrayList();
+		    for (int i = 0; i < roots.length; i++) {
 
-            for (int i = 0; i < saFiles.length; ++i)
-            {
-               File f = new File(saFiles[i]);
+			try {
 
-               if (!f.exists())
-               {
-                  continue;
-               }
+			    // try to open drive (it could be invalid)
+			    String path = roots[i].getCanonicalPath();
 
-               index = table.indexOf((TableItem) event.item);
-               dotPlotTable.insertItem(f, index);
-               table.update();
-            }
-         }
-      });
-   }
+			    // success, add to list
+			    v.add(new File(path) {
+				/**
+				 * for being Serializable
+				 */
+				private static final long serialVersionUID = -6160781320267803938L;
 
-   /**
-    * <code>demarkChildren</code> unchecks all children of a selected element.
-    *
-    * @param selection an element that could have children
-    * @param viewer    the treeviewer you want to manipulate
-    */
-   private void demarkChildren(Object selection, CheckboxTreeViewer viewer)
-   {
-      viewer.setAutoExpandLevel(CheckboxTreeViewer.ALL_LEVELS);
-      viewer.setSubtreeChecked(selection, false);
-   }
+				// overwrite getName() to let the name appear in
+				// the tree
+				@Override
+				public String getName() {
+				    return super.toString();
+				}
+			    });
+			} catch (IOException ioExc) {
+			    // TODO suppress "Drive not ready" message (only
+			    // with SWT??)
 
-   /**
-    * <code>getFileList</code> creates a IFileList from the selected elements.
-    *
-    * @return an IFileList with files from the chosen viewer
-    *
-    * @see org.dotplot.core.ISourceList
-    */
-   public ISourceList getFileList()
-   {
-	   DotplotContext context = ContextFactory.getContext();
-	   
-      DotPlotFileList actualList = new DotPlotFileList();
-      Object[] selection = this.getSelection();
+			    // drive not ready, ignore
+			    continue;
+			}
+		    }
 
-      for (int i = 0; i < selection.length; i++)
-      {
-         if (!((File) selection[i]).isDirectory())
-         {
-        	 actualList.add(context.createDotplotFile((File)selection[i]));
-         }
-      }
+		    return (File[]) (v.toArray(new File[0]));
+		}
+	    };
+	}
 
-      return actualList;
-   }
+	return rootFolder;
+    }
 
-   /**
-    * returns the internal viewer.
-    *
-    * @return the viewer
-    */
-   public CheckboxTreeViewer getViewer()
-   {
-      return viewer;
-   }
+    /**
+     * <code>getSelection</code> gives all selected elements from the navigator.
+     * 
+     * @return a vector with the names of the checked elements
+     */
+    public Object[] getSelection() {
+	return this.viewer.getCheckedElements();
+    }
 
-   /**
-    * <code>getSelection</code> gives all selected elements from the
-    * navigator.
-    *
-    * @return a vector with the names of the checked elements
-    */
-   public Object[] getSelection()
-   {
-      return this.viewer.getCheckedElements();
-   }
+    /**
+     * use <code>getSelectionAsString</code> to get a stringrepresentation of
+     * the selection.
+     * 
+     * @return stringrepresentations of the selected objects
+     * 
+     * @see java.lang.Object#toString
+     */
+    public String[] getSelectionAsString() {
+	Object[] checked = this.getSelection();
+	String[] result = new String[checked.length];
 
-   /**
-    * use <code>getSelectionAsString</code> to get a stringrepresentation of
-    * the selection.
-    *
-    * @return stringrepresentations of the selected objects
-    *
-    * @see java.lang.Object#toString
-    */
-   public String[] getSelectionAsString()
-   {
-      Object[] checked = this.getSelection();
-      String[] result = new String[checked.length];
+	for (int i = 0; i < checked.length; ++i) {
+	    result[i] = checked[i].toString();
+	}
 
-      for (int i = 0; i < checked.length; ++i)
-      {
-         result[i] = checked[i].toString();
-      }
+	return result;
+    }
 
-      return result;
-   }
+    /**
+     * returns the internal viewer.
+     * 
+     * @return the viewer
+     */
+    public CheckboxTreeViewer getViewer() {
+	return viewer;
+    }
 
-   /**
-    * gives information about the dirty bit.
-    *
-    * @return true if selection has changed
-    */
-   public boolean isDirty()
-   {
-      return dirty;
-   }
+    private void initDnD(final DotPlotLister lister) {
+	DragSource dragSource = new DragSource(this.viewer.getControl(),
+		DND.DROP_COPY | DND.DROP_MOVE);
+	DropTarget dropTarget = new DropTarget(this.viewer.getControl(),
+		DND.DROP_COPY | DND.DROP_MOVE);
 
-   /**
-    * use <code> isEmpty</code> if you want to get to know if any elements are
-    * selected.
-    *
-    * @return true if nothing is selected
-    */
-   public boolean isEmpty()
-   {
-      return (viewer.getCheckedElements().length == 0);
-   }
+	dragSource.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+	dropTarget.setTransfer(new Transfer[] { FileTransfer.getInstance() });
 
-   /**
-    * <code>markChildren</code> checks all children of a selected element.
-    *
-    * @param selection an element that could have children
-    * @param viewer    the treeviewer you want to manipulate
-    */
-   private void markChildren(Object selection, CheckboxTreeViewer viewer)
-   {
-      viewer.setAutoExpandLevel(CheckboxTreeViewer.ALL_LEVELS);
-      viewer.setSubtreeChecked(selection, true);
-   }
+	dragSource.addDragListener(new DragSourceAdapter() {
+	    @Override
+	    public void dragSetData(DragSourceEvent event) {
+		event.data = viewer.getSelection();
+	    }
+	});
 
-   /**
-    * empty implementation.
-    *
-    * @see ViewPart#setFocus
-    */
-   public void setFocus()
-   {
-   }
+	dropTarget.addDropListener(new DropTargetAdapter() {
+	    // this event occurs when the user releases the mouse over the drop
+	    // target
+	    @Override
+	    public void drop(DropTargetEvent event) {
+		DotPlotTable dotPlotTable = lister.getTable();
+		Table table = dotPlotTable.getTable();
+		String[] saFiles = (String[]) event.data;
+		int index = 0;
 
-   /**
-    * use this when selection has been plotted.
-    */
-   public void setNotDirty()
-   {
-      this.dirty = false;
-   }
+		for (int i = 0; i < saFiles.length; ++i) {
+		    File f = new File(saFiles[i]);
 
-   /**
-    * Create toolbar, must be called from createPartControl
-    */
-   private void createToolbar() {
-     IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
-     mgr.add(this.refreshAction);
-   }
+		    if (!f.exists()) {
+			continue;
+		    }
 
-   /**
-    * init the refresh action, must be called from createPartControl
-    */
-   public void createActions()
-   {
-      refreshAction = new Action("Refresh!")
-      {
-         public void run()
-         {
-            IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-            DotPlotLister lister = (DotPlotLister) window.getActivePage().findView(DotPlotPerspective.DOTPLOTLIST);
-            viewer.refresh();
-            lister.setInputFiles(getSelection());
-         }
-      };
+		    index = table.indexOf((TableItem) event.item);
+		    dotPlotTable.insertItem(f, index);
+		    table.update();
+		}
+	    }
+	});
+    }
 
-      try
-      {
-         refreshAction.setImageDescriptor(ImageDescriptor.createFromURL(DotplotPlugin.getResource("icons/nav_refresh.gif")));
-      }
-      catch (IOException e)
-      {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-   }
+    /**
+     * gives information about the dirty bit.
+     * 
+     * @return true if selection has changed
+     */
+    public boolean isDirty() {
+	return dirty;
+    }
+
+    /**
+     * use <code> isEmpty</code> if you want to get to know if any elements are
+     * selected.
+     * 
+     * @return true if nothing is selected
+     */
+    public boolean isEmpty() {
+	return (viewer.getCheckedElements().length == 0);
+    }
+
+    /**
+     * <code>markChildren</code> checks all children of a selected element.
+     * 
+     * @param selection
+     *            an element that could have children
+     * @param viewer
+     *            the treeviewer you want to manipulate
+     */
+    private void markChildren(Object selection, CheckboxTreeViewer viewer) {
+	viewer.setAutoExpandLevel(AbstractTreeViewer.ALL_LEVELS);
+	viewer.setSubtreeChecked(selection, true);
+    }
+
+    /**
+     * empty implementation.
+     * 
+     * @see ViewPart#setFocus
+     */
+    @Override
+    public void setFocus() {
+    }
+
+    /**
+     * use this when selection has been plotted.
+     */
+    public void setNotDirty() {
+	this.dirty = false;
+    }
 }

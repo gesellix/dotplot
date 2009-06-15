@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<project default="crap4j">
+
+	<import file="ant.properties.xml"/>
+
+	<!-- Define the Crap4j ant task -->
+	<taskdef name="crap4j" classname="org.crap4j.anttask.Crap4jAntTask" >
+		<classpath>
+			<fileset dir="${crap4j.home}" includes="*.jar" />
+			<fileset dir="${crap4j.home}/lib" includes="**/*.jar" />
+		</classpath>
+	</taskdef>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${tmpdir}/crap4j"/>
+		<mkdir dir="${report.output.dir}/crap4j"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${tmpdir}/crap4j"/>
+		<delete dir="${report.output.dir}/crap4j"/>
+	</target>
+
+
+	<!-- #2 Use crap4j on the project -->
+	<target name="crap4j" depends="init">
+		<crap4j projectdir="${tmpdir}/crap4j" 
+                        outputDir="${report.output.dir}/crap4j" 
+                            dontTest="false" debug="false">
+
+			<classes>
+				<!-- put the project's class directories here. These are the classes you want crap numbers for -->
+				<pathElement location="${tmpdir}/bin" />
+			</classes>
+
+			<srces>
+				<!-- The project's src folders -->
+				<pathElement location="${sources}" />
+			</srces>
+
+			<testClasses>
+				<!-- The project's test classes. 
+                                         Note, separating it from the project classes makes life so much easier
+                                         but if you didn't, then you probably just want to repeat the classDir entry here -->
+				<pathElement location="${tmpdir}/junit/bin" />
+			</testClasses>
+
+			<libClasspath>
+				<!-- Put the dependent paths and libraries here. 
+                                         This is for stuff necessary to your project, but not stuff you want analyzed -->
+				<fileset dir="${sources}/lib">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${eclipse.location}">
+					<include name="**/*.jar" />
+				</fileset>
+				<!-- if you get errors loading any agitar classes, like the mock classes, add this entry -->
+
+				<fileset dir="${crap4j.home}/lib/com.agitar.eclipse.api_4.2.0.401405/lib/ext">
+					<include name="**/*.jar" />
+				</fileset>
+			</libClasspath>
+
+		</crap4j>
+	</target>
+</project>
+

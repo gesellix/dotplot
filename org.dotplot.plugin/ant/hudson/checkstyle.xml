@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<project default="checkstyle">
+
+	<import file="ant.properties.xml"/>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${report.output.dir}/checkstyle"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${report.output.dir}/checkstyle"/>
+	</target>
+
+	<target name="checkstyle" description="Generates a report of code convention violations." depends="init">
+		<taskdef resource="checkstyletask.properties" >
+			<classpath>
+				<fileset dir="${checkstyle.home}" includes="*.jar" />
+				<fileset dir="${simian.home}/bin/" includes="*.jar" />
+			</classpath>
+		</taskdef>
+		<!-- <checkstyle config="${checkstyle.home}/dotplot_checks.xml" failureProperty="checkstyle.failure" failOnViolation="false"> -->
+		<checkstyle config="${org.dotplot.plugin.location}/checkstyle.xml" failureProperty="checkstyle.failure" failOnViolation="false">
+			<formatter type="xml" tofile="${report.output.dir}/checkstyle/checkstyle_report.xml"/>
+			<fileset dir="${sources}" includes="**/*.java" excludes="**/tokenizer/service/*Scanner.java"/>
+		</checkstyle>
+	</target>
+
+</project>
+

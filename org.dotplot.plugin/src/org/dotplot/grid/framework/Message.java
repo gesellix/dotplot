@@ -1,7 +1,5 @@
 package org.dotplot.grid.framework;
 
-import org.apache.log4j.Logger;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -13,158 +11,141 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.Vector;
 
-class Message extends AbstractMessage
-{
-   protected GridNode gridNode = null;
+import org.apache.log4j.Logger;
 
-   private final static Logger logger = Logger.getLogger(Message.class.getName());
+class Message extends AbstractMessage {
+    protected GridNode gridNode = null;
 
-   public Message()
-   {
-      this("message");
-   }
+    private final static Logger logger = Logger.getLogger(Message.class
+	    .getName());
 
-   public Message(String messageID)
-   {
-      super(new Vector(), messageID);
-   }
+    public Message() {
+	this("message");
+    }
 
-   public boolean readArgs(InputStream ins)
-   {
-      boolean success = true;
+    public Message(String messageID) {
+	super(new Vector(), messageID);
+    }
 
-      try
-      {
-         DataInputStream din = new DataInputStream(ins);
-         ObjectInputStream oin = null;
+    @Override
+    public boolean Do() {
+	return false;
+    }
 
-         String token = din.readUTF();
+    @Override
+    public boolean handles(String msgId) {
+	return false;
+    }
 
-         // Read tokens until the "end-of-message" token is seen.
-         while (false == ENDTOKEN.equals(token))
-         {
-            Object arg = token;
+    @Override
+    public Message newCopy() {
+	return new Message(id);
+    }
 
-            // If an object signal is coming, read with an ObjectInputStream
-            if (OBJECT_SIGNAL.equals(token))
-            {
-               // Next argument is a non-string Object
-               logger.debug("m: reading object");
+    @Override
+    public boolean readArgs(InputStream ins) {
+	boolean success = true;
 
-               if (oin == null)
-               {
-                  oin = new ObjectInputStream(ins);
-               }
+	try {
+	    DataInputStream din = new DataInputStream(ins);
+	    ObjectInputStream oin = null;
 
-               arg = oin.readObject();
-            }
-            // If a file signal is coming, read parts and write to temporary file
-            else if (FILE_SIGNAL.equals(token))
-            {
-               // Next argument is a non-string Object (File)
-               // save "filename" in message argument
-               arg = readFile(din);
-            }
+	    String token = din.readUTF();
 
-            addArg(arg);
+	    // Read tokens until the "end-of-message" token is seen.
+	    while (false == ENDTOKEN.equals(token)) {
+		Object arg = token;
 
-            token = din.readUTF();
-         }
-      }
-      catch (Exception e)
-      {
-         logger.error("Failed to read complete argument list", e);
-         success = false;
-      }
+		// If an object signal is coming, read with an ObjectInputStream
+		if (OBJECT_SIGNAL.equals(token)) {
+		    // Next argument is a non-string Object
+		    logger.debug("m: reading object");
 
-      return success;
-   }
+		    if (oin == null) {
+			oin = new ObjectInputStream(ins);
+		    }
 
-   public boolean writeArgs(OutputStream outs)
-   {
-      boolean success = true;
+		    arg = oin.readObject();
+		} else if (FILE_SIGNAL.equals(token)) {
+		    // If a file signal is coming, read parts and write to
+		    // temporary file
 
-      DataOutputStream dout = new DataOutputStream(outs);
-      ObjectOutputStream oout = null;
+		    // Next argument is a non-string Object (File)
+		    // save "filename" in message argument
+		    arg = readFile(din);
+		}
 
-      // Write each argument in order
-      Iterator argumentIter = argList.iterator();
-      while (argumentIter.hasNext())
-      {
-         Object arg = argumentIter.next();
+		addArg(arg);
 
-         try
-         {
-            if (arg instanceof String)
-            {
-               logger.debug("m: sending token \"" + arg + "\"");
-               dout.writeUTF((String) arg);
-               dout.flush();
-            }
-            else if (arg instanceof File)
-            {
-               // Argument is a file handle, so send it as bytes
-               writeFile((File) arg, dout);
-            }
-            else
-            {
-               // Argument wasn't a string or a file, so send it as an object
-               logger.debug("m: sending object " + arg);
+		token = din.readUTF();
+	    }
+	} catch (Exception e) {
+	    logger.error("Failed to read complete argument list", e);
+	    success = false;
+	}
 
-               // write signal to indicate the coming object
-               dout.writeUTF(OBJECT_SIGNAL);
-               dout.flush();
+	return success;
+    }
 
-               logger.debug("m: " + OBJECT_SIGNAL + " sent.");
+    @Override
+    public boolean writeArgs(OutputStream outs) {
+	boolean success = true;
 
-               // write object itself
-               if (oout == null)
-               {
-                  oout = new ObjectOutputStream(new LoggingOutputStream(outs));
-               }
-               oout.reset();
+	DataOutputStream dout = new DataOutputStream(outs);
+	ObjectOutputStream oout = null;
 
-               oout.writeObject(arg);
-               oout.flush();
+	// Write each argument in order
+	Iterator argumentIter = argList.iterator();
+	while (argumentIter.hasNext()) {
+	    Object arg = argumentIter.next();
 
-               logger.debug("m: complete object sent.");
-            }
-         }
-         catch (IOException e)
-         {
-            // Something went wrong, indicate failure
-            logger.error("m: Got exception writing arg " + arg, e);
-            success = false;
-         }
-      }
+	    try {
+		if (arg instanceof String) {
+		    logger.debug("m: sending token \"" + arg + "\"");
+		    dout.writeUTF((String) arg);
+		    dout.flush();
+		} else if (arg instanceof File) {
+		    // Argument is a file handle, so send it as bytes
+		    writeFile((File) arg, dout);
+		} else {
+		    // Argument wasn't a string or a file, so send it as an
+		    // object
+		    logger.debug("m: sending object " + arg);
 
-      try
-      {
-         // Finish with the end-of-message token
-         dout.writeUTF(ENDTOKEN);
-         dout.flush();
-      }
-      catch (IOException e)
-      {
-         logger.error("m: IOException writing EndToken", e);
-         success = false;
-      }
+		    // write signal to indicate the coming object
+		    dout.writeUTF(OBJECT_SIGNAL);
+		    dout.flush();
 
-      return success;
-   }
+		    logger.debug("m: " + OBJECT_SIGNAL + " sent.");
 
-   public boolean Do()
-   {
-      return false;
-   }
+		    // write object itself
+		    if (oout == null) {
+			oout = new ObjectOutputStream(new LoggingOutputStream(
+				outs));
+		    }
+		    oout.reset();
 
-   public boolean handles(String msgId)
-   {
-      return false;
-   }
+		    oout.writeObject(arg);
+		    oout.flush();
 
-   public Message newCopy()
-   {
-      return new Message(id);
-   }
+		    logger.debug("m: complete object sent.");
+		}
+	    } catch (IOException e) {
+		// Something went wrong, indicate failure
+		logger.error("m: Got exception writing arg " + arg, e);
+		success = false;
+	    }
+	}
+
+	try {
+	    // Finish with the end-of-message token
+	    dout.writeUTF(ENDTOKEN);
+	    dout.flush();
+	} catch (IOException e) {
+	    logger.error("m: IOException writing EndToken", e);
+	    success = false;
+	}
+
+	return success;
+    }
 }

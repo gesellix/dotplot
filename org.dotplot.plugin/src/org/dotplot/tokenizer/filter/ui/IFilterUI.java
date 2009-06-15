@@ -13,16 +13,24 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * @author Christian Gerhardt <case42@gmx.net>
- *
+ * 
  */
 public interface IFilterUI {
-	public void setFilterID(String filterID);
-	public String getFilterID();
-	public Control draw(Composite parent, SelectionListener changeListener);
-	public void reset(IFilterConfiguration config);
-	public ViewController getController(ConfigurationView view);
-	public boolean isEnabled();
-	public void setEnabled(boolean newState);
-	public ISourceType getSourceType();
-	public void setSourceType(ISourceType type);
+    public Control draw(Composite parent, SelectionListener changeListener);
+
+    public ViewController getController(ConfigurationView view);
+
+    public String getFilterID();
+
+    public ISourceType getSourceType();
+
+    public boolean isEnabled();
+
+    public void reset(IFilterConfiguration config);
+
+    public void setEnabled(boolean newState);
+
+    public void setFilterID(String filterID);
+
+    public void setSourceType(ISourceType type);
 }

@@ -3,7 +3,6 @@
  */
 package org.dotplot.tokenizer.service;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,7 +13,6 @@ import org.dotplot.core.ISourceList;
 import org.dotplot.core.plugins.PluginHotSpot;
 import org.dotplot.core.services.Extention;
 import org.dotplot.core.services.IContext;
-import org.dotplot.core.services.IRessource;
 import org.dotplot.core.services.ITask;
 import org.dotplot.core.services.ITaskResultMarshaler;
 import org.dotplot.core.services.IllegalContextException;
@@ -27,138 +25,171 @@ import org.dotplot.util.UnknownIDException;
 
 /**
  * @author Christian Gerhardt <case42@gmx.net>
- *
+ * 
  */
 public class TokenizerService extends DotplotService {
 
-	private static final String ID_HOTSPOT_TOKENIZER = ".newTokenizer";
-	public  static final String ID_CONFIGURATION_TOKENIZER = "org.dotplot.tokenizer.Configuration";
-	public  static final String ID_TOKENIZER_DEFAULT = "org.dotplot.tokenizer.DefaultTokenizer";
-	
-	private Map<String, ITokenizer> tokenizers;
-	
-	/**
-	 * @param id
-	 */
-	public TokenizerService(String id) {
-		super(id);
-		this.tokenizers = new TreeMap<String, ITokenizer>();
-		this.addHotSpot(new PluginHotSpot(id + ID_HOTSPOT_TOKENIZER, ITokenizer.class));		
+    private static final String TOKENIZER_HOTSPOT_ID = ".newTokenizer";
+
+    public static final String TOKENIZER_CONFIGURATION_ID = "org.dotplot.tokenizer.Configuration";
+
+    public static final String DEFAULT_TOKENIZER_ID = "org.dotplot.tokenizer.DefaultTokenizer";
+
+    private Map<String, ITokenizer> tokenizers;
+
+    /**
+     * @param id
+     */
+    public TokenizerService(String id) {
+	super(id);
+	this.tokenizers = new TreeMap<String, ITokenizer>();
+	this.addHotSpot(new PluginHotSpot(id + TOKENIZER_HOTSPOT_ID,
+		ITokenizer.class));
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.dotplot.core.DotplotService#createResultContext()
+     */
+    @Override
+    protected IContext createResultContext() {
+	Object result = this.getTaskProcessor().getTaskResult();
+	if (result == null) {
+	    return NullContext.context;
+	} else {
+	    ISourceList list = ((SourceListContext) this.getWorkingContext())
+		    .getSourceList();
+	    return new TokenStreamContext((ITokenStream) result, list);
+	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.dotplot.core.services.AbstractService#createTask()
+     */
+    @Override
+    public ITask createTask() {
+	ITokenizer tokenizer = null;
+	if (this.getWorkingContext() instanceof NullContext) {
+	    this.getErrorHandler().fatal(this,
+		    new IllegalContextException(this.getWorkingContext()));
+	    return null;
+	}
+	SourceListContext context = (SourceListContext) this
+		.getWorkingContext();
+	IConfiguration configuration = null;
+
+	try {
+	    configuration = this.frameworkContext.getConfigurationRegistry()
+		    .get(TOKENIZER_CONFIGURATION_ID);
+	    String tokenizerid = ((ITokenizerConfiguration) configuration)
+		    .getTokenizerID();
+	    tokenizer = this.tokenizers.get(tokenizerid);
+	    if (tokenizer == null) {
+		throw new UnknownIDException(tokenizerid);
+	    }
+	} catch (UnknownIDException e) {
+	    this.getErrorHandler().fatal(this, e);
+	    return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.dotplot.core.services.AbstractService#workingContextIsCompatible(java.lang.Class)
-	 */
-	public boolean workingContextIsCompatible(Class contextClass) {
-		return SourceListContext.class.isAssignableFrom(contextClass);
-	}
+	ITask task = new Task("org.dotplot.tokenizer.tasks.Tokenizer",
+		new ITaskResultMarshaler() {
 
-	/* (non-Javadoc)
-	 * @see org.dotplot.core.services.AbstractService#init()
-	 */
-	public void init() {
-		super.init();
-		String id;
-		String name;
-		ITokenizer tokenizer;
-		
-		try {
-			this.tokenizers = new TreeMap<String, ITokenizer>();
-			this.tokenizers.put(ID_TOKENIZER_DEFAULT, new DefaultScanner());
-			for(Extention e : this.getHotSpot(this.getID() + ID_HOTSPOT_TOKENIZER).getActiveExtentions()){
-				id = e.getParameter("id");				
-				name = e.getParameter("name");
-				if(name != null && id != null){
-					if(! this.tokenizers.containsKey(id)){
-						tokenizer = (ITokenizer)e.getExtentionObject();
-						tokenizer.setName(name);
-						this.tokenizers.put(id, tokenizer);
-					}
-				}
-			}
-		}
-		catch (UnknownServiceHotSpotException e) {
-			/*sollte nicht vorkommen*/
-			this.getErrorHandler().fatal(this, e);
-		}
-	}
+		    public Object marshalResult(
+			    Map<String, ? extends Object> taskResult) {
+			return taskResult.get("Part 1");
+		    }
+		}, false);
 
-	/* (non-Javadoc)
-	 * @see org.dotplot.core.services.AbstractService#getResultContextClass()
-	 */
-	public Class getResultContextClass() {
-		return TokenStreamContext.class;
-	}
+	TokenizerTaskPart part = new TokenizerTaskPart("Part 1", tokenizer);
 
-	/* (non-Javadoc)
-	 * @see org.dotplot.core.services.AbstractService#createTask()
-	 */
-	public ITask createTask() {
-		ITokenizer tokenizer = null;
-		if(this.getWorkingContext() instanceof NullContext){
-			this.getErrorHandler().fatal(this, new IllegalContextException(this.getWorkingContext()));
-			return null;
-		}
-		SourceListContext context = (SourceListContext)this.getWorkingContext();		
-		IConfiguration configuration = null;
-		
-		try {
-			configuration = this.frameworkContext.getConfigurationRegistry().get(ID_CONFIGURATION_TOKENIZER);
-			String tokenizerid = ((ITokenizerConfiguration)configuration).getTokenizerID();
-			tokenizer = this.tokenizers.get(tokenizerid);
-			if(tokenizer == null) throw new UnknownIDException(tokenizerid);
-		}
-		catch (UnknownIDException e) {
-			this.getErrorHandler().fatal(this,e);
-			return null;
-		} 
-		
-		
-		ITask task = new Task("org.dotplot.tokenizer.tasks.Tokenizer", new ITaskResultMarshaler(){
+	part.setRessources(context.getSourceList());
 
-			public Object marshalResult(Map<String, ? extends Object> taskResult) {
-				return taskResult.get("Part 1");
-			}} ,false);
-		
-		TokenizerTaskPart part = new TokenizerTaskPart("Part 1",tokenizer); 
-		
-		part.setRessources((Collection<? extends IRessource>) context.getSourceList());
-		
-		task.addPart(part);
-		
-		return task;
-	}
-	
-	public Map<String, ITokenizer> getRegisteredTokenizer(){
-		return this.tokenizers;
-	}
+	task.addPart(part);
 
-	/* (non-Javadoc)
-	 * @see org.dotplot.core.DotplotService#registerDefaultConfiguration(org.dotplot.core.IConfigurationRegistry)
-	 */
-	public void registerDefaultConfiguration(IConfigurationRegistry registry) {
-		if(registry == null) throw new NullPointerException();
-		try {
-			registry.register(ID_CONFIGURATION_TOKENIZER, new DefaultTokenizerConfiguration());
-		}
-		catch (DuplicateRegistrationException e) {
-			this.getErrorHandler().warning(this, e);
-		}
-	}
+	return task;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.dotplot.core.DotplotService#createResultContext()
-	 */
-	@Override
-	protected IContext createResultContext() {
-		Object result = this.getTaskProcessor().getTaskResult();
-		if(result == null){
-			return NullContext.context;
+    public Map<String, ITokenizer> getRegisteredTokenizer() {
+	return this.tokenizers;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.dotplot.core.services.AbstractService#getResultContextClass()
+     */
+    @Override
+    public Class getResultContextClass() {
+	return TokenStreamContext.class;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.dotplot.core.services.AbstractService#init()
+     */
+    @Override
+    public void init() {
+	super.init();
+	String id;
+	String name;
+	ITokenizer tokenizer;
+
+	try {
+	    this.tokenizers = new TreeMap<String, ITokenizer>();
+	    this.tokenizers.put(DEFAULT_TOKENIZER_ID, new DefaultScanner());
+	    for (Extention e : this.getHotSpot(
+		    this.getID() + TOKENIZER_HOTSPOT_ID).getActiveExtentions()) {
+		id = e.getParameter("id");
+		name = e.getParameter("name");
+		if (name != null && id != null) {
+		    if (!this.tokenizers.containsKey(id)) {
+			tokenizer = (ITokenizer) e.getExtentionObject();
+			tokenizer.setName(name);
+			this.tokenizers.put(id, tokenizer);
+		    }
 		}
-		else {
-			ISourceList list = ((SourceListContext)this.getWorkingContext()).getSourceList();
-			return new TokenStreamContext((ITokenStream)result,list);
-		}
+	    }
+	} catch (UnknownServiceHotSpotException e) {
+	    /* sollte nicht vorkommen */
+	    this.getErrorHandler().fatal(this, e);
 	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.dotplot.core.DotplotService#registerDefaultConfiguration(org.dotplot
+     * .core.IConfigurationRegistry)
+     */
+    @Override
+    public void registerDefaultConfiguration(IConfigurationRegistry registry) {
+	if (registry == null) {
+	    throw new NullPointerException();
+	}
+	try {
+	    registry.register(TOKENIZER_CONFIGURATION_ID,
+		    new DefaultTokenizerConfiguration());
+	} catch (DuplicateRegistrationException e) {
+	    this.getErrorHandler().warning(this, e);
+	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.dotplot.core.services.AbstractService#workingContextIsCompatible(
+     * java.lang.Class)
+     */
+    @Override
+    public boolean workingContextIsCompatible(Class contextClass) {
+	return SourceListContext.class.isAssignableFrom(contextClass);
+    }
 
 }

@@ -9,42 +9,40 @@ import org.dotplot.fmatrix.TokenType;
 
 /**
  * tests functionality of TokenType
- *
+ * 
  * @author Constantin von Zitzewitz
  * @version 0.2
  */
-public class TokenTypeTest extends TestCase
-{
+public class TokenTypeTest extends TestCase {
 
-   private TokenType tokenType;
+    private TokenType tokenType;
 
-   public void setUp()
-   {
-      this.tokenType = new TokenType("some token type");
-   }
+    @Override
+    public void setUp() {
+	this.tokenType = new TokenType("some token type");
+    }
 
-   public void testSetUp()
-   {
-      assertNotNull("TokenType object must not be null!", this.tokenType);
-   }
+    public void testAddPosting() {
+	int someIndex1 = 2;
+	int someIndex2 = 3;
+	int someIndex3 = 4;
 
-   public void testSetWeight()
-   {
-      double someWeight = 0.8;
-      this.tokenType.setWeight(someWeight);
-      assertTrue("check if setWeight was successful!", this.tokenType.getWeight() == someWeight);
-   }
+	this.tokenType.addTypePosition(someIndex1);
+	this.tokenType.addTypePosition(someIndex2);
+	this.tokenType.addTypePosition(someIndex3);
 
-   public void testAddPosting()
-   {
-      int someIndex1 = 2;
-      int someIndex2 = 3;
-      int someIndex3 = 4;
+	assertEquals("There should be 9 postings(match)", 9, this.tokenType
+		.getNumberOfMatches());
+    }
 
-      this.tokenType.addTypePosition(someIndex1);
-      this.tokenType.addTypePosition(someIndex2);
-      this.tokenType.addTypePosition(someIndex3);
+    public void testSetUp() {
+	assertNotNull("TokenType object must not be null!", this.tokenType);
+    }
 
-      assertEquals("There should be 9 postings(match)", 9, this.tokenType.getNumberOfMatches());
-   }
+    public void testSetWeight() {
+	double someWeight = 0.8;
+	this.tokenType.setWeight(someWeight);
+	assertTrue("check if setWeight was successful!", this.tokenType
+		.getWeight() == someWeight);
+    }
 }

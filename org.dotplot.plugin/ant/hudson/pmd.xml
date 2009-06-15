@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<project default="pmd">
+
+	<import file="ant.properties.xml"/>
+
+	<path id="pmd.lib">
+		<pathelement location="${pmd.home}"/>
+		<fileset dir="${pmd.home}/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${report.output.dir}/pmd"/>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${report.output.dir}/pmd"/>
+	</target>
+
+	<target name="pmd" depends="init">
+
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+			<classpath refid="pmd.lib" />
+		</taskdef>
+
+		<pmd shortFilenames="true" failOnRuleViolation="false">
+			<ruleset>basic</ruleset>
+			<ruleset>braces</ruleset>
+			<ruleset>finalizers</ruleset>
+			<ruleset>imports</ruleset>
+			<ruleset>unusedcode</ruleset>
+			<formatter type="xml" toFile="${report.output.dir}/pmd/pmd_report.xml"/>
+			<fileset dir="${sources}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+
+	</target>
+
+	<target name="cpd">
+		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+			<classpath refid="pmd.lib" />
+		</taskdef>
+		<cpd minimumTokenCount="100" format="xml" outputFile="${report.output.dir}/pmd/cpd_report.xml">
+			<fileset dir="${sources}">
+				<include name="**/*.java"/>
+			</fileset>
+		</cpd>
+	</target>
+
+</project>

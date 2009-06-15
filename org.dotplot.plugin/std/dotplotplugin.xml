@@ -4,7 +4,7 @@
 	name="Standard"
 	version="1.0"
 	provider="FH Giessen-Friedberg (www.fh-giessen.de)"
-	info="Standard extentions of Matrix4.plot.">	
+	info="Standard extentions of Matrix4.plot.">
 
 	<Service id="org.dotplot.standard.Converter" 
 			 class="org.dotplot.tokenizer.converter.ConverterService">
