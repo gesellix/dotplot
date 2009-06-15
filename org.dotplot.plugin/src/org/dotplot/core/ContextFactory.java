@@ -72,8 +72,7 @@ public class ContextFactory {
      * @see org.dotplot.core.system.PluginLoadingJob
      */
     private static DotplotContext createContext() {
-	DotplotContext context = new DotplotContext(workingDirectory,
-		pluginDirectory);
+	context = new DotplotContext(workingDirectory, pluginDirectory);
 	try {
 	    context.installPlugin(new CoreSystem());
 	} catch (DuplicateRegistrationException e) {
@@ -115,9 +114,9 @@ public class ContextFactory {
      * 
      * @return The <code>DotplotContext</code>.
      */
-    public static DotplotContext getContext() {
+    public static synchronized DotplotContext getContext() {
 	if (context == null) {
-	    context = createContext();
+	    createContext();
 	}
 	return context;
     }
