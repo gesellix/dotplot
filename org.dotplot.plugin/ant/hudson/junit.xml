@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<project default="JUnitTests">
+<project default="JUnit">
 
 	<import file="ant.properties.xml" />
 
@@ -14,17 +14,15 @@
 		</fileset>
 	</path>
 
-	<target name="init" depends="clean">
+	<target name="init">
+		<delete dir="${classes}" />
+		<delete dir="${cobertura.classes}" />
+		<delete dir="${report.output.dir}/junit" />
+		
 		<mkdir dir="${classes}" />
 		<mkdir dir="${cobertura.classes}" />
 		<mkdir dir="${report.output.dir}/junit" />
 		<mkdir dir="${report.output.dir}/cobertura" />
-	</target>
-
-	<target name="clean">
-		<delete dir="${classes}" />
-		<delete dir="${cobertura.classes}" />
-		<delete dir="${report.output.dir}/junit" />
 	</target>
 
 	<target name="compile" depends="init">
@@ -36,7 +34,7 @@
 	</target>
 
 
-	<target name="compile.cobertura">
+	<target name="compile.cobertura" depends="init">
 		<javac destdir="${cobertura.classes}" srcdir="${sources}" debug="on" nowarn="off">
 			<include name="**/*.java" />
 			<classpath refid="project.classpath" />
@@ -61,7 +59,7 @@
 
 
 	</target>
-	<target name="JUnitTests" depends="compile,copyTestFiles">
+	<target name="JUnit" depends="compile,copyTestFiles">
 		<junit fork="off" printsummary="yes" haltonfailure="false" showoutput="yes">
 			<!--
 				Ant Scripte beziehen sich immer auf ${base.dir} Java Programme auf ${user.dir}
@@ -85,7 +83,7 @@
 		</junit>
 	</target>
 
-	<target name="junit-cobertura" depends="compile.cobertura">
+	<target name="JUnit-obertura" depends="compile.cobertura">
 		<junit fork="off" haltonfailure="false" failureProperty="test.failed" showoutput="yes">
 			<!--
 				Ant Scripte beziehen sich immer auf ${base.dir} Java Programme auf ${user.dir}

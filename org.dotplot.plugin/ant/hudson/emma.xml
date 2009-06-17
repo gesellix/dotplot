@@ -10,12 +10,10 @@
 		</fileset>
 	</path>
 
-	<target name="clean">
+	<target name="init">
 		<delete dir="${report.output.dir}/emma" />
 		<delete dir="${tmpdir}/emma" />
-	</target>
-
-	<target name="init" depends="clean">
+		
 		<mkdir dir="${report.output.dir}/emma" />
 		<mkdir dir="${tmpdir}/emma" />
 	</target>

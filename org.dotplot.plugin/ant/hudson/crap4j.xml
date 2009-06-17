@@ -11,16 +11,13 @@
 		</classpath>
 	</taskdef>
 
-	<target name="init" depends="clean">
+	<target name="init">
+		<delete dir="${tmpdir}/crap4j"/>
+		<delete dir="${report.output.dir}/crap4j"/>
+		
 		<mkdir dir="${tmpdir}/crap4j"/>
 		<mkdir dir="${report.output.dir}/crap4j"/>
 	</target>
-
-	<target name="clean">
-		<delete dir="${tmpdir}/crap4j"/>
-		<delete dir="${report.output.dir}/crap4j"/>
-	</target>
-
 
 	<!-- #2 Use crap4j on the project -->
 	<target name="crap4j" depends="init">

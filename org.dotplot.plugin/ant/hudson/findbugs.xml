@@ -3,15 +3,10 @@
 
 	<import file="ant.properties.xml"/>
 
-	<target name="init" depends="clean">
+	<target name="init">
+		<delete dir="${report.output.dir}/findbugs"/>
 		<mkdir dir="${report.output.dir}/findbugs"/>
 	</target>
-
-	<target name="clean">
-		<delete dir="${report.output.dir}/findbugs"/>
-	</target>
-
-
 
 	<target name="findbugs" depends="init" >
 		<path id="findbugs.lib">

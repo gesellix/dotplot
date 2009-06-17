@@ -10,15 +10,10 @@
 		</fileset>
 	</path>
 
-
-	<target name="clean">
+	<target name="init">
 		<delete dir="${report.output.dir}/javancss"/>
-	</target>
-
-	<target name="init" depends="clean">
 		<mkdir dir="${report.output.dir}/javancss"/>
 	</target>
-
 
 	<target name="javancss" depends="init">
 

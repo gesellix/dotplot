@@ -10,12 +10,8 @@
 		</fileset>
 	</path>
 
-
-	<target name="clean">
+	<target name="init">
 		<delete dir="${report.output.dir}/simian" />
-	</target>
-
-	<target name="init" depends="clean">
 		<mkdir dir="${report.output.dir}/simian" />
 	</target>
 

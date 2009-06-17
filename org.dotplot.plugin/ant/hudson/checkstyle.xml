@@ -3,12 +3,9 @@
 
 	<import file="ant.properties.xml"/>
 
-	<target name="init" depends="clean">
-		<mkdir dir="${report.output.dir}/checkstyle"/>
-	</target>
-
-	<target name="clean">
+	<target name="init">
 		<delete dir="${report.output.dir}/checkstyle"/>
+		<mkdir dir="${report.output.dir}/checkstyle"/>
 	</target>
 
 	<target name="checkstyle" description="Generates a report of code convention violations." depends="init">
