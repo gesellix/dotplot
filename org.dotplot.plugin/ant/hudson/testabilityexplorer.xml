@@ -19,7 +19,7 @@
 	</target>
 
 	<target name="testability" depends="init">
-		<testability filter=""
+		<testability filter="org.dotplot"
 			resultfile="${report.output.dir}/testability/testability.result.xml"
 			printdepth="2" print="xml" mincost="1" maxexcellentcost="50"
 			maxacceptablecost="100" worstoffendercount="25">
