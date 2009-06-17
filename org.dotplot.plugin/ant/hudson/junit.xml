@@ -34,7 +34,7 @@
 	</target>
 
 
-	<target name="compile.cobertura" depends="init">
+	<target name="compile.cobertura">
 		<javac destdir="${cobertura.classes}" srcdir="${sources}" debug="on" nowarn="off">
 			<include name="**/*.java" />
 			<classpath refid="project.classpath" />
