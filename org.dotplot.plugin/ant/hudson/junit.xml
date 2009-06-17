@@ -83,7 +83,7 @@
 		</junit>
 	</target>
 
-	<target name="JUnit-obertura" depends="compile.cobertura">
+	<target name="JUnit-Cobertura" depends="compile.cobertura">
 		<junit fork="off" haltonfailure="false" failureProperty="test.failed" showoutput="yes">
 			<!--
 				Ant Scripte beziehen sich immer auf ${base.dir} Java Programme auf ${user.dir}
