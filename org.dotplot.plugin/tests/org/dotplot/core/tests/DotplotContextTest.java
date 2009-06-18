@@ -4,6 +4,7 @@
 package org.dotplot.core.tests;
 
 import java.io.File;
+import java.io.IOException;
 
 import junit.framework.TestCase;
 
@@ -198,7 +199,7 @@ public class DotplotContextTest extends TestCase {
 	    assertNotNull(context.getServiceRegistry());
 	    assertNotNull(context.getPluginRegistry());
 	    assertNotNull(context.getJobRegistry());
-	    assertEquals(workingDir.getAbsolutePath(), context
+	    assertEquals(workingDir.getCanonicalPath(), context
 		    .getWorkingDirectory());
 	} catch (Exception e) {
 	    fail("no exception:" + e.getClass().getName() + ":"
@@ -307,7 +308,11 @@ public class DotplotContextTest extends TestCase {
      * Test method for 'org.dotplot.core.DotplotContext.getWorkingDirectory()'
      */
     public void testGetWorkingDirectory() {
-	assertEquals(workingDir.getAbsolutePath(), this.context
-		.getWorkingDirectory());
+	try {
+	    assertEquals(workingDir.getCanonicalPath(), this.context
+		    .getWorkingDirectory());
+	} catch (IOException e) {
+	    fail("unexpected Exception");
+	}
     }
 }

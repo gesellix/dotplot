@@ -4,6 +4,7 @@
 package org.dotplot.core.plugins;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
@@ -200,24 +201,31 @@ public class PluginContext<P extends IPlugin> implements IPluginContext<P> {
      *            The plugindirectory.
      */
     private void init(String workingDirectory, String pluginDirectory) {
-	File file;
-	file = new File(workingDirectory);
-	if (file.exists() && file.isDirectory()) {
-	    this.workingDirectory = file.getAbsolutePath();
-	} else {
-	    logger.fatal("illegal workingdirectory: " + workingDirectory);
-	    throw new IllegalArgumentException(workingDirectory);
-	}
+	try {
+	    File file;
+	    file = new File(workingDirectory);
+	    file = file.getCanonicalFile();
 
-	file = new File(pluginDirectory);
-	if (file.exists() && file.isDirectory()) {
-	    this.pluginDirectory = file.getAbsolutePath();
-	} else {
-	    logger.fatal("illegal plugindirectory: " + workingDirectory);
-	    throw new IllegalArgumentException(workingDirectory);
-	}
+	    if (file.exists() && file.isDirectory()) {
+		this.workingDirectory = file.getAbsolutePath();
+	    } else {
+		logger.fatal("illegal workingdirectory: " + workingDirectory);
+		throw new IllegalArgumentException(workingDirectory);
+	    }
 
-	// this.setShemaFile(new File("./ressources/dotplotschema.xsd"));
+	    file = new File(pluginDirectory);
+
+	    file = file.getCanonicalFile();
+
+	    if (file.exists() && file.isDirectory()) {
+		this.pluginDirectory = file.getAbsolutePath();
+	    } else {
+		logger.fatal("illegal plugindirectory: " + pluginDirectory);
+		throw new IllegalArgumentException(pluginDirectory);
+	    }
+	} catch (IOException e) {
+	    throw new IllegalArgumentException();
+	}
 
 	this.services = new ServiceRegistry();
 	this.jobRegistry = new JobRegistry();

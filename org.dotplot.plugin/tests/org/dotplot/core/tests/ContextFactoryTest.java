@@ -4,6 +4,7 @@
 package org.dotplot.core.tests;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -64,10 +65,15 @@ public class ContextFactoryTest extends TestCase {
 	assertSame(context, ContextFactory.getContext());
 	assertSame(context, ContextFactory.getContext());
 
-	assertEquals(workingDir.getAbsolutePath(), context
-		.getWorkingDirectory());
-	assertEquals(pluginDir.getAbsolutePath(), context.getPluginDirectory());
+	try {
+	    assertEquals(workingDir.getCanonicalPath(), context
+		    .getWorkingDirectory());
 
+	    assertEquals(pluginDir.getCanonicalPath(), context
+		    .getPluginDirectory());
+	} catch (IOException e1) {
+	    fail("unexpected Exception");
+	}
 	IPluginRegistry<?> plugins = context.getPluginRegistry();
 	assertNotNull(plugins);
 	assertEquals(3, plugins.getAll().size());
