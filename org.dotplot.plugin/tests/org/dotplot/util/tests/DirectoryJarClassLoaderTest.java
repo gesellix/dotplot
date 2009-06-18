@@ -4,6 +4,7 @@
 package org.dotplot.util.tests;
 
 import java.io.File;
+import java.io.IOException;
 
 import junit.framework.TestCase;
 
@@ -20,7 +21,12 @@ public class DirectoryJarClassLoaderTest extends TestCase {
      * 'testpackage.DirectoryJarClassLoader.DirectoryJarClassLoader(File)'
      */
     public final void testDirectoryJarClassLoaderFile() {
-	File directory = new File("testfiles/utiltests");
+	File directory = null;
+	try {
+	    directory = new File("testfiles/utiltests").getCanonicalFile();
+	} catch (IOException e1) {
+	    fail("unexpected Exception was thrown");
+	}
 
 	try {
 	    new DirectoryJarClassLoader(null);
@@ -80,7 +86,12 @@ public class DirectoryJarClassLoaderTest extends TestCase {
      * ClassLoader)'
      */
     public final void testDirectoryJarClassLoaderFileClassLoader() {
-	File directory = new File("testfiles");
+	File directory = null;
+	try {
+	    directory = new File("testfiles").getCanonicalFile();
+	} catch (IOException e1) {
+	    fail("unexpected Exception was thrown");
+	}
 
 	try {
 	    new DirectoryJarClassLoader(null, ClassLoader
@@ -149,7 +160,13 @@ public class DirectoryJarClassLoaderTest extends TestCase {
      * Test method for 'testpackage.DirectoryJarClassLoader.findClass(String)'
      */
     public final void testFindClassString() {
-	File directory = new File("testfiles/utiltests");
+	File directory = null;
+	try {
+	    directory = new File("testfiles/utiltests").getCanonicalFile();
+	} catch (IOException e1) {
+	    fail("unexpected Exception was thrown");
+	}
+
 	DirectoryJarClassLoader loader;
 	try {
 	    loader = new DirectoryJarClassLoader(directory, ClassLoader

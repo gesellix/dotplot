@@ -51,9 +51,15 @@ import org.dotplot.tokenizer.service.XMLType;
  */
 public class ContextFactoryTest extends TestCase {
 
-    private File workingDir = new File(".");
+    private File workingDir;
 
-    private File pluginDir = new File("./plugins");
+    private File pluginDir;
+
+    @Override
+    public void setUp() throws Exception {
+	this.workingDir = new File(".").getCanonicalFile();
+	this.pluginDir = new File("./plugins").getCanonicalFile();
+    }
 
     /*
      * Test method for 'org.dotplot.core.ContextFactory.getContext()'

@@ -109,8 +109,8 @@ public class DotplotContextTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
 	super.setUp();
-	this.workingDir = new File(".");
-	this.pluginDir = new File("./plugins");
+	this.workingDir = new File(".").getCanonicalFile();
+	this.pluginDir = new File("./plugins").getCanonicalFile();
 	this.context = new DotplotContext(this.workingDir.getAbsolutePath(),
 		this.pluginDir.getAbsolutePath());
     }

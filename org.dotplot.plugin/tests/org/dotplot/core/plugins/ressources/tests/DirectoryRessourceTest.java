@@ -25,8 +25,9 @@ public class DirectoryRessourceTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
 	super.setUp();
-	this.file = new File("./testfiles/ressources/test.txt");
-	this.dir = new File("./testfiles/ressources");
+	this.file = new File("./testfiles/ressources/test.txt")
+		.getCanonicalFile();
+	this.dir = new File("./testfiles/ressources").getCanonicalFile();
 	this.dr = new DirectoryRessource(this.dir);
 
     }

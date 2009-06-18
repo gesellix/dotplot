@@ -44,7 +44,8 @@ public class PDFtoTxtConverterTest extends TestCase {
 	super.setUp();
 	this.pttc = new PDFtoTxtConverter();
 	this.file = new File(
-		"testfiles/converter/Zuordnung_Module_Schwerpunkte.pdf");
+		"testfiles/converter/Zuordnung_Module_Schwerpunkte.pdf")
+		.getCanonicalFile();
     }
 
     /*
