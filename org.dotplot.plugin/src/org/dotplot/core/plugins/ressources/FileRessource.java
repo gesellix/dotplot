@@ -99,9 +99,11 @@ public class FileRessource implements IRessource {
      */
     private void setFile(File file) {
 	if (!file.isFile()) {
-	    throw new IllegalArgumentException();
+	    throw new IllegalArgumentException(file.getAbsolutePath()
+		    + " is not a file!");
 	} else if (!file.exists()) {
-	    throw new IllegalArgumentException();
+	    throw new IllegalArgumentException(file.getAbsolutePath()
+		    + " does not exist!");
 	} else {
 	    this.file = file;
 	}

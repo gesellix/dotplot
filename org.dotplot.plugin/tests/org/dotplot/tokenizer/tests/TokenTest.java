@@ -3,6 +3,8 @@
  */
 package org.dotplot.tokenizer.tests;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 
 import org.dotplot.core.DotplotFile;
@@ -74,6 +76,25 @@ public class TokenTest extends TestCase {
     }
 
     public void testSetFile() {
+	File f1 = new File(".");
+	File f2 = new File("./testfiles/tokenizer/test.txt");
+
+	StringBuilder sb = new StringBuilder();
+	sb.append("current execution path: ");
+	sb.append(f1.getAbsolutePath());
+	sb.append("\n");
+	sb.append("path for searching file: ");
+	sb.append(f2.getAbsolutePath());
+	sb.append("\n");
+	sb.append("is file: ");
+	sb.append(f2.isFile());
+	sb.append("\n");
+	sb.append("does exist: ");
+	sb.append(f2.exists());
+	sb.append("\n");
+
+	fail(sb.toString());
+
 	IPlotSource file = new DotplotFile("./testfiles/tokenizer/test.txt");
 	this.token.setSource(file);
 	assertTrue("prüfen ob das was rein ging auch das ist was raus kommt",
