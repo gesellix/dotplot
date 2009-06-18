@@ -38,7 +38,8 @@ public class PluginJarFileTest extends TestCase {
     protected void setUp() throws Exception {
 	super.setUp();
 	this.dir = new File("./testfiles/core");
-	this.wrong = new File("./testfiles/core/test.txt");
+	this.dir = this.dir.getCanonicalFile();
+	this.wrong = new File(this.dir, "test.txt");
 	this.with = new File(this.dir, "pluginjartestwithxml.jar");
 	this.without = new File(this.dir, "pluginjartestwithoutxml.jar");
     }

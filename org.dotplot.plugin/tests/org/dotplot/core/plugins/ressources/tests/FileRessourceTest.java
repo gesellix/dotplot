@@ -27,6 +27,7 @@ public class FileRessourceTest extends TestCase {
     protected void setUp() throws Exception {
 	super.setUp();
 	this.file = new File("./testfiles/ressources/test.txt");
+	this.file = this.file.getCanonicalFile();
 	this.dir = new File("./testfiles/ressources");
 	this.fr = new FileRessource(this.file);
     }
@@ -113,7 +114,7 @@ public class FileRessourceTest extends TestCase {
     }
 
     public void testGetFile() {
-	assertSame(this.file, this.fr.getFile());
+	assertEquals(this.file, this.fr.getFile());
     }
 
     /*

@@ -136,7 +136,9 @@ public class DotplotContextTest extends TestCase {
 
 	try {
 	    File pdf = new File("./testfiles/converter/PO91-1999.pdf");
+	    pdf = pdf.getCanonicalFile();
 	    File txt = new File("./testfiles/converter/pdfout.txt");
+	    txt = txt.getCanonicalFile();
 
 	    ITypeRegistry registry = this.context.getTypeRegistry();
 	    assertNotNull(registry);
