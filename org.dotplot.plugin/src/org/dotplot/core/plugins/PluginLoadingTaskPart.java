@@ -452,7 +452,8 @@ public class PluginLoadingTaskPart extends AbstractTaskPart {
 	    IRessource[] ress = ressouceList.toArray(new IRessource[0]);
 	    if (ress[0] instanceof DirectoryRessource) {
 		try {
-		    this.pluginDirectory = new File(ress[0].getURL().toURI());
+		    this.pluginDirectory = new File(ress[0].getURL().toURI())
+			    .getCanonicalFile();
 		    logger.debug("Search Files in Plugin Directory: "
 			    + this.pluginDirectory.getName());
 		    File[] files = this.pluginDirectory
@@ -465,8 +466,9 @@ public class PluginLoadingTaskPart extends AbstractTaskPart {
 		    logger.debug("Number of found files:" + files.length);
 		    for (int i = 0; i < files.length; i++) {
 			try {
-			    this.pluginFiles.add(new PluginJarFile(files[i],
-				    this.context.getPluginSchema()));
+			    this.pluginFiles.add(new PluginJarFile(files[i]
+				    .getCanonicalFile(), this.context
+				    .getPluginSchema()));
 			} catch (Exception e) {
 			    logger.debug("skip File: "
 				    + files[i].getAbsolutePath());

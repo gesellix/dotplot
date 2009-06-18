@@ -122,8 +122,12 @@ public class DefaultConverterConfigurationTest extends TestCase {
 	assertNotNull(c);
 	assertTrue(c instanceof IConverterConfiguration);
 	IConverterConfiguration config = (IConverterConfiguration) c;
-	assertEquals(new File("c:\\windows"), config
-		.getConvertedFilesDirectory());
+	try {
+	    assertEquals(new File("c:\\windows").getCanonicalPath(), config
+		    .getConvertedFilesDirectory().getCanonicalPath());
+	} catch (IOException e) {
+	    fail("unexpected Exception was thrown");
+	}
 	assertTrue(config.keepConvertedFiles());
 	assertTrue(config.overwriteConvertedFiles());
 	assertTrue(config.getConvertFiles());

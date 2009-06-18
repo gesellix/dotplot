@@ -4,6 +4,7 @@
 package org.dotplot.core;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.dotplot.core.plugins.Plugin;
@@ -127,14 +128,21 @@ public class DotplotContext extends PluginContext<Plugin> {
     public DotplotFile createDotplotFile(File file) {
 	ISourceType type;
 	String typename;
+	File theFile = null;
 
-	if (file == null) {
-	    throw new NullPointerException();
-	}
-	if (!file.isFile()) {
+	try {
+	    theFile = file.getCanonicalFile();
+	} catch (IOException e1) {
 	    throw new IllegalArgumentException();
 	}
-	String name = file.getName();
+
+	if (theFile == null) {
+	    throw new NullPointerException();
+	}
+	if (!theFile.isFile()) {
+	    throw new IllegalArgumentException();
+	}
+	String name = theFile.getName();
 	int index = name.lastIndexOf(".");
 	if (index != -1) {
 	    String ending = name.substring(index);
@@ -148,7 +156,7 @@ public class DotplotContext extends PluginContext<Plugin> {
 	} else {
 	    type = new BaseType();
 	}
-	return new DotplotFile(file, type);
+	return new DotplotFile(theFile, type);
     }
 
     /*
