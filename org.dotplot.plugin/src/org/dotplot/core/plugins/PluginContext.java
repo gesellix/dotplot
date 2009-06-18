@@ -203,8 +203,7 @@ public class PluginContext<P extends IPlugin> implements IPluginContext<P> {
     private void init(String workingDirectory, String pluginDirectory) {
 	try {
 	    File file;
-	    file = new File(workingDirectory);
-	    file = file.getCanonicalFile();
+	    file = new File(workingDirectory).getCanonicalFile();
 
 	    if (file.exists() && file.isDirectory()) {
 		this.workingDirectory = file.getAbsolutePath();
@@ -213,9 +212,7 @@ public class PluginContext<P extends IPlugin> implements IPluginContext<P> {
 		throw new IllegalArgumentException(workingDirectory);
 	    }
 
-	    file = new File(pluginDirectory);
-
-	    file = file.getCanonicalFile();
+	    file = new File(pluginDirectory).getCanonicalFile();
 
 	    if (file.exists() && file.isDirectory()) {
 		this.pluginDirectory = file.getAbsolutePath();
