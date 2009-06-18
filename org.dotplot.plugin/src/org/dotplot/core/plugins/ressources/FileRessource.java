@@ -6,6 +6,7 @@ package org.dotplot.core.plugins.ressources;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -98,14 +99,19 @@ public class FileRessource implements IRessource {
      *             if file is not a file.
      */
     private void setFile(File file) {
-	if (!file.isFile()) {
-	    throw new IllegalArgumentException(file.getAbsolutePath()
-		    + " is not a file!");
-	} else if (!file.exists()) {
-	    throw new IllegalArgumentException(file.getAbsolutePath()
-		    + " does not exist!");
-	} else {
-	    this.file = file;
+	try {
+	    File f = file.getCanonicalFile();
+	    if (!f.isFile()) {
+		throw new IllegalArgumentException(file.getAbsolutePath()
+			+ " is not a file!");
+	    } else if (!f.exists()) {
+		throw new IllegalArgumentException(file.getAbsolutePath()
+			+ " does not exist!");
+	    } else {
+		this.file = f;
+	    }
+	} catch (IOException e) {
+	    throw new IllegalArgumentException();
 	}
     }
 }

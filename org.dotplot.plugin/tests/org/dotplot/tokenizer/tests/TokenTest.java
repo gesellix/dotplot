@@ -4,7 +4,6 @@
 package org.dotplot.tokenizer.tests;
 
 import java.io.File;
-import java.io.IOException;
 
 import junit.framework.TestCase;
 
@@ -57,18 +56,18 @@ public class TokenTest extends TestCase {
     }
 
     public void testGetFile() {
-	File f = new File("testfiles/tokenizer/test.txt");
+	// File f = new File("testfiles/tokenizer/test.txt");
 
 	// IPlotSource file = new DotplotFile("testfiles/tokenizer/test.txt");
 
-	String s = "test";
-	try {
-	    s = f.getCanonicalPath();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+	// String s = "test";
+	// try {
+	// s = f.getCanonicalPath();
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
 
-	IPlotSource file = new DotplotFile(s);
+	IPlotSource file = new DotplotFile("./testfiles/tokenizer/test.txt");
 	this.token.setSource(file);
 	assertTrue("prüfen ob das was rein ging auch das ist was raus kommt",
 		this.token.getSource() == file);
