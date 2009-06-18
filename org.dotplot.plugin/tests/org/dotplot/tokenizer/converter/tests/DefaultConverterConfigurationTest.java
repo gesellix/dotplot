@@ -4,6 +4,7 @@
 package org.dotplot.tokenizer.converter.tests;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -140,37 +141,43 @@ public class DefaultConverterConfigurationTest extends TestCase {
      * 'org.dotplot.tokenizer.converter.DefaultConverterConfiguration.getCovertedFilesDirectory()'
      */
     public void testSetGetCovertedFilesDirectory() {
-	File dir1 = new File("./testfiles");
-	File dir2 = new File("./testfiles/converter");
-	File dir3 = new File("./testfiles/converter/test");
-	File file = new File("./testfiles/core/test.txt");
-
 	try {
-	    this.config.setConvertedFilesDirectory(dir1);
-	    assertEquals(dir1, this.config.getConvertedFilesDirectory());
-	    this.config.setConvertedFilesDirectory(dir2);
-	    assertEquals(dir2, this.config.getConvertedFilesDirectory());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
+	    File dir1 = new File("./testfiles").getCanonicalFile();
+	    File dir2 = new File("./testfiles/converter").getCanonicalFile();
+	    File dir3 = new File("./testfiles/converter/test")
+		    .getCanonicalFile();
+	    File file = new File("./testfiles/core/test.txt")
+		    .getCanonicalFile();
 
-	try {
-	    this.config.setConvertedFilesDirectory(dir3);
-	    fail("IllegalArgumentException must be thrown");
-	} catch (IllegalArgumentException e) {
-	    assertEquals(dir2, this.config.getConvertedFilesDirectory());
-	} catch (Exception e) {
-	    fail("wrong Exception");
-	}
+	    try {
+		this.config.setConvertedFilesDirectory(dir1);
+		assertEquals(dir1, this.config.getConvertedFilesDirectory());
+		this.config.setConvertedFilesDirectory(dir2);
+		assertEquals(dir2, this.config.getConvertedFilesDirectory());
+	    } catch (Exception e) {
+		fail("no exception:" + e.getClass().getName() + ":"
+			+ e.getMessage());
+	    }
 
-	try {
-	    this.config.setConvertedFilesDirectory(file);
-	    fail("IllegalArgumentException must be thrown");
-	} catch (IllegalArgumentException e) {
-	    assertEquals(dir2, this.config.getConvertedFilesDirectory());
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	    try {
+		this.config.setConvertedFilesDirectory(dir3);
+		fail("IllegalArgumentException must be thrown");
+	    } catch (IllegalArgumentException e) {
+		assertEquals(dir2, this.config.getConvertedFilesDirectory());
+	    } catch (Exception e) {
+		fail("wrong Exception");
+	    }
+
+	    try {
+		this.config.setConvertedFilesDirectory(file);
+		fail("IllegalArgumentException must be thrown");
+	    } catch (IllegalArgumentException e) {
+		assertEquals(dir2, this.config.getConvertedFilesDirectory());
+	    } catch (Exception e) {
+		fail("wrong Exception");
+	    }
+	} catch (IOException e) {
+	    fail("unexpected Exception throwm: ");
 	}
     }
 

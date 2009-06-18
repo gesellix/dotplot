@@ -129,7 +129,8 @@ public class ConverterServiceTest extends TestCase {
 	try {
 	    ISourceList list = new DefaultSourceList();
 	    SourceListContext context = new SourceListContext(list);
-	    File pdf1 = new File("./testfiles/converter/PO91-1999.pdf");
+	    File pdf1 = new File("./testfiles/converter/PO91-1999.pdf")
+		    .getCanonicalFile();
 
 	    this.service.setFrameworkContext(this.context);
 	    this.service.init();
@@ -140,9 +141,8 @@ public class ConverterServiceTest extends TestCase {
 	    config.getConverterRegistry().put(PdfType.type,
 		    ConverterService.CONVERTER_PDF_TO_TEXT_ID);
 	    config.setTargetType(TextType.type);
-	    config
-		    .setConvertedFilesDirectory(new File(
-			    "./testfiles/converter"));
+	    config.setConvertedFilesDirectory(new File("./testfiles/converter")
+		    .getCanonicalFile());
 
 	    list.add(new DotplotFile(pdf1, PdfType.type));
 

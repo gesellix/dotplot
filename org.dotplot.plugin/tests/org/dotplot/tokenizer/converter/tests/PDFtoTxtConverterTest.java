@@ -75,9 +75,10 @@ public class PDFtoTxtConverterTest extends TestCase {
 
     public void testConvertFile1() {
 	File origin = this.file;
-	File destination = new File("./testfiles/converter/pdfout.txt");
-
+	File destination = null;
 	try {
+	    destination = new File("./testfiles/converter/pdfout.txt")
+		    .getCanonicalFile();
 	    destination = this.pttc.convertFile(origin, destination);
 	} catch (Exception e) {
 	    fail("Exception geworfen :" + e.getMessage());
@@ -92,7 +93,7 @@ public class PDFtoTxtConverterTest extends TestCase {
     public void testConvertFileFile() {
 	File file = null;
 	try {
-	    File dest = new File("./testfiles/converter");
+	    File dest = new File("./testfiles/converter").getCanonicalFile();
 
 	    file = this.pttc.convert(this.file, dest);
 	    assertTrue("pruefen ob das tempfile angelegt wurde", file.exists());
@@ -123,7 +124,7 @@ public class PDFtoTxtConverterTest extends TestCase {
 
 	    try {
 		IPlotSource text = new DotplotFile(new File(
-			"./testfiles/converter/pdfout.txt"));
+			"./testfiles/converter/pdfout.txt").getCanonicalFile());
 		this.pttc.convert(text);
 		fail("IllegalArgumentException must be thrown");
 	    } catch (IllegalArgumentException e) {
@@ -158,7 +159,7 @@ public class PDFtoTxtConverterTest extends TestCase {
 	IPlotSource result;
 	File resultFile = null;
 	try {
-	    File dest = new File("./testfiles/converter");
+	    File dest = new File("./testfiles/converter").getCanonicalFile();
 
 	    try {
 		this.pttc.convert(file, null);
@@ -180,7 +181,7 @@ public class PDFtoTxtConverterTest extends TestCase {
 
 	    try {
 		IPlotSource text = new DotplotFile(new File(
-			"./testfiles/converter/pdfout.txt"));
+			"./testfiles/converter/pdfout.txt").getCanonicalFile());
 		this.pttc.convert(text, dest);
 		fail("IllegalArgumentException must be thrown");
 	    } catch (IllegalArgumentException e) {

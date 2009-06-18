@@ -4,6 +4,7 @@
 package org.dotplot.core.plugins.ressources;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -88,12 +89,18 @@ public class DirectoryRessource implements IRessource {
      *             if file is not a directory.
      */
     private void setDirectory(File file) {
-	if (!file.isDirectory()) {
+	try {
+	    File f = file.getCanonicalFile();
+
+	    if (!f.isDirectory()) {
+		throw new IllegalArgumentException();
+	    } else if (!f.exists()) {
+		throw new IllegalArgumentException();
+	    } else {
+		this.directory = f;
+	    }
+	} catch (IOException e) {
 	    throw new IllegalArgumentException();
-	} else if (!file.exists()) {
-	    throw new IllegalArgumentException();
-	} else {
-	    this.directory = file;
 	}
     }
 }
