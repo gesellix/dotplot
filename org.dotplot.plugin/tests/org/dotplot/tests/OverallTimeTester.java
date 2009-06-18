@@ -17,13 +17,13 @@ import org.eclipse.swt.graphics.ImageData;
  * 
  * @author Sascha Hemminger
  */
-public class OverallTimeTest {
+public class OverallTimeTester {
     /**
      * provide a plottable file as program argument the dotplot will represent a
      * selfcomparison
      */
     public static void main(String[] args) {
-	OverallTimeTest test = new OverallTimeTest(new File(args[0]));
+	OverallTimeTester test = new OverallTimeTester(new File(args[0]));
 	test.completeRun();
     }
 
@@ -31,7 +31,7 @@ public class OverallTimeTest {
 
     private DotPlotFileList testFileList;
 
-    public OverallTimeTest(File file) {
+    public OverallTimeTester(File file) {
 	this.testFile = new DotplotFile(file);
 	testFileList = new DotPlotFileList();
 	testFileList.add(this.testFile);

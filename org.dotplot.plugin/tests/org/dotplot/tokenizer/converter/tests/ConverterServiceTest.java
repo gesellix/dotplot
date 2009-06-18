@@ -77,9 +77,8 @@ public class ConverterServiceTest extends TestCase {
 	    config.getConverterRegistry().put(PdfType.type,
 		    ConverterService.CONVERTER_PDF_TO_TEXT_ID);
 	    config.setTargetType(TextType.type);
-	    config
-		    .setConvertedFilesDirectory(new File(
-			    "./testfiles/converter"));
+	    config.setConvertedFilesDirectory(new File("./testfiles/converter")
+		    .getCanonicalFile());
 
 	    task = this.service.createTask();
 	    assertNull(task);
@@ -201,9 +200,8 @@ public class ConverterServiceTest extends TestCase {
 	    config.setConverter(PdfType.type,
 		    ConverterService.CONVERTER_PDF_TO_TEXT_ID);
 	    config.setTargetType(TextType.type);
-	    config
-		    .setConvertedFilesDirectory(new File(
-			    "./testfiles/converter"));
+	    config.setConvertedFilesDirectory(new File("./testfiles/converter")
+		    .getCanonicalFile());
 
 	    list.add(new DotplotFile(pdf1, PdfType.type));
 	    list.add(new DotplotFile(txt, TextType.type));

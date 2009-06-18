@@ -123,7 +123,7 @@ public class DirectoryJarClassLoaderTest extends TestCase {
 
 	File noDir = null;
 	try {
-	    noDir = new File("testfiles/blub");
+	    noDir = new File("testfiles/blub").getCanonicalFile();
 	    assertFalse(noDir.exists());
 	    assertTrue(noDir.mkdir());
 	    assertTrue(noDir.exists());
@@ -188,7 +188,12 @@ public class DirectoryJarClassLoaderTest extends TestCase {
      * Test method for 'testpackage.DirectoryJarClassLoader.getDirectory()'
      */
     public final void testGetDirectory() {
-	File directory = new File("testfiles");
+	File directory = null;
+	try {
+	    directory = new File("testfiles").getCanonicalFile();
+	} catch (IOException e1) {
+	    fail("unexpected Exception was thrown");
+	}
 	DirectoryJarClassLoader loader;
 	try {
 	    loader = new DirectoryJarClassLoader(directory);

@@ -13,7 +13,7 @@ import java.util.Vector;
  * 
  * @author Constantin von Zitzewitz
  */
-public class PerformanceTest {
+public class PerformanceTester {
 
     public static void main(String args[]) {
 
