@@ -47,6 +47,7 @@
 			<fileset dir="${org.dotplot.plugin.location}">
 				<include name="testfiles/**/*" />
 				<include name="ressources/**/*" />
+				<include name="plugins/**/*" />
 			</fileset>
 		</copy>
 
@@ -54,11 +55,11 @@
 			<fileset dir="${org.dotplot.plugin.location}">
 				<include name="testfiles/**/*" />
 				<include name="ressources/**/*" />
+				<include name="plugins/**/*" />
 			</fileset>
 		</copy>
-
-
 	</target>
+
 	<target name="JUnit" depends="compile,copyTestFiles">
 		<junit fork="off" printsummary="yes" haltonfailure="false" showoutput="yes">
 			<!--
