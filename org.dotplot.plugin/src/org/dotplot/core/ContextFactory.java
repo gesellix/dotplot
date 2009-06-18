@@ -4,6 +4,7 @@
 package org.dotplot.core;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.dotplot.core.services.DefaultErrorHandler;
@@ -80,7 +81,8 @@ public class ContextFactory {
 	    logger.error("Error while installing CoreSystem", e);
 	}
 	try {
-	    File shemaFile = new File(ContextFactory.shemaFile);
+	    File shemaFile = new File(ContextFactory.shemaFile)
+		    .getCanonicalFile();
 	    context.setShemaFile(shemaFile);
 	    DefaultErrorHandler handler = new DefaultErrorHandler();
 
@@ -100,6 +102,8 @@ public class ContextFactory {
 
 	    context.setNoGui(false);
 	} catch (UnknownIDException e) {
+	    /* hmm */
+	} catch (IOException e) {
 	    /* hmm */
 	}
 	return context;

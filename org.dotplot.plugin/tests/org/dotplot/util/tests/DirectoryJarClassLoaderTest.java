@@ -49,7 +49,7 @@ public class DirectoryJarClassLoaderTest extends TestCase {
 
 	File noDir = null;
 	try {
-	    noDir = new File("testfiles/blub");
+	    noDir = new File("testfiles/blub").getCanonicalFile();
 	    assertFalse(noDir.exists());
 	    assertTrue(noDir.mkdir());
 	    assertTrue(noDir.exists());

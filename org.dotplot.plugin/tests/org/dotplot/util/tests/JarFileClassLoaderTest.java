@@ -32,11 +32,15 @@ public class JarFileClassLoaderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
 	super.setUp();
-	this.directory = new File("./testfiles");
-	this.file1 = new File("./testfiles/utiltests/testplugin.xml");
-	this.file2 = new File("./testfiles/utiltests/testpackage.jar");
-	this.jarFile1 = new JarFile("./testfiles/utiltests/ctestjar.jar");
-	this.jarFile2 = new JarFile("./testfiles/utiltests/testpackage.jar");
+	this.directory = new File("./testfiles").getCanonicalFile();
+	this.file1 = new File("./testfiles/utiltests/testplugin.xml")
+		.getCanonicalFile();
+	this.file2 = new File("./testfiles/utiltests/testpackage.jar")
+		.getCanonicalFile();
+	this.jarFile1 = new JarFile(new File(
+		"./testfiles/utiltests/ctestjar.jar").getCanonicalFile());
+	this.jarFile2 = new JarFile(new File(
+		"./testfiles/utiltests/testpackage.jar").getCanonicalFile());
     }
 
     /*
