@@ -56,7 +56,7 @@ public class TokenTest extends TestCase {
     }
 
     public void testGetFile() {
-	IPlotSource file = new DotplotFile("./testfiles/tokenizer/test.txt");
+	IPlotSource file = new DotplotFile("testfiles/tokenizer/test.txt");
 	this.token.setSource(file);
 	assertTrue("prüfen ob das was rein ging auch das ist was raus kommt",
 		this.token.getSource() == file);
