@@ -12,7 +12,7 @@
 
     <property name="destdir" value="${tmpdir}/bin" />
 
-    <property name="checkstyle.home" value = "/usr/share/hudson/programs/checkstyle" />
+    <property name="checkstyle.home" value = "/usr/share/hudson/programs/checkstyle/checkstyle-4.4" />
     <property name="simian.home" value = "/usr/share/hudson/programs/simian" />
     <property name="pmd.home" value = "/usr/share/hudson/programs/pmd" />
     <property name="crap4j.home" value="/usr/share/hudson/programs/crap4j"/>
