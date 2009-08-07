@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
  * classes storred in jarfiles in a given directory.
  * 
  * @author Christian Gerhardt <case42@gmx.net>
- * @versin 1.0
+ * @version 1.0
  */
 public class DirectoryJarClassLoader extends ClassLoader {
 
