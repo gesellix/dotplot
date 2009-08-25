@@ -44,6 +44,11 @@ public class WebServicePort {
 
     // stateless bean so we
     // need a singelton
+    /*
+     * The magic_memory_number describes the relation between incoming bytes and
+     * needed memory incoming_bytes ^ magic_memory_number == needed_memory
+     */
+    final float magic_memory_number = 1.67951907f;
 
     private static BufferedImage convertToAWT(ImageData data) {
 	ColorModel colorModel = null;
@@ -100,6 +105,8 @@ public class WebServicePort {
 	    return bufferedImage;
 	}
     }
+
+
 
     public WSDotplotjobresponse doDotPlot(WSDotplotjob dpr)
 	    throws ErrorElementFault {
@@ -183,15 +190,15 @@ public class WebServicePort {
 
     private boolean enoughMemoryForJob(long sumFileSize) { // testing ^^
 	logger.debug("Need memory:"
-		+ Math.pow(sumFileSize, 1.67951907)
+		+ Math.pow(sumFileSize, magic_memory_number)
 		/ 1024
 		/ 1024
 		+ " MBytes"
 		+ " avail: "
 		+ (Runtime.getRuntime().freeMemory() - Math.pow(sumFileSize,
-			1.67951907)) / 1024 / 1024 + " MBytes");
+			magic_memory_number)) / 1024 / 1024 + " MBytes");
 	if (Runtime.getRuntime().freeMemory() >= Math.pow(sumFileSize,
-		1.67951907)) {
+		magic_memory_number)) {
 	    return true;
 	}
 	return false;
