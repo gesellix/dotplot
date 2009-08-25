@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://dotplot.org/dpaas"
+    xmlns:tns="http://dotplot.org/dpaas"
+    elementFormDefault="qualified">
+
+  <xsd:simpleType name="FilterTypes">
+  <xsd:restriction base="xsd:string">
+
+<xsd:enumeration value="org.dotplot.filter.LineFilter"/>
+<xsd:enumeration value="org.dotplot.filter.KeyWordFilter"/>
+</xsd:restriction>
+</xsd:simpleType>
+
+<xsd:simpleType name="FileType">
+  <xsd:restriction base="xsd:string">
+
+<xsd:enumeration value="C++"/>
+<xsd:enumeration value="C"/>
+<xsd:enumeration value="HTML"/>
+<xsd:enumeration value="Java"/>
+<xsd:enumeration value="PHP"/>
+<xsd:enumeration value="Text"/>
+<xsd:enumeration value="XML"/>
+</xsd:restriction>
+</xsd:simpleType>
+
+  <xsd:simpleType name="luts">
+  <xsd:restriction base="xsd:string">
+
+<xsd:enumeration value="matrix4dotplot"/> <xsd:enumeration value="red"/>
+	    <xsd:enumeration value="green"/> <xsd:enumeration value="blue"/> <xsd:enumeration value="cyan"/> <xsd:enumeration value="magenta"/> <xsd:enumeration value="yellow"/> <xsd:enumeration value="gray"/>
+	    <xsd:enumeration value="inverted_gray"/> <xsd:enumeration value="two_levels"/> <xsd:enumeration value="four_levels"/> <xsd:enumeration value="eight_levels"/>
+	    <xsd:enumeration value="sixteen_levels"/> <xsd:enumeration value="thirty_two_levels"/> <xsd:enumeration value="sixty_four_levels"/>
+	    <xsd:enumeration value="hundred_twenty_eight_levels"/> <xsd:enumeration value="red_cyan"/> <xsd:enumeration value="green_magenta"/>
+	    <xsd:enumeration value="blue_yellow"/> <xsd:enumeration value="sin_rgb"/> <xsd:enumeration value="sin_rbg"/> <xsd:enumeration value="sin_grb"/> <xsd:enumeration value="sin_gbr"/>
+	    <xsd:enumeration value="sin_brg"/> <xsd:enumeration value="sin_bgr"/> <xsd:enumeration value="sin_rgb_0"/> <xsd:enumeration value="sin_rbg_0"/> <xsd:enumeration value="sin_grb_0"/>
+	    <xsd:enumeration value="sin_gbr_0"/> <xsd:enumeration value="sin_brg_0"/> <xsd:enumeration value="sin_bgr_0"/> <xsd:enumeration value="sqrt_rgb"/> <xsd:enumeration value="sqrt_rbg"/>
+	    <xsd:enumeration value="sqrt_grb"/> <xsd:enumeration value="sqrt_gbr"/> <xsd:enumeration value="sqrt_brg"/> <xsd:enumeration value="sqrt_bgr"/> <xsd:enumeration value="sqrt_rgb_0"/>
+	    <xsd:enumeration value="sqrt_rbg_0"/> <xsd:enumeration value="sqrt_brg_0"/> <xsd:enumeration value="sqrt_bgr_0"/> <xsd:enumeration value="sqrt_gbr_0"/>
+	    <xsd:enumeration value="sqrt_grb_0"/> <xsd:enumeration value="hue_rgb"/> <xsd:enumeration value="hue_rbg"/> <xsd:enumeration value="hue_grb"/> <xsd:enumeration value="hue_gbr"/>
+	    <xsd:enumeration value="hue_brg"/> <xsd:enumeration value="hue_bgr"/> <xsd:enumeration value="hue_rgb_0"/> <xsd:enumeration value="hue_rbg_0"/> <xsd:enumeration value="hue_grb_0"/>
+	    <xsd:enumeration value="hue_gbr_0"/> <xsd:enumeration value="hue_brg_0"/> <xsd:enumeration value="hue_bgr_0"/> <xsd:enumeration value="red_saw_2"/> <xsd:enumeration value="red_saw_4"/>
+	    <xsd:enumeration value="red_saw_8"/> <xsd:enumeration value="green_saw_2"/> <xsd:enumeration value="green_saw_4"/> <xsd:enumeration value="green_saw_8"/>
+	    <xsd:enumeration value="blue_saw_2"/> <xsd:enumeration value="blue_saw_4"/> <xsd:enumeration value="blue_saw_8"/> <xsd:enumeration value="red_green_saw_2"/>
+	    <xsd:enumeration value="red_green_saw_4"/> <xsd:enumeration value="red_green_saw_8"/> <xsd:enumeration value="red_blue_saw_2"/>
+	    <xsd:enumeration value="red_blue_saw_4"/> <xsd:enumeration value="red_blue_saw_8"/> <xsd:enumeration value="green_blue_saw_2"/>
+	    <xsd:enumeration value="green_blue_saw_4"/> <xsd:enumeration value="green_blue_saw_8"/> <xsd:enumeration value="random_256"/> <xsd:enumeration value="random_32"/>
+	    <xsd:enumeration value="random_8"/>
+
+  </xsd:restriction>
+</xsd:simpleType>
+
+
+
+
+    <xsd:complexType name="Dotplotjob">
+        <xsd:all>
+            <xsd:element name="Filelist" type="tns:Filelist"/>
+            <xsd:element name="Configuration" type="tns:Configuration"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="Filelist">
+        <xsd:sequence>
+            <xsd:element name="File" maxOccurs="unbounded" type="tns:File"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="File">
+        <xsd:sequence>
+            <xsd:element name="Filename" type="xsd:string"/>
+            <xsd:element name="Content" type="xsd:base64Binary"/>
+            <xsd:element name="FileType" type="tns:FileType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Dotplotjobresponse">
+        <xsd:all>
+            <xsd:element name="Image" type="tns:File"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="Configuration">
+        <xsd:all>
+            <xsd:element name="LUTs" type="tns:luts"/>
+            <xsd:element name="Filter" type="tns:Filters"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="Filters">
+        <xsd:sequence>
+            <xsd:element name="Filter" maxOccurs="unbounded" minOccurs="0" type="tns:Filter"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="Filter">
+        <xsd:all>
+            <xsd:element name="ID" type="tns:FilterTypes"/>
+        </xsd:all>
+    </xsd:complexType>
+</xsd:schema>
+
+
+
+
