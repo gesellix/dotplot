@@ -91,7 +91,8 @@
 			</div>
 			<div id="filestab" style="display:none;">
 				W&auml;hlen Sie nun die Datei aus. Sie haben die M&ouml;glichkeit, bis zu 200 kB zu verwenden.
-				<c:forEach var="id" items="#{create.maxFiles}">
+				<c:set var="maxFiles" value="#{create.maxFiles}"></c:set>
+				<c:forEach var="id" items="${maxFiles}">
 					<div>
 						<t:inputFileUpload storage="file" value="#{create.file}" id="file"></t:inputFileUpload>
 					</div>
