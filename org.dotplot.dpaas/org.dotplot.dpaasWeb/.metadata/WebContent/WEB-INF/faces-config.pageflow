@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12504531648760" configfile="/org.dotplot.dpaasWeb/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="36" y="324" id="pf12504531983501" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12507628812230 pf12509382306450" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="Server" x="250" y="230" id="pf12507628812241" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12507628812230" path="/Server"/>
+  <nodes xsi:type="pageflow:PFPage" name="admin" x="252" y="324" id="pf12509382306461" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12509382306450" path="/settings.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="check" x="36" y="132" id="pf12509932186163" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf12509946155368" path="/check.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="create" x="36" y="36" id="pf12509932186165" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf12509934728146" path="/create.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="finish" x="192" y="36" id="pf12509934728147" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf12509934728146" path="/finish.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="result" x="192" y="132" id="pf12509946155369" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf12509946155368" path="/result.jsp"/>
+  <links id="pf12507628812230" target="pf12507628812241" source="pf12504531983501" outcome="rendered"/>
+  <links id="pf12509382306450" target="pf12509382306461" source="pf12504531983501" outcome="SettingsSaved"/>
+  <links id="pf12509934728146" target="pf12509934728147" source="pf12509932186165" outcome="finished" redirect="true"/>
+  <links id="pf12509946155368" target="pf12509946155369" source="pf12509932186163" outcome="result"/>
+</pageflow:Pageflow>
