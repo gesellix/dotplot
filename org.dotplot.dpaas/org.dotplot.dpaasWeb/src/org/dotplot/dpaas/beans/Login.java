@@ -13,9 +13,16 @@ public class Login {
 	private boolean authenticated = false;
 	
 	public String authenticate() {
-		if (username.equals("admin") && password.equals(backend.setting("password"))) {
-			authenticated = true;
-			return "loginSuccess";
+		if (backend.setting("password").equals("")) {
+			if (username.equals("admin") && password.equals("admin")) {
+				authenticated = true;
+				return "loginSuccess";
+			}
+		} else {
+			if (username.equals("admin") && password.equals(backend.setting("password"))) {
+				authenticated = true;
+				return "loginSuccess";
+			}
 		}
 		return "loginFail";
 	}
