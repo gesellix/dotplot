@@ -19,17 +19,23 @@
 		<jsp:forward page="/login.jsp"></jsp:forward>
 	</c:if>
 	<f:view>
-	<div id="content">
+	<div id="content" class="form">
 		<h:form id="admin">
 		<div>
 			<h3>Administratorpasswort festlegen</h3>
+			<c:set var="passwdIsSet" value="#{settings.passwordIsSet}" />
+			<c:if test="${passwdIsSet=='false'}">
+			<div>
+				Das Passwort ist noch nicht festgelegt. Ändern Sie es, um den Standardwert zu ändern.
+			</div>
+			</c:if>
 			<div>
 				<label>Passwort:</label>
 				<h:inputSecret id="passworda" value="#{settings.pw1}"></h:inputSecret>
-				<h:message for="passwordb"></h:message>
+				<h:message for="passworda"></h:message>
 			</div>
 			<div>	
-				<label></label>
+				<label>&nbsp;</label>
 				<h:inputSecret id="passwordb" value="#{settings.pw2}"></h:inputSecret>
 				<h:message for="passwordb"></h:message>
 			</div>

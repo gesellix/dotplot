@@ -70,6 +70,11 @@ public class Settings {
 		return "SettingsSaved";
 	}
 
+	public boolean getPasswordIsSet() {
+		if (! backend.setting("password").equals("")) return true;
+		return false;
+	}
+	
 	// Get-Set
 	
 	public String getUrl() {

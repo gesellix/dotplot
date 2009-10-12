@@ -149,7 +149,8 @@ body {
 }
 
 .form input[type="text"],
-.form input[type="file"] {
+.form input[type="file"],
+.form input[type="password"] {
 	border: 1px solid #c0f0c0;
 	padding: 3px;
 	margin: 2px;
@@ -157,13 +158,15 @@ body {
 }
 
 .form input[type="text"]:hover,
-.form input[type="file"]:hover {
+.form input[type="file"]:hover,
+.form input[type="password"]:hover {
 	background-color: #c0f0c0;
 	padding: 3px;
 }
 
 .form input[type="text"]:focus,
-.form input[type="file"]:focus {
+.form input[type="file"]:focus,
+.form input[type="password"]:focus {
 	border: 1px solid #50b050;
 	background-color: #c0f0c0;
 	padding: 3px;
