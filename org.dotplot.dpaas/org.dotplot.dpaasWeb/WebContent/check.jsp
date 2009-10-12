@@ -17,6 +17,7 @@
 	<% session.invalidate(); %>
 	<div id="content">
 		<div class="form">
+			<div class="headline">Status Ihres DotPlots</div>
 			<div>
 				Herzlich willkommen!
 				Sie haben hier die Möglichkeit, den Status eines DotPlots abzurufen.

@@ -25,8 +25,8 @@
 			<h3>Administratorpasswort festlegen</h3>
 			<c:set var="passwdIsSet" value="#{settings.passwordIsSet}" />
 			<c:if test="${passwdIsSet=='false'}">
-			<div>
-				Das Passwort ist noch nicht festgelegt. Ändern Sie es, um den Standardwert zu ändern.
+			<div class="msg_error">
+				Das Passwort ist noch nicht festgelegt. Legen Sie es nun fest, um den Standardwert zu ändern.
 			</div>
 			</c:if>
 			<div>
