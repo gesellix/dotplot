@@ -71,6 +71,7 @@ public class Settings {
 	}
 
 	public boolean getPasswordIsSet() {
+		if (backend.setting("password") == null) return false; 
 		if (! backend.setting("password").equals("")) return true;
 		return false;
 	}

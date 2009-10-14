@@ -13,7 +13,7 @@ public class Login {
 	private boolean authenticated = false;
 	
 	public String authenticate() {
-		if (backend.setting("password").equals("")) {
+		if ((backend.setting("password") == null) || (backend.setting("password").equals(""))) {
 			if (username.equals("admin") && password.equals("admin")) {
 				authenticated = true;
 				return "loginSuccess";
