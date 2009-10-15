@@ -34,9 +34,9 @@
 				</div>
 				<div>	
 					<label>Passwort:</label>
-					<h:inputText id="password" 
+					<h:inputSecret id="password" 
 						value="#{login.password}" 
-						required="true"></h:inputText>
+						required="true"></h:inputSecret>
 					<h:message for="password" 
 						errorClass="msg_error" 
 						fatalClass="msg_fatal" 
