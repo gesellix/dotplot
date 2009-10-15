@@ -91,6 +91,19 @@
 		</div>
 		</h:form>
 	</div>
+	<div id="footer">
+		<span>
+			DotPlot as a Service wird angeboten von:
+			<span>
+				<h:outputText value="#{settings.name}"></h:outputText>
+			</span>
+			<span>
+				<h:outputLink value="mailto:#{settings.email}">
+					<h:outputText value="#{settings.email}"></h:outputText>
+				</h:outputLink>
+			</span>
+		</span>
+	</div>
 	</f:view>
 	<script type="text/javascript" src="js/prototype.js"></script>
 	<script type="text/javascript" src="js/dpaas.js"></script>
