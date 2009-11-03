@@ -72,7 +72,7 @@ public class DotPlot extends HttpServlet {
 		}
 		
 		if (j.getFinished() != null) {
-			_out.println("DotPlot fertig gestellt! Sie k&ouml;nnen es jetzt <a href='Service?mode=download'>hier</a> herunterladen.");
+			_out.println("DotPlot fertig gestellt! Sie k&ouml;nnen es jetzt <a href='DotPlot?mode=download'>hier</a> herunterladen.");
 			_out.flush();
 			_out = null;
 			return;
