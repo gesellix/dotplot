@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
  */
 public class StemmerFilterUI extends AbstractFilterUI {
 
-    public static final String INFO = "Infotext für den Stemmer der Links der Filter-Konfiguration angezeigt wird";
+    public static final String INFO = "This Filter can be used to have stemming applied to the text before plotting";
 
     private ConfigurationView view;
 
