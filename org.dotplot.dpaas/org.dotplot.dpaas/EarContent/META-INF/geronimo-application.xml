@@ -9,9 +9,9 @@
         </dep:moduleId>
         <dep:dependencies>
             <dep:dependency>
-                <dep:groupId>mysql</dep:groupId>
-                <dep:artifactId>mysql-connector-java</dep:artifactId>
-                <dep:type>jar</dep:type>
+                <dep:groupId>org.apache.geronimo.configs</dep:groupId>
+                <dep:artifactId>sharedlib</dep:artifactId>
+                <dep:type>car</dep:type>
             </dep:dependency>
             <dep:dependency>
                 <dep:groupId>console.dbpool</dep:groupId>
