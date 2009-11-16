@@ -60,7 +60,7 @@ public class WSAgent implements WSAgentLocal {
 			for (Job j : backend.unfinishedJobs()) {
 				if (j!=null) this.callWebService(j);
 			}
-			timer = timerService.createTimer(1000, new String("Run"));
+			timer = timerService.createTimer(10000, new String("Run"));
 		}
 	}
 	

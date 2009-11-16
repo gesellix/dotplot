@@ -15,5 +15,5 @@
             </dep:dependency>
         </dep:dependencies>
     </dep:environment>
-    <web:context-root>/dpaas</web:context-root>
+    <web:context-root>/</web:context-root>
 </web:web-app>
