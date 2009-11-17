@@ -50,13 +50,16 @@ public class StemmerFilter extends BaseTokenFilter {
 	}
     }
 
-    /**
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
     @Override
-    public int compareTo(ITokenFilter arg0) {
+    public int compareTo(ITokenFilter o) {
+	// We dont actually need the Comparable-Interface
 	return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	// We dont actually need the equals-Method
+	return super.equals(obj);
     }
 
     /**

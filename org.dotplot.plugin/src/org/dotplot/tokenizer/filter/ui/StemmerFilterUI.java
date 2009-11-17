@@ -29,8 +29,6 @@ public class StemmerFilterUI extends AbstractFilterUI {
 
     public static final String INFO = "This Filter can be used to have stemming applied to the text before plotting";
 
-    private ConfigurationView view;
-
     private Button stemmerCheckBox;
 
     private Combo selectStemmerCombo;
@@ -154,14 +152,13 @@ public class StemmerFilterUI extends AbstractFilterUI {
      */
     @Override
     public ViewController getController(ConfigurationView view) {
-	this.view = view;
 	return new StemmerFilterUIController(view, this);
     }
 
     public StemmerLanguage getSelectedLanguage() {
 	if (selectLanguageCombo != null && !selectLanguageCombo.isDisposed()) {
 	    for (StemmerLanguage s : getAvailableLanguages()) {
-		if (selectLanguageCombo.getText().trim().equals(s)) {
+		if (selectLanguageCombo.getText().trim().equals(s.toString())) {
 		    return s;
 		}
 	    }
