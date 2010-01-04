@@ -34,13 +34,11 @@ public class WebService extends DotplotService {
 
     @Override
     protected IContext createResultContext() {
-	// TODO Auto-generated method stub
 	return null;
     }
 
     @Override
     public ITask createTask() {
-	// TODO Auto-generated method stub
 	return null;
     }
 
@@ -51,7 +49,6 @@ public class WebService extends DotplotService {
     @Override
     public Class getResultContextClass() {
 	// System.out.println("lullulululu");
-	// TODO Auto-generated method stub
 	return null;
     }
 
@@ -71,7 +68,6 @@ public class WebService extends DotplotService {
 		endp = exti.getParameter("endpoint");
 	    }
 	} catch (UnknownServiceHotSpotException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	    logger.error("Error setting up WS :S . Incorrect HotspotSetup");
 	    return;
@@ -88,7 +84,6 @@ public class WebService extends DotplotService {
 	    enp = Endpoint.publish(endp, wsp);
 	    enp.getBinding();
 	} catch (Exception e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	    logger
 		    .error("Webservice Endpoint not setup. Got problems with hostname?");
@@ -100,7 +95,6 @@ public class WebService extends DotplotService {
     @Override
     public boolean workingContextIsCompatible(Class contextClass) {
 	// System.out.println("lolololo");
-	// TODO Auto-generated method stub
 	return false;
     }
 

@@ -50,7 +50,6 @@ public class FMatrixManagerTest extends TestCase {
 		    .getConfigurationRegistry().get(
 			    TokenizerService.TOKENIZER_CONFIGURATION_ID);
 	} catch (UnknownIDException e1) {
-	    // TODO Auto-generated catch block
 	    e1.printStackTrace();
 	}
 

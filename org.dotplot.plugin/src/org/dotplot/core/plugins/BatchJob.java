@@ -172,7 +172,7 @@ public class BatchJob extends AbstractJob<IFrameworkContext> {
 	    throw new NullPointerException();
 	}
 	IService<?, ?> currentService;
-	Class currentContext = NullContext.class;
+	Class<?> currentContext = NullContext.class;
 
 	List<String> batch = this.getServiceBatch();
 	for (String service : batch) {

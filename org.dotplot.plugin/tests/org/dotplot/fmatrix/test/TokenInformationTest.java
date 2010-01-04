@@ -44,7 +44,6 @@ public class TokenInformationTest extends TestCase {
 	    source2 = new DotplotFile(file2, TextType.type);
 	    source3 = new DotplotFile(file3, TextType.type);
 	} catch (IOException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 	fileContainer = new SourceInformation(0, source1);

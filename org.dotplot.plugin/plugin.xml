@@ -1,38 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.1"?>
 
-<plugin
-   id="org.dotplot.plugin"
-   name="Matrix4.plot"
-   version="2.1.1"
-   provider-name="Matrix4.plot Team CS@FH-Giessen Germany"
-   class="org.dotplot.eclipse.DotplotPlugin"
-   singleton="true">
+<plugin>
 
-   <runtime>
-      <library name="plugin.jar"/>
-      <library name="lib/jai_codec.jar"/>
-      <library name="lib/jai_core.jar"/>
-      <library name="lib/jai_mlibwrapper.jar"/>
-      <library name="lib/log4j-1.2.15.jar"/>
-      <library name="lib/iText-2.1.5.jar"/>
-      <library name="lib/org.pdfbox.jar"/>
-      <library name="lib/activation.jar"/>
-      <library name="lib/mail.jar"/>
-   </runtime>
-
-   <requires>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.help"/>
-      <import plugin="org.eclipse.compare"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.junit"/>
-      <import plugin="org.eclipse.text"/>
-      <import plugin="org.eclipse.core.runtime.compatibility.auth"/>
-   </requires>
-
-   <extension
+     <extension
          id="DotplotApplication"
          name="Dotplot Application"
          point="org.eclipse.core.runtime.applications">
@@ -50,7 +21,7 @@
             name="Matrix4.plot">
          <property
                name="windowImages"
-               value="icons/dp_32.gif"/>
+               value="/org.dotplot.plugin/icons/dp_32.gif"/>
          <property
                name="appName"
                value="Matrix4.plot">

@@ -29,6 +29,7 @@ import org.dotplot.tokenizer.filter.ITokenFilter;
 import org.dotplot.tokenizer.filter.KeyWordFilter;
 import org.dotplot.tokenizer.filter.LineFilter;
 import org.dotplot.tokenizer.filter.SentenceFilter;
+import org.dotplot.tokenizer.filter.StemmerFilter;
 import org.dotplot.tokenizer.service.CPlusPlusScanner;
 import org.dotplot.tokenizer.service.CPlusPlusType;
 import org.dotplot.tokenizer.service.CScanner;
@@ -82,14 +83,16 @@ public class ContextFactoryTest extends TestCase {
 	}
 	IPluginRegistry<?> plugins = context.getPluginRegistry();
 	assertNotNull(plugins);
-	assertEquals(3, plugins.getAll().size());
+	assertEquals(5, plugins.getAll().size());
 	assertTrue(plugins.getAll().containsKey(CoreSystem.CORE_SYSTEM_ID));
 	assertTrue(plugins.getAll().containsKey("org.dotplot.core.Standard"));
 	assertTrue(plugins.getAll().containsKey("org.dotplot.examples"));
+	assertTrue(plugins.getAll().containsKey("org.dotplot.dpaas"));
+	assertTrue(plugins.getAll().containsKey("org.dotplot.tokenizer.filter"));
 
 	IServiceRegistry services = context.getServiceRegistry();
 	assertNotNull(services);
-	assertEquals(9, services.getAll().size());
+	assertEquals(10, services.getAll().size());
 	assertTrue(services.getAll().containsKey(CoreSystem.SERVICE_LOADER_ID));
 	assertTrue(services.getAll().containsKey(
 		CoreSystem.SERVICE_INTEGRATOR_ID));
@@ -107,6 +110,8 @@ public class ContextFactoryTest extends TestCase {
 	assertTrue(services.getAll().containsKey("org.dotplot.standard.QImage"));
 	assertTrue(services.getAll().containsKey(
 		"org.dotplot.standard.EclipseUI"));
+	assertTrue(services.getAll().containsKey(
+		"org.dotplot.addon.dpaas.webservice"));
 
 	assertNotNull(context.getGuiServiceID());
 	assertEquals("org.dotplot.standard.EclipseUI", context
@@ -146,12 +151,13 @@ public class ContextFactoryTest extends TestCase {
 		    .get("org.dotplot.standard.Filter");
 	    Map<String, ITokenFilter> filters = filterService
 		    .getRegisteredFilters();
-	    assertEquals(5, filters.size());
+	    assertEquals(6, filters.size());
 	    assertTrue(filters.get("org.dotplot.filter.GeneralFilter") instanceof GeneralTokenFilter);
 	    assertTrue(filters.get("org.dotplot.filter.KeyWordFilter") instanceof KeyWordFilter);
 	    assertTrue(filters.get("org.dotplot.filter.LineFilter") instanceof LineFilter);
 	    assertTrue(filters.get("org.dotplot.filter.SentenceFilter") instanceof SentenceFilter);
 	    assertTrue(filters.get("org.dotplot.filter.4GrammFilter") instanceof org.dotplot.examples.FourGrammFilter.FourGrammFilter);
+	    assertTrue(filters.get("org.dotplot.filter.StemmerFilter") instanceof StemmerFilter);
 
 	} catch (Exception e) {
 	    fail("no exception:" + e.getClass().getName() + ":"

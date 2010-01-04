@@ -42,14 +42,6 @@ public class WebServicePort {
     Logger logger = Logger.getLogger(this.getClass().getName());
     private static final Object synci = new Object(); // @EJB it would be a
 
-    // stateless bean so we
-    // need a singelton
-    /*
-     * The magic_memory_number describes the relation between incoming bytes and
-     * needed memory incoming_bytes ^ magic_memory_number == needed_memory
-     */
-    final float magic_memory_number = 1.67951907f;
-
     private static BufferedImage convertToAWT(ImageData data) {
 	ColorModel colorModel = null;
 	PaletteData palette = data.palette;
@@ -106,7 +98,13 @@ public class WebServicePort {
 	}
     }
 
-
+    // stateless bean so we
+    // need a singelton
+    /*
+     * The magic_memory_number describes the relation between incoming bytes and
+     * needed memory incoming_bytes ^ magic_memory_number == needed_memory
+     */
+    final float magic_memory_number = 1.67951907f;
 
     public WSDotplotjobresponse doDotPlot(WSDotplotjob dpr)
 	    throws ErrorElementFault {
@@ -162,7 +160,6 @@ public class WebServicePort {
 		}
 		itok.setFilterList(strili);
 	    } catch (UnknownIDException e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	    }
 

@@ -247,7 +247,7 @@ public class PluginLoadingTaskPart extends AbstractTaskPart {
 		className = element.getAttribute("class");
 		this.currentService = this.findService(id, plugin);
 		if (this.currentService == null) {
-		    Class serviceClass;
+		    Class<?> serviceClass;
 		    serviceClass = this.currentClassLoader.loadClass(className);
 		    Constructor constructor = serviceClass
 			    .getConstructor(new Class[] { String.class });
@@ -278,7 +278,7 @@ public class PluginLoadingTaskPart extends AbstractTaskPart {
 				extentionClass.newInstance());
 		    } else {
 			// sonst die factory damit beauftragen
-			Class factoryClass = this.currentClassLoader
+			Class<?> factoryClass = this.currentClassLoader
 				.loadClass(factory);
 			IExtentionFactory factoryObj = (IExtentionFactory) factoryClass
 				.newInstance();
@@ -335,7 +335,8 @@ public class PluginLoadingTaskPart extends AbstractTaskPart {
 	    } else if ("Job".equals(nodeName)) {
 		id = element.getAttribute("id");
 		className = element.getAttribute("class");
-		Class jobClass = this.currentClassLoader.loadClass(className);
+		Class<?> jobClass = this.currentClassLoader
+			.loadClass(className);
 		try {
 		    this.context.getJobRegistry().get(id);
 		    throw new DuplicateRegistrationException(id);

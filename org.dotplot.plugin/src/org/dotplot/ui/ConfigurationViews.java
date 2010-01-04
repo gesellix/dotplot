@@ -24,9 +24,9 @@ public class ConfigurationViews extends TreeMap<String, ConfigurationView> {
      * <code>ConfigurationViews</code> in the container.
      */
     public void notifyObservers() {
-	Iterator iter = this.values().iterator();
+	Iterator<ConfigurationView> iter = this.values().iterator();
 	while (iter.hasNext()) {
-	    ((ConfigurationView) iter.next()).notifyObservers();
+	    iter.next().notifyObservers();
 	}
     }
 }

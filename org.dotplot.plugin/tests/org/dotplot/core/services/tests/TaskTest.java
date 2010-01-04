@@ -38,7 +38,6 @@ public class TaskTest extends TestCase {
 	 * @see org.dotplot.services.IJobPart#getID()
 	 */
 	public String getID() {
-	    // TODO Auto-generated method stub
 	    return null;
 	}
 
@@ -48,7 +47,6 @@ public class TaskTest extends TestCase {
 	 * @see org.dotplot.services.IJobPart#getRessources()
 	 */
 	public Collection<IRessource> getRessources() {
-	    // TODO Auto-generated method stub
 	    return null;
 	}
 
@@ -58,7 +56,6 @@ public class TaskTest extends TestCase {
 	 * @see org.dotplot.services.IJobPart#getResult()
 	 */
 	public Object getResult() {
-	    // TODO Auto-generated method stub
 	    return null;
 	}
 
@@ -77,8 +74,6 @@ public class TaskTest extends TestCase {
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
-	    // TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -89,8 +84,6 @@ public class TaskTest extends TestCase {
 	 * .IProcessingErrorHandler)
 	 */
 	public void setErrorHandler(IErrorHandler handler) {
-	    // TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -102,8 +95,6 @@ public class TaskTest extends TestCase {
 	 */
 	public void setLocalRessources(Collection ressouceList)
 		throws InsufficientRessourcesException {
-	    // TODO Auto-generated method stub
-
 	}
 
 	/*

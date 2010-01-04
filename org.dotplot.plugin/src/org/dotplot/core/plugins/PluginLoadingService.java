@@ -93,7 +93,7 @@ public class PluginLoadingService extends
      * @see org.dotplot.services.IService#getResultContextClass()
      */
     @Override
-    public Class getResultContextClass() {
+    public Class<?> getResultContextClass() {
 	return IPluginListContext.class;
     }
 
@@ -113,7 +113,7 @@ public class PluginLoadingService extends
      * org.dotplot.services.IService#workingContextIsCompatible(java.lang.Class)
      */
     @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
+    public boolean workingContextIsCompatible(Class<?> contextClass) {
 	return true;
     }
 

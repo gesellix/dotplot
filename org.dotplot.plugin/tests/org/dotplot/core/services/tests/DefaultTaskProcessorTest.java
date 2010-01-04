@@ -111,8 +111,6 @@ public class DefaultTaskProcessorTest extends TestCase {
 	public void setLocalRessources(
 		Collection<? extends IRessource> ressouceList)
 		throws InsufficientRessourcesException {
-	    // TODO Auto-generated method stub
-
 	}
 
 	/*

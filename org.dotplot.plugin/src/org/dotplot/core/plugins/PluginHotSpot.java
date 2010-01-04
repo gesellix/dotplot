@@ -20,7 +20,7 @@ public class PluginHotSpot extends ServiceHotSpot implements IPluginHotSpot {
      * @param extentionClass
      *            - the class of the extention objects.
      */
-    public PluginHotSpot(String id, Class extentionClass) {
+    public PluginHotSpot(String id, Class<?> extentionClass) {
 	super(id, extentionClass);
     }
 

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<Dotplotplugin
+	id="org.dotplot.stemmer"
+	name="Stemming Filter"
+	version="1.0"
+	provider="FH Giessen-Friedberg (www.fh-giessen.de)"
+	info="Stemmer-Filter for Matrix4.plot.">
+	
+	<Dependency plugin="org.dotplot.core.Standard" version="1.0"/>
+		
+	<Service id="org.dotplot.standard.Filter">
+			 
+	    <Extention hotspot="org.dotplot.standard.Filter.newFilter"
+	    		   class="org.dotplot.tokenizer.filter.StemmerFilter">
+	    	<Parameter name="name" value="org.dotplot.filter.StemmerFilter"/>
+	    	<Parameter name="ui" value="org.dotplot.tokenizer.filter.ui.StemmerFilterUI"/>
+	    </Extention>
+
+	</Service>
+
+</Dotplotplugin>

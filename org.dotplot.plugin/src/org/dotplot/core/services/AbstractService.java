@@ -200,7 +200,7 @@ public abstract class AbstractService<F extends IFrameworkContext, S extends ISe
      * 
      * @see org.dotplot.core.services.IService#getResultContextClass()
      */
-    public abstract Class getResultContextClass();
+    public abstract Class<?> getResultContextClass();
 
     /**
      * Returns the <code>TaskProcessor</code>.
@@ -332,5 +332,5 @@ public abstract class AbstractService<F extends IFrameworkContext, S extends ISe
      * org.dotplot.core.services.IService#workingContextIsCompatible(java.lang
      * .Class)
      */
-    public abstract boolean workingContextIsCompatible(Class contextClass);
+    public abstract boolean workingContextIsCompatible(Class<?> contextClass);
 }

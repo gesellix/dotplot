@@ -47,7 +47,7 @@ public interface IServiceHotSpot {
      * 
      * @return The <code>Class</code>.
      */
-    public Class getExtentionClass();
+    public Class<?> getExtentionClass();
 
     /**
      * Returns the <code>ServiceHotSpot</code>'s id.
@@ -78,7 +78,7 @@ public interface IServiceHotSpot {
      * @return <code>true</code>, if the class is valid, <code>false</code>
      *         otherwise.
      */
-    public boolean isValidExtention(Class extentionClass);
+    public boolean isValidExtention(Class<?> extentionClass);
 
     /**
      * Checks if an <code>Extention</code> is valid for the

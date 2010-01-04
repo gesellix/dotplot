@@ -55,8 +55,6 @@ public class ServiceManagerTest extends TestCase {
 	 */
 	public void addExtention(String serviceHotSpotID, Extention extention)
 		throws UnknownServiceHotSpotException {
-	    // TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -68,8 +66,6 @@ public class ServiceManagerTest extends TestCase {
 	public void addExtention(String serviceHotSpotID,
 		IServiceExtentionActivator plugin, Object extentionObjection)
 		throws UnknownServiceHotSpotException {
-	    // TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -78,7 +74,6 @@ public class ServiceManagerTest extends TestCase {
 	 * @see org.dotplot.services.IService#createJob()
 	 */
 	public ITask createTask() {
-	    // TODO Auto-generated method stub
 	    return null;
 	}
 
@@ -96,7 +91,6 @@ public class ServiceManagerTest extends TestCase {
 	 * @see org.dotplot.services.IService#getHotSpot(java.lang.String)
 	 */
 	public IServiceHotSpot getHotSpot(String id) {
-	    // TODO Auto-generated method stub
 	    return null;
 	}
 
@@ -122,8 +116,6 @@ public class ServiceManagerTest extends TestCase {
 	 * @see org.dotplot.services.IService#init()
 	 */
 	public void init() {
-	    // TODO Auto-generated method stub
-
 	}
 
 	public boolean isPartAble() {
@@ -156,8 +148,6 @@ public class ServiceManagerTest extends TestCase {
 	 * .IServiceProcessor)
 	 */
 	public void setTaskProcessor(ITaskProcessor processor) {
-	    // TODO Auto-generated method stub
-
 	}
 
 	public void setWorkingContext(IContext context)

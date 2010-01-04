@@ -123,7 +123,7 @@ public class TokenizerService extends DotplotService {
      * @see org.dotplot.core.services.AbstractService#getResultContextClass()
      */
     @Override
-    public Class getResultContextClass() {
+    public Class<?> getResultContextClass() {
 	return TokenStreamContext.class;
     }
 
@@ -188,7 +188,7 @@ public class TokenizerService extends DotplotService {
      * java.lang.Class)
      */
     @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
+    public boolean workingContextIsCompatible(Class<?> contextClass) {
 	return SourceListContext.class.isAssignableFrom(contextClass);
     }
 

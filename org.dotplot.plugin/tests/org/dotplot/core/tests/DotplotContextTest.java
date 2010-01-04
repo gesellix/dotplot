@@ -81,8 +81,6 @@ public class DotplotContextTest extends TestCase {
 	 * services.ITaskProcessor)
 	 */
 	public void setTaskProcessor(ITaskProcessor processor) {
-	    // TODO Auto-generated method stub
-
 	}
 
 	/*

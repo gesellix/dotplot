@@ -31,8 +31,8 @@ public class BaseType implements ISourceType {
     public static ISourceType deriveCommonSourceType(
 	    Collection<ISourceType> list) {
 	ISourceType type = null;
-	Class current;
-	Class source;
+	Class<?> current;
+	Class<?> source;
 	Object o;
 
 	for (ISourceType t : list) {

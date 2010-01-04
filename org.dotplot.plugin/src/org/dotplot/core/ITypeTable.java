@@ -56,6 +56,10 @@ public interface ITypeTable {
      */
     public abstract int getNumberOfTypes();
 
+    /**
+     * 
+     * @return
+     */
     public TokenInformation getTokenInformation();
 
     /**
@@ -68,17 +72,29 @@ public interface ITypeTable {
      */
     public abstract TokenType getTokenType(int typeIndex);
 
-    public Enumeration getTypeEnumeration();
+    /**
+     * 
+     * @return
+     */
+    public Enumeration<?> getTypeEnumeration();
 
+    /**
+     * 
+     * @param value
+     * @return
+     */
     public int getTypeIndex(String value);
 
     /**
-     * returns an Iterator object, to iterate the typeTable.
+     * Returns an Iterator object, to iterate the typeTable.
      * 
      * @return Iterator - the iterator object.
      */
-    public abstract Iterator getTypeTableIterator();
+    public abstract Iterator<?> getTypeTableIterator();
 
+    /**
+     * 
+     */
     public abstract void print();
 
 }

@@ -77,7 +77,7 @@ public interface IService<F extends IFrameworkContext, S extends IServiceHotSpot
      * 
      * @return
      */
-    public Class getResultContextClass();
+    public Class<?> getResultContextClass();
 
     /**
      * Initializes the <code>Service</code>.
@@ -98,5 +98,5 @@ public interface IService<F extends IFrameworkContext, S extends IServiceHotSpot
     public void setWorkingContext(IContext context)
 	    throws IllegalContextException;
 
-    public boolean workingContextIsCompatible(Class contextClass);
+    public boolean workingContextIsCompatible(Class<?> contextClass);
 }

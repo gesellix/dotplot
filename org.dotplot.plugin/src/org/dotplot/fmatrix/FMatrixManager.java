@@ -99,7 +99,7 @@ public class FMatrixManager implements MonitorablePlotUnit {
 
 	int lineIndex = 0;
 	int firstTokenInLine = 0;
-	List tokensInLine = new ArrayList();
+	List<Token> tokensInLine = new ArrayList<Token>();
 	int fileCount = 0; // counts the files
 
 	// monitor message
@@ -137,7 +137,7 @@ public class FMatrixManager implements MonitorablePlotUnit {
 			    firstTokenInLine + tokensInLine.size(), token
 				    .getLine(), tokensInLine);
 		    firstTokenInLine += tokensInLine.size();
-		    tokensInLine = new ArrayList();
+		    tokensInLine = new ArrayList<Token>();
 		    break;
 		case Token.TYPE_EOF:
 		    // if EOF without EOL flush tokens before saving
@@ -147,7 +147,7 @@ public class FMatrixManager implements MonitorablePlotUnit {
 				firstTokenInLine + tokensInLine.size(),
 				lineIndex, tokensInLine);
 			firstTokenInLine += tokensInLine.size();
-			tokensInLine = new ArrayList();
+			tokensInLine = new ArrayList<Token>();
 		    }
 		    tokenInformation
 			    .addLineInformationContainer(lineInformation);

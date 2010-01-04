@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="bin/"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/clibwrapper_jiio.jar"/>
 	<classpathentry kind="lib" path="lib/iText-2.1.5.jar"/>
@@ -15,7 +16,11 @@
 	<classpathentry kind="src" path="std"/>
 	<classpathentry kind="src" path="examples"/>
 	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="src" path="dpaas"/>
+	<classpathentry kind="src" path="stemmer"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="AGITAR_MOCK_OBJECTS"/>
+	<classpathentry kind="var" path="AGITAR_TEST_LIB"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Text;
  * seperates the configuration in Server Settings and Client Settings
  */
 public class ConfigGridView extends ConfigurationView {
-    private static Vector getAddresses() {
+    private static Vector<String> getAddresses() {
 	InetAddress[] addresses = null;
 	try {
 	    String hostName = InetAddress.getLocalHost().getHostName();
@@ -47,7 +47,7 @@ public class ConfigGridView extends ConfigurationView {
 	    // e.printStackTrace();
 	}
 
-	Vector adr = new Vector();
+	Vector<String> adr = new Vector<String>();
 
 	// add special addresses
 	adr.add("0.0.0.0/0.0.0.0"); // "all"
@@ -510,8 +510,7 @@ public class ConfigGridView extends ConfigurationView {
 	gd = new GridData();
 	gd.horizontalIndent = 5;
 	cboAvailableAddresses = new Combo(_parent, SWT.NONE);
-	cboAvailableAddresses.setItems((String[]) getAddresses().toArray(
-		new String[0]));
+	cboAvailableAddresses.setItems(getAddresses().toArray(new String[0]));
 	cboAvailableAddresses.clearSelection();
 
 	// Port for the mediator socket
@@ -543,6 +542,7 @@ public class ConfigGridView extends ConfigurationView {
 
     private void initListenersClientGroup() {
 	btnUseServerSettings.addSelectionListener(new SelectionAdapter() {
+	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 		changeListener.widgetSelected(null);
 
@@ -560,6 +560,7 @@ public class ConfigGridView extends ConfigurationView {
 	});
 
 	btnStartStopGridClient.addSelectionListener(new SelectionAdapter() {
+	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 		changeListener.widgetSelected(null);
 		onStartStopGridClient();
@@ -569,11 +570,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtMediatorAddress.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtMediatorAddress.getText();
 		txtMediatorAddress.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtMediatorAddress.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -587,11 +590,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtMediatorPort.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtMediatorPort.getText();
 		txtMediatorPort.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtMediatorPort.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -605,6 +610,7 @@ public class ConfigGridView extends ConfigurationView {
 
     private void initListenersNotifyGroup() {
 	chkEnableNotify.addSelectionListener(new SelectionAdapter() {
+	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 		changeListener.widgetSelected(null);
 		onEnableDisableNotify(chkEnableNotify.getSelection());
@@ -612,12 +618,14 @@ public class ConfigGridView extends ConfigurationView {
 	});
 
 	chkNotifyAttachImage.addSelectionListener(new SelectionAdapter() {
+	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 		changeListener.widgetSelected(null);
 	    }
 	});
 
 	btnNotifyTest.addSelectionListener(new SelectionAdapter() {
+	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 		changeListener.widgetSelected(null);
 		try {
@@ -644,11 +652,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtNotifySMTPHost.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtNotifySMTPHost.getText();
 		txtNotifySMTPHost.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtNotifySMTPHost.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -661,11 +671,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtNotifySMTPUser.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtNotifySMTPUser.getText();
 		txtNotifySMTPUser.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtNotifySMTPUser.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -678,11 +690,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtNotifySMTPPass.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtNotifySMTPPass.getText();
 		txtNotifySMTPPass.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtNotifySMTPPass.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -695,11 +709,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtNotifyEmailFrom.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtNotifyEmailFrom.getText();
 		txtNotifyEmailFrom.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtNotifyEmailFrom.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -712,11 +728,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtNotifyEmailTo.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtNotifyEmailTo.getText();
 		txtNotifyEmailTo.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtNotifyEmailTo.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -729,11 +747,13 @@ public class ConfigGridView extends ConfigurationView {
 	txtNotifyEmailSubject.addFocusListener(new FocusAdapter() {
 	    private Object oldValue;
 
+	    @Override
 	    public void focusGained(FocusEvent e) {
 		oldValue = txtNotifyEmailSubject.getText();
 		txtNotifyEmailSubject.selectAll();
 	    }
 
+	    @Override
 	    public void focusLost(FocusEvent e) {
 		final String text = txtNotifyEmailSubject.getText();
 		if (oldValue != null && text != null && !oldValue.equals(text)) {
@@ -775,6 +795,7 @@ public class ConfigGridView extends ConfigurationView {
 	});
 
 	cboAvailableAddresses.addSelectionListener(new SelectionAdapter() {
+	    @Override
 	    public void widgetSelected(SelectionEvent e) {
 		changeListener.widgetSelected(null);
 		onServerAddressChanged();
@@ -929,12 +950,14 @@ public class ConfigGridView extends ConfigurationView {
 	btnStartStopGridServer.setEnabled(true);
     }
 
+    @Override
     public void refresh() {
 	// Control[] children = root.getChildren();
 	draw(root);
 	// this.root.layout();
     }
 
+    @Override
     public void reset() {
 	showCurrentConfig();
     }

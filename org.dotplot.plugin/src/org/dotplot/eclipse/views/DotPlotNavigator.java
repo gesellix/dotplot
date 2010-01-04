@@ -105,7 +105,6 @@ public class DotPlotNavigator extends ViewPart implements ICheckStateListener {
 		    .createFromURL(DotplotPlugin
 			    .getResource("icons/nav_refresh.gif")));
 	} catch (IOException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }

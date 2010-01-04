@@ -15,7 +15,6 @@ public class ByteRessource implements IPlotSource {
     private ISourceType type;
 
     public ByteRessource() {
-	// TODO Auto-generated constructor stub
     }
 
     public ByteRessource(String name, byte[] bytearray, ISourceType type) {
@@ -54,9 +53,8 @@ public class ByteRessource implements IPlotSource {
     @Override
     public URL getURL() {
 	/*
-	 * There is no source url so therefore we have got NO URL!!!! 
-	 * .. please fix!
-	 * 
+	 * There is no source url so therefore we have got NO URL!!!! .. please
+	 * fix!
 	 */
 	try {
 	    return new URL("http://www.yahoo.com/");

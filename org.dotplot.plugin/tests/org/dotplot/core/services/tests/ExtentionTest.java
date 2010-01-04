@@ -32,7 +32,6 @@ public class ExtentionTest extends TestCase {
 	 * @see org.dotplot.services.IServicePlugin#getVersion()
 	 */
 	public Version getVersion() {
-	    // TODO Auto-generated method stub
 	    return null;
 	}
 
@@ -44,7 +43,6 @@ public class ExtentionTest extends TestCase {
 	public boolean isActivated() {
 	    return true;
 	}
-
     }
 
     private TestPlugin plugin;

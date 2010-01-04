@@ -123,9 +123,9 @@ public class ConfigurationDialog {
 		new int[] { 50, 80 }, true);
 
 	// add configuration views as tabs
-	Iterator iter = cvs.values().iterator();
+	Iterator<ConfigurationView> iter = cvs.values().iterator();
 	while (iter.hasNext()) {
-	    this.drawTab(tf, (ConfigurationView) iter.next());
+	    this.drawTab(tf, iter.next());
 	}
 
 	tf.addSelectionListener(new SelectionAdapter() {

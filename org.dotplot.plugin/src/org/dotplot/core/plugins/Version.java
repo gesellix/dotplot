@@ -7,7 +7,7 @@ package org.dotplot.core.plugins;
  * 
  * @author Christian Gerhardt <case42@gmx.net>
  */
-public class Version implements Comparable {
+public class Version implements Comparable<Version> {
 
     /**
 	 * 
@@ -134,10 +134,9 @@ public class Version implements Comparable {
      * 
      * @see java.lang.Comparable#compareTo(T)
      */
-    public int compareTo(Object arg0) {
-	return this.compareTo((Version) arg0);
-    }
-
+    // public int compareTo(Object arg0) {
+    // return this.compareTo((Version) arg0);
+    // }
     /**
      * 
      * @param version

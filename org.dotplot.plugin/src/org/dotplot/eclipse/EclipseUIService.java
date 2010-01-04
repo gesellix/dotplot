@@ -318,7 +318,7 @@ public class EclipseUIService extends DotplotService implements IGuiService {
      * @see org.dotplot.core.services.AbstractService#getResultContextClass()
      */
     @Override
-    public Class getResultContextClass() {
+    public Class<?> getResultContextClass() {
 	return IContext.class;
     }
 
@@ -517,7 +517,7 @@ public class EclipseUIService extends DotplotService implements IGuiService {
      * java.lang.Class)
      */
     @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
+    public boolean workingContextIsCompatible(Class<?> contextClass) {
 	return true;
     }
 

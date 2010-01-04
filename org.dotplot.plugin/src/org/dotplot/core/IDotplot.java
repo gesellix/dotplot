@@ -72,14 +72,14 @@ public interface IDotplot {
      * 
      * @see #getImage(Class)
      */
-    public static final Class IMG_SWT_IMAGEDATA = ImageData.class;
+    public static final Class<?> IMG_SWT_IMAGEDATA = ImageData.class;
 
     /**
      * selector for the supported class types.
      * 
      * @see #getImage(Class)
      */
-    public static final Class IMG_JAI_PLANARIMAGE = PlanarImage.class;
+    public static final Class<?> IMG_JAI_PLANARIMAGE = PlanarImage.class;
 
     /**
      * Lets the dotplot zoom into the given region of interest <code>roi</code>
@@ -109,7 +109,7 @@ public interface IDotplot {
      * @see #IMG_SWT_IMAGEDATA
      * @see #IMG_JAI_PLANARIMAGE
      */
-    public Object getImage(Class imageClass);
+    public Object getImage(Class<?> imageClass);
 
     /**
      * Tells the dotplot to scale images to the given <code>size</code>. File
