@@ -28,12 +28,12 @@ import org.dotplot.util.UnknownIDException;
  * @author Christian Gerhardt <case42@gmx.net>
  * @see ContextFactory
  */
-public class DotplotContext extends PluginContext<Plugin> {
+public final class DotplotContext extends PluginContext<Plugin> {
 
     /**
      * Logger for debuginformation.
      */
-    private static final Logger logger = Logger.getLogger(DotplotContext.class
+    private static final Logger LOGGER = Logger.getLogger(DotplotContext.class
 	    .getName());
 
     /**
@@ -79,7 +79,7 @@ public class DotplotContext extends PluginContext<Plugin> {
     private ITaskProcessor taskProcessor;
 
     /**
-     * Indicates tha no gui-responce should be used in case of an error.
+     * Indicates the no gui-responce should be used in case of an error.
      */
     private boolean noGui;
 
@@ -91,7 +91,7 @@ public class DotplotContext extends PluginContext<Plugin> {
      */
     public DotplotContext(String workingDirectory) {
 	super(workingDirectory);
-	logger.debug("workingdirectory: " + workingDirectory);
+	LOGGER.debug("workingdirectory: " + workingDirectory);
 	this.init();
     }
 
@@ -105,8 +105,8 @@ public class DotplotContext extends PluginContext<Plugin> {
      */
     public DotplotContext(String workingDirectory, String pluginDirectory) {
 	super(workingDirectory, pluginDirectory);
-	logger.debug("workingdirectory: " + workingDirectory);
-	logger.debug("plugindirectory: " + pluginDirectory);
+	LOGGER.debug("workingdirectory: " + workingDirectory);
+	LOGGER.debug("plugindirectory: " + pluginDirectory);
 	this.init();
     }
 
@@ -161,13 +161,9 @@ public class DotplotContext extends PluginContext<Plugin> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.plugins.PluginContext#executeJob(org.dotplot.core.services
-     * .IJob)
      */
     @Override
-    public boolean executeJob(IJob job) {
+    public boolean executeJob(final IJob job) {
 	if (job == null) {
 	    throw new NullPointerException();
 	}
@@ -181,7 +177,7 @@ public class DotplotContext extends PluginContext<Plugin> {
 		}
 		return false;
 	    } catch (UnknownIDException e) {
-		logger.error("EWrror during executing a job.", e);
+		LOGGER.error("EWrror during executing a job.", e);
 		// dann eben nicht
 	    }
 	}
@@ -318,7 +314,7 @@ public class DotplotContext extends PluginContext<Plugin> {
      * @return - the noGui.
      */
     public boolean isNoGui() {
-	return noGui;
+	return this.noGui;
     }
 
     /**
@@ -337,7 +333,7 @@ public class DotplotContext extends PluginContext<Plugin> {
      * @param table
      *            The new <code>TypeTable</code>.
      */
-    public void setCurrentTypeTable(ITypeTable table) {
+    public void setCurrentTypeTable(final ITypeTable table) {
 	if (typeTable == null) {
 	    this.typeTable = new TypeTable(new TokenTable());
 	} else {
@@ -348,37 +344,37 @@ public class DotplotContext extends PluginContext<Plugin> {
     /**
      * Sets the guiServiceID.
      * 
-     * @param guiServiceID
+     * @param value
      *            The guiServiceID to set.
      */
-    public void setGuiServiceID(String guiServiceID) {
-	if (guiServiceID == null) {
-	    throw new NullPointerException();
+    public void setGuiServiceID(final String value) {
+	if (value == null) {
+	    throw new IllegalArgumentException("value is null!");
 	}
-	this.guiServiceID = guiServiceID;
+	this.guiServiceID = value;
     }
 
     /**
      * Sets the noGui.
      * 
-     * @param noGui
+     * @param value
      *            The noGui to set.
      */
-    public void setNoGui(boolean noGui) {
-	this.noGui = noGui;
+    public void setNoGui(boolean value) {
+	this.noGui = value;
     }
 
     /**
      * Sets the sourceList.
      * 
-     * @param sourceList
+     * @param value
      *            The new sourceList.
      */
-    public void setSourceList(ISourceList sourceList) {
-	if (sourceList == null) {
+    public void setSourceList(final ISourceList value) {
+	if (value == null) {
 	    this.sourceList = new DefaultSourceList();
 	} else {
-	    this.sourceList = sourceList;
+	    this.sourceList = value;
 	}
     }
 
@@ -393,11 +389,11 @@ public class DotplotContext extends PluginContext<Plugin> {
      *            The taskProcessor to set.
      * @see TaskProcessor
      */
-    public void setTaskProcessor(ITaskProcessor taskProcessor) {
-	if (taskProcessor == null) {
+    public void setTaskProcessor(final ITaskProcessor value) {
+	if (value == null) {
 	    this.taskProcessor = new TaskProcessor();
 	} else {
-	    this.taskProcessor = taskProcessor;
+	    this.taskProcessor = value;
 	}
     }
 
