@@ -14,7 +14,7 @@ public interface IConfiguration {
     /**
      * Returns a copy of the <code>Configuration</code>.
      * <p>
-     * The copy must be independent to the original, so that modifieing the copy
+     * The copy must be independent to the original, so that modifying the copy
      * does not affect the original.
      * </p>
      * 

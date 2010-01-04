@@ -14,17 +14,8 @@ import org.eclipse.swt.events.SelectionListener;
  * @see org.dotplot.ui.monitor.DotPlotProgressDialog
  */
 public class DotPlotProgressMonitor implements SelectionListener {
-    private static DotPlotProgressDialog dialog;
 
     private static DotPlotProgressMonitor instance;
-
-    private static boolean isUnderControl;
-
-    private static MonitorablePlotUnit unit;
-
-    private static int units;
-
-    private static int unitsControlled;
 
     /**
      * <code>DotPlotProgressMonitor</code> is a Singleton. Use
@@ -33,11 +24,21 @@ public class DotPlotProgressMonitor implements SelectionListener {
      * @return the one and only instance
      */
     public static DotPlotProgressMonitor getInstance() {
-	if (DotPlotProgressMonitor.instance == null) {
-	    DotPlotProgressMonitor.instance = new DotPlotProgressMonitor();
+	if (instance == null) {
+	    instance = new DotPlotProgressMonitor();
 	}
-	return DotPlotProgressMonitor.instance;
+	return instance;
     }
+
+    private DotPlotProgressDialog dialog;
+
+    private boolean isUnderControl;
+
+    private MonitorablePlotUnit unit;
+
+    private int units;
+
+    private int unitsControlled;
 
     private DotPlotProgressMonitor() {
 	isUnderControl = false;

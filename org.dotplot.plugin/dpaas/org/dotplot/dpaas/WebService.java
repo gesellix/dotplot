@@ -15,21 +15,24 @@ import org.dotplot.core.services.UnknownServiceHotSpotException;
 
 public class WebService extends DotplotService {
 
-    Endpoint enp;
-    WebServicePort wsp;
-    IWebserviceConfiguration config;
-    public final static String DPAAS_BINDING_ID = "org.dotplot.dpaas.webservice.binding";
-    Logger logger = Logger.getLogger(this.getClass().getName());
+    private Endpoint enp;
+    private WebServicePort wsp;
+    private IWebserviceConfiguration config;
+
+    public final static String DPAAS_BINDING_ID = "org.dotplot.dpaas"
+	    + ".webservice.binding";
+
+    private static final Logger LOGGER = Logger.getLogger(WebService.class
+	    .getName());
 
     public WebService(String id) {
 	super(id);
-	logger.debug("Webservice is being spawned.Please be patient :)");
+	LOGGER.debug("Webservice is being spawned.Please be patient :)");
 	this.addHotSpot(new PluginHotSpot(DPAAS_BINDING_ID, Object.class));
 	/**
 	 * Work A Round 2 be able to use ipv4 on sunx46000
 	 */
 	System.setProperty("java.net.preferIPv4Stack", "true");
-
     }
 
     @Override
@@ -43,12 +46,7 @@ public class WebService extends DotplotService {
     }
 
     @Override
-    protected void finalize() throws Throwable {
-    }
-
-    @Override
-    public Class getResultContextClass() {
-	// System.out.println("lullulululu");
+    public Class<?> getResultContextClass() {
 	return null;
     }
 
@@ -57,7 +55,7 @@ public class WebService extends DotplotService {
 	if (this.enp != null) {
 	    return; // dirty dirty dirty
 	}
-	logger.debug("Webservice getting config...");
+	LOGGER.debug("Webservice getting config...");
 	String endp = "no URL set!";
 
 	try {
@@ -69,12 +67,12 @@ public class WebService extends DotplotService {
 	    }
 	} catch (UnknownServiceHotSpotException e) {
 	    e.printStackTrace();
-	    logger.error("Error setting up WS :S . Incorrect HotspotSetup");
+	    LOGGER.error("Error setting up WS :S . Incorrect HotspotSetup");
 	    return;
 	}
 
-	logger.debug("Webservice setting up with Configuration: ");
-	logger.debug(endp);
+	LOGGER.debug("Webservice setting up with Configuration: ");
+	LOGGER.debug(endp);
 
 	try {
 	    wsp = new WebServicePort();
@@ -85,16 +83,15 @@ public class WebService extends DotplotService {
 	    enp.getBinding();
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    logger
+	    LOGGER
 		    .error("Webservice Endpoint not setup. Got problems with hostname?");
 	    return;
 	}
-	logger.debug("Webservice up and running :)");
+	LOGGER.debug("Webservice up and running :)");
     }
 
     @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
-	// System.out.println("lolololo");
+    public boolean workingContextIsCompatible(Class<?> contextClass) {
 	return false;
     }
 

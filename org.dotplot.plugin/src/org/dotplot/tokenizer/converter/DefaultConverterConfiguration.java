@@ -202,7 +202,8 @@ public class DefaultConverterConfiguration implements IConverterConfiguration {
 	    if (!(convertedDirectory.exists() && convertedDirectory
 		    .isDirectory())) {
 		throw new IllegalArgumentException(convertedDirectory
-			.getAbsolutePath());
+			.getAbsolutePath()
+			+ " does not exist!");
 	    }
 	}
 	this.convertedDirectory = convertedDirectory;

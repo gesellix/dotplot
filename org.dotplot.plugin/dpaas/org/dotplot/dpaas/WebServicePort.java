@@ -39,7 +39,10 @@ import org.eclipse.swt.graphics.RGB;
 @WebService
 @SOAPBinding(style = Style.RPC)
 public class WebServicePort {
-    Logger logger = Logger.getLogger(this.getClass().getName());
+
+    private static final Logger LOGGER = Logger.getLogger(WebServicePort.class
+	    .getName());
+
     private static final Object synci = new Object(); // @EJB it would be a
 
     private static BufferedImage convertToAWT(ImageData data) {
@@ -114,10 +117,10 @@ public class WebServicePort {
 	synchronized (WebServicePort.synci) {
 
 	    // /////// Memory testing
-	    logger.debug("Got new WS-Job! Size:"
+	    LOGGER.debug("Got new WS-Job! Size:"
 		    + dpr.getFilelist().getSumFileSize() / 1024 + "KBytes");
 
-	    logger.debug("Free Memory: " + Runtime.getRuntime().freeMemory()
+	    LOGGER.debug("Free Memory: " + Runtime.getRuntime().freeMemory()
 		    / 1024 / 1024 + "MBytes");
 	    int retries = 0;
 	    while (!enoughMemoryForJob(dpr.getFilelist().getSumFileSize())) {
@@ -180,20 +183,24 @@ public class WebServicePort {
 	    wsf.setContent(bytesOut);
 	    wsf.setFilename("image.png");
 	    wsdpjr.setImage(wsf);
-	    logger.debug("Webservice done!");
+	    LOGGER.debug("Webservice done!");
 	}
 	return wsdpjr;
     }
 
     private boolean enoughMemoryForJob(long sumFileSize) { // testing ^^
-	logger.debug("Need memory:"
-		+ Math.pow(sumFileSize, magic_memory_number)
-		/ 1024
-		/ 1024
-		+ " MBytes"
-		+ " avail: "
-		+ (Runtime.getRuntime().freeMemory() - Math.pow(sumFileSize,
-			magic_memory_number)) / 1024 / 1024 + " MBytes");
+	if (LOGGER.isDebugEnabled()) {
+	    LOGGER.debug("Need memory:"
+		    + Math.pow(sumFileSize, magic_memory_number)
+		    / 1024
+		    / 1024
+		    + " MBytes"
+		    + " avail: "
+		    + (Runtime.getRuntime().freeMemory() - Math.pow(
+			    sumFileSize, magic_memory_number)) / 1024 / 1024
+		    + " MBytes");
+	}
+
 	if (Runtime.getRuntime().freeMemory() >= Math.pow(sumFileSize,
 		magic_memory_number)) {
 	    return true;

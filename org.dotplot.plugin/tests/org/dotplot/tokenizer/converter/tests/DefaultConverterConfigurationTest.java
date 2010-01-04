@@ -118,12 +118,15 @@ public class DefaultConverterConfigurationTest extends TestCase {
 	    fail("wrong Exception");
 	}
 
-	IConfiguration c = this.config.objectForm("c:\\windows;true;true");
+	File f = new File(".");
+	f = f.getAbsoluteFile();
+
+	IConfiguration c = this.config.objectForm(f.toString() + ";true;true");
 	assertNotNull(c);
 	assertTrue(c instanceof IConverterConfiguration);
 	IConverterConfiguration config = (IConverterConfiguration) c;
 	try {
-	    assertEquals(new File("c:\\windows").getCanonicalPath(), config
+	    assertEquals(f.getCanonicalPath(), config
 		    .getConvertedFilesDirectory().getCanonicalPath());
 	} catch (IOException e) {
 	    fail("unexpected Exception was thrown");
