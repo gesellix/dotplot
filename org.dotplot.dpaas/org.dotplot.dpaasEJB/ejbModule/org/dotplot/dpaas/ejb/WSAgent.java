@@ -31,13 +31,16 @@ public class WSAgent implements WSAgentLocal {
 	@EJB
 	BackendLocal backend;
 	
+	// Msecs to wait untill next call
+	private static int timerDelay = 60000;
+	
 	private Timer timer;
 	private boolean running = false;
 	
 	@Override
 	public void start() {
 		if (!running)
-			timer = timerService.createTimer(10000, new String("Run"));
+			timer = timerService.createTimer(timerDelay, new String("Run"));
 		running = true;
 	}
 	
@@ -60,7 +63,7 @@ public class WSAgent implements WSAgentLocal {
 			for (Job j : backend.unfinishedJobs()) {
 				if (j!=null) this.callWebService(j);
 			}
-			timer = timerService.createTimer(10000, new String("Run"));
+			timer = timerService.createTimer(timerDelay, new String("Run"));
 		}
 	}
 	
@@ -68,7 +71,7 @@ public class WSAgent implements WSAgentLocal {
 		try {
 			Dotplotjob dpjob = wsDotplotjob(job);
 			Dotplotjobresponse response = null;
-
+			
 			WebServicePortService ws = new WebServicePortService();
 			WebServicePortService.setWsdlUrl(backend.setting("url"));
 			WebServicePort port = ws.getWebServicePortPort();
