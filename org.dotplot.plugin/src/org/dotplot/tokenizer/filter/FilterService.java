@@ -134,7 +134,7 @@ public class FilterService extends DotplotService {
      * @see org.dotplot.core.services.AbstractService#getResultContextClass()
      */
     @Override
-    public Class getResultContextClass() {
+    public Class<?> getResultContextClass() {
 	return TokenStreamContext.class;
     }
 
@@ -229,7 +229,7 @@ public class FilterService extends DotplotService {
      * java.lang.Class)
      */
     @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
+    public boolean workingContextIsCompatible(Class<?> contextClass) {
 	return TokenStreamContext.class.isAssignableFrom(contextClass);
     }
 

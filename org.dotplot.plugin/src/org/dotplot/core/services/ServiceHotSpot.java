@@ -40,7 +40,7 @@ public class ServiceHotSpot implements IServiceHotSpot {
      *            The <code>Class</code> ot the <code>ServiceHotSpot</code>'s
      *            <code>Extentions</code>.
      */
-    public ServiceHotSpot(String id, Class extentionClass) {
+    public ServiceHotSpot(String id, Class<?> extentionClass) {
 	super();
 	if (id == null || extentionClass == null) {
 	    throw new NullPointerException();
@@ -98,7 +98,7 @@ public class ServiceHotSpot implements IServiceHotSpot {
      * 
      * @see org.dotplot.services.IServiceHotSpot#getExtentionClass()
      */
-    public Class getExtentionClass() {
+    public Class<?> getExtentionClass() {
 	return this.extentionClass;
     }
 
@@ -133,7 +133,7 @@ public class ServiceHotSpot implements IServiceHotSpot {
      * @see
      * org.dotplot.services.IServiceHotSpot#isValidExtention(java.lang.Object)
      */
-    public boolean isValidExtention(Class extentionClass) {
+    public boolean isValidExtention(Class<?> extentionClass) {
 	if (extentionClass == null) {
 	    throw new NullPointerException();
 	}

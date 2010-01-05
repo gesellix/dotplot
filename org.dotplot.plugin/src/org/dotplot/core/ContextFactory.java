@@ -86,7 +86,7 @@ public class ContextFactory {
 	    context.setShemaFile(shemaFile);
 	    DefaultErrorHandler handler = new DefaultErrorHandler();
 
-	    IJob job;
+	    IJob<?> job;
 	    job = context.getJobRegistry().get(CoreSystem.JOB_PLUGIN_LOADER_ID);
 	    job.setErrorHandler(handler);
 	    logger.debug("executing pluginloading job");

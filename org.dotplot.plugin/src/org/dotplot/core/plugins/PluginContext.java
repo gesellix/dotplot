@@ -129,7 +129,7 @@ public class PluginContext<P extends IPlugin> implements IPluginContext<P> {
      *             if <code>jobID</code> is <code>null</code>
      */
     public boolean executeJob(String jobID) throws UnknownIDException {
-	IJob job;
+	IJob<?> job;
 	if (jobID == null) {
 	    throw new NullPointerException();
 	} else {

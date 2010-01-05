@@ -41,7 +41,7 @@ public class ShutdownJob extends AbstractJob<DotplotContext> {
 	    InitializerService service = (InitializerService) context
 		    .getServiceRegistry()
 		    .get(CoreSystem.SERVICE_INITIALIZER_ID);
-	    for (IJob job : service.getShutdownJobs()) {
+	    for (IJob<?> job : service.getShutdownJobs()) {
 		job.setErrorHandler(this.getErrorHandler());
 		context.executeJob(job);
 	    }

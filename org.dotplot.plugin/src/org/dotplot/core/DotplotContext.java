@@ -76,7 +76,7 @@ public final class DotplotContext extends PluginContext<Plugin> {
     /**
      * The <code>TaskProcessor</code> to process <code>Jobs</code>.
      */
-    private ITaskProcessor taskProcessor;
+    private ITaskProcessor<?> taskProcessor;
 
     /**
      * Indicates the no gui-responce should be used in case of an error.
@@ -227,8 +227,8 @@ public final class DotplotContext extends PluginContext<Plugin> {
      * @see #getGuiServiceID()
      */
     public IGuiService getGuiService() throws UnknownIDException {
-	IService service = this.getServiceRegistry()
-		.get(this.getGuiServiceID());
+	IService<?, ?> service = this.getServiceRegistry().get(
+		this.getGuiServiceID());
 	if (service instanceof IGuiService) {
 	    return (IGuiService) service;
 	} else {
@@ -259,7 +259,7 @@ public final class DotplotContext extends PluginContext<Plugin> {
      * 
      * @return - the taskProcessor.
      */
-    public ITaskProcessor getTaskProcessor() {
+    public ITaskProcessor<?> getTaskProcessor() {
 	return taskProcessor;
     }
 
@@ -389,12 +389,11 @@ public final class DotplotContext extends PluginContext<Plugin> {
      *            The taskProcessor to set.
      * @see TaskProcessor
      */
-    public void setTaskProcessor(final ITaskProcessor value) {
+    public void setTaskProcessor(final ITaskProcessor<?> value) {
 	if (value == null) {
 	    this.taskProcessor = new TaskProcessor();
 	} else {
 	    this.taskProcessor = value;
 	}
     }
-
 }

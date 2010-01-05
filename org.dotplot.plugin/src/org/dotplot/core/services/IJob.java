@@ -53,7 +53,7 @@ public interface IJob<C extends IFrameworkContext> {
      * @see ITask
      * @see ITaskPart
      */
-    public void setTaskProcessor(ITaskProcessor processor);
+    public void setTaskProcessor(ITaskProcessor<?> processor);
 
     /**
      * Validates the preconditions for processing the <code>Job</code>.

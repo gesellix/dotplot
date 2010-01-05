@@ -214,7 +214,7 @@ public class ConverterService extends DotplotService {
      * @see org.dotplot.core.services.AbstractService#getResultContextClass()
      */
     @Override
-    public Class getResultContextClass() {
+    public Class<?> getResultContextClass() {
 	return SourceListContext.class;
     }
 
@@ -320,7 +320,7 @@ public class ConverterService extends DotplotService {
      * java.lang.Class)
      */
     @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
+    public boolean workingContextIsCompatible(Class<?> contextClass) {
 	return SourceListContext.class.isAssignableFrom(contextClass);
     }
 }

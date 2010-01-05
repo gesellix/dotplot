@@ -72,9 +72,9 @@ public class GeneralTokenFilterUI extends AbstractFilterUI {
 	    return this.button.getSelection();
 	}
 
-	public String getTokenName() {
-	    return this.button.getText();
-	}
+	// public String getTokenName() {
+	// return this.button.getText();
+	// }
 
 	public int getType() {
 	    return this.tokenType;

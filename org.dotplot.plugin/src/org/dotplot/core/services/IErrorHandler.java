@@ -22,7 +22,7 @@ public interface IErrorHandler {
      * @param e
      *            The <code>Exception</code> which caused the error.
      */
-    public void error(IJob j, Exception e);
+    public void error(IJob<?> j, Exception e);
 
     /**
      * Handles an error.
@@ -64,7 +64,7 @@ public interface IErrorHandler {
      * @param e
      *            The <code>Exception</code> which caused the error.
      */
-    public void error(ITaskProcessor t, Exception e);
+    public void error(ITaskProcessor<?> t, Exception e);
 
     /**
      * Handles a fatal error.
@@ -78,7 +78,7 @@ public interface IErrorHandler {
      * @param e
      *            The <code>Exception</code> which caused the error.
      */
-    public void fatal(IJob j, Exception e);
+    public void fatal(IJob<?> j, Exception e);
 
     /**
      * Handles a fatal error.
@@ -120,7 +120,7 @@ public interface IErrorHandler {
      * @param e
      *            The <code>Exception</code> which caused the error.
      */
-    public void fatal(ITaskProcessor t, Exception e);
+    public void fatal(ITaskProcessor<?> t, Exception e);
 
     /**
      * Handles a warning.
@@ -133,7 +133,7 @@ public interface IErrorHandler {
      * @param e
      *            The <code>Exception</code> which caused the error.
      */
-    public void warning(IJob j, Exception e);
+    public void warning(IJob<?> j, Exception e);
 
     /**
      * Handles a warning.
@@ -172,5 +172,5 @@ public interface IErrorHandler {
      * @param e
      *            The <code>Exception</code> which caused the error.
      */
-    public void warning(ITaskProcessor t, Exception e);
+    public void warning(ITaskProcessor<?> t, Exception e);
 }

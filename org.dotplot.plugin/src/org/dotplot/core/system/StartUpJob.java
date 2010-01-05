@@ -41,7 +41,7 @@ public class StartUpJob extends AbstractJob<DotplotContext> {
 	    InitializerService service = (InitializerService) context
 		    .getServiceRegistry()
 		    .get(CoreSystem.SERVICE_INITIALIZER_ID);
-	    for (IJob job : service.getStartUpJobs()) {
+	    for (IJob<?> job : service.getStartUpJobs()) {
 		job.setErrorHandler(this.getErrorHandler());
 		context.executeJob(job);
 	    }

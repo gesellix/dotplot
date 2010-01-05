@@ -53,7 +53,7 @@ public interface IService<F extends IFrameworkContext, S extends IServiceHotSpot
 
     public S getHotSpot(String hotSpotID) throws UnknownServiceHotSpotException;
 
-    public Map getHotSpots();
+    public Map<String, S> getHotSpots();
 
     public String getID();
 
