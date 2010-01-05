@@ -2,6 +2,7 @@ package org.dotplot.dpaas.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -36,6 +37,13 @@ public class UnfinishedJobs extends HttpServlet {
 		}
 		
 		out.println("<h3>Zu bearbeitende Jobs:</h3>");
+		
+		List<Job> joblist = backend.unfinishedJobs();
+		
+		if (joblist.size() == 0) {
+			out.println("<div class='entry'>Keine Jobs in der Warteliste!</div>");
+			return;
+		}
 		
 		for ( Job j : backend.unfinishedJobs() ) {
 			out.println( "<div class='entry'>" 
