@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+#jobList {
+	border:1px solid gray;
+	float:right;
+	margin:4px;
+	padding:4px;
+	width:350px;
+}
+
+#jobList > .entry {
+	margin: 1px;
+	padding: 1px;
+	width: 346px;	
+}
+
+#jobList > .entry:hover {
+	background-color: #CCFFCC;
+}

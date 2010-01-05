@@ -24,3 +24,7 @@ function hoverDotPlot( filename ) {
 function hideDotPlot( ) {
 	$('hover').style.display = 'none';
 }
+
+function updateJobList( ) {
+	new Ajax.PeriodicalUpdater('jobList','UnfinishedJobs',{frequency: '10'});
+}

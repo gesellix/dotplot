@@ -10,9 +10,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="css/style.css" type="text/css" rel="stylesheet" />
+<link href="css/settings.css" type="text/css" rel="stylesheet" />
 <title>DotPlot as a Service</title>
 </head>
-<body>
+<body onload="updateJobList();">
 	<jsp:include page="templates/headline.jsp" flush="false"></jsp:include>
 	<c:set var="auth" value="#{login.authenticated}" />
 	<c:if test="${auth=='false'}">
@@ -20,6 +21,9 @@
 	</c:if>
 	<f:view>
 	<div id="content" class="form">
+		<div id="jobList">
+			&nbsp;
+		</div>
 		<h:form id="admin">
 		<div>
 			<h3>Administratorpasswort festlegen</h3>

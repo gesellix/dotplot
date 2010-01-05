@@ -52,4 +52,14 @@
     <servlet-name>DotPlot</servlet-name>
     <url-pattern>/DotPlot</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UnfinishedJobs</display-name>
+    <servlet-name>UnfinishedJobs</servlet-name>
+    <servlet-class>org.dotplot.dpaas.servlets.UnfinishedJobs</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UnfinishedJobs</servlet-name>
+    <url-pattern>/UnfinishedJobs</url-pattern>
+  </servlet-mapping>
 </web-app>
