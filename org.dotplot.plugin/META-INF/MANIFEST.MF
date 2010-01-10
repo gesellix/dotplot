@@ -21,9 +21,9 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.help,
  org.eclipse.compare,
  org.eclipse.core.runtime,
- org.junit,
  org.eclipse.text,
- org.eclipse.core.runtime.compatibility.auth
+ org.eclipse.core.runtime.compatibility.auth,
+ org.junit4
 Bundle-ActivationPolicy: lazy
 Export-Package: Resources.afm,
  Resources.cmap,

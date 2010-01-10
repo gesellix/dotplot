@@ -1,225 +1,235 @@
-/**
- * 
- */
 package org.dotplot.core.tests;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.dotplot.core.TypeBindingRegistry;
 import org.dotplot.core.TypeRegistry;
 import org.dotplot.tokenizer.service.TextType;
 import org.dotplot.util.DuplicateRegistrationException;
 import org.dotplot.util.UnknownIDException;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class TypeBindingRegistryTest extends TestCase {
+public final class TypeBindingRegistryTest {
 
-    private TypeBindingRegistry registry;
+	/**
+	 * 
+	 */
+	private TypeBindingRegistry registry;
 
-    private TypeRegistry typeRegistry;
+	/**
+	 * 
+	 */
+	private TypeRegistry typeRegistry;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.typeRegistry = new TypeRegistry();
-	this.registry = new TypeBindingRegistry(this.typeRegistry);
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.core.TypeBindingRegistry.combine(IRegistry<String>)'
-     */
-    public void testCombine() {
-	try {
-	    this.registry.combine(null);
-	    fail("UnsupportedOperationException must be thrown");
-	} catch (UnsupportedOperationException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
-	}
-    }
-
-    /*
-     * Test method for 'org.dotplot.core.TypeBindingRegistry.get(String)'
-     */
-    public void testGet() {
-	try {
-	    this.registry.get(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		this.typeRegistry = new TypeRegistry();
+		this.registry = new TypeBindingRegistry(this.typeRegistry);
 	}
 
-	try {
-	    this.registry.get("test");
-	    fail("UnknownIDException must be thrown");
-	} catch (UnknownIDException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Test method for
+	 * 'org.dotplot.core.TypeBindingRegistry.combine(IRegistry<String>)'.
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 * 
+	 */
+	@Test(expected = UnsupportedOperationException.class)
+	public void testCombineNULL() throws Exception {
+		this.registry.combine(null);
 	}
 
-	try {
-	    this.typeRegistry.register("type", TextType.type);
-	    this.registry.register("test", "type");
-	    assertEquals("type", this.registry.get("test"));
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for 'org.dotplot.core.TypeBindingRegistry.getAll()'
-     */
-    public void testGetAll() {
-	assertNotNull(this.registry.getAll());
-	assertTrue(this.registry.getAll().isEmpty());
-    }
-
-    public void testGetTypeOf() {
-	try {
-	    this.registry.getTypeOf(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Test method for 'org.dotplot.core.TypeBindingRegistry.get(String)'.
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test
+	public void testGet() throws Exception {
+		this.typeRegistry.register("type", TextType.type);
+		this.registry.register("test", "type");
+		assertEquals("type", this.registry.get("test"));
 	}
 
-	try {
-	    assertNull(this.registry.getTypeOf("test"));
-	    this.typeRegistry.register("type", TextType.type);
-	    this.registry.register("test", "type");
-	    assertSame(TextType.type, this.registry.getTypeOf("test"));
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/**
+	 * Test method for 'org.dotplot.core.TypeBindingRegistry.getAll()'.
+	 */
+	@Test
+	public void testGetAll() {
+		assertNotNull(this.registry.getAll());
+		assertTrue(this.registry.getAll().isEmpty());
 	}
 
-    }
-
-    /*
-     * Test method for 'org.dotplot.core.TypeBindingRegistry.getTypeRegistry()'
-     */
-    public void testGetTypeRegistry() {
-	assertSame(this.typeRegistry, this.registry.getTypeRegistry());
-    }
-
-    /*
-     * Test method for 'org.dotplot.core.TypeBindingRegistry.register(String,
-     * String)'
-     */
-    public void testRegister() {
-	try {
-	    this.registry.register(null, "test");
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testGetNULL() throws Exception {
+		this.registry.get(null);
 	}
 
-	try {
-	    this.registry.register("test", null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test
+	public void testGetTypeOf() throws Exception {
+		assertNull(this.registry.getTypeOf("test"));
+		this.typeRegistry.register("type", TextType.type);
+		this.registry.register("test", "type");
+		assertSame(TextType.type, this.registry.getTypeOf("test"));
 	}
 
-	try {
-	    this.registry.register("test", "type");
-	    fail("IllegalArgumentException must be thrown");
-	} catch (IllegalArgumentException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testGetTypeOfNULL() {
+		this.registry.getTypeOf(null);
 	}
 
-	try {
-	    this.typeRegistry.register("type", TextType.type);
-	    this.registry.register("test", "type");
-	    assertNotNull(this.registry.getAll());
-	    assertEquals(1, this.registry.getAll().size());
-	    assertTrue(this.registry.getAll().containsKey("test"));
-	    assertEquals("type", this.registry.getAll().get("test"));
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/**
+	 * Test method for 'org.dotplot.core.TypeBindingRegistry.getTypeRegistry()'.
+	 */
+	@Test
+	public void testGetTypeRegistry() {
+		assertSame(this.typeRegistry, this.registry.getTypeRegistry());
 	}
 
-	try {
-	    this.registry.register("test", "type");
-	    fail("DuplicateRegistrationException must be thrown");
-	} catch (DuplicateRegistrationException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
-	}
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.core.TypeBindingRegistry.TypeBindingRegistry(ITypeRegistry)'
-     */
-    public void testTypeBindingRegistry() {
-	try {
-	    new TypeBindingRegistry(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test(expected = UnknownIDException.class)
+	public void testGetUNKNOWNid() throws Exception {
+		this.registry.get("test");
 	}
 
-	try {
-	    new TypeBindingRegistry(this.typeRegistry);
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for 'org.dotplot.core.TypeBindingRegistry.unregister(String)'
-     */
-    public void testUnregister() {
-	try {
-	    this.registry.unregister(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Test method for 'org.dotplot.core.TypeBindingRegistry.register(String,
+	 * String)'.
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 * 
+	 */
+	@Test
+	public void testRegister() throws Exception {
+		this.typeRegistry.register("type", TextType.type);
+		this.registry.register("test", "type");
+		assertNotNull(this.registry.getAll());
+		assertEquals(1, this.registry.getAll().size());
+		assertTrue(this.registry.getAll().containsKey("test"));
+		assertEquals("type", this.registry.getAll().get("test"));
 	}
 
-	try {
-	    assertNull(this.registry.unregister("test"));
-	    this.typeRegistry.register("type", TextType.type);
-	    this.registry.register("test", "type");
-	    assertNotNull(this.registry.getAll());
-	    assertEquals(1, this.registry.getAll().size());
-	    assertTrue(this.registry.getAll().containsKey("test"));
-
-	    assertEquals("type", this.registry.unregister("test"));
-	    assertNotNull(this.registry.getAll());
-	    assertEquals(0, this.registry.getAll().size());
-	    assertFalse(this.registry.getAll().containsKey("test"));
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test(expected = DuplicateRegistrationException.class)
+	public void testRegisterDublicateRegistration() throws Exception {
+		this.typeRegistry.register("type", TextType.type);
+		this.registry.register("test", "type");
+		this.registry.register("test", "type");
 	}
-    }
 
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testRegisterKEYnull() throws Exception {
+		this.registry.register("test", null);
+	}
+
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testRegisterVALUEnull() throws Exception {
+		this.registry.register(null, "test");
+	}
+
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testRegisterWRONGargument() throws Exception {
+		this.registry.register("test", "type");
+	}
+
+	/**
+	 * Test method for
+	 * 'org.dotplot.core.TypeBindingRegistry.TypeBindingRegistry(ITypeRegistry)'
+	 * .
+	 */
+	@Test
+	public void testTypeBindingRegistry() {
+		new TypeBindingRegistry(this.typeRegistry);
+	}
+
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testTypeBindingRegistryNULL() {
+		new TypeBindingRegistry(null);
+	}
+
+	/**
+	 * Test method for
+	 * 'org.dotplot.core.TypeBindingRegistry.unregister(String)'.
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception
+	 */
+	@Test
+	public void testUnregister() throws Exception {
+		assertNull(this.registry.unregister("test"));
+		this.typeRegistry.register("type", TextType.type);
+		this.registry.register("test", "type");
+		assertNotNull(this.registry.getAll());
+		assertEquals(1, this.registry.getAll().size());
+		assertTrue(this.registry.getAll().containsKey("test"));
+
+		assertEquals("type", this.registry.unregister("test"));
+		assertNotNull(this.registry.getAll());
+		assertEquals(0, this.registry.getAll().size());
+		assertFalse(this.registry.getAll().containsKey("test"));
+	}
+
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testUnregisterNULL() {
+		this.registry.unregister(null);
+	}
 }
