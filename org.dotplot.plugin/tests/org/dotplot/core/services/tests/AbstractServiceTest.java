@@ -38,15 +38,15 @@ import org.dotplot.core.services.UnknownServiceHotSpotException;
  */
 public final class AbstractServiceTest extends TestCase {
 
-	private class AbstractServiceTester extends
+	private final class AbstractServiceTester extends
 			AbstractService<IFrameworkContext, ServiceHotSpot> implements
 			ITaskResultMarshaler {
 
 		/**
-		 * @param id
+		 * @param theId
 		 */
-		public AbstractServiceTester(String id) {
-			super(id);
+		public AbstractServiceTester(final String theId) {
+			super(theId);
 			this.addHotSpot(new ServiceHotSpot(spotID, String.class));
 		}
 
@@ -67,6 +67,10 @@ public final class AbstractServiceTest extends TestCase {
 			return job;
 		}
 
+		/**
+		 * 
+		 * @return
+		 */
 		public IContext getFrameworkContext() {
 			return this.frameworkContext;
 		}
@@ -87,7 +91,7 @@ public final class AbstractServiceTest extends TestCase {
 		 * @see org.dotplot.services.IService#getResultContextClass()
 		 */
 		@Override
-		public Class getResultContextClass() {
+		public Class<?> getResultContextClass() {
 			return TestContext.class;
 		}
 
@@ -118,7 +122,7 @@ public final class AbstractServiceTest extends TestCase {
 		 * .Map)
 		 */
 		public Object marshalResult(Map jobResult) {
-			Iterator iter = jobResult.values().iterator();
+			Iterator<?> iter = jobResult.values().iterator();
 			StringBuffer buffer = new StringBuffer();
 			while (iter.hasNext()) {
 				buffer.append(iter.next().toString());
@@ -134,16 +138,16 @@ public final class AbstractServiceTest extends TestCase {
 		 * .Class)
 		 */
 		@Override
-		public boolean workingContextIsCompatible(Class contextClass) {
+		public boolean workingContextIsCompatible(Class<?> contextClass) {
 			return TestContext.class.isAssignableFrom(contextClass);
 		}
 
 	}
 
-	private class TestContext implements IContext {
+	private final class TestContext implements IContext {
 	}
 
-	private class TestPlugin implements IServiceExtentionActivator {
+	private final class TestPlugin implements IServiceExtentionActivator {
 
 		/*
 		 * (non-Javadoc)
@@ -176,10 +180,13 @@ public final class AbstractServiceTest extends TestCase {
 
 	private class TestTaskPart implements ITaskPart {
 
-		String id;
+		/**
+		 * 
+		 */
+		private String id;
 
-		public TestTaskPart(String id) {
-			this.id = id;
+		public TestTaskPart(String newId) {
+			this.id = newId;
 		}
 
 		/*
@@ -268,11 +275,11 @@ public final class AbstractServiceTest extends TestCase {
 
 	private static final String spotID = "org.dotplot.services.tests.testspot";
 
-	IServiceExtentionActivator plugin;
+	private IServiceExtentionActivator plugin;
 
-	AbstractServiceTester tester;
+	private AbstractServiceTester tester;
 
-	String id = "org.dotplot.service.test.abstractservicetester";
+	private String id = "org.dotplot.service.test.abstractservicetester";
 
 	/*
 	 * @see TestCase#setUp()

@@ -31,358 +31,364 @@ import org.eclipse.ui.part.ViewPart;
  * @see ViewPart
  */
 public class DotPlotter extends ViewPart {
-    /**
-     * returns the amount of the current shift, done by use of the scrollbars.
-     * 
-     * @return the shift
-     * 
-     * @see #setCurrentShift(org.eclipse.swt.graphics.Point)
-     */
-    public static Point getCurrentShift() {
-	return currentShift;
-    }
-
-    private static void onHorizontalBarSelected(final ScrollBar hBar,
-	    final Point origin, final Canvas shell) {
-	int hSelection = hBar.getSelection();
-	int destX = -hSelection - origin.x;
-	Rectangle rect = currentImage.getBounds();
-	shell.scroll(destX, 0, 0, 0, rect.width, rect.height, false);
-	origin.x = -hSelection;
-	shell.redraw();
-
-	setCurrentShift(new Point(hSelection, getCurrentShift().y));
-    }
-
-    private static void onShellPainted(Event e, final Point origin,
-	    final Canvas shell) {
-	GC gc = e.gc;
-	gc.drawImage(currentImage, origin.x, origin.y);
-
-	Rectangle rect = currentImage.getBounds();
-	Rectangle client = shell.getClientArea();
-
-	int marginWidth = client.width - rect.width;
-	int marginHeight = client.height - rect.height;
-
-	if (marginWidth > 0) {
-	    gc.fillRectangle(rect.width, 0, marginWidth, client.height);
-	}
-	if (marginHeight > 0) {
-	    gc.fillRectangle(0, rect.height, client.width, marginHeight);
-	}
-    }
-
-    private static void onShellResized(final Canvas shell,
-	    final ScrollBar hBar, final ScrollBar vBar, final Point origin) {
-	Rectangle rect = currentImage.getBounds();
-	Rectangle client = shell.getClientArea();
-	hBar.setMaximum(rect.width);
-	vBar.setMaximum(rect.height);
-	hBar.setThumb(Math.min(rect.width, client.width));
-	vBar.setThumb(Math.min(rect.height, client.height));
-	int hPage = rect.width - client.width;
-	int vPage = rect.height - client.height;
-	int hSelection = hBar.getSelection();
-	int vSelection = vBar.getSelection();
-	if (hSelection >= hPage) {
-	    if (hPage <= 0) {
-		hSelection = 0;
-	    }
-	    origin.x = -hSelection;
-	}
-	if (vSelection >= vPage) {
-	    if (vPage <= 0) {
-		vSelection = 0;
-	    }
-	    origin.y = -vSelection;
-	}
-	shell.redraw();
-    }
-
-    private static void onVerticalBarSelected(final ScrollBar vBar,
-	    final Point origin, final Canvas shell) {
-	int vSelection = vBar.getSelection();
-	int destY = -vSelection - origin.y;
-	Rectangle rect = currentImage.getBounds();
-	shell.scroll(0, destY, 0, 0, rect.width, rect.height, false);
-	origin.y = -vSelection;
-	shell.redraw();
-
-	setCurrentShift(new Point(getCurrentShift().x, vSelection));
-    }
-
-    /**
-     * sets the current shift, done by use of the scrollbars.
-     * 
-     * @param shift
-     *            amount of the shift
-     * 
-     * @see #getCurrentShift()
-     */
-    public static void setCurrentShift(Point shift) {
-	currentShift = shift;
-    }
-
-    private Composite parent;
-
-    private Canvas canvas;
-
-    private MouseListener mouseListener;
-
-    private MouseMoveListener mouseMoveListener;
-
-    private static Image currentImage;
-
-    private static Point currentShift = new Point(0, 0);
-
-    /**
-     * creates the control.
-     * 
-     * @param parent
-     *            the parent
-     * 
-     * @see ViewPart#createPartControl
-     */
-    @Override
-    public void createPartControl(Composite parent) {
-	this.parent = parent;
-	canvas = new Canvas(parent, SWT.SHELL_TRIM
-	// | SWT.NO_BACKGROUND
-		| SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL
-	// | SWT.NONE
-	);
-
-	showSplashDelayed(1000);
-    }
-
-    /**
-     * returns the internal canvas, the plot will be painted to.
-     * 
-     * @return the canvas
-     */
-    public Canvas getCanvas() {
-	return canvas;
-    }
-
-    /**
-     * gives the parent composite.
-     * 
-     * @return parent composite
-     */
-    public Composite getParent() {
-	return parent;
-    }
-
-    /**
-     * gives the initial size of the DotPlotter view.
-     * 
-     * @return the initial size of the window.
-     */
-    public Dimension getSize() {
-	// avoid painting "behind" the scrollbars
-	final int border = 25;
-	return new Dimension(this.canvas.getSize().x - border, this.canvas
-		.getSize().y
-		- border);
-    }
-
-    /**
-     * Shows the given image <code>data</code> on the internal Canvas. You
-     * should prefer <code>showImage(org.eclipse.swt.graphics.ImageData)</code>
-     * to avoid thread-synchronisation errors.
-     * 
-     * @param data
-     *            the image to be shown, or null to clear the display
-     * 
-     * @see #showImage(org.eclipse.swt.graphics.ImageData)
-     */
-    public void handleImageDisplay(final ImageData data) {
-	final Display display = parent.getDisplay();
-	final Canvas shell = canvas;
-
-	final ScrollBar hBar = shell.getHorizontalBar();
-	final ScrollBar vBar = shell.getVerticalBar();
-
-	final Point origin = new Point(0, 0);
-
-	if (currentImage != null) {
-	    currentImage.dispose();
-	    currentImage = null;
+	/**
+	 * returns the amount of the current shift, done by use of the scrollbars.
+	 * 
+	 * @return the shift
+	 * 
+	 * @see #setCurrentShift(org.eclipse.swt.graphics.Point)
+	 */
+	public static Point getCurrentShift() {
+		return currentShift;
 	}
 
-	if (data != null) {
-	    currentImage = new Image(display, data);
+	private static void onHorizontalBarSelected(final ScrollBar hBar,
+			final Point origin, final Canvas shell) {
+		int hSelection = hBar.getSelection();
+		int destX = -hSelection - origin.x;
+		Rectangle rect = currentImage.getBounds();
+		shell.scroll(destX, 0, 0, 0, rect.width, rect.height, false);
+		origin.x = -hSelection;
+		shell.redraw();
+
+		setCurrentShift(new Point(hSelection, getCurrentShift().y));
 	}
 
-	// show "empty image"?
-	if (currentImage == null) {
-	    // int width = getSize().width;
-	    // int height = getSize().height;
-	    // currentImage = new Image(display, width, height);
-	    try {
-		final ImageData splashdata = new ImageData(DotplotPlugin
-			.getResource("icons/dp_splash_400x360_v0_2.jpg")
-			.getFile());
+	private static void onShellPainted(Event e, final Point origin,
+			final Canvas shell) {
+		GC gc = e.gc;
+		gc.drawImage(currentImage, origin.x, origin.y);
 
-		currentImage = new Image(display, splashdata);
+		Rectangle rect = currentImage.getBounds();
+		Rectangle client = shell.getClientArea();
 
-		GC gc = new GC(currentImage);
+		int marginWidth = client.width - rect.width;
+		int marginHeight = client.height - rect.height;
 
-		final FontData fontData = gc.getFont().getFontData()[0];
-
-		// gc.fillRectangle(0, 0, splashdata.width, splashdata.height);
-		// gc.setForeground(new Color(display, 255, 0, 0));
-		// gc.drawLine(0, 0, splashdata.width, splashdata.height);
-		// gc.drawLine(0, splashdata.height, splashdata.width, 0);
-		gc.setForeground(new Color(display, 0, 0, 0));
-
-		gc.setFont(new Font(shell.getDisplay(), new FontData(fontData
-			.getName(), fontData.getHeight(), SWT.BOLD)));
-		gc.drawText(DotplotPlugin.getVersionInfo(), 10, 10, false);
-
-		// gc.drawText("No image", 10, 10);
-
-		gc.dispose();
-	    } catch (MalformedURLException e) {
-		e.printStackTrace();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
+		if (marginWidth > 0) {
+			gc.fillRectangle(rect.width, 0, marginWidth, client.height);
+		}
+		if (marginHeight > 0) {
+			gc.fillRectangle(0, rect.height, client.width, marginHeight);
+		}
 	}
 
-	hBar.addListener(SWT.Selection, new Listener() {
-	    public void handleEvent(Event e) {
-		onHorizontalBarSelected(hBar, origin, shell);
-	    }
-	});
+	private static void onShellResized(final Canvas shell,
+			final ScrollBar hBar, final ScrollBar vBar, final Point origin) {
+		Rectangle rect = currentImage.getBounds();
+		Rectangle client = shell.getClientArea();
+		hBar.setMaximum(rect.width);
+		vBar.setMaximum(rect.height);
+		hBar.setThumb(Math.min(rect.width, client.width));
+		vBar.setThumb(Math.min(rect.height, client.height));
+		int hPage = rect.width - client.width;
+		int vPage = rect.height - client.height;
+		int hSelection = hBar.getSelection();
+		int vSelection = vBar.getSelection();
+		if (hSelection >= hPage) {
+			if (hPage <= 0) {
+				hSelection = 0;
+			}
+			origin.x = -hSelection;
+		}
+		if (vSelection >= vPage) {
+			if (vPage <= 0) {
+				vSelection = 0;
+			}
+			origin.y = -vSelection;
+		}
+		shell.redraw();
+	}
 
-	vBar.addListener(SWT.Selection, new Listener() {
-	    public void handleEvent(Event e) {
-		onVerticalBarSelected(vBar, origin, shell);
-	    }
-	});
+	private static void onVerticalBarSelected(final ScrollBar vBar,
+			final Point origin, final Canvas shell) {
+		int vSelection = vBar.getSelection();
+		int destY = -vSelection - origin.y;
+		Rectangle rect = currentImage.getBounds();
+		shell.scroll(0, destY, 0, 0, rect.width, rect.height, false);
+		origin.y = -vSelection;
+		shell.redraw();
 
-	shell.addListener(SWT.Resize, new Listener() {
-	    public void handleEvent(Event e) {
+		setCurrentShift(new Point(getCurrentShift().x, vSelection));
+	}
+
+	/**
+	 * sets the current shift, done by use of the scrollbars.
+	 * 
+	 * @param shift
+	 *            amount of the shift
+	 * 
+	 * @see #getCurrentShift()
+	 */
+	public static void setCurrentShift(Point shift) {
+		currentShift = shift;
+	}
+
+	private Composite parent;
+
+	private Canvas canvas;
+
+	private MouseListener mouseListener;
+
+	private MouseMoveListener mouseMoveListener;
+
+	private static Image currentImage;
+
+	private static Point currentShift = new Point(0, 0);
+
+	/**
+	 * creates the control.
+	 * 
+	 * @param parent
+	 *            the parent
+	 * 
+	 * @see ViewPart#createPartControl
+	 */
+	@Override
+	public void createPartControl(Composite parent) {
+		this.parent = parent;
+		canvas = new Canvas(parent, SWT.SHELL_TRIM
+		// | SWT.NO_BACKGROUND
+				| SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL
+		// | SWT.NONE
+		);
+
+		showSplashDelayed(1000);
+	}
+
+	/**
+	 * returns the internal canvas, the plot will be painted to.
+	 * 
+	 * @return the canvas
+	 */
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	/**
+	 * gives the parent composite.
+	 * 
+	 * @return parent composite
+	 */
+	public Composite getParent() {
+		return parent;
+	}
+
+	/**
+	 * gives the initial size of the DotPlotter view.
+	 * 
+	 * @return the initial size of the window.
+	 */
+	public Dimension getSize() {
+		// avoid painting "behind" the scrollbars
+		final int border = 25;
+		return new Dimension(this.canvas.getSize().x - border, this.canvas
+				.getSize().y
+				- border);
+	}
+
+	/**
+	 * Shows the given image <code>data</code> on the internal Canvas. You
+	 * should prefer <code>showImage(org.eclipse.swt.graphics.ImageData)</code>
+	 * to avoid thread-synchronisation errors.
+	 * 
+	 * @param data
+	 *            the image to be shown, or null to clear the display
+	 * 
+	 * @see #showImage(org.eclipse.swt.graphics.ImageData)
+	 */
+	public void handleImageDisplay(final ImageData data) {
+		final Display display = parent.getDisplay();
+		final Canvas shell = canvas;
+
+		final ScrollBar hBar = shell.getHorizontalBar();
+		final ScrollBar vBar = shell.getVerticalBar();
+
+		final Point origin = new Point(0, 0);
+
+		if (currentImage != null) {
+			currentImage.dispose();
+			currentImage = null;
+		}
+
+		if (data != null) {
+			currentImage = new Image(display, data);
+		}
+
+		// show "empty image"?
+		if (currentImage == null) {
+			// int width = getSize().width;
+			// int height = getSize().height;
+			// currentImage = new Image(display, width, height);
+			try {
+				final ImageData splashdata = new ImageData(DotplotPlugin
+						.getResource("icons/dp_splash_400x360_v0_2.jpg")
+						.getFile());
+
+				currentImage = new Image(display, splashdata);
+
+				GC gc = new GC(currentImage);
+
+				final FontData fontData = gc.getFont().getFontData()[0];
+
+				// gc.fillRectangle(0, 0, splashdata.width, splashdata.height);
+				// gc.setForeground(new Color(display, 255, 0, 0));
+				// gc.drawLine(0, 0, splashdata.width, splashdata.height);
+				// gc.drawLine(0, splashdata.height, splashdata.width, 0);
+				gc.setForeground(new Color(display, 0, 0, 0));
+
+				gc.setFont(new Font(shell.getDisplay(), new FontData(fontData
+						.getName(), fontData.getHeight(), SWT.BOLD)));
+				gc.drawText(DotplotPlugin.getVersionInfo(), 10, 10, false);
+
+				// gc.drawText("No image", 10, 10);
+
+				gc.dispose();
+			}
+			catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		hBar.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				onHorizontalBarSelected(hBar, origin, shell);
+			}
+		});
+
+		vBar.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event e) {
+				onVerticalBarSelected(vBar, origin, shell);
+			}
+		});
+
+		shell.addListener(SWT.Resize, new Listener() {
+			public void handleEvent(Event e) {
+				onShellResized(shell, hBar, vBar, origin);
+			}
+		});
+
+		shell.addListener(SWT.Paint, new Listener() {
+			public void handleEvent(Event e) {
+				onShellPainted(e, origin, shell);
+			}
+		});
+
+		// force recalculation of scrollbar lengths
+		// and force shell.redraw()
 		onShellResized(shell, hBar, vBar, origin);
-	    }
-	});
 
-	shell.addListener(SWT.Paint, new Listener() {
-	    public void handleEvent(Event e) {
-		onShellPainted(e, origin, shell);
-	    }
-	});
-
-	// force recalculation of scrollbar lengths
-	// and force shell.redraw()
-	onShellResized(shell, hBar, vBar, origin);
-
-	while (!shell.isDisposed() && !display.readAndDispatch()) {
-	    shell.redraw();
-	    display.sleep();
-	}
-    }
-
-    public void removeMouseMoveListener() {
-	if (mouseMoveListener != null) {
-	    canvas.getDisplay().syncExec(new Runnable() {
-		public void run() {
-		    canvas.removeMouseMoveListener(mouseMoveListener);
-		    mouseMoveListener = null;
+		while (!shell.isDisposed() && !display.readAndDispatch()) {
+			shell.redraw();
+			display.sleep();
 		}
-	    });
 	}
-    }
 
-    /**
-     * empty implementation.
-     * 
-     * @see ViewPart#setFocus
-     */
-    @Override
-    public void setFocus() {
-    }
-
-    /**
-     * use this one if you want to provide regions of interest, sets the canvas'
-     * MouseListener.
-     * 
-     * @param m
-     *            Listener for the canvas
-     */
-    public void setMouseListener(MouseListener m) {
-	if (this.mouseListener == null) {
-	    this.canvas.addMouseListener(m);
-	    this.mouseListener = m;
-	}
-    }
-
-    /**
-     * use this one if you want to provide regions of interest for mouse moves,
-     * sets the canvas' MouseMoveListener.
-     * 
-     * @param m
-     *            Listener for the canvas
-     */
-    public void setMouseMoveListener(final MouseMoveListener m) {
-	canvas.getDisplay().syncExec(new Runnable() {
-	    public void run() {
-		if (mouseMoveListener == null) {
-		    canvas.addMouseMoveListener(m);
-		    mouseMoveListener = m;
-		} else {
-		    canvas.removeMouseMoveListener(mouseMoveListener);
-		    canvas.addMouseMoveListener(m);
-		    mouseMoveListener = m;
+	public void removeMouseMoveListener() {
+		if (mouseMoveListener != null) {
+			canvas.getDisplay().syncExec(new Runnable() {
+				public void run() {
+					canvas.removeMouseMoveListener(mouseMoveListener);
+					mouseMoveListener = null;
+				}
+			});
 		}
-	    }
-	});
-    }
-
-    /**
-     * Shows the given image <code>data</code> on the internal Canvas. It
-     * internally uses some sort of thread-synchronization to avoid errors.
-     * 
-     * @param data
-     *            the image to be shown, or null to clear the display
-     * 
-     * @see org.eclipse.swt.widgets.Display#syncExec(Runnable)
-     */
-    public void showImage(final ImageData data) {
-	if (parent == null) {
-	    return;
 	}
-	Display display = parent.getDisplay();
 
-	// ImageLoader loader = new ImageLoader();
-	// loader.data = new ImageData[]{data};
-	// loader.save("./test.bmp", SWT.IMAGE_BMP);
-	// System.out.println("saving");
+	/**
+	 * empty implementation.
+	 * 
+	 * @see ViewPart#setFocus
+	 */
+	@Override
+	public void setFocus() {
+	}
 
-	// as this method could be called from other threads,
-	// use the built-in synchronization
-	display.syncExec(new Runnable() {
-	    public void run() {
-		handleImageDisplay(data);
-	    }
-	});
-    }
-
-    private void showSplashDelayed(final int delay) {
-	new Thread() {
-	    @Override
-	    public void run() {
-		try {
-		    Thread.sleep(delay);
-		} catch (InterruptedException e) {
-		    e.printStackTrace();
+	/**
+	 * use this one if you want to provide regions of interest, sets the canvas'
+	 * MouseListener.
+	 * 
+	 * @param m
+	 *            Listener for the canvas
+	 */
+	public void setMouseListener(MouseListener m) {
+		if (this.mouseListener == null) {
+			this.canvas.addMouseListener(m);
+			this.mouseListener = m;
 		}
-		showImage(null);
-	    }
-	}.start();
-    }
+	}
+
+	/**
+	 * use this one if you want to provide regions of interest for mouse moves,
+	 * sets the canvas' MouseMoveListener.
+	 * 
+	 * @param m
+	 *            Listener for the canvas
+	 */
+	public void setMouseMoveListener(final MouseMoveListener m) {
+		canvas.getDisplay().syncExec(new Runnable() {
+			public void run() {
+				if (mouseMoveListener == null) {
+					canvas.addMouseMoveListener(m);
+					mouseMoveListener = m;
+				}
+				else {
+					canvas.removeMouseMoveListener(mouseMoveListener);
+					canvas.addMouseMoveListener(m);
+					mouseMoveListener = m;
+				}
+			}
+		});
+	}
+
+	/**
+	 * Shows the given image <code>data</code> on the internal Canvas. It
+	 * internally uses some sort of thread-synchronization to avoid errors.
+	 * 
+	 * @param data
+	 *            the image to be shown, or null to clear the display
+	 * 
+	 * @see org.eclipse.swt.widgets.Display#syncExec(Runnable)
+	 */
+	public void showImage(final ImageData data) {
+		if (parent == null) {
+			return;
+		}
+		Display display = parent.getDisplay();
+
+		// ImageLoader loader = new ImageLoader();
+		// loader.data = new ImageData[]{data};
+		// loader.save("./test.bmp", SWT.IMAGE_BMP);
+		// System.out.println("saving");
+
+		// as this method could be called from other threads,
+		// use the built-in synchronization
+		display.syncExec(new Runnable() {
+			public void run() {
+				handleImageDisplay(data);
+			}
+		});
+	}
+
+	private void showSplashDelayed(final int delay) {
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(delay);
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				showImage(null);
+			}
+		};
+		t.start();
+	}
 }

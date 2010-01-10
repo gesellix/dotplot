@@ -10,7 +10,7 @@ import org.dotplot.core.IPlotSource;
 import org.dotplot.tokenizer.Token;
 
 /**
- * Test Class for a Token
+ * Test Class for a Token.
  * 
  * @author case
  * @version 1.0
@@ -19,16 +19,6 @@ public final class TokenTest extends TestCase {
 
 	private Token token;
 
-	/**
-	 * Constructor for TokenTest.
-	 * 
-	 * @param arg0
-	 *            - the first argument
-	 */
-	public TokenTest(String arg0) {
-		super(arg0);
-	}
-
 	/*
 	 * @see TestCase#setUp()
 	 */
@@ -36,14 +26,6 @@ public final class TokenTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.token = new Token("TestToken", 1, 2);
-	}
-
-	/*
-	 * @see TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 
 	public void testEquals() {

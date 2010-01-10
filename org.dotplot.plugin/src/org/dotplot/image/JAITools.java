@@ -408,14 +408,15 @@ final public class JAITools {
 	 */
 	static void saveDotplot(final IDotplot dotplot, final File target,
 			final String format, final int[][] lut, final boolean isOnlyExport,
-			boolean useThread) {
+			final boolean useThread) {
 		if (useThread) {
-			new Thread() {
+			Thread t = new Thread() {
 				@Override
 				public void run() {
 					save(dotplot, target, format, lut, isOnlyExport);
 				}
-			}.start();
+			};
+			t.start();
 		}
 		else {
 			save(dotplot, target, format, lut, isOnlyExport);

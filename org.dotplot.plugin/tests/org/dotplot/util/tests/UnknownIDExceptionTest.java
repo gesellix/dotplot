@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.dotplot.util.tests;
 
 import static org.junit.Assert.assertEquals;
@@ -23,5 +20,4 @@ public final class UnknownIDExceptionTest {
 		assertEquals("test", new UnknownIDException("test").getMessage());
 		assertEquals("null", new UnknownIDException(null).getMessage());
 	}
-
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.dotplot.tokenizer.converter.tests;
 
 import java.io.File;
@@ -22,6 +19,9 @@ import org.dotplot.tokenizer.service.TextType;
  */
 public final class DefaultConverterConfigurationTest extends TestCase {
 
+	/**
+	 * 
+	 */
 	private DefaultConverterConfiguration config;
 
 	/*
@@ -33,6 +33,9 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		this.config = new DefaultConverterConfiguration();
 	}
 
+	/**
+	 * 
+	 */
 	public void testCopy() {
 		IConfiguration copy = this.config.copy();
 		assertNotNull(copy);
@@ -51,9 +54,10 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		assertEquals(config.getTargetType(), this.config.getTargetType());
 	}
 
-	/*
+	/**
 	 * Test method for
-	 * 'org.dotplot.tokenizer.converter.DefaultConverterConfiguration.DefaultConverterConfiguration()'
+	 * org.dotplot.tokenizer.converter.DefaultConverterConfiguration
+	 * .DefaultConverterConfiguration()'.
 	 */
 	public void testDefaultConverterConfiguration() {
 		assertFalse(this.config.overwriteConvertedFiles());
@@ -61,6 +65,9 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		assertEquals(new File("."), this.config.getConvertedFilesDirectory());
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetConverterID() {
 		Map<ISourceType, String> registry = this.config.getConverterRegistry();
 
@@ -93,6 +100,9 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void testObjectForm() {
 		try {
 			this.config.objectForm(null);
@@ -146,6 +156,9 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		assertTrue(config.getConvertFiles());
 	}
 
+	/**
+	 * 
+	 */
 	public void testSerializedForm() {
 		this.config.setConvertFiles(true);
 		this.config.setKeepConvertedFiles(true);
@@ -153,9 +166,9 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		assertEquals(".;true;false", this.config.serializedForm());
 	}
 
-	/*
-	 * Test method for
-	 * 'org.dotplot.tokenizer.converter.DefaultConverterConfiguration.getCovertedFilesDirectory()'
+	/**
+	 * Test method for'org.dotplot.tokenizer.converter.DefaultConverterConfiguration.getCovertedFilesDirectory(
+	 * ) ' .
 	 */
 	public void testSetGetCovertedFilesDirectory() {
 		try {
@@ -204,9 +217,10 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		}
 	}
 
-	/*
+	/**
 	 * Test method for
-	 * 'org.dotplot.tokenizer.converter.DefaultConverterConfiguration.setOverwriteFiles(boolean)'
+	 * 'org.dotplot.tokenizer.converter.DefaultConverterConfiguration.setOverwriteFi
+	 * l e s ( b o o l e a n ) ' .
 	 */
 	public void testSetGetOverwriteFiles() {
 		this.config.setOverwriteConvertedFiles(true);
@@ -223,8 +237,10 @@ public final class DefaultConverterConfigurationTest extends TestCase {
 		assertFalse(this.config.overwriteConvertedFiles());
 	}
 
+	/**
+	 * 
+	 */
 	public void testSetGetTargetType() {
 		assertEquals(TextType.type, this.config.getTargetType());
 	}
-
 }
