@@ -24,48 +24,51 @@ import org.dotplot.util.UnknownIDException;
  */
 public class ShutdownJob extends AbstractJob<DotplotContext> {
 
-    /**
-     * Creates a new <code>ShutdownJob</code>.
-     */
-    public ShutdownJob() {
-	super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.IJob#process(C)
-     */
-    public boolean process(DotplotContext context) {
-	try {
-	    InitializerService service = (InitializerService) context
-		    .getServiceRegistry()
-		    .get(CoreSystem.SERVICE_INITIALIZER_ID);
-	    for (IJob<?> job : service.getShutdownJobs()) {
-		job.setErrorHandler(this.getErrorHandler());
-		context.executeJob(job);
-	    }
-	    return true;
-	} catch (UnknownIDException e) {
-	    this.getErrorHandler().fatal(this, e);
-	    return false;
+	/**
+	 * Creates a new <code>ShutdownJob</code>.
+	 */
+	public ShutdownJob() {
+		super();
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.services.IJob#validatePreconditions(org.dotplot.core
-     * .services.IServiceRegistry)
-     */
-    public boolean validatePreconditions(IServiceRegistry registry) {
-	try {
-	    registry.get(CoreSystem.SERVICE_INITIALIZER_ID);
-	    return true;
-	} catch (Exception e) {
-	    return false;
+	/**
+	 * 
+	 * @see org.dotplot.core.services.IJob#process(DotplotContext)
+	 * @param context
+	 * @return
+	 */
+	public final boolean process(final DotplotContext context) {
+		try {
+			InitializerService service = (InitializerService) context
+					.getServiceRegistry()
+					.get(CoreSystem.SERVICE_INITIALIZER_ID);
+			for (IJob<?> job : service.getShutdownJobs()) {
+				job.setErrorHandler(this.getErrorHandler());
+				context.executeJob(job);
+			}
+			return true;
+		}
+		catch (UnknownIDException e) {
+			this.getErrorHandler().fatal(this, e);
+			return false;
+		}
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.core.services.IJob#validatePreconditions(org.dotplot.core
+	 * .services.IServiceRegistry)
+	 */
+	public boolean validatePreconditions(IServiceRegistry registry) {
+		try {
+			registry.get(CoreSystem.SERVICE_INITIALIZER_ID);
+			return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
+	}
 
 }

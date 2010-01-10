@@ -13,28 +13,31 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @author Tobias Gesellchen
  */
 public class SavePlotJobAction extends Action {
-    private IWorkbenchWindow parent;
 
-    /**
-     * create the action.
-     * 
-     * @param text
-     *            the title to be displayed on the context menu
-     * @param creator
-     *            link to get the current dotplot
-     * @param parent
-     *            the parent
-     */
-    public SavePlotJobAction(String text, IWorkbenchWindow parent) {
-	this.parent = parent;
-	setText(text);
-    }
+	/**
+	 * 
+	 */
+	private IWorkbenchWindow parent;
 
-    /**
-     * starts the export.
-     */
-    @Override
-    public void run() {
-	PlotJobAction.savePlotJob(parent.getShell());
-    }
+	/**
+	 * create the action.
+	 * 
+	 * @param text
+	 *            the title to be displayed on the context menu
+	 * @param parentWindow
+	 *            the parent
+	 */
+	public SavePlotJobAction(final String text,
+			final IWorkbenchWindow parentWindow) {
+		this.parent = parentWindow;
+		setText(text);
+	}
+
+	/**
+	 * starts the export.
+	 */
+	@Override
+	public final void run() {
+		PlotJobAction.savePlotJob(parent.getShell());
+	}
 }

@@ -26,59 +26,61 @@ import org.eclipse.ui.IWorkbenchWindow;
  */
 public class ExportAction extends Action {
 
-    private IWorkbenchWindow parent;
+	/**
+	 * 
+	 */
+	private IWorkbenchWindow parent;
 
-    /**
-     * create the action.
-     * 
-     * @param text
-     *            the title to be displayed on the context menu
-     * @param creator
-     *            link to get the current dotplot
-     * @param parent
-     *            the parent
-     */
-    public ExportAction(String text, IWorkbenchWindow parent) {
-	this.parent = parent;
-	setText(text);
-    }
-
-    /**
-     * asks the user for the target file and exports the dotplot.
-     */
-    @Override
-    public void run() {
-	DotplotContext context = ContextFactory.getContext();
-	IQImageConfiguration config;
-	try {
-	    config = (IQImageConfiguration) context.getConfigurationRegistry()
-		    .get(QImageService.QIMAGE_CONFIGURATION_ID);
-	} catch (UnknownIDException e) {
-	    config = new QImageConfiguration();
+	/**
+	 * create the action.
+	 * 
+	 * @param text
+	 *            the title to be displayed on the context menu
+	 * @param parentWindow
+	 *            the parent
+	 */
+	public ExportAction(final String text, final IWorkbenchWindow parentWindow) {
+		this.parent = parentWindow;
+		setText(text);
 	}
 
-	IDotplot dotplot = context.getCurrentDotplot();
-	if (dotplot != null) {
-	    String filename = FileUtil.showFileDialog(parent.getShell(),
-		    "Select a target file or enter a file name",
-		    new String[] { "." + JAITools.EXPORTFORMAT_JPEG });
-	    if (filename != null) {
-		File file = new File(filename);
-
-		Logger.getLogger(ExportAction.class.getName()).info(
-			"export image to " + file.getAbsolutePath());
-
-		final int endIndex = filename.lastIndexOf("."
-			+ JAITools.EXPORT_FORMATS[config.getExportFormat()]);
-		String name = filename;
-		if (endIndex != -1) {
-		    name = filename.substring(0, endIndex);
+	/**
+	 * Asks the user for the target file and exports the dotplot.
+	 */
+	@Override
+	public final void run() {
+		DotplotContext context = ContextFactory.getContext();
+		IQImageConfiguration config;
+		try {
+			config = (IQImageConfiguration) context.getConfigurationRegistry()
+					.get(QImageService.QIMAGE_CONFIGURATION_ID);
 		}
-		config.setExportFilename(name);
-		config.setExportFormat(JAITools.JPG); // JPEG
+		catch (UnknownIDException e) {
+			config = new QImageConfiguration();
+		}
 
-		QImage.saveDotplot(dotplot, false, config);
-	    }
+		IDotplot dotplot = context.getCurrentDotplot();
+		if (dotplot != null) {
+			String filename = FileUtil.showFileDialog(parent.getShell(),
+					"Select a target file or enter a file name",
+					new String[] { "." + JAITools.EXPORTFORMAT_JPEG });
+			if (filename != null) {
+				File file = new File(filename);
+
+				Logger.getLogger(ExportAction.class.getName()).info(
+						"export image to " + file.getAbsolutePath());
+
+				final int endIndex = filename.lastIndexOf("."
+						+ JAITools.EXPORT_FORMATS[config.getExportFormat()]);
+				String name = filename;
+				if (endIndex != -1) {
+					name = filename.substring(0, endIndex);
+				}
+				config.setExportFilename(name);
+				config.setExportFormat(JAITools.JPG); // JPEG
+
+				QImage.saveDotplot(dotplot, false, config);
+			}
+		}
 	}
-    }
 }

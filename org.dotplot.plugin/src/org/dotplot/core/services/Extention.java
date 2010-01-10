@@ -11,81 +11,81 @@ import java.util.TreeMap;
  */
 public class Extention {
 
-    /**
+	/**
 	 * 
 	 */
-    private IServiceExtentionActivator activator;
+	private IServiceExtentionActivator activator;
 
-    /**
+	/**
 	 * 
 	 */
-    private Object extentionObject;
+	private Object extentionObject;
 
-    /**
+	/**
 	 * 
 	 */
-    private Map<String, String> parameter;
+	private Map<String, String> parameter;
 
-    /**
-     * Creates a new <code>Extention</code>.
-     * 
-     * @param plugin
-     * @param extentionObject
-     */
-    public Extention(IServiceExtentionActivator plugin, Object extentionObject) {
-	if (plugin == null || extentionObject == null) {
-	    throw new NullPointerException();
+	/**
+	 * Creates a new <code>Extention</code>.
+	 * 
+	 * @param plugin
+	 * @param extentionObject
+	 */
+	public Extention(IServiceExtentionActivator plugin, Object extentionObject) {
+		if (plugin == null || extentionObject == null) {
+			throw new NullPointerException();
+		}
+		this.activator = plugin;
+		this.extentionObject = extentionObject;
+		this.parameter = new TreeMap<String, String>();
 	}
-	this.activator = plugin;
-	this.extentionObject = extentionObject;
-	this.parameter = new TreeMap<String, String>();
-    }
 
-    /**
-     * 
-     * @param name
-     * @param value
-     */
-    public void addParameter(String name, String value) {
-	if (name == null || value == null) {
-	    throw new NullPointerException();
+	/**
+	 * 
+	 * @param name
+	 * @param value
+	 */
+	public void addParameter(String name, String value) {
+		if (name == null || value == null) {
+			throw new NullPointerException();
+		}
+		this.parameter.put(name, value);
 	}
-	this.parameter.put(name, value);
-    }
 
-    /**
-     * 
-     * @return
-     */
-    public IServiceExtentionActivator getActivator() {
-	return this.activator;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public Object getExtentionObject() {
-	return this.extentionObject;
-    }
-
-    /**
-     * 
-     * @param name
-     * @return
-     */
-    public String getParameter(String name) {
-	if (name == null) {
-	    throw new NullPointerException();
+	/**
+	 * 
+	 * @return
+	 */
+	public IServiceExtentionActivator getActivator() {
+		return this.activator;
 	}
-	return this.parameter.get(name);
-    }
 
-    /**
-     * 
-     * @return
-     */
-    public Map<String, String> getParameters() {
-	return this.parameter;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public Object getExtentionObject() {
+		return this.extentionObject;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public String getParameter(String name) {
+		if (name == null) {
+			throw new NullPointerException();
+		}
+		return this.parameter.get(name);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Map<String, String> getParameters() {
+		return this.parameter;
+	}
 }

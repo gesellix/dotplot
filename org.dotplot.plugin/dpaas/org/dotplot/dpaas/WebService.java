@@ -96,5 +96,4 @@ public class WebService extends DotplotService {
 	public boolean workingContextIsCompatible(Class<?> contextClass) {
 		return false;
 	}
-
 }

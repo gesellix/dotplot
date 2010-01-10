@@ -20,71 +20,83 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * preference store that belongs to the main plug-in class. That way,
  * preferences can be accessed directly via the preference store.
  */
-public class DotPlotPreferencePage extends FieldEditorPreferencePage implements
-	IWorkbenchPreferencePage {
-    private static final String P_PATH = "pathPreference";
+public final class DotPlotPreferencePage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 
-    private static final String P_BOOLEAN = "booleanPreference";
+	/**
+	 * 
+	 */
+	private static final String P_PATH = "pathPreference";
 
-    private static final String P_CHOICE = "choicePreference";
+	/**
+	 * 
+	 */
+	private static final String P_BOOLEAN = "booleanPreference";
 
-    private static final String P_STRING = "stringPreference";
+	/**
+	 * 
+	 */
+	private static final String P_CHOICE = "choicePreference";
 
-    /**
-     * Creates a new <code>DotPlotPreferencePage</code>.
-     */
-    public DotPlotPreferencePage() {
-	super(FLAT);
+	/**
+	 * 
+	 */
+	private static final String P_STRING = "stringPreference";
 
-	try {
-	    DotplotPlugin plugin = DotplotPlugin.getDefault();
-	    IPreferenceStore store = plugin.getPreferenceStore();
+	/**
+	 * Creates a new <code>DotPlotPreferencePage</code>.
+	 */
+	public DotPlotPreferencePage() {
+		super(FLAT);
 
-	    setPreferenceStore(store);
-	    setDescription("A demonstration of a preference page implementation");
+		try {
+			DotplotPlugin plugin = DotplotPlugin.getDefault();
+			IPreferenceStore store = plugin.getPreferenceStore();
 
-	    initializeDefaults();
-	} catch (Exception e) {
-	    e.printStackTrace();
+			setPreferenceStore(store);
+			setDescription("A demonstration of a preference page implementation");
+
+			initializeDefaults();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-    }
 
-    /**
-     * Creates the field editors. Field editors are abstractions of the common
-     * GUI blocks needed to manipulate various types of preferences. Each field
-     * editor knows how to save and restore itself.
-     */
-    @Override
-    public void createFieldEditors() {
-	addField(new DirectoryFieldEditor(P_PATH, "&Directory preference:",
-		getFieldEditorParent()));
-	addField(new BooleanFieldEditor(P_BOOLEAN,
-		"&An example of a boolean preference", getFieldEditorParent()));
+	/**
+	 * Creates the field editors. Field editors are abstractions of the common
+	 * GUI blocks needed to manipulate various types of preferences. Each field
+	 * editor knows how to save and restore itself.
+	 */
+	@Override
+	public void createFieldEditors() {
+		addField(new DirectoryFieldEditor(P_PATH, "&Directory preference:",
+				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(P_BOOLEAN,
+				"&An example of a boolean preference", getFieldEditorParent()));
 
-	addField(new RadioGroupFieldEditor(P_CHOICE,
-		"An example of a multiple-choice preference", 1,
-		new String[][] { { "&Choice 1", "choice1" },
-			{ "C&hoice 2", "choice2" } }, getFieldEditorParent()));
-	addField(new StringFieldEditor(P_STRING, "A &text preference:",
-		getFieldEditorParent()));
-    }
+		addField(new RadioGroupFieldEditor(P_CHOICE,
+				"An example of a multiple-choice preference", 1,
+				new String[][] { { "&Choice 1", "choice1" },
+						{ "C&hoice 2", "choice2" } }, getFieldEditorParent()));
+		addField(new StringFieldEditor(P_STRING, "A &text preference:",
+				getFieldEditorParent()));
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-     */
-    public void init(IWorkbench workbench) {
-    }
+	/**
+	 * 
+	 * @param workbench
+	 */
+	public void init(final IWorkbench workbench) {
+	}
 
-    /**
-     * Sets the default values of the preferences.
-     */
-    private void initializeDefaults() {
-	IPreferenceStore store = getPreferenceStore();
-	store.setDefault(P_BOOLEAN, true);
-	store.setDefault(P_CHOICE, "choice2");
-	store.setDefault(P_STRING, "Default value");
-    }
+	/**
+	 * Sets the default values of the preferences.
+	 */
+	private void initializeDefaults() {
+		IPreferenceStore store = getPreferenceStore();
+		store.setDefault(P_BOOLEAN, true);
+		store.setDefault(P_CHOICE, "choice2");
+		store.setDefault(P_STRING, "Default value");
+	}
 }
