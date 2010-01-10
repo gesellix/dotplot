@@ -50,178 +50,182 @@ import org.dotplot.tokenizer.service.XMLType;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class ContextFactoryTest extends TestCase {
+public final class ContextFactoryTest extends TestCase {
 
-    private File workingDir;
+	private File workingDir;
 
-    private File pluginDir;
+	private File pluginDir;
 
-    @Override
-    public void setUp() throws Exception {
-	this.workingDir = new File(".").getCanonicalFile();
-	this.pluginDir = new File("./plugins").getCanonicalFile();
-    }
-
-    /*
-     * Test method for 'org.dotplot.core.ContextFactory.getContext()'
-     */
-    public void testGetContext() {
-	ContextFactory.setShemaFile("./ressources/dotplotschema.xsd");
-	DotplotContext context = ContextFactory.getContext();
-	assertNotNull(context);
-	assertSame(context, ContextFactory.getContext());
-	assertSame(context, ContextFactory.getContext());
-
-	try {
-	    assertEquals(workingDir.getCanonicalPath(), context
-		    .getWorkingDirectory());
-
-	    assertEquals(pluginDir.getCanonicalPath(), context
-		    .getPluginDirectory());
-	} catch (IOException e1) {
-	    fail("unexpected Exception");
-	}
-	IPluginRegistry<?> plugins = context.getPluginRegistry();
-	assertNotNull(plugins);
-	assertEquals(5, plugins.getAll().size());
-	assertTrue(plugins.getAll().containsKey(CoreSystem.CORE_SYSTEM_ID));
-	assertTrue(plugins.getAll().containsKey("org.dotplot.core.Standard"));
-	assertTrue(plugins.getAll().containsKey("org.dotplot.examples"));
-	assertTrue(plugins.getAll().containsKey("org.dotplot.dpaas"));
-	assertTrue(plugins.getAll().containsKey("org.dotplot.tokenizer.filter"));
-
-	IServiceRegistry services = context.getServiceRegistry();
-	assertNotNull(services);
-	assertEquals(10, services.getAll().size());
-	assertTrue(services.getAll().containsKey(CoreSystem.SERVICE_LOADER_ID));
-	assertTrue(services.getAll().containsKey(
-		CoreSystem.SERVICE_INTEGRATOR_ID));
-	assertTrue(services.getAll().containsKey(
-		CoreSystem.SERVICE_INITIALIZER_ID));
-	assertTrue(services.getAll().containsKey(
-		"org.dotplot.standard.Tokenizer"));
-	assertTrue(services.getAll().containsKey("org.dotplot.standard.Filter"));
-	assertTrue(services.getAll().containsKey(
-		"org.dotplot.standard.Converter"));
-	assertTrue(services.getAll().containsKey(
-		"org.dotplot.standard.Converter"));
-	assertTrue(services.getAll()
-		.containsKey("org.dotplot.standard.FMatrix"));
-	assertTrue(services.getAll().containsKey("org.dotplot.standard.QImage"));
-	assertTrue(services.getAll().containsKey(
-		"org.dotplot.standard.EclipseUI"));
-	assertTrue(services.getAll().containsKey(
-		"org.dotplot.addon.dpaas.webservice"));
-
-	assertNotNull(context.getGuiServiceID());
-	assertEquals("org.dotplot.standard.EclipseUI", context
-		.getGuiServiceID());
-	try {
-	    assertNotNull(context.getGuiService());
-	    assertTrue(context.getGuiService() instanceof EclipseUIService);
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	@Override
+	public void setUp() throws Exception {
+		this.workingDir = new File(".").getCanonicalFile();
+		this.pluginDir = new File("./plugins").getCanonicalFile();
 	}
 
-	IJobRegistry jobs = context.getJobRegistry();
-	assertNotNull(jobs);
-	assertEquals(6, jobs.getAll().size());
-	assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_PLUGIN_LOADER_ID));
-	assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_SHUTDOWN_ID));
-	assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_STARTUP_ID));
-	assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.PlotterJob"));
-	assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.ImagerJob"));
-	assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.TestJob"));
+	/*
+	 * Test method for 'org.dotplot.core.ContextFactory.getContext()'
+	 */
+	public void testGetContext() {
+		ContextFactory.setShemaFile("./ressources/dotplotschema.xsd");
+		DotplotContext context = ContextFactory.getContext();
+		assertNotNull(context);
+		assertSame(context, ContextFactory.getContext());
+		assertSame(context, ContextFactory.getContext());
 
-	try {
-	    TokenizerService tokenizerService = (TokenizerService) services
-		    .get("org.dotplot.standard.Tokenizer");
-	    Map<String, ITokenizer> tokenizers = tokenizerService
-		    .getRegisteredTokenizer();
-	    assertEquals(6, tokenizers.size());
-	    assertTrue(tokenizers.get("org.dotplot.tokenizer.JavaTokenizer") instanceof JavaScanner);
-	    assertTrue(tokenizers.get("org.dotplot.tokenizer.PHPTokenizer") instanceof PHPScanner);
-	    assertTrue(tokenizers.get("org.dotplot.tokenizer.CTokenizer") instanceof CScanner);
-	    assertTrue(tokenizers.get("org.dotplot.tokenizer.CPPTokenizer") instanceof CPlusPlusScanner);
-	    assertTrue(tokenizers.get("org.dotplot.tokenizer.TextTokenizer") instanceof TextScanner);
-	    assertTrue(tokenizers.get("org.dotplot.tokenizer.DefaultTokenizer") instanceof DefaultScanner);
+		try {
+			assertEquals(workingDir.getCanonicalPath(), context
+					.getWorkingDirectory());
 
-	    FilterService filterService = (FilterService) services
-		    .get("org.dotplot.standard.Filter");
-	    Map<String, ITokenFilter> filters = filterService
-		    .getRegisteredFilters();
-	    assertEquals(6, filters.size());
-	    assertTrue(filters.get("org.dotplot.filter.GeneralFilter") instanceof GeneralTokenFilter);
-	    assertTrue(filters.get("org.dotplot.filter.KeyWordFilter") instanceof KeyWordFilter);
-	    assertTrue(filters.get("org.dotplot.filter.LineFilter") instanceof LineFilter);
-	    assertTrue(filters.get("org.dotplot.filter.SentenceFilter") instanceof SentenceFilter);
-	    assertTrue(filters.get("org.dotplot.filter.4GrammFilter") instanceof org.dotplot.examples.FourGrammFilter.FourGrammFilter);
-	    assertTrue(filters.get("org.dotplot.filter.StemmerFilter") instanceof StemmerFilter);
+			assertEquals(pluginDir.getCanonicalPath(), context
+					.getPluginDirectory());
+		}
+		catch (IOException e1) {
+			fail("unexpected Exception");
+		}
+		IPluginRegistry<?> plugins = context.getPluginRegistry();
+		assertNotNull(plugins);
+		assertEquals(5, plugins.getAll().size());
+		assertTrue(plugins.getAll().containsKey(CoreSystem.CORE_SYSTEM_ID));
+		assertTrue(plugins.getAll().containsKey("org.dotplot.core.Standard"));
+		assertTrue(plugins.getAll().containsKey("org.dotplot.examples"));
+		assertTrue(plugins.getAll().containsKey("org.dotplot.dpaas"));
+		assertTrue(plugins.getAll().containsKey("org.dotplot.tokenizer.filter"));
 
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+		IServiceRegistry services = context.getServiceRegistry();
+		assertNotNull(services);
+		assertEquals(10, services.getAll().size());
+		assertTrue(services.getAll().containsKey(CoreSystem.SERVICE_LOADER_ID));
+		assertTrue(services.getAll().containsKey(
+				CoreSystem.SERVICE_INTEGRATOR_ID));
+		assertTrue(services.getAll().containsKey(
+				CoreSystem.SERVICE_INITIALIZER_ID));
+		assertTrue(services.getAll().containsKey(
+				"org.dotplot.standard.Tokenizer"));
+		assertTrue(services.getAll().containsKey("org.dotplot.standard.Filter"));
+		assertTrue(services.getAll().containsKey(
+				"org.dotplot.standard.Converter"));
+		assertTrue(services.getAll().containsKey(
+				"org.dotplot.standard.Converter"));
+		assertTrue(services.getAll()
+				.containsKey("org.dotplot.standard.FMatrix"));
+		assertTrue(services.getAll().containsKey("org.dotplot.standard.QImage"));
+		assertTrue(services.getAll().containsKey(
+				"org.dotplot.standard.EclipseUI"));
+		assertTrue(services.getAll().containsKey(
+				"org.dotplot.addon.dpaas.webservice"));
+
+		assertNotNull(context.getGuiServiceID());
+		assertEquals("org.dotplot.standard.EclipseUI", context
+				.getGuiServiceID());
+		try {
+			assertNotNull(context.getGuiService());
+			assertTrue(context.getGuiService() instanceof EclipseUIService);
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+
+		IJobRegistry jobs = context.getJobRegistry();
+		assertNotNull(jobs);
+		assertEquals(6, jobs.getAll().size());
+		assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_PLUGIN_LOADER_ID));
+		assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_SHUTDOWN_ID));
+		assertTrue(jobs.getAll().containsKey(CoreSystem.JOB_STARTUP_ID));
+		assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.PlotterJob"));
+		assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.ImagerJob"));
+		assertTrue(jobs.getAll().containsKey("org.dotplot.jobs.TestJob"));
+
+		try {
+			TokenizerService tokenizerService = (TokenizerService) services
+					.get("org.dotplot.standard.Tokenizer");
+			Map<String, ITokenizer> tokenizers = tokenizerService
+					.getRegisteredTokenizer();
+			assertEquals(6, tokenizers.size());
+			assertTrue(tokenizers.get("org.dotplot.tokenizer.JavaTokenizer") instanceof JavaScanner);
+			assertTrue(tokenizers.get("org.dotplot.tokenizer.PHPTokenizer") instanceof PHPScanner);
+			assertTrue(tokenizers.get("org.dotplot.tokenizer.CTokenizer") instanceof CScanner);
+			assertTrue(tokenizers.get("org.dotplot.tokenizer.CPPTokenizer") instanceof CPlusPlusScanner);
+			assertTrue(tokenizers.get("org.dotplot.tokenizer.TextTokenizer") instanceof TextScanner);
+			assertTrue(tokenizers.get("org.dotplot.tokenizer.DefaultTokenizer") instanceof DefaultScanner);
+
+			FilterService filterService = (FilterService) services
+					.get("org.dotplot.standard.Filter");
+			Map<String, ITokenFilter> filters = filterService
+					.getRegisteredFilters();
+			assertEquals(6, filters.size());
+			assertTrue(filters.get("org.dotplot.filter.GeneralFilter") instanceof GeneralTokenFilter);
+			assertTrue(filters.get("org.dotplot.filter.KeyWordFilter") instanceof KeyWordFilter);
+			assertTrue(filters.get("org.dotplot.filter.LineFilter") instanceof LineFilter);
+			assertTrue(filters.get("org.dotplot.filter.SentenceFilter") instanceof SentenceFilter);
+			assertTrue(filters.get("org.dotplot.filter.4GrammFilter") instanceof org.dotplot.examples.FourGrammFilter.FourGrammFilter);
+			assertTrue(filters.get("org.dotplot.filter.StemmerFilter") instanceof StemmerFilter);
+
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+
+		ITypeRegistry typeRegistry = context.getTypeRegistry();
+		Map<String, ISourceType> types = typeRegistry.getAll();
+		assertEquals(8, types.size());
+		assertEquals(TextType.type, types.get(ConverterService.TYPE_TEXT_ID));
+		assertEquals(PdfType.type, types.get(ConverterService.TYPE_PDF_ID));
+		assertEquals(JavaType.type, types.get("org.dotplot.types.Text.Java"));
+		assertEquals(CType.type, types.get("org.dotplot.types.Text.C"));
+		assertEquals(XMLType.type, types.get("org.dotplot.types.Text.XML"));
+		assertEquals(HTMLType.type, types.get("org.dotplot.types.Text.HTML"));
+		assertEquals(CPlusPlusType.type, types
+				.get("org.dotplot.types.Text.C++"));
+		assertEquals(PHPType.type, types.get("org.dotplot.types.Text.PHP"));
+
+		ITypeBindingRegistry bindingRegistry = context.getTypeBindingRegistry();
+		Map<String, String> bindings = bindingRegistry.getAll();
+		assertEquals(25, bindings.size());
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".txt"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".log"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".ini"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".conf"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".properties"));
+		assertEquals("org.dotplot.types.Text.XML", bindings.get(".xml"));
+		assertEquals("org.dotplot.types.Text.HTML", bindings.get(".htm"));
+		assertEquals("org.dotplot.types.Text.HTML", bindings.get(".html"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".py"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".css"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".cs"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".hpp"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".csv"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".doc"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".rtf"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".tex"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".js"));
+		assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".cfg"));
+		assertEquals("org.dotplot.types.Text.Java", bindings.get(".java"));
+		assertEquals("org.dotplot.types.Text.C", bindings.get(".c"));
+		assertEquals("org.dotplot.types.Text.C", bindings.get(".cc"));
+		assertEquals("org.dotplot.types.Text.C", bindings.get(".h"));
+		assertEquals("org.dotplot.types.Text.C++", bindings.get(".cpp"));
+		assertEquals("org.dotplot.types.Text.PHP", bindings.get(".php"));
+		assertEquals(ConverterService.TYPE_PDF_ID, bindings.get(".pdf"));
+
+		try {
+			ConverterService converterService = (ConverterService) services
+					.get("org.dotplot.standard.Converter");
+			Map<String, IConverter> converters = converterService
+					.getRegisteredConverter();
+			assertNotNull(converters);
+			assertEquals(1, converters.size());
+			assertTrue(converters
+					.containsKey(ConverterService.CONVERTER_PDF_TO_TEXT_ID));
+			assertTrue(converters
+					.get(ConverterService.CONVERTER_PDF_TO_TEXT_ID) instanceof PDFtoTxtConverter);
+
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
 	}
-
-	ITypeRegistry typeRegistry = context.getTypeRegistry();
-	Map<String, ISourceType> types = typeRegistry.getAll();
-	assertEquals(8, types.size());
-	assertEquals(TextType.type, types.get(ConverterService.TYPE_TEXT_ID));
-	assertEquals(PdfType.type, types.get(ConverterService.TYPE_PDF_ID));
-	assertEquals(JavaType.type, types.get("org.dotplot.types.Text.Java"));
-	assertEquals(CType.type, types.get("org.dotplot.types.Text.C"));
-	assertEquals(XMLType.type, types.get("org.dotplot.types.Text.XML"));
-	assertEquals(HTMLType.type, types.get("org.dotplot.types.Text.HTML"));
-	assertEquals(CPlusPlusType.type, types
-		.get("org.dotplot.types.Text.C++"));
-	assertEquals(PHPType.type, types.get("org.dotplot.types.Text.PHP"));
-
-	ITypeBindingRegistry bindingRegistry = context.getTypeBindingRegistry();
-	Map<String, String> bindings = bindingRegistry.getAll();
-	assertEquals(25, bindings.size());
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".txt"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".log"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".ini"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".conf"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".properties"));
-	assertEquals("org.dotplot.types.Text.XML", bindings.get(".xml"));
-	assertEquals("org.dotplot.types.Text.HTML", bindings.get(".htm"));
-	assertEquals("org.dotplot.types.Text.HTML", bindings.get(".html"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".py"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".css"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".cs"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".hpp"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".csv"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".doc"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".rtf"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".tex"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".js"));
-	assertEquals(ConverterService.TYPE_TEXT_ID, bindings.get(".cfg"));
-	assertEquals("org.dotplot.types.Text.Java", bindings.get(".java"));
-	assertEquals("org.dotplot.types.Text.C", bindings.get(".c"));
-	assertEquals("org.dotplot.types.Text.C", bindings.get(".cc"));
-	assertEquals("org.dotplot.types.Text.C", bindings.get(".h"));
-	assertEquals("org.dotplot.types.Text.C++", bindings.get(".cpp"));
-	assertEquals("org.dotplot.types.Text.PHP", bindings.get(".php"));
-	assertEquals(ConverterService.TYPE_PDF_ID, bindings.get(".pdf"));
-
-	try {
-	    ConverterService converterService = (ConverterService) services
-		    .get("org.dotplot.standard.Converter");
-	    Map<String, IConverter> converters = converterService
-		    .getRegisteredConverter();
-	    assertNotNull(converters);
-	    assertEquals(1, converters.size());
-	    assertTrue(converters
-		    .containsKey(ConverterService.CONVERTER_PDF_TO_TEXT_ID));
-	    assertTrue(converters
-		    .get(ConverterService.CONVERTER_PDF_TO_TEXT_ID) instanceof PDFtoTxtConverter);
-
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
 
 }

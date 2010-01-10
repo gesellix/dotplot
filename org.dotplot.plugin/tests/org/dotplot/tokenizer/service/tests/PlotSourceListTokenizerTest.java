@@ -22,210 +22,221 @@ import org.dotplot.tokenizer.service.TextType;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class PlotSourceListTokenizerTest extends TestCase {
+public final class PlotSourceListTokenizerTest extends TestCase {
 
-    private PlotSourceListTokenizer streamer;
+	private PlotSourceListTokenizer streamer;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.streamer = new PlotSourceListTokenizer(new DefaultScanner());
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.tokenizer.PlotSourceStreamer.addPlotSource(IPlotSource)'
-     */
-    public void testAddPlotSource() {
-	try {
-	    this.streamer.addPlotSource(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/*
+	 * @see TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.streamer = new PlotSourceListTokenizer(new DefaultScanner());
 	}
 
-	try {
-	    IPlotSource source1 = new DotplotFile(
-		    "./testfiles/tokenizer/test.txt");
-	    IPlotSource source2 = new DotplotFile(
-		    "./testfiles/tokenizer/test.txt");
+	/*
+	 * Test method for
+	 * 'org.dotplot.tokenizer.PlotSourceStreamer.addPlotSource(IPlotSource)'
+	 */
+	public void testAddPlotSource() {
+		try {
+			this.streamer.addPlotSource(null);
+			fail("NullPointerException must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
 
-	    this.streamer.addPlotSource(source1);
-	    this.streamer.addPlotSource(source2);
+		try {
+			IPlotSource source1 = new DotplotFile(
+					"./testfiles/tokenizer/test.txt");
+			IPlotSource source2 = new DotplotFile(
+					"./testfiles/tokenizer/test.txt");
 
-	    assertNotNull(this.streamer.getSourceList());
-	    assertEquals(2, this.streamer.getSourceList().size());
-	    assertTrue(this.streamer.getSourceList().contains(source1));
-	    assertTrue(this.streamer.getSourceList().contains(source2));
+			this.streamer.addPlotSource(source1);
+			this.streamer.addPlotSource(source2);
 
-	    this.streamer.getNextToken();
+			assertNotNull(this.streamer.getSourceList());
+			assertEquals(2, this.streamer.getSourceList().size());
+			assertTrue(this.streamer.getSourceList().contains(source1));
+			assertTrue(this.streamer.getSourceList().contains(source2));
 
-	    try {
+			this.streamer.getNextToken();
+
+			try {
+				this.streamer.addPlotSource(source1);
+				fail("UnsupportedOperationException must be thrown");
+			}
+			catch (UnsupportedOperationException e) {
+				/* all clear */
+			}
+			catch (Exception e) {
+				fail("wrong Exception");
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+
+	}
+
+	/*
+	 * Test method for 'org.dotplot.tokenizer.PlotSourceStreamer.getNextToken()'
+	 */
+	public void testGetNextToken() {
+		try {
+			IPlotSource source1 = new DotplotFile(
+					"./testfiles/tokenizer/test.txt");
+			IPlotSource source2 = new DotplotFile(
+					"./testfiles/tokenizer/test.txt");
+
+			this.streamer.addPlotSource(source1);
+			this.streamer.addPlotSource(source2);
+
+			assertNotNull(this.streamer.getSourceList());
+			assertEquals(2, this.streamer.getSourceList().size());
+			assertTrue(this.streamer.getSourceList().contains(source1));
+			assertTrue(this.streamer.getSourceList().contains(source2));
+
+			String[] text = { "to", "be", "or", "not", "to", "be." };
+			Token token;
+
+			for (int i = 0; i < text.length; i++) {
+				token = this.streamer.getNextToken();
+				assertEquals(text[i], token.getValue());
+				assertSame(source1, token.getSource());
+			}
+
+			assertTrue(this.streamer.getNextToken() instanceof EOFToken);
+
+			for (int i = 0; i < text.length; i++) {
+				token = this.streamer.getNextToken();
+				assertEquals(text[i], token.getValue());
+				assertSame(source2, token.getSource());
+			}
+
+			assertTrue(this.streamer.getNextToken() instanceof EOFToken);
+
+			assertEquals("EOSToken", this.streamer.getNextToken().getValue());
+			assertEquals("EOSToken", this.streamer.getNextToken().getValue());
+			assertEquals("EOSToken", this.streamer.getNextToken().getValue());
+			assertEquals("EOSToken", this.streamer.getNextToken().getValue());
+
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+
+	}
+
+	public void testGetStreamType() {
+		IPlotSource source1 = new DotplotFile("./testfiles/tokenizer/test.txt",
+				JavaType.type);
+		IPlotSource source2 = new DotplotFile("./testfiles/tokenizer/test.txt",
+				PHPType.type);
+		IPlotSource source3 = new DotplotFile("./testfiles/tokenizer/test.txt",
+				TextType.type);
+		IPlotSource source4 = new DotplotFile("./testfiles/tokenizer/test.txt",
+				PdfType.type);
+
+		ISourceList list = new DefaultSourceList();
+		assertEquals(list.getCombinedSourceType(), this.streamer
+				.getStreamType());
+
+		list.add(source1);
 		this.streamer.addPlotSource(source1);
-		fail("UnsupportedOperationException must be thrown");
-	    } catch (UnsupportedOperationException e) {
-		/* all clear */
-	    } catch (Exception e) {
-		fail("wrong Exception");
-	    }
+		assertEquals(list.getCombinedSourceType(), this.streamer
+				.getStreamType());
 
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+		list.add(source2);
+		this.streamer.addPlotSource(source2);
+		assertEquals(list.getCombinedSourceType(), this.streamer
+				.getStreamType());
+
+		list.add(source3);
+		this.streamer.addPlotSource(source3);
+		assertEquals(list.getCombinedSourceType(), this.streamer
+				.getStreamType());
+
+		list.add(source4);
+		this.streamer.addPlotSource(source4);
+		assertEquals(list.getCombinedSourceType(), this.streamer
+				.getStreamType());
 	}
 
-    }
-
-    /*
-     * Test method for 'org.dotplot.tokenizer.PlotSourceStreamer.getNextToken()'
-     */
-    public void testGetNextToken() {
-	try {
-	    IPlotSource source1 = new DotplotFile(
-		    "./testfiles/tokenizer/test.txt");
-	    IPlotSource source2 = new DotplotFile(
-		    "./testfiles/tokenizer/test.txt");
-
-	    this.streamer.addPlotSource(source1);
-	    this.streamer.addPlotSource(source2);
-
-	    assertNotNull(this.streamer.getSourceList());
-	    assertEquals(2, this.streamer.getSourceList().size());
-	    assertTrue(this.streamer.getSourceList().contains(source1));
-	    assertTrue(this.streamer.getSourceList().contains(source2));
-
-	    String[] text = { "to", "be", "or", "not", "to", "be." };
-	    Token token;
-
-	    for (int i = 0; i < text.length; i++) {
-		token = this.streamer.getNextToken();
-		assertEquals(text[i], token.getValue());
-		assertSame(source1, token.getSource());
-	    }
-
-	    assertTrue(this.streamer.getNextToken() instanceof EOFToken);
-
-	    for (int i = 0; i < text.length; i++) {
-		token = this.streamer.getNextToken();
-		assertEquals(text[i], token.getValue());
-		assertSame(source2, token.getSource());
-	    }
-
-	    assertTrue(this.streamer.getNextToken() instanceof EOFToken);
-
-	    assertEquals("EOSToken", this.streamer.getNextToken().getValue());
-	    assertEquals("EOSToken", this.streamer.getNextToken().getValue());
-	    assertEquals("EOSToken", this.streamer.getNextToken().getValue());
-	    assertEquals("EOSToken", this.streamer.getNextToken().getValue());
-
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/*
+	 * Test method for
+	 * 'org.dotplot.tokenizer.PlotSourceStreamer.PlotSourceStreamer(ITokenizer)'
+	 */
+	public void testPlotSourceStreamer() {
+		assertNotNull(this.streamer.getSourceList());
+		assertEquals(0, this.streamer.getSourceList().size());
 	}
 
-    }
+	/*
+	 * Test method for
+	 * 'org.dotplot.tokenizer.PlotSourceStreamer.removePlotSource(IPlotSource)'
+	 */
+	public void testRemovePlotSource() {
+		try {
+			this.streamer.removePlotSource(null);
+			fail("NullPointerException must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
 
-    public void testGetStreamType() {
-	IPlotSource source1 = new DotplotFile("./testfiles/tokenizer/test.txt",
-		JavaType.type);
-	IPlotSource source2 = new DotplotFile("./testfiles/tokenizer/test.txt",
-		PHPType.type);
-	IPlotSource source3 = new DotplotFile("./testfiles/tokenizer/test.txt",
-		TextType.type);
-	IPlotSource source4 = new DotplotFile("./testfiles/tokenizer/test.txt",
-		PdfType.type);
+		try {
+			IPlotSource source1 = new DotplotFile(
+					"./testfiles/tokenizer/test.txt");
+			IPlotSource source2 = new DotplotFile(
+					"./testfiles/tokenizer/test.txt");
 
-	ISourceList list = new DefaultSourceList();
-	assertEquals(list.getCombinedSourceType(), this.streamer
-		.getStreamType());
+			this.streamer.addPlotSource(source1);
+			this.streamer.addPlotSource(source2);
 
-	list.add(source1);
-	this.streamer.addPlotSource(source1);
-	assertEquals(list.getCombinedSourceType(), this.streamer
-		.getStreamType());
+			assertNotNull(this.streamer.getSourceList());
+			assertEquals(2, this.streamer.getSourceList().size());
+			assertTrue(this.streamer.getSourceList().contains(source1));
+			assertTrue(this.streamer.getSourceList().contains(source2));
 
-	list.add(source2);
-	this.streamer.addPlotSource(source2);
-	assertEquals(list.getCombinedSourceType(), this.streamer
-		.getStreamType());
+			this.streamer.removePlotSource(source1);
 
-	list.add(source3);
-	this.streamer.addPlotSource(source3);
-	assertEquals(list.getCombinedSourceType(), this.streamer
-		.getStreamType());
+			assertNotNull(this.streamer.getSourceList());
+			assertEquals(1, this.streamer.getSourceList().size());
+			assertFalse(this.streamer.getSourceList().contains(source1));
+			assertTrue(this.streamer.getSourceList().contains(source2));
 
-	list.add(source4);
-	this.streamer.addPlotSource(source4);
-	assertEquals(list.getCombinedSourceType(), this.streamer
-		.getStreamType());
-    }
+			this.streamer.getNextToken();
 
-    /*
-     * Test method for
-     * 'org.dotplot.tokenizer.PlotSourceStreamer.PlotSourceStreamer(ITokenizer)'
-     */
-    public void testPlotSourceStreamer() {
-	assertNotNull(this.streamer.getSourceList());
-	assertEquals(0, this.streamer.getSourceList().size());
-    }
+			try {
+				this.streamer.removePlotSource(source1);
+				fail("UnsupportedOperationException must be thrown");
+			}
+			catch (UnsupportedOperationException e) {
+				/* all clear */
+			}
+			catch (Exception e) {
+				fail("wrong Exception");
+			}
 
-    /*
-     * Test method for
-     * 'org.dotplot.tokenizer.PlotSourceStreamer.removePlotSource(IPlotSource)'
-     */
-    public void testRemovePlotSource() {
-	try {
-	    this.streamer.removePlotSource(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+
 	}
-
-	try {
-	    IPlotSource source1 = new DotplotFile(
-		    "./testfiles/tokenizer/test.txt");
-	    IPlotSource source2 = new DotplotFile(
-		    "./testfiles/tokenizer/test.txt");
-
-	    this.streamer.addPlotSource(source1);
-	    this.streamer.addPlotSource(source2);
-
-	    assertNotNull(this.streamer.getSourceList());
-	    assertEquals(2, this.streamer.getSourceList().size());
-	    assertTrue(this.streamer.getSourceList().contains(source1));
-	    assertTrue(this.streamer.getSourceList().contains(source2));
-
-	    this.streamer.removePlotSource(source1);
-
-	    assertNotNull(this.streamer.getSourceList());
-	    assertEquals(1, this.streamer.getSourceList().size());
-	    assertFalse(this.streamer.getSourceList().contains(source1));
-	    assertTrue(this.streamer.getSourceList().contains(source2));
-
-	    this.streamer.getNextToken();
-
-	    try {
-		this.streamer.removePlotSource(source1);
-		fail("UnsupportedOperationException must be thrown");
-	    } catch (UnsupportedOperationException e) {
-		/* all clear */
-	    } catch (Exception e) {
-		fail("wrong Exception");
-	    }
-
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-
-    }
 
 }

@@ -218,7 +218,6 @@ public final class TypeBindingRegistryTest {
 		assertNotNull(this.registry.getAll());
 		assertEquals(1, this.registry.getAll().size());
 		assertTrue(this.registry.getAll().containsKey("test"));
-
 		assertEquals("type", this.registry.unregister("test"));
 		assertNotNull(this.registry.getAll());
 		assertEquals(0, this.registry.getAll().size());

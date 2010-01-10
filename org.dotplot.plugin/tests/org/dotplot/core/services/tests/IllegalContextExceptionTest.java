@@ -12,38 +12,39 @@ import org.dotplot.core.services.IllegalContextException;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class IllegalContextExceptionTest extends TestCase {
+public final class IllegalContextExceptionTest extends TestCase {
 
-    IContext context;
+	IContext context;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.context = new IContext() {
-	};
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.services.IllegalContextException.IllegalContextException(IContext)'
-     */
-    public void testIllegalContextException() {
-	Exception e;
-	try {
-	    new IllegalContextException(null);
-	    fail("NullPointerException must be thrown.");
-	} catch (NullPointerException n) {
-	    /* all clear */
+	/*
+	 * @see TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.context = new IContext() {
+		};
 	}
 
-	e = new IllegalContextException(this.context);
+	/*
+	 * Test method for
+	 * 'org.dotplot.services.IllegalContextException.IllegalContextException(IContext)'
+	 */
+	public void testIllegalContextException() {
+		Exception e;
+		try {
+			new IllegalContextException(null);
+			fail("NullPointerException must be thrown.");
+		}
+		catch (NullPointerException n) {
+			/* all clear */
+		}
 
-	// the masseage is based on the on-the-fly implementation of the
-	// IContext interface
-	assertEquals(this.getClass().getName() + "$1", e.getMessage());
-    }
+		e = new IllegalContextException(this.context);
+
+		// the masseage is based on the on-the-fly implementation of the
+		// IContext interface
+		assertEquals(this.getClass().getName() + "$1", e.getMessage());
+	}
 
 }

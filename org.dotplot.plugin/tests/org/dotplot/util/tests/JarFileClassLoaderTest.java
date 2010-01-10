@@ -3,230 +3,211 @@
  */
 package org.dotplot.util.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.util.jar.JarFile;
 
-import junit.framework.TestCase;
-
 import org.dotplot.util.JarFileClassLoader;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class JarFileClassLoaderTest extends TestCase {
+public final class JarFileClassLoaderTest {
 
-    private File directory;
+	/**
+	 * 
+	 */
+	private File directory;
 
-    private File file1;
+	/**
+	 * 
+	 */
+	private File file1;
 
-    private File file2;
+	/**
+	 * 
+	 */
+	private File file2;
 
-    private JarFile jarFile1;
+	/**
+	 * 
+	 */
+	private JarFile jarFile1;
 
-    private JarFile jarFile2;
+	/**
+	 * 
+	 */
+	private JarFile jarFile2;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.directory = new File("./testfiles").getCanonicalFile();
-	this.file1 = new File("./testfiles/utiltests/testplugin.xml")
-		.getCanonicalFile();
-	this.file2 = new File("./testfiles/utiltests/testpackage.jar")
-		.getCanonicalFile();
-	this.jarFile1 = new JarFile(new File(
-		"./testfiles/utiltests/ctestjar.jar").getCanonicalFile());
-	this.jarFile2 = new JarFile(new File(
-		"./testfiles/utiltests/testpackage.jar").getCanonicalFile());
-    }
-
-    /*
-     * Test method for 'org.dotplot.util.JarFileClassLoader.findClass(String)'
-     */
-    public void testFindClassString() {
-	JarFileClassLoader loader;
-	try {
-	    loader = new JarFileClassLoader(this.jarFile2, ClassLoader
-		    .getSystemClassLoader());
-	    loader = new JarFileClassLoader(this.jarFile1, loader);
-	    Class object = loader.loadClass("test.ReflectionTestImpl2");
-	    assertNotNull(object);
-	    Object o = object.newInstance();
-	    assertEquals("test.ReflectionTestImpl2", o.getClass().getName());
-	} catch (Exception e) {
-	    // e.printStackTrace();
-	    fail("no exception: " + e.getClass().getName());
-	} catch (Error e) {
-	    e.printStackTrace();
-	    fail("no error: " + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for 'org.dotplot.util.JarFileClassLoader.getJarFile()'
-     */
-    public void testGetJarFile() {
-	try {
-	    JarFileClassLoader loader = new JarFileClassLoader(this.jarFile1);
-	    assertEquals(this.jarFile1, loader.getJarFile());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(File)'
-     */
-    public void testJarFileClassLoaderFile() {
-	try {
-	    new JarFileClassLoader((File) null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception.
+	 */
+	@Before
+	public void setUp() throws Exception {
+		this.directory = new File("./testfiles").getCanonicalFile();
+		this.file1 = new File("./testfiles/utiltests/testplugin.xml")
+				.getCanonicalFile();
+		this.file2 = new File("./testfiles/utiltests/testpackage.jar")
+				.getCanonicalFile();
+		this.jarFile1 = new JarFile(new File(
+				"./testfiles/utiltests/ctestjar.jar").getCanonicalFile());
+		this.jarFile2 = new JarFile(new File(
+				"./testfiles/utiltests/testpackage.jar").getCanonicalFile());
 	}
 
-	try {
-	    new JarFileClassLoader(this.directory);
-	    fail("IllegalArgumentException must be thrown");
-	} catch (IllegalArgumentException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Test method for 'org.dotplot.util.JarFileClassLoader.findClass(String)'.
+	 * 
+	 * @throws Exception
+	 *             in case of an Exception.
+	 */
+	@Test
+	public void testFindClassString() throws Exception {
+		JarFileClassLoader loader;
+		loader = new JarFileClassLoader(this.jarFile2, ClassLoader
+				.getSystemClassLoader());
+		loader = new JarFileClassLoader(this.jarFile1, loader);
+		Class<?> object = loader.loadClass("test.ReflectionTestImpl2");
+		assertNotNull(object);
+		Object o = object.newInstance();
+		assertEquals("test.ReflectionTestImpl2", o.getClass().getName());
 	}
 
-	try {
-	    new JarFileClassLoader(this.file1);
-	    fail("IllegalArgumentException must be thrown");
-	} catch (IllegalArgumentException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Test method for 'org.dotplot.util.JarFileClassLoader.getJarFile()'.
+	 */
+	@Test
+	public void testGetJarFile() {
+		JarFileClassLoader loader = new JarFileClassLoader(this.jarFile1);
+		assertEquals(this.jarFile1, loader.getJarFile());
 	}
 
-	try {
-	    new JarFileClassLoader(this.file2);
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(File,
-     * ClassLoader)'
-     */
-    public void testJarFileClassLoaderFileClassLoader() {
-	try {
-	    new JarFileClassLoader((File) null, ClassLoader
-		    .getSystemClassLoader());
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Test method for
+	 * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(File)'.
+	 */
+	@Test
+	public void testJarFileClassLoaderFile() {
+		new JarFileClassLoader(this.file2);
 	}
 
-	try {
-	    new JarFileClassLoader(this.file2, null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Test method for
+	 * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(File,
+	 * ClassLoader)'.
+	 */
+	@Test
+	public void testJarFileClassLoaderFileClassLoader() {
+		new JarFileClassLoader(this.file2, ClassLoader.getSystemClassLoader());
 	}
 
-	try {
-	    new JarFileClassLoader(this.directory, ClassLoader
-		    .getSystemClassLoader());
-	    fail("IllegalArgumentException must be thrown");
-	} catch (IllegalArgumentException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testJarFileClassLoaderFileClassLoaderCLASSLOADERnull() {
+		new JarFileClassLoader(this.file2, null);
 	}
 
-	try {
-	    new JarFileClassLoader(this.file1, ClassLoader
-		    .getSystemClassLoader());
-	    fail("IllegalArgumentException must be thrown");
-	} catch (IllegalArgumentException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testJarFileClassLoaderFileClassLoaderFILEisDIRECTORY() {
+		new JarFileClassLoader(this.directory, ClassLoader
+				.getSystemClassLoader());
 	}
 
-	try {
-	    new JarFileClassLoader(this.file2, ClassLoader
-		    .getSystemClassLoader());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(JarFile)'
-     */
-    public void testJarFileClassLoaderJarFile() {
-	try {
-	    new JarFileClassLoader((JarFile) null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testJarFileClassLoaderFileClassLoaderFILEnoJARFILE() {
+		new JarFileClassLoader(this.file1, ClassLoader.getSystemClassLoader());
 	}
 
-	try {
-	    new JarFileClassLoader(this.jarFile1);
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(JarFile,
-     * ClassLoader)'
-     */
-    public void testJarFileClassLoaderJarFileClassLoader() {
-	try {
-	    new JarFileClassLoader((JarFile) null, ClassLoader
-		    .getSystemClassLoader());
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testJarFileClassLoaderFileClassLoaderFILEnull() {
+		new JarFileClassLoader((File) null, ClassLoader.getSystemClassLoader());
 	}
 
-	try {
-	    new JarFileClassLoader(this.jarFile1, null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testJarFileClassLoaderFileFILEisDIRECTORY() {
+		new JarFileClassLoader(this.directory);
 	}
 
-	try {
-	    new JarFileClassLoader(this.jarFile1, ClassLoader
-		    .getSystemClassLoader());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/**
+	 * 
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testJarFileClassLoaderFileFILEisNOjarfile() {
+		new JarFileClassLoader(this.file1);
 	}
 
-    }
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testJarFileClassLoaderFileFILEnull() {
+		new JarFileClassLoader((File) null);
+	}
+
+	/**
+	 * Test method for
+	 * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(JarFile)'.
+	 */
+	@Test
+	public void testJarFileClassLoaderJarFile() {
+		new JarFileClassLoader(this.jarFile1);
+	}
+
+	/**
+	 * Test method for
+	 * 'org.dotplot.util.JarFileClassLoader.JarFileClassLoader(JarFile,
+	 * ClassLoader)'.
+	 */
+	@Test
+	public void testJarFileClassLoaderJarFileClassLoader() {
+		new JarFileClassLoader(this.jarFile1, ClassLoader
+				.getSystemClassLoader());
+	}
+
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testJarFileClassLoaderJarFileClassLoaderCLASSLOADERnull() {
+		new JarFileClassLoader(this.jarFile1, null);
+	}
+
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testJarFileClassLoaderJarFileClassLoaderFILEnull() {
+		new JarFileClassLoader((JarFile) null, ClassLoader
+				.getSystemClassLoader());
+	}
+
+	/**
+	 * 
+	 */
+	@Test(expected = NullPointerException.class)
+	public void testJarFileClassLoaderJarFileNULL() {
+		new JarFileClassLoader((JarFile) null);
+	}
 
 }

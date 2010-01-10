@@ -33,147 +33,153 @@ import org.dotplot.util.UnknownIDException;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class QImageServiceTest extends TestCase {
+public final class QImageServiceTest extends TestCase {
 
-    private QImageService service;
+	private QImageService service;
 
-    private ITypeTableNavigator navigator;
+	private ITypeTableNavigator navigator;
 
-    private ITokenStream stream;
+	private ITokenStream stream;
 
-    private IQImageConfiguration config;
+	private IQImageConfiguration config;
 
-    private FMatrixContext workingContext;
+	private FMatrixContext workingContext;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.service = new QImageService("org.dotplot.test.QImage");
-	this.stream = new ITokenStream() {
+	/*
+	 * @see TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.service = new QImageService("org.dotplot.test.QImage");
+		this.stream = new ITokenStream() {
 
-	    private String[] strings = { "to", "be", "or", "not", "to", "be" };
+			private String[] strings = { "to", "be", "or", "not", "to", "be" };
 
-	    private int i = 0;
+			private int i = 0;
 
-	    public Token getNextToken() throws TokenizerException {
-		if (i < strings.length) {
-		    return new Token(this.strings[i++], 0, 1);
-		} else {
-		    return new EOSToken();
+			public Token getNextToken() throws TokenizerException {
+				if (i < strings.length) {
+					return new Token(this.strings[i++], 0, 1);
+				}
+				else {
+					return new EOSToken();
+				}
+			}
+
+			public ISourceType getStreamType() {
+				return TextType.type;
+			}
+		};
+		FMatrixManager manager = new FMatrixManager(this.stream,
+				new DefaultFMatrixConfiguration());
+		manager.addTokens();
+		this.navigator = manager.getTypeTableNavigator();
+		this.config = new QImageConfiguration();
+		this.workingContext = new FMatrixContext(this.navigator);
+	}
+
+	/*
+	 * Test method for 'org.dotplot.image.QImageService.createTask()'
+	 */
+	public void testCreateTask() {
+		DotplotContext context = new DotplotContext(".", "./plugins");
+		try {
+			context.getConfigurationRegistry().register(
+					QImageService.QIMAGE_CONFIGURATION_ID, this.config);
+			this.service.setFrameworkContext(context);
+			this.service.setWorkingContext(this.workingContext);
+			ITask task = this.service.createTask();
+			assertNotNull(task);
+			assertFalse(task.isPartAble());
+			assertFalse(task.isPartless());
+			assertEquals(1, task.countParts());
+			assertEquals("Image Task", task.getID());
 		}
-	    }
-
-	    public ISourceType getStreamType() {
-		return TextType.type;
-	    }
-	};
-	FMatrixManager manager = new FMatrixManager(this.stream,
-		new DefaultFMatrixConfiguration());
-	manager.addTokens();
-	this.navigator = manager.getTypeTableNavigator();
-	this.config = new QImageConfiguration();
-	this.workingContext = new FMatrixContext(this.navigator);
-    }
-
-    /*
-     * Test method for 'org.dotplot.image.QImageService.createTask()'
-     */
-    public void testCreateTask() {
-	DotplotContext context = new DotplotContext(".", "./plugins");
-	try {
-	    context.getConfigurationRegistry().register(
-		    QImageService.QIMAGE_CONFIGURATION_ID, this.config);
-	    this.service.setFrameworkContext(context);
-	    this.service.setWorkingContext(this.workingContext);
-	    ITask task = this.service.createTask();
-	    assertNotNull(task);
-	    assertFalse(task.isPartAble());
-	    assertFalse(task.isPartless());
-	    assertEquals(1, task.countParts());
-	    assertEquals("Image Task", task.getID());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for 'org.dotplot.image.QImageService.getResultContext()'
-     */
-    public void testGetResultContext() {
-	assertNotNull(this.service.getResultContext());
-	assertEquals(NullContext.context, this.service.getResultContext());
-	DotplotContext context = new DotplotContext(".", "./plugins");
-	try {
-	    context.getConfigurationRegistry().register(
-		    QImageService.QIMAGE_CONFIGURATION_ID, this.config);
-	    this.service.setFrameworkContext(context);
-	    this.service.setWorkingContext(this.workingContext);
-	    this.service.run();
-	    IContext result = this.service.getResultContext();
-	    assertNotNull(result);
-	    assertTrue(result instanceof QImageContext);
-	    QImageContext imageContext = (QImageContext) result;
-	    assertNotNull(imageContext.getDotplot());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
-
-    /*
-     * Test method for 'org.dotplot.image.QImageService.getResultContextClass()'
-     */
-    public void testGetResultContextClass() {
-	assertSame(QImageContext.class, this.service.getResultContextClass());
-    }
-
-    /*
-     * Test method for 'org.dotplot.image.QImageService.QImageService(String)'
-     */
-    public void testQImageService() {
-	assertEquals("org.dotplot.test.QImage", this.service.getID());
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.image.QImageService.registerDefaultConfiguration(IConfigurationRegistry)'
-     */
-    public void testRegisterDefaultConfiguration() {
-	IConfigurationRegistry registry = new ConfigurationRegistry();
-	try {
-	    registry.get(QImageService.QIMAGE_CONFIGURATION_ID);
-	    fail("Exception must be thrown");
-	} catch (UnknownIDException e) {
-	    // all clear
-	} catch (Exception e) {
-	    fail("wrong exception");
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
 	}
 
-	try {
-	    this.service.registerDefaultConfiguration(registry);
-	    IConfiguration config = registry
-		    .get(QImageService.QIMAGE_CONFIGURATION_ID);
-	    assertNotNull(config);
-	    assertTrue(config instanceof IQImageConfiguration);
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/*
+	 * Test method for 'org.dotplot.image.QImageService.getResultContext()'
+	 */
+	public void testGetResultContext() {
+		assertNotNull(this.service.getResultContext());
+		assertEquals(NullContext.context, this.service.getResultContext());
+		DotplotContext context = new DotplotContext(".", "./plugins");
+		try {
+			context.getConfigurationRegistry().register(
+					QImageService.QIMAGE_CONFIGURATION_ID, this.config);
+			this.service.setFrameworkContext(context);
+			this.service.setWorkingContext(this.workingContext);
+			this.service.run();
+			IContext result = this.service.getResultContext();
+			assertNotNull(result);
+			assertTrue(result instanceof QImageContext);
+			QImageContext imageContext = (QImageContext) result;
+			assertNotNull(imageContext.getDotplot());
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
 	}
-    }
 
-    /*
-     * Test method for
-     * 'org.dotplot.image.QImageService.workingContextIsCompatible(Class)'
-     */
-    public void testWorkingContextIsCompatible() {
-	assertTrue(this.service
-		.workingContextIsCompatible(FMatrixContext.class));
-	assertFalse(this.service.workingContextIsCompatible(NullContext.class));
-	assertFalse(this.service
-		.workingContextIsCompatible(TokenStreamContext.class));
-    }
+	/*
+	 * Test method for 'org.dotplot.image.QImageService.getResultContextClass()'
+	 */
+	public void testGetResultContextClass() {
+		assertSame(QImageContext.class, this.service.getResultContextClass());
+	}
+
+	/*
+	 * Test method for 'org.dotplot.image.QImageService.QImageService(String)'
+	 */
+	public void testQImageService() {
+		assertEquals("org.dotplot.test.QImage", this.service.getID());
+	}
+
+	/*
+	 * Test method for
+	 * 'org.dotplot.image.QImageService.registerDefaultConfiguration(IConfigurationRegistry)'
+	 */
+	public void testRegisterDefaultConfiguration() {
+		IConfigurationRegistry registry = new ConfigurationRegistry();
+		try {
+			registry.get(QImageService.QIMAGE_CONFIGURATION_ID);
+			fail("Exception must be thrown");
+		}
+		catch (UnknownIDException e) {
+			// all clear
+		}
+		catch (Exception e) {
+			fail("wrong exception");
+		}
+
+		try {
+			this.service.registerDefaultConfiguration(registry);
+			IConfiguration config = registry
+					.get(QImageService.QIMAGE_CONFIGURATION_ID);
+			assertNotNull(config);
+			assertTrue(config instanceof IQImageConfiguration);
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+	}
+
+	/*
+	 * Test method for
+	 * 'org.dotplot.image.QImageService.workingContextIsCompatible(Class)'
+	 */
+	public void testWorkingContextIsCompatible() {
+		assertTrue(this.service
+				.workingContextIsCompatible(FMatrixContext.class));
+		assertFalse(this.service.workingContextIsCompatible(NullContext.class));
+		assertFalse(this.service
+				.workingContextIsCompatible(TokenStreamContext.class));
+	}
 }

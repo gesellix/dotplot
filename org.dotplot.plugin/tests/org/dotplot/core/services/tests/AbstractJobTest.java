@@ -18,96 +18,102 @@ import org.dotplot.core.services.TaskProcessor;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class AbstractJobTest extends TestCase {
+public final class AbstractJobTest extends TestCase {
 
-    /*
-     * Test method for 'org.dotplot.services.AbstractJob.getErrorHandler()'
-     */
-    public void testGetSetErrorHandler() {
-	AbstractJob job = new AbstractJob() {
+	/*
+	 * Test method for 'org.dotplot.services.AbstractJob.getErrorHandler()'
+	 */
+	public void testGetSetErrorHandler() {
+		AbstractJob job = new AbstractJob() {
 
-	    public boolean process(IFrameworkContext context) {
-		return false;
-	    }
+			public boolean process(IFrameworkContext context) {
+				return false;
+			}
 
-	    public boolean validatePreconditions(IServiceRegistry manager) {
-		return false;
-	    }
-	};
+			public boolean validatePreconditions(IServiceRegistry manager) {
+				return false;
+			}
+		};
 
-	assertNotNull(job.getErrorHandler());
+		assertNotNull(job.getErrorHandler());
 
-	try {
-	    job.setErrorHandler(null);
-	    fail("exception must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("no exception");
+		try {
+			job.setErrorHandler(null);
+			fail("exception must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("no exception");
+		}
+
+		IErrorHandler handler = new DefaultErrorHandler();
+
+		try {
+			job.setErrorHandler(handler);
+			assertSame(handler, job.getErrorHandler());
+		}
+		catch (Exception e) {
+			fail("no exception");
+		}
 	}
 
-	IErrorHandler handler = new DefaultErrorHandler();
+	public void testGetSetTaskprocessor() {
+		AbstractJob job = new AbstractJob() {
 
-	try {
-	    job.setErrorHandler(handler);
-	    assertSame(handler, job.getErrorHandler());
-	} catch (Exception e) {
-	    fail("no exception");
+			public boolean process(IFrameworkContext context) {
+				return false;
+			}
+
+			public boolean validatePreconditions(IServiceRegistry manager) {
+				return false;
+			}
+		};
+
+		assertNotNull(job.getTaskProcessor());
+		assertTrue(job.getTaskProcessor() instanceof TaskProcessor);
+
+		try {
+			job.setTaskProcessor(null);
+			fail("NullPointerException must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
+
+		try {
+			ITaskProcessor processor = new ITaskProcessor() {
+
+				public Object getTaskResult() {
+					return null;
+				}
+
+				public boolean process(ITask job) {
+					return false;
+				}
+
+				public boolean process(ITask task, Object invokingObject) {
+					return false;
+				}
+
+				public void setErrorHandler(IErrorHandler handler) {
+				}
+
+				public void stop() {
+				}
+			};
+
+			job.setTaskProcessor(processor);
+			assertSame(processor, job.getTaskProcessor());
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
 	}
-    }
-
-    public void testGetSetTaskprocessor() {
-	AbstractJob job = new AbstractJob() {
-
-	    public boolean process(IFrameworkContext context) {
-		return false;
-	    }
-
-	    public boolean validatePreconditions(IServiceRegistry manager) {
-		return false;
-	    }
-	};
-
-	assertNotNull(job.getTaskProcessor());
-	assertTrue(job.getTaskProcessor() instanceof TaskProcessor);
-
-	try {
-	    job.setTaskProcessor(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
-	}
-
-	try {
-	    ITaskProcessor processor = new ITaskProcessor() {
-
-		public Object getTaskResult() {
-		    return null;
-		}
-
-		public boolean process(ITask job) {
-		    return false;
-		}
-
-		public boolean process(ITask task, Object invokingObject) {
-		    return false;
-		}
-
-		public void setErrorHandler(IErrorHandler handler) {
-		}
-
-		public void stop() {
-		}
-	    };
-
-	    job.setTaskProcessor(processor);
-	    assertSame(processor, job.getTaskProcessor());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
 
 }

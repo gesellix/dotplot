@@ -12,15 +12,15 @@ import org.dotplot.fmatrix.test.FMatrixManagerTest;
  * @version 0.1
  */
 public class ManagerProfiler {
-    /**
-     * entry point for the profiler.
-     * 
-     * @param args
-     *            comandline arguments
-     */
-    public static void main(String[] args) {
-	FMatrixManagerTest test = new FMatrixManagerTest();
-	test.setUp();
-	test.testRun();
-    }
+	/**
+	 * entry point for the profiler.
+	 * 
+	 * @param args
+	 *            comandline arguments
+	 */
+	public static void main(String[] args) {
+		FMatrixManagerTest test = new FMatrixManagerTest();
+		test.setUp();
+		test.testRun();
+	}
 }

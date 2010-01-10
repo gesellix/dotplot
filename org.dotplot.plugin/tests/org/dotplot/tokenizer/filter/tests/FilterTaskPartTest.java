@@ -28,129 +28,137 @@ import org.dotplot.tokenizer.service.ITokenStream;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class FilterTaskPartTest extends TestCase {
+public final class FilterTaskPartTest extends TestCase {
 
-    private FilterTaskPart part;
+	private FilterTaskPart part;
 
-    private ITokenStream stream;
+	private ITokenStream stream;
 
-    private IFilterConfiguration config;
+	private IFilterConfiguration config;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	Map<String, ITokenFilter> filters = new TreeMap<String, ITokenFilter>();
-	filters.put(FilterService.GENERAL_TOKEN_FILTER_ID,
-		new GeneralTokenFilter());
+	/*
+	 * @see TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		Map<String, ITokenFilter> filters = new TreeMap<String, ITokenFilter>();
+		filters.put(FilterService.GENERAL_TOKEN_FILTER_ID,
+				new GeneralTokenFilter());
 
-	this.stream = new ITokenStream() {
+		this.stream = new ITokenStream() {
 
-	    int i = 0;
+			int i = 0;
 
-	    String[] tokens = new String[] { "to", "be", "or", "not", "to",
-		    "be" };
+			String[] tokens = new String[] { "to", "be", "or", "not", "to",
+					"be" };
 
-	    public Token getNextToken() throws TokenizerException {
-		if (i < tokens.length) {
-		    i++;
-		    return new Token(tokens[i - 1], i - 1);
-		} else {
-		    return new EOSToken();
+			public Token getNextToken() throws TokenizerException {
+				if (i < tokens.length) {
+					i++;
+					return new Token(tokens[i - 1], i - 1);
+				}
+				else {
+					return new EOSToken();
+				}
+			}
+
+			public ISourceType getStreamType() {
+				return null;
+			}
+		};
+
+		this.config = new DefaultFilterConfiguration();
+		this.config.getFilterList().add(FilterService.GENERAL_TOKEN_FILTER_ID);
+
+		Map<String, Collection<Integer>> params = new TreeMap<String, Collection<Integer>>();
+		Collection<Integer> p = new Vector<Integer>();
+		p.add(new Integer(2));
+		p.add(new Integer(3));
+		params.put(GeneralTokenFilter.PARAM, p);
+		this.config.setFilterParameter(FilterService.GENERAL_TOKEN_FILTER_ID,
+				params);
+
+		this.part = new FilterTaskPart("testpart", filters, this.config);
+
+	}
+
+	/*
+	 * Test method for
+	 * 'org.dotplot.tokenizer.FilterTaskPart.FilterTaskPart(String)'
+	 */
+	public void testFilterTaskPart() {
+		Map<String, ITokenFilter> filters = new TreeMap<String, ITokenFilter>();
+
+		try {
+			new FilterTaskPart(null, filters, this.config);
+			fail("NullPointerException must be thrown");
 		}
-	    }
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
 
-	    public ISourceType getStreamType() {
-		return null;
-	    }
-	};
+		try {
+			new FilterTaskPart("test", null, this.config);
+			fail("NullPointerException must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
 
-	this.config = new DefaultFilterConfiguration();
-	this.config.getFilterList().add(FilterService.GENERAL_TOKEN_FILTER_ID);
+		try {
+			new FilterTaskPart("test", filters, null);
+			fail("NullPointerException must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
 
-	Map<String, Collection<Integer>> params = new TreeMap<String, Collection<Integer>>();
-	Collection<Integer> p = new Vector<Integer>();
-	p.add(new Integer(2));
-	p.add(new Integer(3));
-	params.put(GeneralTokenFilter.PARAM, p);
-	this.config.setFilterParameter(FilterService.GENERAL_TOKEN_FILTER_ID,
-		params);
-
-	this.part = new FilterTaskPart("testpart", filters, this.config);
-
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.tokenizer.FilterTaskPart.FilterTaskPart(String)'
-     */
-    public void testFilterTaskPart() {
-	Map<String, ITokenFilter> filters = new TreeMap<String, ITokenFilter>();
-
-	try {
-	    new FilterTaskPart(null, filters, this.config);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+		assertEquals("testpart", this.part.getID());
 	}
 
-	try {
-	    new FilterTaskPart("test", null, this.config);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/*
+	 * Test method for 'org.dotplot.tokenizer.FilterTaskPart.getResult()'
+	 */
+	public void testGetResult() {
+
+		assertNull(this.part.getResult());
+		this.part.run();
+		Object result = this.part.getResult();
+		assertNotNull(result);
+		assertTrue(result instanceof ITokenFilter);
+		assertTrue(result instanceof TokenFilterContainer);
+		TokenFilterContainer filter = (TokenFilterContainer) result;
+		filter.setTokenStream(this.stream);
+		assertEquals("to", filter.getNextToken(this.stream).getValue());
+		assertEquals("be", filter.getNextToken(this.stream).getValue());
+		assertEquals("to", filter.getNextToken(this.stream).getValue());
+		assertEquals("be", filter.getNextToken(this.stream).getValue());
 	}
 
-	try {
-	    new FilterTaskPart("test", filters, null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/*
+	 * Test method for
+	 * 'org.dotplot.tokenizer.FilterTaskPart.setLocalRessources(Collection<?
+	 * extends IRessource>)'
+	 */
+	public void testSetLocalRessources() {
+		try {
+			this.part.setLocalRessources(null);
+			this.part.setLocalRessources(new Vector<IRessource>());
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
 	}
-
-	assertEquals("testpart", this.part.getID());
-    }
-
-    /*
-     * Test method for 'org.dotplot.tokenizer.FilterTaskPart.getResult()'
-     */
-    public void testGetResult() {
-
-	assertNull(this.part.getResult());
-	this.part.run();
-	Object result = this.part.getResult();
-	assertNotNull(result);
-	assertTrue(result instanceof ITokenFilter);
-	assertTrue(result instanceof TokenFilterContainer);
-	TokenFilterContainer filter = (TokenFilterContainer) result;
-	filter.setTokenStream(this.stream);
-	assertEquals("to", filter.getNextToken(this.stream).getValue());
-	assertEquals("be", filter.getNextToken(this.stream).getValue());
-	assertEquals("to", filter.getNextToken(this.stream).getValue());
-	assertEquals("be", filter.getNextToken(this.stream).getValue());
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.tokenizer.FilterTaskPart.setLocalRessources(Collection<?
-     * extends IRessource>)'
-     */
-    public void testSetLocalRessources() {
-	try {
-	    this.part.setLocalRessources(null);
-	    this.part.setLocalRessources(new Vector<IRessource>());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
 
 }

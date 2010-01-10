@@ -26,99 +26,105 @@ import org.dotplot.tokenizer.service.TextType;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class QImageTaskPartTest extends TestCase {
+public final class QImageTaskPartTest extends TestCase {
 
-    private QImageTaskPart part;
+	private QImageTaskPart part;
 
-    private ITypeTableNavigator navigator;
+	private ITypeTableNavigator navigator;
 
-    private ITokenStream stream;
+	private ITokenStream stream;
 
-    private IQImageConfiguration config;
+	private IQImageConfiguration config;
 
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.stream = new ITokenStream() {
+	/*
+	 * @see TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.stream = new ITokenStream() {
 
-	    private String[] strings = { "to", "be", "or", "not", "to", "be" };
+			private String[] strings = { "to", "be", "or", "not", "to", "be" };
 
-	    private int i = 0;
+			private int i = 0;
 
-	    public Token getNextToken() throws TokenizerException {
-		if (i < strings.length) {
-		    return new Token(this.strings[i++], 0, 1);
-		} else {
-		    return new EOSToken();
+			public Token getNextToken() throws TokenizerException {
+				if (i < strings.length) {
+					return new Token(this.strings[i++], 0, 1);
+				}
+				else {
+					return new EOSToken();
+				}
+			}
+
+			public ISourceType getStreamType() {
+				return TextType.type;
+			}
+		};
+		FMatrixManager manager = new FMatrixManager(this.stream,
+				new DefaultFMatrixConfiguration());
+		manager.addTokens();
+		this.navigator = manager.getTypeTableNavigator();
+		this.config = new QImageConfiguration();
+		this.part = new QImageTaskPart("part 1", this.navigator, this.config);
+	}
+
+	/*
+	 * Test method for 'org.dotplot.image.QImageTaskPart.getResult()'
+	 */
+	public void testGetResult() {
+		assertNull(this.part.getResult());
+		this.part.run();
+		Object result = this.part.getResult();
+		assertNotNull(result);
+		assertTrue(result instanceof IDotplot);
+	}
+
+	/*
+	 * Test method for 'org.dotplot.image.QImageTaskPart.QImageTaskPart(String)'
+	 */
+	public void testQImageTaskPart() {
+		assertSame(this.navigator, this.part.getNavigator());
+		assertSame(this.config, this.part.getConfiguration());
+
+		try {
+			new QImageTaskPart("test", null, this.config);
+			fail("NullPointerException must be thrown");
 		}
-	    }
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
 
-	    public ISourceType getStreamType() {
-		return TextType.type;
-	    }
-	};
-	FMatrixManager manager = new FMatrixManager(this.stream,
-		new DefaultFMatrixConfiguration());
-	manager.addTokens();
-	this.navigator = manager.getTypeTableNavigator();
-	this.config = new QImageConfiguration();
-	this.part = new QImageTaskPart("part 1", this.navigator, this.config);
-    }
+		try {
+			new QImageTaskPart("test", this.navigator, null);
+			fail("NullPointerException must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
 
-    /*
-     * Test method for 'org.dotplot.image.QImageTaskPart.getResult()'
-     */
-    public void testGetResult() {
-	assertNull(this.part.getResult());
-	this.part.run();
-	Object result = this.part.getResult();
-	assertNotNull(result);
-	assertTrue(result instanceof IDotplot);
-    }
-
-    /*
-     * Test method for 'org.dotplot.image.QImageTaskPart.QImageTaskPart(String)'
-     */
-    public void testQImageTaskPart() {
-	assertSame(this.navigator, this.part.getNavigator());
-	assertSame(this.config, this.part.getConfiguration());
-
-	try {
-	    new QImageTaskPart("test", null, this.config);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
 	}
 
-	try {
-	    new QImageTaskPart("test", this.navigator, null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/*
+	 * Test method for
+	 * 'org.dotplot.image.QImageTaskPart.setLocalRessources(Collection<? extends
+	 * IRessource>)'
+	 */
+	public void testSetLocalRessources() {
+		try {
+			this.part.setLocalRessources(null);
+			this.part.setLocalRessources(new Vector<IRessource>());
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
 	}
-
-    }
-
-    /*
-     * Test method for
-     * 'org.dotplot.image.QImageTaskPart.setLocalRessources(Collection<? extends
-     * IRessource>)'
-     */
-    public void testSetLocalRessources() {
-	try {
-	    this.part.setLocalRessources(null);
-	    this.part.setLocalRessources(new Vector<IRessource>());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
-	}
-    }
 
 }

@@ -19,256 +19,264 @@ import org.dotplot.core.services.Task;
  * @author Christian Gerhardt <case42@gmx.net>
  * 
  */
-public class TaskTest extends TestCase {
+public final class TaskTest extends TestCase {
 
-    private class TestJobPart implements ITaskPart {
+	private final class TestJobPart implements ITaskPart {
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.dotplot.core.services.ITaskPart#errorOccured()
+		 */
+		public boolean errorOccured() {
+			return false;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.dotplot.services.IJobPart#getID()
+		 */
+		public String getID() {
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.dotplot.services.IJobPart#getRessources()
+		 */
+		public Collection<IRessource> getRessources() {
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.dotplot.services.IJobPart#getResult()
+		 */
+		public Object getResult() {
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.dotplot.util.ExecutionUnit#isRunning()
+		 */
+		public boolean isRunning() {
+			return false;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Runnable#run()
+		 */
+		public void run() {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.dotplot.services.IJobPart#setErrorHandler(org.dotplot.services
+		 * .IProcessingErrorHandler)
+		 */
+		public void setErrorHandler(IErrorHandler handler) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.dotplot.services.IJobPart#setLocalRessources(java.util.Collection
+		 * )
+		 */
+		public void setLocalRessources(Collection ressouceList)
+				throws InsufficientRessourcesException {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.dotplot.util.ExecutionUnit#stop()
+		 */
+		public void stop() {
+		}
+
+	}
+
+	private Task job;
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.dotplot.core.services.ITaskPart#errorOccured()
+	 * @see TestCase#setUp()
 	 */
-	public boolean errorOccured() {
-	    return false;
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.job = new Task("testjob", new ITaskResultMarshaler() {
+
+			public Object marshalResult(Map jobResult) {
+				return null;
+			}
+		}, true);
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.dotplot.services.IJobPart#getID()
+	 * Test method for 'org.dotplot.services.Job.addPart(IJobPart)'
 	 */
-	public String getID() {
-	    return null;
+	public void testAddPart() {
+		try {
+			this.job.addPart(null);
+			fail("exception must be thrown");
+		}
+		catch (NullPointerException e) {
+			assertTrue(this.job.isPartless());
+			this.job.addPart(new TestJobPart());
+			assertFalse(this.job.isPartless());
+		}
+		catch (Exception e) {
+			fail("no exception");
+		}
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.dotplot.services.IJobPart#getRessources()
+	 * Test method for 'org.dotplot.services.Job.countParts()'
 	 */
-	public Collection<IRessource> getRessources() {
-	    return null;
+	public void testCountParts() {
+		assertEquals(0, this.job.countParts());
+		this.job.addPart(new TestJobPart());
+		assertEquals(1, this.job.countParts());
+		this.job.addPart(new TestJobPart());
+		assertEquals(2, this.job.countParts());
+		this.job.addPart(new TestJobPart());
+		assertEquals(3, this.job.countParts());
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.dotplot.services.IJobPart#getResult()
+	 * Test method for 'org.dotplot.services.Job.isDone()'
 	 */
-	public Object getResult() {
-	    return null;
+	public void testDoneIsDone() {
+		assertFalse(this.job.isDone());
+		this.job.done();
+		assertTrue(this.job.isDone());
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.dotplot.util.ExecutionUnit#isRunning()
+	 * Test method for 'org.dotplot.services.Job.getJobParts()'
 	 */
-	public boolean isRunning() {
-	    return false;
+	public void testGetJobParts() {
+		TestJobPart part1 = new TestJobPart();
+		TestJobPart part2 = new TestJobPart();
+		TestJobPart part3 = new TestJobPart();
+
+		Collection parts = this.job.getParts();
+		assertNotNull(parts);
+		assertTrue(parts.isEmpty());
+		this.job.addPart(part1);
+		this.job.addPart(part2);
+		this.job.addPart(part3);
+		assertFalse(parts.isEmpty());
+		assertEquals(3, parts.size());
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
+	 * Test method for 'org.dotplot.services.Job.isPartless()'
 	 */
-	public void run() {
+	public void testIsPartless() {
+		TestJobPart part = new TestJobPart();
+		assertTrue(this.job.isPartless());
+		this.job.addPart(part);
+		assertFalse(this.job.isPartless());
+		this.job.removePart(part);
+		assertTrue(this.job.isPartless());
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.dotplot.services.IJobPart#setErrorHandler(org.dotplot.services
-	 * .IProcessingErrorHandler)
+	 * Test method for 'org.dotplot.services.Job.Job(String, IResultMarshaler)'
 	 */
-	public void setErrorHandler(IErrorHandler handler) {
+	public void testJob() {
+		try {
+			new Task("testjob", null, true);
+			fail("exception must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("no exception");
+		}
+
+		try {
+			new Task(null, this.job.getResultMarshaler(), true);
+			fail("exception must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("no exception");
+		}
+
+		try {
+			Task job = new Task("testjob", this.job.getResultMarshaler(), true);
+			assertEquals("testjob", job.getID());
+			assertTrue(job.isPartless());
+			assertEquals(0, job.countParts());
+			assertFalse(job.isDone());
+			assertNotNull(job.getParts());
+			assertTrue(job.getParts().isEmpty());
+			assertEquals(0, job.getParts().size());
+		}
+		catch (Exception e) {
+			fail("no exception");
+		}
+
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.dotplot.services.IJobPart#setLocalRessources(java.util.Collection
-	 * )
+	 * Test method for 'org.dotplot.services.Job.removePart(IJobPart)'
 	 */
-	public void setLocalRessources(Collection ressouceList)
-		throws InsufficientRessourcesException {
+	public void testRemovePart() {
+		try {
+			this.job.removePart(null);
+		}
+		catch (Exception e) {
+			fail("no exception");
+		}
+
+		TestJobPart part1 = new TestJobPart();
+		TestJobPart part2 = new TestJobPart();
+		TestJobPart part3 = new TestJobPart();
+
+		Collection parts = this.job.getParts();
+		assertNotNull(parts);
+		assertTrue(parts.isEmpty());
+		this.job.addPart(part1);
+		this.job.addPart(part2);
+		this.job.addPart(part3);
+		assertFalse(parts.isEmpty());
+		assertEquals(3, parts.size());
+
+		assertTrue(parts.contains(part1));
+		assertTrue(parts.contains(part2));
+		assertTrue(parts.contains(part3));
+
+		this.job.removePart(part1);
+
+		assertFalse(parts.contains(part1));
+		assertTrue(parts.contains(part2));
+		assertTrue(parts.contains(part3));
+
+		this.job.removePart(part2);
+		assertFalse(parts.contains(part1));
+		assertFalse(parts.contains(part2));
+		assertTrue(parts.contains(part3));
+
+		this.job.removePart(part3);
+		assertFalse(parts.contains(part1));
+		assertFalse(parts.contains(part2));
+		assertFalse(parts.contains(part3));
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.dotplot.util.ExecutionUnit#stop()
-	 */
-	public void stop() {
-	}
-
-    }
-
-    private Task job;
-
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.job = new Task("testjob", new ITaskResultMarshaler() {
-
-	    public Object marshalResult(Map jobResult) {
-		return null;
-	    }
-	}, true);
-    }
-
-    /*
-     * Test method for 'org.dotplot.services.Job.addPart(IJobPart)'
-     */
-    public void testAddPart() {
-	try {
-	    this.job.addPart(null);
-	    fail("exception must be thrown");
-	} catch (NullPointerException e) {
-	    assertTrue(this.job.isPartless());
-	    this.job.addPart(new TestJobPart());
-	    assertFalse(this.job.isPartless());
-	} catch (Exception e) {
-	    fail("no exception");
-	}
-    }
-
-    /*
-     * Test method for 'org.dotplot.services.Job.countParts()'
-     */
-    public void testCountParts() {
-	assertEquals(0, this.job.countParts());
-	this.job.addPart(new TestJobPart());
-	assertEquals(1, this.job.countParts());
-	this.job.addPart(new TestJobPart());
-	assertEquals(2, this.job.countParts());
-	this.job.addPart(new TestJobPart());
-	assertEquals(3, this.job.countParts());
-    }
-
-    /*
-     * Test method for 'org.dotplot.services.Job.isDone()'
-     */
-    public void testDoneIsDone() {
-	assertFalse(this.job.isDone());
-	this.job.done();
-	assertTrue(this.job.isDone());
-    }
-
-    /*
-     * Test method for 'org.dotplot.services.Job.getJobParts()'
-     */
-    public void testGetJobParts() {
-	TestJobPart part1 = new TestJobPart();
-	TestJobPart part2 = new TestJobPart();
-	TestJobPart part3 = new TestJobPart();
-
-	Collection parts = this.job.getParts();
-	assertNotNull(parts);
-	assertTrue(parts.isEmpty());
-	this.job.addPart(part1);
-	this.job.addPart(part2);
-	this.job.addPart(part3);
-	assertFalse(parts.isEmpty());
-	assertEquals(3, parts.size());
-    }
-
-    /*
-     * Test method for 'org.dotplot.services.Job.isPartless()'
-     */
-    public void testIsPartless() {
-	TestJobPart part = new TestJobPart();
-	assertTrue(this.job.isPartless());
-	this.job.addPart(part);
-	assertFalse(this.job.isPartless());
-	this.job.removePart(part);
-	assertTrue(this.job.isPartless());
-    }
-
-    /*
-     * Test method for 'org.dotplot.services.Job.Job(String, IResultMarshaler)'
-     */
-    public void testJob() {
-	try {
-	    new Task("testjob", null, true);
-	    fail("exception must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("no exception");
-	}
-
-	try {
-	    new Task(null, this.job.getResultMarshaler(), true);
-	    fail("exception must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("no exception");
-	}
-
-	try {
-	    Task job = new Task("testjob", this.job.getResultMarshaler(), true);
-	    assertEquals("testjob", job.getID());
-	    assertTrue(job.isPartless());
-	    assertEquals(0, job.countParts());
-	    assertFalse(job.isDone());
-	    assertNotNull(job.getParts());
-	    assertTrue(job.getParts().isEmpty());
-	    assertEquals(0, job.getParts().size());
-	} catch (Exception e) {
-	    fail("no exception");
-	}
-
-    }
-
-    /*
-     * Test method for 'org.dotplot.services.Job.removePart(IJobPart)'
-     */
-    public void testRemovePart() {
-	try {
-	    this.job.removePart(null);
-	} catch (Exception e) {
-	    fail("no exception");
-	}
-
-	TestJobPart part1 = new TestJobPart();
-	TestJobPart part2 = new TestJobPart();
-	TestJobPart part3 = new TestJobPart();
-
-	Collection parts = this.job.getParts();
-	assertNotNull(parts);
-	assertTrue(parts.isEmpty());
-	this.job.addPart(part1);
-	this.job.addPart(part2);
-	this.job.addPart(part3);
-	assertFalse(parts.isEmpty());
-	assertEquals(3, parts.size());
-
-	assertTrue(parts.contains(part1));
-	assertTrue(parts.contains(part2));
-	assertTrue(parts.contains(part3));
-
-	this.job.removePart(part1);
-
-	assertFalse(parts.contains(part1));
-	assertTrue(parts.contains(part2));
-	assertTrue(parts.contains(part3));
-
-	this.job.removePart(part2);
-	assertFalse(parts.contains(part1));
-	assertFalse(parts.contains(part2));
-	assertTrue(parts.contains(part3));
-
-	this.job.removePart(part3);
-	assertFalse(parts.contains(part1));
-	assertFalse(parts.contains(part2));
-	assertFalse(parts.contains(part3));
-    }
 }

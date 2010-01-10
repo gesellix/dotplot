@@ -27,114 +27,116 @@ import org.dotplot.util.UnknownIDException;
  * @author Constantin von Zitzewitz
  * @version 0.1
  */
-public class FMatrixManagerTest extends TestCase {
+public final class FMatrixManagerTest extends TestCase {
 
-    // ################## FMatrix #############################################
-    private FMatrixManager manager; // fMatrixManager
+	// ################## FMatrix #############################################
+	private FMatrixManager manager; // fMatrixManager
 
-    // ################## Tokenizer ###########################################
-    private ITokenizerConfiguration configuration; // for tokenizer
+	// ################## Tokenizer ###########################################
+	private ITokenizerConfiguration configuration; // for tokenizer
 
-    private ISourceList fileList; // for tokenizer
+	private ISourceList fileList; // for tokenizer
 
-    private ITokenStream tokenStream; // for tokenizer
+	private ITokenStream tokenStream; // for tokenizer
 
-    @Override
-    public void setUp() {
-	DotplotContext context = ContextFactory.getContext();
-	context.setNoGui(true);
+	@Override
+	public void setUp() {
+		DotplotContext context = ContextFactory.getContext();
+		context.setNoGui(true);
 
-	// this.tokenizer = new Tokenizer();
-	try {
-	    this.configuration = (ITokenizerConfiguration) context
-		    .getConfigurationRegistry().get(
-			    TokenizerService.TOKENIZER_CONFIGURATION_ID);
-	} catch (UnknownIDException e1) {
-	    e1.printStackTrace();
+		// this.tokenizer = new Tokenizer();
+		try {
+			this.configuration = (ITokenizerConfiguration) context
+					.getConfigurationRegistry().get(
+							TokenizerService.TOKENIZER_CONFIGURATION_ID);
+		}
+		catch (UnknownIDException e1) {
+			e1.printStackTrace();
+		}
+
+		this.fileList = new DefaultSourceList();
+		this.tokenStream = null;
+
+		// this.fileList.add(new File("txt/bibel/bibel_halb.txt"));
+		// this.fileList.add(new File("txt/bibel/bibel.txt"));
+
+		this.fileList.add(context.createDotplotFile(new File(
+				"testfiles/fmatrix/test.txt")));
+		this.fileList.add(context.createDotplotFile(new File(
+				"testfiles/fmatrix/test.txt")));
+
+		// this.fileList.add(new File("ChangeLog"));
+		// this.fileList.add(new File("ChangeLog"));
+
+		// this.fileList.add(new File("FAQ"));
+		// this.fileList.add(new File("FAQ"));
+
+		// this.fileList.add(new File("PJunitTestFile.pdf"));
+		// this.fileList.add(new File("PJunitTestFile.pdf"));
+
+		// this.configuration.setSourceList(this.fileList);
+		this.configuration
+				.setTokenizerID(TokenizerService.DEFAULT_TOKENIZER_ID);
+
+		// this.tokenizer.setConfiguration(this.configuration);
+
+		try {
+			// this.tokenStream = tokenizer.getTokenStream();
+		}
+		catch (TokenizerException e) {
+			System.out.println(e.getMessage());
+			System.exit(1);
+		}
+
+		this.manager = new FMatrixManager(this.tokenStream,
+				new DefaultFMatrixConfiguration());
+		this.manager.setSourceList(this.fileList);
 	}
 
-	this.fileList = new DefaultSourceList();
-	this.tokenStream = null;
-
-	// this.fileList.add(new File("txt/bibel/bibel_halb.txt"));
-	// this.fileList.add(new File("txt/bibel/bibel.txt"));
-
-	this.fileList.add(context.createDotplotFile(new File(
-		"testfiles/fmatrix/test.txt")));
-	this.fileList.add(context.createDotplotFile(new File(
-		"testfiles/fmatrix/test.txt")));
-
-	// this.fileList.add(new File("ChangeLog"));
-	// this.fileList.add(new File("ChangeLog"));
-
-	// this.fileList.add(new File("FAQ"));
-	// this.fileList.add(new File("FAQ"));
-
-	// this.fileList.add(new File("PJunitTestFile.pdf"));
-	// this.fileList.add(new File("PJunitTestFile.pdf"));
-
-	// this.configuration.setSourceList(this.fileList);
-	this.configuration
-		.setTokenizerID(TokenizerService.DEFAULT_TOKENIZER_ID);
-
-	// this.tokenizer.setConfiguration(this.configuration);
-
-	try {
-	    // this.tokenStream = tokenizer.getTokenStream();
-	} catch (TokenizerException e) {
-	    System.out.println(e.getMessage());
-	    System.exit(1);
+	@Override
+	public void tearDown() {
+		ContextFactory.getContext().setNoGui(false);
 	}
 
-	this.manager = new FMatrixManager(this.tokenStream,
-		new DefaultFMatrixConfiguration());
-	this.manager.setSourceList(this.fileList);
-    }
+	// Christian Gerhardt: "Wozu ist dieser Test gut?".
 
-    @Override
-    public void tearDown() {
-	ContextFactory.getContext().setNoGui(false);
-    }
+	// public void testSetUp()
+	// {
+	// fail("redesign this test");
+	// assertNotNull("manager must not be null!", this.manager);
+	// assertNotNull("configuration must not be null!", this.configuration);
+	// assertNotNull("Filelist must not be null!", this.fileList);
+	// assertNotNull("tokenStream must not be null!", this.tokenStream);
+	// assertTrue("token stream must be an ITokenStream", this.tokenStream
+	// instanceof ITokenStream);
+	// }
 
-    // Christian Gerhardt: "Wozu ist dieser Test gut?".
+	public void testRun() {
+		// long startingTime = System.currentTimeMillis();
+		this.manager.addTokens();
+		// System.out.println("adding took " +
+		// ((float) (System.currentTimeMillis() - startingTime) / 1000) +
+		// " seconds.");
 
-    // public void testSetUp()
-    // {
-    // fail("redesign this test");
-    // assertNotNull("manager must not be null!", this.manager);
-    // assertNotNull("configuration must not be null!", this.configuration);
-    // assertNotNull("Filelist must not be null!", this.fileList);
-    // assertNotNull("tokenStream must not be null!", this.tokenStream);
-    // assertTrue("token stream must be an ITokenStream", this.tokenStream
-    // instanceof ITokenStream);
-    // }
+		ITypeTableNavigator navigator = this.manager.getTypeTableNavigator();
 
-    public void testRun() {
-	// long startingTime = System.currentTimeMillis();
-	this.manager.addTokens();
-	// System.out.println("adding took " +
-	// ((float) (System.currentTimeMillis() - startingTime) / 1000) +
-	// " seconds.");
+		// System.out.println("POSTINGS: " + navigator.getNumberOfAllMatches());
 
-	ITypeTableNavigator navigator = this.manager.getTypeTableNavigator();
+		long countPostings = 0;
+		while ((navigator.getNextMatch()) != null) {
+			if ((countPostings % 5000000) == 0) {
+				// System.out.println("found " + countPostings + "
+				// postings...");
+			}
+			countPostings++;
+		}
 
-	// System.out.println("POSTINGS: " + navigator.getNumberOfAllMatches());
+		assertEquals("calculated number of tokens must be same as found",
+				navigator.getNumberOfAllMatches(), countPostings);
 
-	long countPostings = 0;
-	while ((navigator.getNextMatch()) != null) {
-	    if ((countPostings % 5000000) == 0) {
-		// System.out.println("found " + countPostings + "
-		// postings...");
-	    }
-	    countPostings++;
+		// System.out.println("found " + countPostings + " postings...");
+		// System.out.println("retreiving postings took " +
+		// ((float) (System.currentTimeMillis() - startingTime) / 1000) +
+		// " seconds.");
 	}
-
-	assertEquals("calculated number of tokens must be same as found",
-		navigator.getNumberOfAllMatches(), countPostings);
-
-	// System.out.println("found " + countPostings + " postings...");
-	// System.out.println("retreiving postings took " +
-	// ((float) (System.currentTimeMillis() - startingTime) / 1000) +
-	// " seconds.");
-    }
 }

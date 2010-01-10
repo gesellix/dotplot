@@ -12,83 +12,87 @@ import org.dotplot.tokenizer.service.TokenizerService;
  * @author case
  * @version 1.0
  */
-public class DefaultTokenizerConfigurationTest extends TestCase {
+public final class DefaultTokenizerConfigurationTest extends TestCase {
 
-    private DefaultTokenizerConfiguration defCon;
+	private DefaultTokenizerConfiguration defCon;
 
-    /**
-     * Constructor for DefaultConfigurationTest.
-     * 
-     * @param arg0
-     *            - the first argument
-     */
-    public DefaultTokenizerConfigurationTest(String arg0) {
-	super(arg0);
-    }
-
-    /*
-     * @see TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-	super.setUp();
-	this.defCon = new DefaultTokenizerConfiguration();
-    }
-
-    /*
-     * @see TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-	super.tearDown();
-    }
-
-    public void testCopy() {
-	IConfiguration copy = this.defCon.copy();
-	assertNotNull(copy);
-	assertTrue(copy instanceof DefaultTokenizerConfiguration);
-	DefaultTokenizerConfiguration def = (DefaultTokenizerConfiguration) copy;
-	assertEquals(def.getTokenizerID(), this.defCon.getTokenizerID());
-    }
-
-    public void testDefaultTokenizerConfiguration() {
-	DefaultTokenizerConfiguration config = new DefaultTokenizerConfiguration();
-	assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, config
-		.getTokenizerID());
-    }
-
-    public void testObjectForm() {
-	try {
-	    this.defCon.objectForm(null);
-	    fail("NullPointerException must be thrown");
-	} catch (NullPointerException e) {
-	    /* all clear */
-	} catch (Exception e) {
-	    fail("wrong Exception");
+	/**
+	 * Constructor for DefaultConfigurationTest.
+	 * 
+	 * @param arg0
+	 *            - the first argument
+	 */
+	public DefaultTokenizerConfigurationTest(String arg0) {
+		super(arg0);
 	}
 
-	try {
-	    IConfiguration config = this.defCon.objectForm("test.tokenizer");
-	    assertNotNull(config);
-	    assertTrue(config instanceof DefaultTokenizerConfiguration);
-	    assertEquals("test.tokenizer",
-		    ((DefaultTokenizerConfiguration) config).getTokenizerID());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/*
+	 * @see TestCase#setUp()
+	 */
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		this.defCon = new DefaultTokenizerConfiguration();
 	}
-    }
 
-    public void testSerializedForm() {
-	assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, this.defCon
-		.getTokenizerID());
-
-	try {
-	    assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, this.defCon
-		    .serializedForm());
-	} catch (Exception e) {
-	    fail("no exception:" + e.getClass().getName() + ":"
-		    + e.getMessage());
+	/*
+	 * @see TestCase#tearDown()
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		super.tearDown();
 	}
-    }
+
+	public void testCopy() {
+		IConfiguration copy = this.defCon.copy();
+		assertNotNull(copy);
+		assertTrue(copy instanceof DefaultTokenizerConfiguration);
+		DefaultTokenizerConfiguration def = (DefaultTokenizerConfiguration) copy;
+		assertEquals(def.getTokenizerID(), this.defCon.getTokenizerID());
+	}
+
+	public void testDefaultTokenizerConfiguration() {
+		DefaultTokenizerConfiguration config = new DefaultTokenizerConfiguration();
+		assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, config
+				.getTokenizerID());
+	}
+
+	public void testObjectForm() {
+		try {
+			this.defCon.objectForm(null);
+			fail("NullPointerException must be thrown");
+		}
+		catch (NullPointerException e) {
+			/* all clear */
+		}
+		catch (Exception e) {
+			fail("wrong Exception");
+		}
+
+		try {
+			IConfiguration config = this.defCon.objectForm("test.tokenizer");
+			assertNotNull(config);
+			assertTrue(config instanceof DefaultTokenizerConfiguration);
+			assertEquals("test.tokenizer",
+					((DefaultTokenizerConfiguration) config).getTokenizerID());
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+	}
+
+	public void testSerializedForm() {
+		assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, this.defCon
+				.getTokenizerID());
+
+		try {
+			assertEquals(TokenizerService.DEFAULT_TOKENIZER_ID, this.defCon
+					.serializedForm());
+		}
+		catch (Exception e) {
+			fail("no exception:" + e.getClass().getName() + ":"
+					+ e.getMessage());
+		}
+	}
 }
