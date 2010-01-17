@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.dotplot.core.plugins;
 
 import java.util.ArrayList;
@@ -27,166 +24,171 @@ import org.dotplot.util.UnknownIDException;
  */
 public class BatchJob extends AbstractJob<IFrameworkContext> {
 
-    /**
-     * A <code>List</code> to manage the batch.
-     */
-    private List<String> batch;
+	/**
+	 * A <code>List</code> to manage the batch.
+	 */
+	private List<String> batch;
 
-    /**
-     * Creates a new <code>BatchJob</code>.
-     */
-    public BatchJob() {
-	super();
-	this.batch = new Vector<String>();
-    }
-
-    /**
-     * Adds a <code>Service</code> to the batch.
-     * 
-     * @param serviceID
-     */
-    public void addService(String serviceID) {
-	if (serviceID == null) {
-	    throw new NullPointerException();
+	/**
+	 * Creates a new <code>BatchJob</code>.
+	 */
+	public BatchJob() {
+		super();
+		this.batch = new Vector<String>();
 	}
-	this.batch.add(serviceID);
-    }
 
-    /**
-     * Adds a <code>serviceID</code> to a certain position in the batch.
-     * <p>
-     * The <code>serviceID</code> currently holding the position will be moved
-     * up one position just as the ids above.
-     * </p>
-     * <p>
-     * If <code>position</code> is greater then the current batchsize, the
-     * <code>serviceID</code> will be put on top of the batch.
-     * </p>
-     * 
-     * @param serviceID
-     *            - the <code>serviceID</code> to put on the batch.
-     * @param position
-     *            - the position to put the <code>serviceID</code> in the batch
-     */
-    public void addService(String serviceID, int position) {
-	if (position < 0) {
-	    throw new IllegalArgumentException(String.valueOf(position));
+	/**
+	 * Adds a <code>Service</code> to the batch.
+	 * 
+	 * @param serviceID
+	 *            ID of the service to add.
+	 */
+	public final void addService(final String serviceID) {
+		if (serviceID == null) {
+			throw new NullPointerException();
+		}
+		this.batch.add(serviceID);
 	}
-	if (serviceID == null) {
-	    throw new NullPointerException();
+
+	/**
+	 * Adds a <code>serviceID</code> to a certain position in the batch.
+	 * <p>
+	 * The <code>serviceID</code> currently holding the position will be moved
+	 * up one position just as the ids above.
+	 * </p>
+	 * <p>
+	 * If <code>position</code> is greater then the current batchsize, the
+	 * <code>serviceID</code> will be put on top of the batch.
+	 * </p>
+	 * 
+	 * @param serviceID
+	 *            - the <code>serviceID</code> to put on the batch.
+	 * @param position
+	 *            - the position to put the <code>serviceID</code> in the batch
+	 */
+	public final void addService(final String serviceID, int position) {
+		if (position < 0) {
+			throw new IllegalArgumentException(String.valueOf(position));
+		}
+		if (serviceID == null) {
+			throw new NullPointerException();
+		}
+		if (position > this.batch.size()) {
+			position = this.batch.size();
+		}
+		this.batch.add(position, serviceID);
 	}
-	if (position > this.batch.size()) {
-	    position = this.batch.size();
+
+	/**
+	 * Returns the batch as an array of serviceids.
+	 * 
+	 * @return - the batch.
+	 */
+	public final List<String> getServiceBatch() {
+		List<String> list = new ArrayList<String>();
+		list.addAll(this.batch);
+		return list;
 	}
-	this.batch.add(position, serviceID);
-    }
 
-    /**
-     * Returns the batch as an array of serviceids.
-     * 
-     * @return - the batch.
-     */
-    public List<String> getServiceBatch() {
-	List<String> list = new ArrayList<String>();
-	list.addAll(this.batch);
-	return list;
-    }
+	/**
+	 * @see org.dotplot.services.IJob#process(org.dotplot.services.ServiceManager,
+	 *      org.dotplot.services.FrameworkContext)
+	 * 
+	 * @param context
+	 *            the <code>IFrameworkContext</code> to run the Job in.
+	 * @return if the job is run succesfully.
+	 */
+	public final boolean process(final IFrameworkContext context) {
+		if (context == null) {
+			throw new NullPointerException();
+		}
+		List<String> serviceBatch = this.getServiceBatch();
+		IContext currentContext = new NullContext();
+		IService<IFrameworkContext, ?> currentService = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.services.IJob#process(org.dotplot.services.ServiceManager,
-     * org.dotplot.services.FrameworkContext)
-     */
-    public boolean process(IFrameworkContext context) {
-	if (context == null) {
-	    throw new NullPointerException();
+		this.getTaskProcessor().setErrorHandler(this.getErrorHandler());
+
+		for (String service : serviceBatch) {
+			try {
+				currentService = context.getServiceRegistry().get(service);
+			}
+			catch (UnknownIDException e) {
+				this.getErrorHandler().fatal(this, e);
+				return false;
+			}
+			currentService.setErrorHandler(this.getErrorHandler());
+			currentService.setFrameworkContext(context);
+			try {
+				currentService.setWorkingContext(currentContext);
+			}
+			catch (IllegalContextException e) {
+				this.getErrorHandler().fatal(this, e);
+				return false;
+			}
+			currentService.setTaskProcessor(this.getTaskProcessor());
+			currentService.run();
+
+			currentContext = currentService.getResultContext();
+		}
+		return true;
 	}
-	List<String> batch = this.getServiceBatch();
-	IContext currentContext = new NullContext();
-	IService<IFrameworkContext, ?> currentService = null;
 
-	this.getTaskProcessor().setErrorHandler(this.getErrorHandler());
-
-	for (String service : batch) {
-	    try {
-		currentService = context.getServiceRegistry().get(service);
-	    } catch (UnknownIDException e) {
-		this.getErrorHandler().fatal(this, e);
-		return false;
-	    }
-	    currentService.setErrorHandler(this.getErrorHandler());
-	    currentService.setFrameworkContext(context);
-	    try {
-		currentService.setWorkingContext(currentContext);
-	    } catch (IllegalContextException e) {
-		this.getErrorHandler().fatal(this, e);
-		return false;
-	    }
-	    currentService.setTaskProcessor(this.getTaskProcessor());
-	    currentService.run();
-
-	    currentContext = currentService.getResultContext();
+	/**
+	 * Removes the last <code>Service</code> of the batch.
+	 * 
+	 * @return - the removed <code>Service</code>.
+	 */
+	public final String removeService() {
+		if (this.batch.size() == 0) {
+			return null;
+		}
+		else {
+			return this.batch.remove(this.batch.size() - 1).toString();
+		}
 	}
-	return true;
-    }
 
-    /**
-     * Removes the last <code>Service</code> of the batch.
-     * 
-     * @return - the removed <code>Service</code>.
-     */
-    public String removeService() {
-	if (this.batch.size() == 0) {
-	    return null;
-	} else {
-	    return this.batch.remove(this.batch.size() - 1).toString();
+	/**
+	 * Removes a serviceid in a specified position in the batch.
+	 * 
+	 * @param position
+	 *            - the position of the id to be removed.
+	 * @return - the removed serviceid.
+	 * @throws IllegalArgumentException
+	 */
+	public final String removeService(final int position) {
+		if (position < 0) {
+			throw new IllegalArgumentException(String.valueOf(position));
+		}
+		return this.batch.remove(position).toString();
 	}
-    }
 
-    /**
-     * Removes a serviceid in a specified position in the batch.
-     * 
-     * @param position
-     *            - the position of the id to be removed.
-     * @return - the removed serviceid.
-     * @throws IllegalArgumentException
-     */
-    public String removeService(int position) {
-	if (position < 0) {
-	    throw new IllegalArgumentException(String.valueOf(position));
-	}
-	return this.batch.remove(position).toString();
-    }
+	/**
+	 * 
+	 * @see org.dotplot.services.IJob#validatePreconditions(org.dotplot.services.
+	 *      ServiceManager, org.dotplot.services.FrameworkContext)
+	 */
+	public final boolean validatePreconditions(final IServiceRegistry manager) {
+		if (manager == null) {
+			throw new NullPointerException();
+		}
+		IService<?, ?> currentService;
+		Class<?> currentContext = NullContext.class;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.services.IJob#validatePreconditions(org.dotplot.services.
-     * ServiceManager, org.dotplot.services.FrameworkContext)
-     */
-    public boolean validatePreconditions(IServiceRegistry manager) {
-	if (manager == null) {
-	    throw new NullPointerException();
+		List<String> serviceBatch = this.getServiceBatch();
+		for (String service : serviceBatch) {
+			try {
+				currentService = manager.get(service);
+			}
+			catch (UnknownIDException e) {
+				return false;
+			}
+			if (currentService.workingContextIsCompatible(currentContext)) {
+				currentContext = currentService.getResultContextClass();
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
 	}
-	IService<?, ?> currentService;
-	Class<?> currentContext = NullContext.class;
-
-	List<String> batch = this.getServiceBatch();
-	for (String service : batch) {
-	    try {
-		currentService = manager.get(service);
-	    } catch (UnknownIDException e) {
-		return false;
-	    }
-	    if (currentService.workingContextIsCompatible(currentContext)) {
-		currentContext = currentService.getResultContextClass();
-	    } else {
-		return false;
-	    }
-	}
-	return true;
-    }
 }
