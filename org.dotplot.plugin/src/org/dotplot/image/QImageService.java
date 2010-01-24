@@ -24,111 +24,114 @@ import org.dotplot.util.UnknownIDException;
  */
 public class QImageService extends DotplotService {
 
-    public static final String QIMAGE_CONFIGURATION_ID = "org.dotplot.qimage.Configuration";
+	public static final String QIMAGE_CONFIGURATION_ID = "org.dotplot.qimage.Configuration";
 
-    /**
-     * Id of the grid configuration.
-     */
-    public static final String ID_GRID_CONFIGURATION = "org.dotplot.grid.Configuration";
+	/**
+	 * Id of the grid configuration.
+	 */
+	public static final String ID_GRID_CONFIGURATION = "org.dotplot.grid.Configuration";
 
-    /**
-     * Creates a new <code>QImageService</code>.
-     * 
-     * @param id
-     */
-    public QImageService(String id) {
-	super(id);
+	/**
+	 * Creates a new <code>QImageService</code>.
+	 * 
+	 * @param id
+	 */
+	public QImageService(String id) {
+		super(id);
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.DotplotService#createResultContext()
-     */
-    @Override
-    protected IContext createResultContext() {
-	Object result = this.getTaskProcessor().getTaskResult();
-	if (result == null) {
-	    return NullContext.context;
-	} else {
-	    return new QImageContext((IDotplot) result);
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.AbstractService#createTask()
-     */
-    @Override
-    public ITask createTask() {
-	ITask task = new Task("Image Task", new ITaskResultMarshaler() {
-
-	    public Object marshalResult(Map<String, ? extends Object> taskResult) {
-		return taskResult.get("Part 1");
-	    }
-	}, false);
-
-	IQImageConfiguration config;
-	try {
-	    config = (IQImageConfiguration) this.frameworkContext
-		    .getConfigurationRegistry().get(QIMAGE_CONFIGURATION_ID);
-	} catch (UnknownIDException e) {
-	    this.getErrorHandler().fatal(this, e);
-	    return null;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.DotplotService#createResultContext()
+	 */
+	@Override
+	protected IContext createResultContext() {
+		Object result = this.getTaskProcessor().getTaskResult();
+		if (result == null) {
+			return NullContext.context;
+		}
+		else {
+			return new QImageContext((IDotplot) result);
+		}
 	}
-	FMatrixContext workingContext = (FMatrixContext) this
-		.getWorkingContext();
 
-	task.addPart(new QImageTaskPart("Part 1", workingContext
-		.getTypeTableNavigator(), config));
-	return task;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.AbstractService#createTask()
+	 */
+	@Override
+	public ITask createTask() {
+		ITask task = new Task("Image Task", new ITaskResultMarshaler() {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.AbstractService#getResultContextClass()
-     */
-    @Override
-    public Class getResultContextClass() {
-	return QImageContext.class;
-    }
+			public Object marshalResult(Map<String, ? extends Object> taskResult) {
+				return taskResult.get("Part 1");
+			}
+		}, false);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.DotplotService#registerDefaultConfiguration(org.dotplot
-     * .core.IConfigurationRegistry)
-     */
-    @Override
-    public void registerDefaultConfiguration(IConfigurationRegistry registry) {
-	if (registry == null) {
-	    throw new NullPointerException();
+		IQImageConfiguration config;
+		try {
+			config = (IQImageConfiguration) this.frameworkContext
+					.getConfigurationRegistry().get(QIMAGE_CONFIGURATION_ID);
+		}
+		catch (UnknownIDException e) {
+			this.getErrorHandler().fatal(this, e);
+			return null;
+		}
+		FMatrixContext workingContext = (FMatrixContext) this
+				.getWorkingContext();
+
+		task.addPart(new QImageTaskPart("Part 1", workingContext
+				.getTypeTableNavigator(), config));
+		return task;
 	}
-	try {
-	    registry.register(QIMAGE_CONFIGURATION_ID,
-		    new QImageConfiguration());
-	    // grid configuration wird hier registriert bis das grid auch
-	    // aushalb des image benutzt werden kann.
-	    registry.register(ID_GRID_CONFIGURATION, new GridConfiguration());
-	} catch (DuplicateRegistrationException e) {
-	    // dann eben nicht
-	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.services.AbstractService#workingContextIsCompatible(
-     * java.lang.Class)
-     */
-    @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
-	return FMatrixContext.class.isAssignableFrom(contextClass);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.AbstractService#getResultContextClass()
+	 */
+	@Override
+	public Class getResultContextClass() {
+		return QImageContext.class;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.core.DotplotService#registerDefaultConfiguration(org.dotplot
+	 * .core.IConfigurationRegistry)
+	 */
+	@Override
+	public void registerDefaultConfiguration(IConfigurationRegistry registry) {
+		if (registry == null) {
+			throw new NullPointerException();
+		}
+		try {
+			registry.register(QIMAGE_CONFIGURATION_ID,
+					new QImageConfiguration());
+			// grid configuration wird hier registriert bis das grid auch
+			// aushalb des image benutzt werden kann.
+			registry.register(ID_GRID_CONFIGURATION, new GridConfiguration());
+		}
+		catch (DuplicateRegistrationException e) {
+			// dann eben nicht
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.core.services.AbstractService#workingContextIsCompatible(
+	 * java.lang.Class)
+	 */
+	@Override
+	public boolean workingContextIsCompatible(Class contextClass) {
+		return FMatrixContext.class.isAssignableFrom(contextClass);
+	}
 
 }

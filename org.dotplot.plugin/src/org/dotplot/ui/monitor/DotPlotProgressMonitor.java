@@ -15,131 +15,131 @@ import org.eclipse.swt.events.SelectionListener;
  */
 public class DotPlotProgressMonitor implements SelectionListener {
 
-    private static DotPlotProgressMonitor instance;
+	private static DotPlotProgressMonitor instance;
 
-    /**
-     * <code>DotPlotProgressMonitor</code> is a Singleton. Use
-     * <code>getInstance</code> to access it.
-     * 
-     * @return the one and only instance
-     */
-    public static DotPlotProgressMonitor getInstance() {
-	if (instance == null) {
-	    instance = new DotPlotProgressMonitor();
-	}
-	return instance;
-    }
-
-    private DotPlotProgressDialog dialog;
-
-    private boolean isUnderControl;
-
-    private MonitorablePlotUnit unit;
-
-    private int units;
-
-    private int unitsControlled;
-
-    private DotPlotProgressMonitor() {
-	isUnderControl = false;
-	unit = null;
-	dialog = null;
-	units = 0;
-	unitsControlled = 0;
-    }
-
-    /**
-     * cancels the current action and closes the dialog.
-     */
-    public void close() {
-	if (isUnderControl) {
-	    unit.cancel();
-	}
-	dialog.close();
-    }
-
-    /**
-     * use <code> getControl</code> to access monitoring with your PlotUnit.
-     * 
-     * @param plotUnit
-     *            your PlotUnit (most likely a controller) that can tell its
-     *            progress
-     * 
-     * @return true if you have monitoring now else false
-     */
-    public boolean getControl(MonitorablePlotUnit plotUnit) {
-	// if (dialog == null)
-	// {
-	// showProgress(1);
-	// }
-
-	if (!isUnderControl && unitsControlled <= units) {
-	    isUnderControl = true;
-	    unit = plotUnit;
-	    dialog.setModule(plotUnit.nameOfUnit() + ":");
-
-	    return true;
+	/**
+	 * <code>DotPlotProgressMonitor</code> is a Singleton. Use
+	 * <code>getInstance</code> to access it.
+	 * 
+	 * @return the one and only instance
+	 */
+	public static DotPlotProgressMonitor getInstance() {
+		if (instance == null) {
+			instance = new DotPlotProgressMonitor();
+		}
+		return instance;
 	}
 
-	return false;
-    }
+	private DotPlotProgressDialog dialog;
 
-    /**
-     * starts a new dialog.
-     * 
-     * @param maxUnits
-     *            number of modules to monitor
-     */
-    public void showProgress(int maxUnits) {
-	isUnderControl = false;
-	units = maxUnits;
-	unitsControlled = 0;
-	dialog = new DotPlotProgressDialog();
-	dialog.open();
-    }
+	private boolean isUnderControl;
 
-    /**
-     * use this to tell the monitor you have worked an amount it will ask your
-     * unit for messages and percentage of work done.
-     */
-    public void update() {
-	if (!isUnderControl) {
-	    return;
+	private MonitorablePlotUnit unit;
+
+	private int units;
+
+	private int unitsControlled;
+
+	private DotPlotProgressMonitor() {
+		isUnderControl = false;
+		unit = null;
+		dialog = null;
+		units = 0;
+		unitsControlled = 0;
 	}
 
-	dialog.setMessage(unit.getMonitorMessage());
-	dialog.stepModule(unit.getProgress());
-	dialog.step(unit.getProgress() / units + (100 / units)
-		* unitsControlled);
-	if (unit.getProgress() == 100) {
-	    isUnderControl = false;
-	    unitsControlled++;
-	    if (unitsControlled == units) {
+	/**
+	 * cancels the current action and closes the dialog.
+	 */
+	public void close() {
+		if (isUnderControl) {
+			unit.cancel();
+		}
 		dialog.close();
-	    }
 	}
-    }
 
-    /**
-     * empty implementation.
-     * 
-     * @param event
-     *            the event
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-     */
-    public void widgetDefaultSelected(SelectionEvent event) {
-    }
+	/**
+	 * use <code> getControl</code> to access monitoring with your PlotUnit.
+	 * 
+	 * @param plotUnit
+	 *            your PlotUnit (most likely a controller) that can tell its
+	 *            progress
+	 * 
+	 * @return true if you have monitoring now else false
+	 */
+	public boolean getControl(MonitorablePlotUnit plotUnit) {
+		// if (dialog == null)
+		// {
+		// showProgress(1);
+		// }
 
-    /**
-     * closes the progress dialog.
-     * 
-     * @param event
-     *            the event proxy
-     * 
-     * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-     */
-    public void widgetSelected(SelectionEvent event) {
-	close();
-    }
+		if (!isUnderControl && unitsControlled <= units) {
+			isUnderControl = true;
+			unit = plotUnit;
+			dialog.setModule(plotUnit.nameOfUnit() + ":");
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * starts a new dialog.
+	 * 
+	 * @param maxUnits
+	 *            number of modules to monitor
+	 */
+	public void showProgress(int maxUnits) {
+		isUnderControl = false;
+		units = maxUnits;
+		unitsControlled = 0;
+		dialog = new DotPlotProgressDialog();
+		dialog.open();
+	}
+
+	/**
+	 * use this to tell the monitor you have worked an amount it will ask your
+	 * unit for messages and percentage of work done.
+	 */
+	public void update() {
+		if (!isUnderControl) {
+			return;
+		}
+
+		dialog.setMessage(unit.getMonitorMessage());
+		dialog.stepModule(unit.getProgress());
+		dialog.step(unit.getProgress() / units + (100 / units)
+				* unitsControlled);
+		if (unit.getProgress() == 100) {
+			isUnderControl = false;
+			unitsControlled++;
+			if (unitsControlled == units) {
+				dialog.close();
+			}
+		}
+	}
+
+	/**
+	 * empty implementation.
+	 * 
+	 * @param event
+	 *            the event
+	 * 
+	 * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
+	 */
+	public void widgetDefaultSelected(SelectionEvent event) {
+	}
+
+	/**
+	 * closes the progress dialog.
+	 * 
+	 * @param event
+	 *            the event proxy
+	 * 
+	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+	 */
+	public void widgetSelected(SelectionEvent event) {
+		close();
+	}
 }

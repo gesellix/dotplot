@@ -8,7 +8,7 @@ package org.dotplot.util;
  * 
  */
 public interface ExecutionUnit extends Runnable {
-    public boolean isRunning();
+	public boolean isRunning();
 
-    public void stop();
+	public void stop();
 }

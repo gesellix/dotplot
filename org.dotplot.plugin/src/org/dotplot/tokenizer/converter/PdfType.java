@@ -11,16 +11,16 @@ import org.dotplot.core.BaseType;
  */
 public class PdfType extends BaseType {
 
-    public static final PdfType type = new PdfType();
+	public static final PdfType type = new PdfType();
 
-    /**
+	/**
 	 * 
 	 */
-    public PdfType() {
-	super("pdf");
-    }
+	public PdfType() {
+		super("pdf");
+	}
 
-    public PdfType(String name) {
-	super(name);
-    }
+	public PdfType(String name) {
+		super(name);
+	}
 }

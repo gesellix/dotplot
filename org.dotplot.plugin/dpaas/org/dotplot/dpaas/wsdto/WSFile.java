@@ -49,97 +49,104 @@ import org.dotplot.tokenizer.service.XMLType;
 @XmlType(name = "File", propOrder = { "filename", "content", "fileType" })
 public class WSFile {
 
-    @XmlElement(name = "Filename", required = true)
-    protected String filename;
-    @XmlElement(name = "Content", required = true)
-    protected byte[] content;
-    @XmlElement(name = "FileType", required = true)
-    protected String fileType;
+	@XmlElement(name = "Filename", required = true)
+	protected String filename;
+	@XmlElement(name = "Content", required = true)
+	protected byte[] content;
+	@XmlElement(name = "FileType", required = true)
+	protected String fileType;
 
-    /**
-     * Gets the value of the content property.
-     * 
-     * @return possible object is byte[]
-     */
-    public byte[] getContent() {
-	return content;
-    }
-
-    /**
-     * Gets the value of the filename property.
-     * 
-     * @return possible object is {@link String }
-     * 
-     */
-    public String getFilename() {
-	return filename;
-    }
-
-    /**
-     * Gets the value of the fileType property.
-     * 
-     * @return possible object is {@link String }
-     * 
-     */
-    public String getFileType() {
-	return fileType;
-    }
-
-    /**
-     * Sets the value of the content property.
-     * 
-     * @param value
-     *            allowed object is byte[]
-     */
-    public void setContent(byte[] value) {
-	this.content = (value);
-    }
-
-    /**
-     * Sets the value of the filename property.
-     * 
-     * @param value
-     *            allowed object is {@link String }
-     * 
-     */
-    public void setFilename(String value) {
-	this.filename = value;
-    }
-
-    /**
-     * Sets the value of the fileType property.
-     * 
-     * @param value
-     *            allowed object is {@link String }
-     * 
-     */
-    public void setFileType(String value) {
-	this.fileType = value;
-    }
-
-    public ByteRessource toByteRessource() {
-
-	ByteRessource tmp = new ByteRessource();
-	tmp.setBytearray(content);
-	tmp.setFilename(filename);
-
-	if (this.getFileType().equals("Text")) {
-	    tmp.setType(TextType.type);
-	} else if (this.getFileType().equals("Java")) {
-	    tmp.setType(JavaType.type);
-	} else if (this.getFileType().equals("C")) {
-	    tmp.setType(CType.type);
-	} else if (this.getFileType().equals("C++")) {
-	    tmp.setType(CPlusPlusType.type);
-	} else if (this.getFileType().equals("XML")) {
-	    tmp.setType(XMLType.type);
-	} else if (this.getFileType().equals("HTML")) {
-	    tmp.setType(HTMLType.type);
-	} else if (this.getFileType().equals("PHP")) {
-	    tmp.setType(PHPType.type);
-	} else {
-	    tmp.setType(TextType.type);
+	/**
+	 * Gets the value of the content property.
+	 * 
+	 * @return possible object is byte[]
+	 */
+	public byte[] getContent() {
+		return content;
 	}
-	return tmp;
-    }
+
+	/**
+	 * Gets the value of the filename property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getFilename() {
+		return filename;
+	}
+
+	/**
+	 * Gets the value of the fileType property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getFileType() {
+		return fileType;
+	}
+
+	/**
+	 * Sets the value of the content property.
+	 * 
+	 * @param value
+	 *            allowed object is byte[]
+	 */
+	public void setContent(byte[] value) {
+		this.content = (value);
+	}
+
+	/**
+	 * Sets the value of the filename property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setFilename(String value) {
+		this.filename = value;
+	}
+
+	/**
+	 * Sets the value of the fileType property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setFileType(String value) {
+		this.fileType = value;
+	}
+
+	public ByteRessource toByteRessource() {
+
+		ByteRessource tmp = new ByteRessource();
+		tmp.setBytearray(content);
+		tmp.setFilename(filename);
+
+		if (this.getFileType().equals("Text")) {
+			tmp.setType(TextType.type);
+		}
+		else if (this.getFileType().equals("Java")) {
+			tmp.setType(JavaType.type);
+		}
+		else if (this.getFileType().equals("C")) {
+			tmp.setType(CType.type);
+		}
+		else if (this.getFileType().equals("C++")) {
+			tmp.setType(CPlusPlusType.type);
+		}
+		else if (this.getFileType().equals("XML")) {
+			tmp.setType(XMLType.type);
+		}
+		else if (this.getFileType().equals("HTML")) {
+			tmp.setType(HTMLType.type);
+		}
+		else if (this.getFileType().equals("PHP")) {
+			tmp.setType(PHPType.type);
+		}
+		else {
+			tmp.setType(TextType.type);
+		}
+		return tmp;
+	}
 }

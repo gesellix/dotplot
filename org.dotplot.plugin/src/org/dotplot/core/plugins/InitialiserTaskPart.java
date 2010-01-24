@@ -18,70 +18,70 @@ import org.dotplot.core.services.InsufficientRessourcesException;
  */
 public class InitialiserTaskPart extends AbstractTaskPart {
 
-    /**
+	/**
 	 * 
 	 */
-    private IServiceRegistry registry;
+	private IServiceRegistry registry;
 
-    /**
+	/**
 	 * 
 	 */
-    private IFrameworkContext context;
+	private IFrameworkContext context;
 
-    /**
-     * Creates a new <code>InitialiserTaskPart</code>.
-     * 
-     * @param id
-     * @param context
-     */
-    public InitialiserTaskPart(String id, IFrameworkContext context) {
-	super(id);
-	if (context == null) {
-	    throw new NullPointerException();
+	/**
+	 * Creates a new <code>InitialiserTaskPart</code>.
+	 * 
+	 * @param id
+	 * @param context
+	 */
+	public InitialiserTaskPart(String id, IFrameworkContext context) {
+		super(id);
+		if (context == null) {
+			throw new NullPointerException();
+		}
+		this.registry = context.getServiceRegistry();
+		this.context = context;
 	}
-	this.registry = context.getServiceRegistry();
-	this.context = context;
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.ITaskPart#errorOccured()
-     */
-    public boolean errorOccured() {
-	return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.ITaskPart#getResult()
-     */
-    public Object getResult() {
-	return new Boolean(true);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
-    public void run() {
-	for (IService s : this.registry.getAll().values()) {
-	    s.setFrameworkContext(this.context);
-	    s.init();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.ITaskPart#errorOccured()
+	 */
+	public boolean errorOccured() {
+		return false;
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.services.ITaskPart#setLocalRessources(java.util.Collection
-     * )
-     */
-    public void setLocalRessources(Collection<? extends IRessource> ressouceList)
-	    throws InsufficientRessourcesException {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.ITaskPart#getResult()
+	 */
+	public Object getResult() {
+		return new Boolean(true);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	public void run() {
+		for (IService s : this.registry.getAll().values()) {
+			s.setFrameworkContext(this.context);
+			s.init();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.core.services.ITaskPart#setLocalRessources(java.util.Collection
+	 * )
+	 */
+	public void setLocalRessources(Collection<? extends IRessource> ressouceList)
+			throws InsufficientRessourcesException {
+	}
 
 }

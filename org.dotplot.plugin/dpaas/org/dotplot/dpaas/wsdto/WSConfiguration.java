@@ -5,7 +5,6 @@
 // Generated on: 2009.06.29 at 11:18:10 PM CEST 
 //
 
-
 package org.dotplot.dpaas.wsdto;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for WSConfiguration complex type.
+ * <p>
+ * Java class for WSConfiguration complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="WSConfiguration">
@@ -40,57 +41,51 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class WSConfiguration {
 
-    @XmlElement(name = "LUTs", required = true)
-    protected WSLuts luTs;
-    @XmlElement(name = "Filter", required = true)
-    protected WSFilters filter;
+	@XmlElement(name = "LUTs", required = true)
+	protected WSLuts luTs;
+	@XmlElement(name = "Filter", required = true)
+	protected WSFilters filter;
 
-    /**
-     * Gets the value of the luTs property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WSLuts }
-     *     
-     */
-    public WSLuts getLUTs() {
-        return luTs;
-    }
+	/**
+	 * Gets the value of the luTs property.
+	 * 
+	 * @return possible object is {@link WSLuts }
+	 * 
+	 */
+	public WSLuts getLUTs() {
+		return luTs;
+	}
 
-    /**
-     * Sets the value of the luTs property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WSLuts }
-     *     
-     */
-    public void setLUTs(WSLuts value) {
-        this.luTs = value;
-    }
+	/**
+	 * Sets the value of the luTs property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link WSLuts }
+	 * 
+	 */
+	public void setLUTs(WSLuts value) {
+		this.luTs = value;
+	}
 
-    /**
-     * Gets the value of the filter property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WSFilters }
-     *     
-     */
-    public WSFilters getFilter() {
-        return filter;
-    }
+	/**
+	 * Gets the value of the filter property.
+	 * 
+	 * @return possible object is {@link WSFilters }
+	 * 
+	 */
+	public WSFilters getFilter() {
+		return filter;
+	}
 
-    /**
-     * Sets the value of the filter property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WSFilters }
-     *     
-     */
-    public void setFilter(WSFilters value) {
-        this.filter = value;
-    }
+	/**
+	 * Sets the value of the filter property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link WSFilters }
+	 * 
+	 */
+	public void setFilter(WSFilters value) {
+		this.filter = value;
+	}
 
 }

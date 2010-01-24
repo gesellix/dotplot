@@ -14,19 +14,19 @@ import java.util.TreeMap;
  * @see org.dotplot.ui.ConfigurationView
  */
 public class ConfigurationViews extends TreeMap<String, ConfigurationView> {
-    /**
-     * for being Serializable
-     */
-    private static final long serialVersionUID = -5681058414337679722L;
+	/**
+	 * for being Serializable
+	 */
+	private static final long serialVersionUID = -5681058414337679722L;
 
-    /**
-     * Notifies all attached <code>Observers</code> of the
-     * <code>ConfigurationViews</code> in the container.
-     */
-    public void notifyObservers() {
-	Iterator<ConfigurationView> iter = this.values().iterator();
-	while (iter.hasNext()) {
-	    iter.next().notifyObservers();
+	/**
+	 * Notifies all attached <code>Observers</code> of the
+	 * <code>ConfigurationViews</code> in the container.
+	 */
+	public void notifyObservers() {
+		Iterator<ConfigurationView> iter = this.values().iterator();
+		while (iter.hasNext()) {
+			iter.next().notifyObservers();
+		}
 	}
-    }
 }

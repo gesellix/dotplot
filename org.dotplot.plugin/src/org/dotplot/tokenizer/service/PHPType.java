@@ -7,25 +7,25 @@ package org.dotplot.tokenizer.service;
  */
 public class PHPType extends SourceCodeFileType {
 
-    /**
-     * A static <code>PHPType</code>-object for default usage.
-     */
-    public static final PHPType type = new PHPType();
+	/**
+	 * A static <code>PHPType</code>-object for default usage.
+	 */
+	public static final PHPType type = new PHPType();
 
-    /**
-     * Creates a new <code>PHPType</code>.
-     */
-    public PHPType() {
-	super("PHP");
-    }
+	/**
+	 * Creates a new <code>PHPType</code>.
+	 */
+	public PHPType() {
+		super("PHP");
+	}
 
-    /**
-     * Creates a new <code>PHPType</code>.
-     * 
-     * @param name
-     *            an identifier for the <code>PHPType</code>.
-     */
-    public PHPType(String name) {
-	super(name);
-    }
+	/**
+	 * Creates a new <code>PHPType</code>.
+	 * 
+	 * @param name
+	 *            an identifier for the <code>PHPType</code>.
+	 */
+	public PHPType(String name) {
+		super(name);
+	}
 }

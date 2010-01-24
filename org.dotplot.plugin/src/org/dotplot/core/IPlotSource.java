@@ -16,24 +16,24 @@ import org.dotplot.core.services.IRessource;
  */
 public interface IPlotSource extends IRessource {
 
-    /**
-     * Returns the name of the <code>PlotSource</code>.
-     * 
-     * @return The name.
-     */
-    public String getName();
+	/**
+	 * Returns the name of the <code>PlotSource</code>.
+	 * 
+	 * @return The name.
+	 */
+	public String getName();
 
-    /**
-     * Returns the <code>SourceType</code> of the <code>PlotSource</code>.
-     * 
-     * @return The <code>SourceType</code>.
-     */
-    public ISourceType getType();
+	/**
+	 * Returns the <code>SourceType</code> of the <code>PlotSource</code>.
+	 * 
+	 * @return The <code>SourceType</code>.
+	 */
+	public ISourceType getType();
 
-    /**
-     * Returns the size of the <code>PlotSource</code> in Bytes.
-     * 
-     * @return The size.
-     */
-    public long size();
+	/**
+	 * Returns the size of the <code>PlotSource</code> in Bytes.
+	 * 
+	 * @return The size.
+	 */
+	public long size();
 }

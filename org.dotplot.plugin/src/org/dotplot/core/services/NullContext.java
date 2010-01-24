@@ -11,26 +11,26 @@ package org.dotplot.core.services;
  */
 public class NullContext implements IContext {
 
-    /**
-     * Default object of this class. This object should be used rather than
-     * creating a new object.
-     */
-    public static final NullContext context = new NullContext();
+	/**
+	 * Default object of this class. This object should be used rather than
+	 * creating a new object.
+	 */
+	public static final NullContext context = new NullContext();
 
-    /**
-     * Creates a new <code>NullContext</code>.
-     */
-    public NullContext() {
-	super();
-    }
+	/**
+	 * Creates a new <code>NullContext</code>.
+	 */
+	public NullContext() {
+		super();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object o) {
-	return o == null ? false : o.getClass() == NullContext.class;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object o) {
+		return o == null ? false : o.getClass() == NullContext.class;
+	}
 }

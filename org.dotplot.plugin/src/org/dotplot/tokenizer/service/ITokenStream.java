@@ -12,21 +12,21 @@ import org.dotplot.tokenizer.TokenizerException;
  * @version 1.0
  */
 public interface ITokenStream {
-    /**
-     * returns the next token from a tokenstream.
-     * 
-     * @return - the Token
-     * 
-     * @throws TokenizerException
-     *             if the tokenizer has a problem...
-     */
-    public Token getNextToken() throws TokenizerException;
+	/**
+	 * returns the next token from a tokenstream.
+	 * 
+	 * @return - the Token
+	 * 
+	 * @throws TokenizerException
+	 *             if the tokenizer has a problem...
+	 */
+	public Token getNextToken() throws TokenizerException;
 
-    /**
-     * Returns the <code>SourceType</code> of this <code>TokenStream</code>.
-     * 
-     * @return - the <code>SourceType</code>
-     */
-    public ISourceType getStreamType();
+	/**
+	 * Returns the <code>SourceType</code> of this <code>TokenStream</code>.
+	 * 
+	 * @return - the <code>SourceType</code>
+	 */
+	public ISourceType getStreamType();
 
 }

@@ -11,19 +11,19 @@ import org.dotplot.core.BaseType;
  */
 public class TextType extends BaseType {
 
-    public static final TextType type = new TextType();
+	public static final TextType type = new TextType();
 
-    /**
-     * @param name
-     */
-    public TextType() {
-	super("Text");
-    }
+	/**
+	 * @param name
+	 */
+	public TextType() {
+		super("Text");
+	}
 
-    /**
-     * @param name
-     */
-    public TextType(String name) {
-	super(name);
-    }
+	/**
+	 * @param name
+	 */
+	public TextType(String name) {
+		super(name);
+	}
 }

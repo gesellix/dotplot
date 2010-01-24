@@ -14,10 +14,10 @@ import org.dotplot.core.services.IContext;
  */
 public interface IPluginListContext extends IContext {
 
-    /**
-     * Returns a <code>Collection</code> containing <code>Plugin</code>s.
-     * 
-     * @return The <code>Plugin</code>s.
-     */
-    public Collection<? extends IPlugin> getPluginList();
+	/**
+	 * Returns a <code>Collection</code> containing <code>Plugin</code>s.
+	 * 
+	 * @return The <code>Plugin</code>s.
+	 */
+	public Collection<? extends IPlugin> getPluginList();
 }

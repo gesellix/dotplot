@@ -14,38 +14,39 @@ import org.dotplot.tokenizer.service.ITokenStream;
  */
 public class FilteredTokenStream implements ITokenStream {
 
-    private ITokenStream stream;
+	private ITokenStream stream;
 
-    private ITokenFilter filter;
+	private ITokenFilter filter;
 
-    /**
+	/**
 	 * 
 	 */
-    public FilteredTokenStream(ITokenStream stream, ITokenFilter filter) {
-	if (stream == null || filter == null) {
-	    throw new NullPointerException();
-	} else {
-	    this.stream = stream;
-	    this.filter = filter;
+	public FilteredTokenStream(ITokenStream stream, ITokenFilter filter) {
+		if (stream == null || filter == null) {
+			throw new NullPointerException();
+		}
+		else {
+			this.stream = stream;
+			this.filter = filter;
+		}
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.tokenizer.ITokenStream#getNextToken()
-     */
-    public Token getNextToken() throws TokenizerException {
-	return filter.getNextToken(this.stream);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.tokenizer.ITokenStream#getNextToken()
+	 */
+	public Token getNextToken() throws TokenizerException {
+		return filter.getNextToken(this.stream);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.tokenizer.service.ITokenStream#getStreamType()
-     */
-    public ISourceType getStreamType() {
-	return this.filter.getStreamType();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.tokenizer.service.ITokenStream#getStreamType()
+	 */
+	public ISourceType getStreamType() {
+		return this.filter.getStreamType();
+	}
 
 }

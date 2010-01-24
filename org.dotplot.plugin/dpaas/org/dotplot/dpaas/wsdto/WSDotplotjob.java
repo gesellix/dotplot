@@ -5,7 +5,6 @@
 // Generated on: 2009.06.29 at 11:18:10 PM CEST 
 //
 
-
 package org.dotplot.dpaas.wsdto;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for WSDotplotjob complex type.
+ * <p>
+ * Java class for WSDotplotjob complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="WSDotplotjob">
@@ -40,57 +41,51 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class WSDotplotjob {
 
-    @XmlElement(name = "Filelist", required = true)
-    protected WSFilelist filelist;
-    @XmlElement(name = "Configuration", required = true)
-    protected WSConfiguration configuration;
+	@XmlElement(name = "Filelist", required = true)
+	protected WSFilelist filelist;
+	@XmlElement(name = "Configuration", required = true)
+	protected WSConfiguration configuration;
 
-    /**
-     * Gets the value of the filelist property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WSFilelist }
-     *     
-     */
-    public WSFilelist getFilelist() {
-        return filelist;
-    }
+	/**
+	 * Gets the value of the filelist property.
+	 * 
+	 * @return possible object is {@link WSFilelist }
+	 * 
+	 */
+	public WSFilelist getFilelist() {
+		return filelist;
+	}
 
-    /**
-     * Sets the value of the filelist property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WSFilelist }
-     *     
-     */
-    public void setFilelist(WSFilelist value) {
-        this.filelist = value;
-    }
+	/**
+	 * Sets the value of the filelist property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link WSFilelist }
+	 * 
+	 */
+	public void setFilelist(WSFilelist value) {
+		this.filelist = value;
+	}
 
-    /**
-     * Gets the value of the configuration property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WSConfiguration }
-     *     
-     */
-    public WSConfiguration getConfiguration() {
-        return configuration;
-    }
+	/**
+	 * Gets the value of the configuration property.
+	 * 
+	 * @return possible object is {@link WSConfiguration }
+	 * 
+	 */
+	public WSConfiguration getConfiguration() {
+		return configuration;
+	}
 
-    /**
-     * Sets the value of the configuration property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WSConfiguration }
-     *     
-     */
-    public void setConfiguration(WSConfiguration value) {
-        this.configuration = value;
-    }
+	/**
+	 * Sets the value of the configuration property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link WSConfiguration }
+	 * 
+	 */
+	public void setConfiguration(WSConfiguration value) {
+		this.configuration = value;
+	}
 
 }

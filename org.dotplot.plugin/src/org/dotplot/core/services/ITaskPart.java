@@ -45,56 +45,56 @@ import org.dotplot.util.ExecutionUnit;
  */
 public interface ITaskPart extends ExecutionUnit {
 
-    /**
-     * Indicates if an error occured during processing of the
-     * <code>TaskPart</code>.
-     * 
-     * @return <code>true</code> if an error occured and <code>false</code>
-     *         otherwhise.
-     */
-    public boolean errorOccured();
+	/**
+	 * Indicates if an error occured during processing of the
+	 * <code>TaskPart</code>.
+	 * 
+	 * @return <code>true</code> if an error occured and <code>false</code>
+	 *         otherwhise.
+	 */
+	public boolean errorOccured();
 
-    /**
-     * Returns the id of the <code>TaskPart</code>.
-     * 
-     * @return The id.
-     */
-    public String getID();
+	/**
+	 * Returns the id of the <code>TaskPart</code>.
+	 * 
+	 * @return The id.
+	 */
+	public String getID();
 
-    /**
-     * Returns the ressources of the <code>TaskPart</code>.
-     * 
-     * @return The ressources.
-     */
-    public Collection<? extends IRessource> getRessources();
+	/**
+	 * Returns the ressources of the <code>TaskPart</code>.
+	 * 
+	 * @return The ressources.
+	 */
+	public Collection<? extends IRessource> getRessources();
 
-    /**
-     * Returns the result of processing of the <code>TaskPart</code>.
-     * 
-     * @return <code>null</code> if the <code>run()</code> method is not yet
-     *         invoced and the result afterwards.
-     */
-    public Object getResult();
+	/**
+	 * Returns the result of processing of the <code>TaskPart</code>.
+	 * 
+	 * @return <code>null</code> if the <code>run()</code> method is not yet
+	 *         invoced and the result afterwards.
+	 */
+	public Object getResult();
 
-    /**
-     * Sets the <code>ErrorHandler</code> of the <code>TaskPart</code>.
-     * 
-     * @param handler
-     *            - the <code>ErrorHandler</code>.
-     * @throws NullPointerException
-     *             if handler is <code>null</code>.
-     */
-    public void setErrorHandler(IErrorHandler handler);
+	/**
+	 * Sets the <code>ErrorHandler</code> of the <code>TaskPart</code>.
+	 * 
+	 * @param handler
+	 *            - the <code>ErrorHandler</code>.
+	 * @throws NullPointerException
+	 *             if handler is <code>null</code>.
+	 */
+	public void setErrorHandler(IErrorHandler handler);
 
-    /**
-     * Sets the local ressources of the <code>TaskPart</code>.
-     * 
-     * @param ressouceList
-     *            - the list of local ressources.
-     * @throws InsufficientRessourcesException
-     *             if the ressources are indufficient for the
-     *             <code>TaskPart</code> to accomplish its result.
-     */
-    public void setLocalRessources(Collection<? extends IRessource> ressouceList)
-	    throws InsufficientRessourcesException;
+	/**
+	 * Sets the local ressources of the <code>TaskPart</code>.
+	 * 
+	 * @param ressouceList
+	 *            - the list of local ressources.
+	 * @throws InsufficientRessourcesException
+	 *             if the ressources are indufficient for the
+	 *             <code>TaskPart</code> to accomplish its result.
+	 */
+	public void setLocalRessources(Collection<? extends IRessource> ressouceList)
+			throws InsufficientRessourcesException;
 }

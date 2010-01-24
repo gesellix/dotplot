@@ -24,129 +24,133 @@ import org.eclipse.swt.widgets.Control;
  */
 public class LineFilterUI extends AbstractFilterUI {
 
-    private Button lineCheckBox;
+	private Button lineCheckBox;
 
-    private Button filterLinesCheckBox;
+	private Button filterLinesCheckBox;
 
-    private static final String INFO = ""
-	    + "Use this filter to merge the tokens of one line "
-	    + "of text to a single token.";
+	private static final String INFO = ""
+			+ "Use this filter to merge the tokens of one line "
+			+ "of text to a single token.";
 
-    /**
-     * Creates a new <code>LineFilterUI</code>.
-     */
-    public LineFilterUI() {
-	super("Linefilter", INFO);
-    }
+	/**
+	 * Creates a new <code>LineFilterUI</code>.
+	 */
+	public LineFilterUI() {
+		super("Linefilter", INFO);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.tokenizer.filter.ui.IFilterUI#draw(org.eclipse.swt.widgets
-     * .Composite, org.eclipse.swt.events.SelectionListener)
-     */
-    @Override
-    public Control drawContent(Composite parent,
-	    SelectionListener changeListener) {
-	Composite c = new Composite(parent, SWT.NONE);
-	c.setLayout(new RowLayout());
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.tokenizer.filter.ui.IFilterUI#draw(org.eclipse.swt.widgets
+	 * .Composite, org.eclipse.swt.events.SelectionListener)
+	 */
+	@Override
+	public Control drawContent(Composite parent,
+			SelectionListener changeListener) {
+		Composite c = new Composite(parent, SWT.NONE);
+		c.setLayout(new RowLayout());
 
-	final Button bLines = new Button(c, SWT.CHECK);
-	this.lineCheckBox = bLines;
+		final Button bLines = new Button(c, SWT.CHECK);
+		this.lineCheckBox = bLines;
 
-	final Button bFilterLines = new Button(c, SWT.CHECK);
-	this.filterLinesCheckBox = bFilterLines;
+		final Button bFilterLines = new Button(c, SWT.CHECK);
+		this.filterLinesCheckBox = bFilterLines;
 
-	bLines.addSelectionListener(new SelectionAdapter() {
-	    @Override
-	    public void widgetSelected(SelectionEvent e) {
-		if (bLines.getSelection()) {
-		    bFilterLines.setEnabled(true);
-		} else {
-		    bFilterLines.setEnabled(false);
-		    bFilterLines.setSelection(false);
+		bLines.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (bLines.getSelection()) {
+					bFilterLines.setEnabled(true);
+				}
+				else {
+					bFilterLines.setEnabled(false);
+					bFilterLines.setSelection(false);
+				}
+			}
+		});
+
+		bLines.setText("use LineFilter");
+		bLines.addSelectionListener(changeListener);
+
+		bLines.setToolTipText("concatinates all tokens in a line");
+
+		bFilterLines.setText("ignore empty lines");
+		bFilterLines.addSelectionListener(changeListener);
+		bFilterLines
+				.setToolTipText("all empty lines will be ignored for the dotplot");
+
+		this.refresh();
+
+		return c;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.dotplot.tokenizer.filter.ui.IFilterUI#getController(org.dotplot.
+	 * DotplotCreator, org.dotplot.ui.configuration.views.ConfigurationView)
+	 */
+	public ViewController getController(ConfigurationView view) {
+		return new LineFilterUIController(view, this);
+	}
+
+	public boolean getFilterLines() {
+		if (this.filterLinesCheckBox != null
+				&& !this.filterLinesCheckBox.isDisposed()) {
+			return this.filterLinesCheckBox.getSelection();
 		}
-	    }
-	});
-
-	bLines.setText("use LineFilter");
-	bLines.addSelectionListener(changeListener);
-
-	bLines.setToolTipText("concatinates all tokens in a line");
-
-	bFilterLines.setText("ignore empty lines");
-	bFilterLines.addSelectionListener(changeListener);
-	bFilterLines
-		.setToolTipText("all empty lines will be ignored for the dotplot");
-
-	this.refresh();
-
-	return c;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.dotplot.tokenizer.filter.ui.IFilterUI#getController(org.dotplot.
-     * DotplotCreator, org.dotplot.ui.configuration.views.ConfigurationView)
-     */
-    public ViewController getController(ConfigurationView view) {
-	return new LineFilterUIController(view, this);
-    }
-
-    public boolean getFilterLines() {
-	if (this.filterLinesCheckBox != null
-		&& !this.filterLinesCheckBox.isDisposed()) {
-	    return this.filterLinesCheckBox.getSelection();
-	} else {
-	    return false;
+		else {
+			return false;
+		}
 	}
-    }
 
-    public boolean getLineFilter() {
-	if (this.lineCheckBox != null && !this.lineCheckBox.isDisposed()) {
-	    return this.lineCheckBox.getSelection();
-	} else {
-	    return false;
+	public boolean getLineFilter() {
+		if (this.lineCheckBox != null && !this.lineCheckBox.isDisposed()) {
+			return this.lineCheckBox.getSelection();
+		}
+		else {
+			return false;
+		}
 	}
-    }
 
-    @Override
-    public void refresh() {
-	if (this.lineCheckBox != null && !this.lineCheckBox.isDisposed()) {
-	    this.lineCheckBox.setEnabled(this.isEnabled());
-	    if (this.isEnabled() && this.lineCheckBox.getSelection()) {
-		this.filterLinesCheckBox.setEnabled(true);
-	    } else {
+	@Override
+	public void refresh() {
+		if (this.lineCheckBox != null && !this.lineCheckBox.isDisposed()) {
+			this.lineCheckBox.setEnabled(this.isEnabled());
+			if (this.isEnabled() && this.lineCheckBox.getSelection()) {
+				this.filterLinesCheckBox.setEnabled(true);
+			}
+			else {
+				this.filterLinesCheckBox.setEnabled(false);
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.tokenizer.filter.ui.IFilterUI#reset(org.dotplot.tokenizer
+	 * .filter.IFilterConfiguration)
+	 */
+	public void reset(IFilterConfiguration config) {
+		// standard einstellungen
+		this.filterLinesCheckBox.setSelection(false);
 		this.filterLinesCheckBox.setEnabled(false);
-	    }
-	}
-    }
+		this.lineCheckBox.setSelection(false);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.tokenizer.filter.ui.IFilterUI#reset(org.dotplot.tokenizer
-     * .filter.IFilterConfiguration)
-     */
-    public void reset(IFilterConfiguration config) {
-	// standard einstellungen
-	this.filterLinesCheckBox.setSelection(false);
-	this.filterLinesCheckBox.setEnabled(false);
-	this.lineCheckBox.setSelection(false);
-
-	Map<String, ?> parameter;
-	if (config.getFilterList().contains(this.getFilterID())) {
-	    parameter = config.getFilterParameter(this.getFilterID());
-	    this.lineCheckBox.setSelection(true);
-	    this.filterLinesCheckBox.setEnabled(true);
-	    Object emptyLines = parameter.get(LineFilter.PARAMETER_EMPTYLINES);
-	    if (emptyLines instanceof Boolean) {
-		this.filterLinesCheckBox.setSelection(((Boolean) emptyLines)
-			.booleanValue());
-	    }
+		Map<String, ?> parameter;
+		if (config.getFilterList().contains(this.getFilterID())) {
+			parameter = config.getFilterParameter(this.getFilterID());
+			this.lineCheckBox.setSelection(true);
+			this.filterLinesCheckBox.setEnabled(true);
+			Object emptyLines = parameter.get(LineFilter.PARAMETER_EMPTYLINES);
+			if (emptyLines instanceof Boolean) {
+				this.filterLinesCheckBox.setSelection(((Boolean) emptyLines)
+						.booleanValue());
+			}
+		}
 	}
-    }
 }

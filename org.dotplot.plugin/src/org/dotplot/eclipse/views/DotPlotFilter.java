@@ -19,37 +19,38 @@ import org.eclipse.jface.viewers.ViewerFilter;
  */
 class DotPlotFilter extends ViewerFilter {
 
-    private Set<String> endings;
+	private Set<String> endings;
 
-    public DotPlotFilter() {
-	DotplotContext context = ContextFactory.getContext();
-	this.endings = context.getTypeBindingRegistry().getAll().keySet();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
-     * .Viewer, java.lang.Object, java.lang.Object)
-     */
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element) {
-	if (element instanceof File) {
-	    String fileending;
-	    File file = (File) element;
-	    String filename = file.getName().toLowerCase();
-	    int index = filename.lastIndexOf(".");
-	    if (index > -1) {
-		fileending = filename.substring(index);
-	    } else {
-		fileending = "";
-	    }
-
-	    return (file.isDirectory() || this.endings.contains(fileending));
-
+	public DotPlotFilter() {
+		DotplotContext context = ContextFactory.getContext();
+		this.endings = context.getTypeBindingRegistry().getAll().keySet();
 	}
 
-	return false;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers
+	 * .Viewer, java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		if (element instanceof File) {
+			String fileending;
+			File file = (File) element;
+			String filename = file.getName().toLowerCase();
+			int index = filename.lastIndexOf(".");
+			if (index > -1) {
+				fileending = filename.substring(index);
+			}
+			else {
+				fileending = "";
+			}
+
+			return (file.isDirectory() || this.endings.contains(fileending));
+
+		}
+
+		return false;
+	}
 }

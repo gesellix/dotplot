@@ -9,15 +9,15 @@ package org.dotplot.util;
  */
 public class UnknownIDException extends Exception {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 3311949878578045769L;
+	private static final long serialVersionUID = 3311949878578045769L;
 
-    /**
-     * @param arg0
-     */
-    public UnknownIDException(String jobID) {
-	super("" + jobID);
-    }
+	/**
+	 * @param arg0
+	 */
+	public UnknownIDException(String jobID) {
+		super("" + jobID);
+	}
 }

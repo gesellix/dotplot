@@ -13,30 +13,31 @@ import org.eclipse.ui.PlatformUI;
  * @author Sascha Hemminger
  */
 class DotPlotLabelProvider extends LabelProvider {
-    private static final Image IMG_FOLDER = PlatformUI.getWorkbench()
-	    .getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+	private static final Image IMG_FOLDER = PlatformUI.getWorkbench()
+			.getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
 
-    private static final Image IMG_FILE = PlatformUI.getWorkbench()
-	    .getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
+	private static final Image IMG_FILE = PlatformUI.getWorkbench()
+			.getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
 
-    @Override
-    public Image getImage(Object element) {
-	if (element instanceof File) {
-	    File curr = (File) element;
-	    if (curr.isDirectory()) {
-		return IMG_FOLDER;
-	    } else {
-		return IMG_FILE;
-	    }
+	@Override
+	public Image getImage(Object element) {
+		if (element instanceof File) {
+			File curr = (File) element;
+			if (curr.isDirectory()) {
+				return IMG_FOLDER;
+			}
+			else {
+				return IMG_FILE;
+			}
+		}
+		return null;
 	}
-	return null;
-    }
 
-    @Override
-    public String getText(Object element) {
-	if (element instanceof File) {
-	    return ((File) element).getName();
+	@Override
+	public String getText(Object element) {
+		if (element instanceof File) {
+			return ((File) element).getName();
+		}
+		return super.getText(element);
 	}
-	return super.getText(element);
-    }
 }

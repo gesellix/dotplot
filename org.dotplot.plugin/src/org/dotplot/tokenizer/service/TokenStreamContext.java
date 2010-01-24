@@ -12,28 +12,28 @@ import org.dotplot.tokenizer.converter.SourceListContext;
  */
 public class TokenStreamContext extends SourceListContext {
 
-    /**
+	/**
 	 * 
 	 */
-    private ITokenStream stream;
+	private ITokenStream stream;
 
-    /**
+	/**
 	 * 
 	 */
-    public TokenStreamContext(ITokenStream stream, ISourceList list) {
-	super(list);
-	if (stream == null) {
-	    throw new NullPointerException();
+	public TokenStreamContext(ITokenStream stream, ISourceList list) {
+		super(list);
+		if (stream == null) {
+			throw new NullPointerException();
+		}
+		this.stream = stream;
 	}
-	this.stream = stream;
-    }
 
-    /**
-     * Returns the assigned <code>TokenStream</code>.
-     * 
-     * @return - the <code>TokenStream</code>.
-     */
-    public ITokenStream getTokenStream() {
-	return this.stream;
-    }
+	/**
+	 * Returns the assigned <code>TokenStream</code>.
+	 * 
+	 * @return - the <code>TokenStream</code>.
+	 */
+	public ITokenStream getTokenStream() {
+		return this.stream;
+	}
 }

@@ -10,15 +10,15 @@ package org.dotplot.tokenizer;
  * @version 1.0 1.5.04
  */
 public class NoPlotSourceException extends TokenizerException {
-    /**
-     * for being Serializable
-     */
-    private static final long serialVersionUID = -5862557283150744830L;
+	/**
+	 * for being Serializable
+	 */
+	private static final long serialVersionUID = -5862557283150744830L;
 
-    /**
-     * Erzeugt eine NoInputFileException.
-     */
-    public NoPlotSourceException() {
-	super("Inputfile is missing!");
-    }
+	/**
+	 * Erzeugt eine NoInputFileException.
+	 */
+	public NoPlotSourceException() {
+		super("Inputfile is missing!");
+	}
 }

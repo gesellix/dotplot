@@ -10,48 +10,48 @@ import javax.xml.ws.WebFault;
 @WebFault(name = "ErrorElement", targetNamespace = "http://dotplot.org/dpaas")
 public class ErrorElementFault extends Exception {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = 1L;
-    /**
-     * Java type that goes as soapenv:Fault detail element.
-     * 
-     */
-    private String faultInfo;
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Java type that goes as soapenv:Fault detail element.
+	 * 
+	 */
+	private String faultInfo;
 
-    public ErrorElementFault(String message) {
-	super(message);
-	this.faultInfo = message;
-    }
+	public ErrorElementFault(String message) {
+		super(message);
+		this.faultInfo = message;
+	}
 
-    /**
-     * 
-     * @param message
-     * @param faultInfo
-     */
-    public ErrorElementFault(String message, String faultInfo) {
-	super(message);
-	this.faultInfo = faultInfo;
-    }
+	/**
+	 * 
+	 * @param message
+	 * @param faultInfo
+	 */
+	public ErrorElementFault(String message, String faultInfo) {
+		super(message);
+		this.faultInfo = faultInfo;
+	}
 
-    /**
-     * 
-     * @param message
-     * @param faultInfo
-     * @param cause
-     */
-    public ErrorElementFault(String message, String faultInfo, Throwable cause) {
-	super(message, cause);
-	this.faultInfo = faultInfo;
-    }
+	/**
+	 * 
+	 * @param message
+	 * @param faultInfo
+	 * @param cause
+	 */
+	public ErrorElementFault(String message, String faultInfo, Throwable cause) {
+		super(message, cause);
+		this.faultInfo = faultInfo;
+	}
 
-    /**
-     * 
-     * @return returns fault bean: java.lang.String
-     */
-    public String getFaultInfo() {
-	return faultInfo;
-    }
+	/**
+	 * 
+	 * @return returns fault bean: java.lang.String
+	 */
+	public String getFaultInfo() {
+		return faultInfo;
+	}
 
 }

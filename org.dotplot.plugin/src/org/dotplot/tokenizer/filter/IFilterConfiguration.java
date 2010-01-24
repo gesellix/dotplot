@@ -13,13 +13,13 @@ import org.dotplot.core.IConfiguration;
  * 
  */
 public interface IFilterConfiguration extends IConfiguration {
-    public void clear();
+	public void clear();
 
-    public List<String> getFilterList();
+	public List<String> getFilterList();
 
-    public Map<String, ?> getFilterParameter(String filterName);
+	public Map<String, ?> getFilterParameter(String filterName);
 
-    public void setFilterList(List<String> list);
+	public void setFilterList(List<String> list);
 
-    public void setFilterParameter(String filterName, Map<String, ?> parameter);
+	public void setFilterParameter(String filterName, Map<String, ?> parameter);
 }

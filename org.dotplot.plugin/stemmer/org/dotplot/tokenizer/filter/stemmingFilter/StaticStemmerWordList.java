@@ -7,13 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class StaticStemmerWordList {
-    private List<StaticStemmerWord> sswl = new ArrayList<StaticStemmerWord>();
+	private List<StaticStemmerWord> sswl = new ArrayList<StaticStemmerWord>();
 
-    public List<StaticStemmerWord> getSswl() {
-	return sswl;
-    }
+	public List<StaticStemmerWord> getSswl() {
+		return sswl;
+	}
 
-    public void setSswl(List<StaticStemmerWord> sswl) {
-	this.sswl = sswl;
-    }
+	public void setSswl(List<StaticStemmerWord> sswl) {
+		this.sswl = sswl;
+	}
 }

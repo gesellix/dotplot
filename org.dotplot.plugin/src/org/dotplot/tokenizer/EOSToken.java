@@ -10,10 +10,10 @@ package org.dotplot.tokenizer;
  * @version 1.0 11.5.04
  */
 public class EOSToken extends Token {
-    /**
-     * Creates an EOS token.
-     */
-    public EOSToken() {
-	super("EOSToken", Token.TYPE_EOS);
-    }
+	/**
+	 * Creates an EOS token.
+	 */
+	public EOSToken() {
+		super("EOSToken", Token.TYPE_EOS);
+	}
 }

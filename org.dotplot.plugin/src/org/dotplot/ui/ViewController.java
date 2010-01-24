@@ -19,43 +19,43 @@ import java.util.Observer;
  * @see org.dotplot.ui.ConfigurationView
  */
 public abstract class ViewController implements Observer {
-    /**
-     * Der <code>ConfigurationView</code> der zu diesem
-     * <code>ViewController</code> gehoert.
-     */
-    private ConfigurationView configurationView;
+	/**
+	 * Der <code>ConfigurationView</code> der zu diesem
+	 * <code>ViewController</code> gehoert.
+	 */
+	private ConfigurationView configurationView;
 
-    /**
-     * Erzeugt einen neuen <code>ViewController</code> mit einem
-     * <code>DotplotCreator</code> und einem <code>ConfigurationView</code>.
-     * 
-     * @param dotplotCreator
-     *            - der </code>DotplotCreator</code>
-     * @param cv
-     *            - der <code>ConfigurationView</code>
-     */
-    public ViewController(ConfigurationView cv) {
-	this.configurationView = cv;
-    }
+	/**
+	 * Erzeugt einen neuen <code>ViewController</code> mit einem
+	 * <code>DotplotCreator</code> und einem <code>ConfigurationView</code>.
+	 * 
+	 * @param dotplotCreator
+	 *            - der </code>DotplotCreator</code>
+	 * @param cv
+	 *            - der <code>ConfigurationView</code>
+	 */
+	public ViewController(ConfigurationView cv) {
+		this.configurationView = cv;
+	}
 
-    /**
-     * Liefert den zum Controller gehoerenden <code>ConfigurationView</code>.
-     * 
-     * @return - der <code>ConfigurationView</code>.
-     */
-    public ConfigurationView getConfigurationView() {
-	return configurationView;
-    }
+	/**
+	 * Liefert den zum Controller gehoerenden <code>ConfigurationView</code>.
+	 * 
+	 * @return - der <code>ConfigurationView</code>.
+	 */
+	public ConfigurationView getConfigurationView() {
+		return configurationView;
+	}
 
-    /**
-     * Updates the Observer.
-     * 
-     * @param object
-     *            - the observable-object.
-     * @param arg
-     *            - additional arguments
-     * 
-     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
-     */
-    public abstract void update(Observable object, Object arg);
+	/**
+	 * Updates the Observer.
+	 * 
+	 * @param object
+	 *            - the observable-object.
+	 * @param arg
+	 *            - additional arguments
+	 * 
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
+	public abstract void update(Observable object, Object arg);
 }

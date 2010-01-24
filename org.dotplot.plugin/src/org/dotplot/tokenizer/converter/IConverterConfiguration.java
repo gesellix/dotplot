@@ -13,27 +13,27 @@ import org.dotplot.core.ISourceType;
  * 
  */
 public interface IConverterConfiguration extends IConfiguration {
-    public File getConvertedFilesDirectory();
+	public File getConvertedFilesDirectory();
 
-    public String getConverterID(ISourceType type);
+	public String getConverterID(ISourceType type);
 
-    public boolean getConvertFiles();
+	public boolean getConvertFiles();
 
-    public ISourceType getTargetType();
+	public ISourceType getTargetType();
 
-    public boolean keepConvertedFiles();
+	public boolean keepConvertedFiles();
 
-    public boolean overwriteConvertedFiles();
+	public boolean overwriteConvertedFiles();
 
-    public void setConvertedFilesDirectory(File directory);
+	public void setConvertedFilesDirectory(File directory);
 
-    public void setConverter(ISourceType type, String converterID);
+	public void setConverter(ISourceType type, String converterID);
 
-    public void setConvertFiles(boolean state);
+	public void setConvertFiles(boolean state);
 
-    public void setKeepConvertedFiles(boolean keepFiles);
+	public void setKeepConvertedFiles(boolean keepFiles);
 
-    public void setOverwriteConvertedFiles(boolean overwriteFiles);
+	public void setOverwriteConvertedFiles(boolean overwriteFiles);
 
-    public void setTargetType(ISourceType targetType);
+	public void setTargetType(ISourceType targetType);
 }

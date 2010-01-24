@@ -15,35 +15,35 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
  */
 public class DotplotPreferenceInitializer extends AbstractPreferenceInitializer {
 
-    /**
-     * Logger for debugging.
-     */
-    private static Logger logger = Logger
-	    .getLogger(DotplotPreferenceInitializer.class.getName());
+	/**
+	 * Logger for debugging.
+	 */
+	private static Logger logger = Logger
+			.getLogger(DotplotPreferenceInitializer.class.getName());
 
-    /**
-     * Creates a new <code>DotplotPreferenceInitializer</code>.
-     */
-    public DotplotPreferenceInitializer() {
-	super();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
-     * initializeDefaultPreferences()
-     */
-    @Override
-    public void initializeDefaultPreferences() {
-	logger.debug("initializing preferences");
-
-	// every plugin is activated by default
-	IEclipsePreferences node = new DefaultScope()
-		.getNode(EclipseConstants.ID_PLUGIN_DOTPLOT);
-	DotplotContext context = ContextFactory.getContext();
-	for (Plugin plugin : context.getPluginRegistry().getAll().values()) {
-	    node.putBoolean(plugin.getID(), true);
+	/**
+	 * Creates a new <code>DotplotPreferenceInitializer</code>.
+	 */
+	public DotplotPreferenceInitializer() {
+		super();
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
+	 * initializeDefaultPreferences()
+	 */
+	@Override
+	public void initializeDefaultPreferences() {
+		logger.debug("initializing preferences");
+
+		// every plugin is activated by default
+		IEclipsePreferences node = new DefaultScope()
+				.getNode(EclipseConstants.ID_PLUGIN_DOTPLOT);
+		DotplotContext context = ContextFactory.getContext();
+		for (Plugin plugin : context.getPluginRegistry().getAll().values()) {
+			node.putBoolean(plugin.getID(), true);
+		}
+	}
 }

@@ -12,23 +12,23 @@ import org.dotplot.core.IPlotSource;
  * @version 1.0 1.5.04
  */
 public class EOFToken extends Token {
-    /**
-     * Creates a EOF-Token for a special file.
-     * 
-     * @param source
-     *            - the file
-     */
-    public EOFToken(IPlotSource source) {
-	super("");
-	this.setSource(source);
-	this.setType(Token.TYPE_EOF);
-    }
+	/**
+	 * Creates a EOF-Token for a special file.
+	 * 
+	 * @param source
+	 *            - the file
+	 */
+	public EOFToken(IPlotSource source) {
+		super("");
+		this.setSource(source);
+		this.setType(Token.TYPE_EOF);
+	}
 
-    /**
-     * returns it's behaviour.
-     */
-    @Override
-    public String toString() {
-	return this.getSource().toString() + " EOFToken";
-    }
+	/**
+	 * returns it's behaviour.
+	 */
+	@Override
+	public String toString() {
+		return this.getSource().toString() + " EOFToken";
+	}
 }

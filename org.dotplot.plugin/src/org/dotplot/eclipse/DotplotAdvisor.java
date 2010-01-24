@@ -23,96 +23,98 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  */
 public class DotplotAdvisor extends WorkbenchAdvisor {
 
-    /**
-     * Logger for debugging.
-     */
-    private static Logger logger = Logger.getLogger(DotplotAdvisor.class
-	    .getName());
+	/**
+	 * Logger for debugging.
+	 */
+	private static Logger logger = Logger.getLogger(DotplotAdvisor.class
+			.getName());
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor
-     * (org.eclipse.ui.application.IWorkbenchWindowConfigurer)
-     */
-    @Override
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
-	    IWorkbenchWindowConfigurer configurer) {
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor
+	 * (org.eclipse.ui.application.IWorkbenchWindowConfigurer)
+	 */
+	@Override
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
+			IWorkbenchWindowConfigurer configurer) {
 
-	logger.debug("creating workbench window advisor");
+		logger.debug("creating workbench window advisor");
 
-	return new DotplotWindowAdvisor(configurer);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId
-     * ()
-     */
-    @Override
-    public String getInitialWindowPerspectiveId() {
-	return EclipseConstants.ID_PERSPECTIVE_DOTPLOT;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.application.WorkbenchAdvisor#initialize(org.eclipse.ui
-     * .application.IWorkbenchConfigurer)
-     */
-    @Override
-    public void initialize(IWorkbenchConfigurer configurer) {
-
-	logger.debug("inizializing workbench");
-
-	// Location for DotplotPlugins
-	Path pluginsPath = new Path("/plugins");
-	// Location for Plugins Shemafile
-	Path shemaPath = new Path("/ressources/dotplotschema.xsd");
-
-	// Geting Platformindependend URL
-	URL indepPluginsURL = FileLocator.find(Platform
-		.getBundle(EclipseConstants.ID_PLUGIN_DOTPLOT), pluginsPath,
-		null);
-	URL indepShemaURL = FileLocator
-		.find(Platform.getBundle(EclipseConstants.ID_PLUGIN_DOTPLOT),
-			shemaPath, null);
-
-	try {
-	    // Resolving Platformdependent URL
-	    URL depPluginsURL = FileLocator.resolve(indepPluginsURL);
-	    URL depShemaURL = FileLocator.resolve(indepShemaURL);
-
-	    ContextFactory.setPluginDirectory(depPluginsURL.getPath());
-	    ContextFactory.setShemaFile(depShemaURL.getPath());
-	    ContextFactory.getContext();
-
-	} catch (IOException e) {
-	    /* very evil */
+		return new DotplotWindowAdvisor(configurer);
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.ui.application.WorkbenchAdvisor#preShutdown()
-     */
-    @Override
-    public boolean preShutdown() {
-	logger.debug("pre shut down");
-
-	// den shutdownjob ausführen
-	DotplotContext context = ContextFactory.getContext();
-	try {
-	    context.executeJob(CoreSystem.JOB_SHUTDOWN_ID);
-	} catch (UnknownIDException e) {
-	    // bad luck, but shutdown anyway
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId
+	 * ()
+	 */
+	@Override
+	public String getInitialWindowPerspectiveId() {
+		return EclipseConstants.ID_PERSPECTIVE_DOTPLOT;
 	}
-	return true;
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.application.WorkbenchAdvisor#initialize(org.eclipse.ui
+	 * .application.IWorkbenchConfigurer)
+	 */
+	@Override
+	public void initialize(IWorkbenchConfigurer configurer) {
+
+		logger.debug("inizializing workbench");
+
+		// Location for DotplotPlugins
+		Path pluginsPath = new Path("/plugins");
+		// Location for Plugins Shemafile
+		Path shemaPath = new Path("/ressources/dotplotschema.xsd");
+
+		// Geting Platformindependend URL
+		URL indepPluginsURL = FileLocator.find(Platform
+				.getBundle(EclipseConstants.ID_PLUGIN_DOTPLOT), pluginsPath,
+				null);
+		URL indepShemaURL = FileLocator
+				.find(Platform.getBundle(EclipseConstants.ID_PLUGIN_DOTPLOT),
+						shemaPath, null);
+
+		try {
+			// Resolving Platformdependent URL
+			URL depPluginsURL = FileLocator.resolve(indepPluginsURL);
+			URL depShemaURL = FileLocator.resolve(indepShemaURL);
+
+			ContextFactory.setPluginDirectory(depPluginsURL.getPath());
+			ContextFactory.setShemaFile(depShemaURL.getPath());
+			ContextFactory.getContext();
+
+		}
+		catch (IOException e) {
+			/* very evil */
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#preShutdown()
+	 */
+	@Override
+	public boolean preShutdown() {
+		logger.debug("pre shut down");
+
+		// den shutdownjob ausführen
+		DotplotContext context = ContextFactory.getContext();
+		try {
+			context.executeJob(CoreSystem.JOB_SHUTDOWN_ID);
+		}
+		catch (UnknownIDException e) {
+			// bad luck, but shutdown anyway
+		}
+		return true;
+	}
 
 }

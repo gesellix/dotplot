@@ -15,26 +15,26 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  */
 public class DotplotWindowAdvisor extends WorkbenchWindowAdvisor {
 
-    /**
-     * Creates a new <code>DotplotWindowAdvisor</code>.
-     * 
-     * @param configurer
-     *            - To configure the workbench window.
-     */
-    public DotplotWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-	super(configurer);
-    }
+	/**
+	 * Creates a new <code>DotplotWindowAdvisor</code>.
+	 * 
+	 * @param configurer
+	 *            - To configure the workbench window.
+	 */
+	public DotplotWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+		super(configurer);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.application.WorkbenchWindowAdvisor#createActionBarAdvisor
-     * (org.eclipse.ui.application.IActionBarConfigurer)
-     */
-    @Override
-    public ActionBarAdvisor createActionBarAdvisor(
-	    IActionBarConfigurer configurer) {
-	return new DotplotActionBarAdvisor(configurer);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.application.WorkbenchWindowAdvisor#createActionBarAdvisor
+	 * (org.eclipse.ui.application.IActionBarConfigurer)
+	 */
+	@Override
+	public ActionBarAdvisor createActionBarAdvisor(
+			IActionBarConfigurer configurer) {
+		return new DotplotActionBarAdvisor(configurer);
+	}
 }

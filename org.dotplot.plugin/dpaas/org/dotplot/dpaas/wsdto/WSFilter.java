@@ -5,7 +5,6 @@
 // Generated on: 2009.06.29 at 11:18:10 PM CEST 
 //
 
-
 package org.dotplot.dpaas.wsdto;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for WSFilter complex type.
+ * <p>
+ * Java class for WSFilter complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="WSFilter">
@@ -39,31 +40,28 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class WSFilter {
 
-    @XmlElement(name = "ID", required = true)
-    protected WSFilterTypes id;
+	@XmlElement(name = "ID", required = true)
+	protected WSFilterTypes id;
 
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WSFilterTypes }
-     *     
-     */
-    public WSFilterTypes getID() {
-        return id;
-    }
+	/**
+	 * Gets the value of the id property.
+	 * 
+	 * @return possible object is {@link WSFilterTypes }
+	 * 
+	 */
+	public WSFilterTypes getID() {
+		return id;
+	}
 
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WSFilterTypes }
-     *     
-     */
-    public void setID(WSFilterTypes value) {
-        this.id = value;
-    }
+	/**
+	 * Sets the value of the id property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link WSFilterTypes }
+	 * 
+	 */
+	public void setID(WSFilterTypes value) {
+		this.id = value;
+	}
 
 }

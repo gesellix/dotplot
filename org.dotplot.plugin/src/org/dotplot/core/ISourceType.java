@@ -10,10 +10,10 @@ package org.dotplot.core;
  */
 public interface ISourceType extends Comparable {
 
-    /**
-     * Returns the name of the <code>SourceType</code>
-     * 
-     * @return The name.
-     */
-    public String getName();
+	/**
+	 * Returns the name of the <code>SourceType</code>
+	 * 
+	 * @return The name.
+	 */
+	public String getName();
 }

@@ -9,52 +9,52 @@ package org.dotplot.core.services;
  */
 public interface ITaskProcessor<Invoker> {
 
-    /**
-     * Returns the result of the last processed <code>Task</code>.
-     * 
-     * @return The last result, or <code>null</code> if no <code>Task</code> was
-     *         processed yet.
-     */
-    public Object getTaskResult();
+	/**
+	 * Returns the result of the last processed <code>Task</code>.
+	 * 
+	 * @return The last result, or <code>null</code> if no <code>Task</code> was
+	 *         processed yet.
+	 */
+	public Object getTaskResult();
 
-    /**
-     * Processes a <code>Task</code>.
-     * 
-     * @param task
-     *            The <code>Task</code> to be processed.
-     * @return <code>true</code> if the <code>Task</code> was processed
-     *         successfully, <code>false</code> otherwise.
-     * @throws NullPointerException
-     *             if task is <code>null</code>.
-     */
-    public boolean process(ITask task);
+	/**
+	 * Processes a <code>Task</code>.
+	 * 
+	 * @param task
+	 *            The <code>Task</code> to be processed.
+	 * @return <code>true</code> if the <code>Task</code> was processed
+	 *         successfully, <code>false</code> otherwise.
+	 * @throws NullPointerException
+	 *             if task is <code>null</code>.
+	 */
+	public boolean process(ITask task);
 
-    /**
-     * Processes a <code>Task</code>.
-     * 
-     * @param task
-     *            The <code>Task</code> to be processed.
-     * @param invokingObject
-     *            The invoker of the <code>TaskProcessor</code>.
-     * @return <code>true</code> if the <code>Task</code> was processed
-     *         successfully, <code>false</code> otherwise.
-     * @throws NullPointerException
-     *             if task is <code>null</code>.
-     * @throws NullPointerException
-     *             if invokingObject is <code>null</code>.
-     */
-    public boolean process(ITask task, Invoker invokingObject);
+	/**
+	 * Processes a <code>Task</code>.
+	 * 
+	 * @param task
+	 *            The <code>Task</code> to be processed.
+	 * @param invokingObject
+	 *            The invoker of the <code>TaskProcessor</code>.
+	 * @return <code>true</code> if the <code>Task</code> was processed
+	 *         successfully, <code>false</code> otherwise.
+	 * @throws NullPointerException
+	 *             if task is <code>null</code>.
+	 * @throws NullPointerException
+	 *             if invokingObject is <code>null</code>.
+	 */
+	public boolean process(ITask task, Invoker invokingObject);
 
-    /**
-     * Sets the <code>TaskProcessor</code>'s <code>ErrorHandler</code>.
-     * 
-     * @param handler
-     *            The <code>ErrorHandler</code>.
-     */
-    public void setErrorHandler(IErrorHandler handler);
+	/**
+	 * Sets the <code>TaskProcessor</code>'s <code>ErrorHandler</code>.
+	 * 
+	 * @param handler
+	 *            The <code>ErrorHandler</code>.
+	 */
+	public void setErrorHandler(IErrorHandler handler);
 
-    /**
-     * Stops processing.
-     */
-    public void stop();
+	/**
+	 * Stops processing.
+	 */
+	public void stop();
 }

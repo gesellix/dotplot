@@ -21,91 +21,93 @@ import org.dotplot.tokenizer.TokenizerException;
  */
 public class PlotSourceListTokenizer implements ITokenStream {
 
-    private ISourceType currentType;
+	private ISourceType currentType;
 
-    private ISourceList sourceList;
+	private ISourceList sourceList;
 
-    private ITokenizer tokenizer;
+	private ITokenizer tokenizer;
 
-    private Iterator<IPlotSource> iterator;
+	private Iterator<IPlotSource> iterator;
 
-    IPlotSource currentSource;
+	IPlotSource currentSource;
 
-    /**
+	/**
 	 * 
 	 */
-    public PlotSourceListTokenizer(ITokenizer tokenizer) {
-	if (tokenizer == null) {
-	    throw new NullPointerException();
-	}
-	this.sourceList = new DefaultSourceList();
-	this.tokenizer = tokenizer;
-	this.currentType = BaseType.type;
-    }
-
-    public void addPlotSource(IPlotSource source) {
-	if (source == null) {
-	    throw new NullPointerException();
-	}
-	if (iterator != null) {
-	    throw new UnsupportedOperationException();
-	}
-	this.sourceList.add(source);
-	this.currentType = this.sourceList.getCombinedSourceType();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.tokenizer.ITokenStream#getNextToken()
-     */
-    public Token getNextToken() throws TokenizerException {
-	Token token;
-	if (iterator == null) {
-	    this.iterator = this.sourceList.iterator();
-	    if (iterator.hasNext()) {
-		this.currentSource = this.iterator.next();
-		this.tokenizer.setPlotSource(this.currentSource);
-	    }
-	}
-	if (this.currentSource != null) {
-	    token = this.tokenizer.getNextToken();
-	    if (token instanceof EOSToken) {
-		token = new EOFToken(this.currentSource);
-		if (iterator.hasNext()) {
-		    this.currentSource = this.iterator.next();
-		    this.tokenizer.setPlotSource(this.currentSource);
-		} else {
-		    this.currentSource = null;
+	public PlotSourceListTokenizer(ITokenizer tokenizer) {
+		if (tokenizer == null) {
+			throw new NullPointerException();
 		}
-	    }
-	    return token;
-	} else {
-	    return new EOSToken();
+		this.sourceList = new DefaultSourceList();
+		this.tokenizer = tokenizer;
+		this.currentType = BaseType.type;
 	}
-    }
 
-    public ISourceList getSourceList() {
-	return new DefaultSourceList(this.sourceList);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.tokenizer.service.ITokenStream#getStreamType()
-     */
-    public ISourceType getStreamType() {
-	return this.currentType;
-    }
-
-    public void removePlotSource(IPlotSource source) {
-	if (source == null) {
-	    throw new NullPointerException();
+	public void addPlotSource(IPlotSource source) {
+		if (source == null) {
+			throw new NullPointerException();
+		}
+		if (iterator != null) {
+			throw new UnsupportedOperationException();
+		}
+		this.sourceList.add(source);
+		this.currentType = this.sourceList.getCombinedSourceType();
 	}
-	if (iterator != null) {
-	    throw new UnsupportedOperationException();
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.tokenizer.ITokenStream#getNextToken()
+	 */
+	public Token getNextToken() throws TokenizerException {
+		Token token;
+		if (iterator == null) {
+			this.iterator = this.sourceList.iterator();
+			if (iterator.hasNext()) {
+				this.currentSource = this.iterator.next();
+				this.tokenizer.setPlotSource(this.currentSource);
+			}
+		}
+		if (this.currentSource != null) {
+			token = this.tokenizer.getNextToken();
+			if (token instanceof EOSToken) {
+				token = new EOFToken(this.currentSource);
+				if (iterator.hasNext()) {
+					this.currentSource = this.iterator.next();
+					this.tokenizer.setPlotSource(this.currentSource);
+				}
+				else {
+					this.currentSource = null;
+				}
+			}
+			return token;
+		}
+		else {
+			return new EOSToken();
+		}
 	}
-	this.sourceList.remove(source);
-	this.currentType = this.sourceList.getCombinedSourceType();
-    }
+
+	public ISourceList getSourceList() {
+		return new DefaultSourceList(this.sourceList);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.tokenizer.service.ITokenStream#getStreamType()
+	 */
+	public ISourceType getStreamType() {
+		return this.currentType;
+	}
+
+	public void removePlotSource(IPlotSource source) {
+		if (source == null) {
+			throw new NullPointerException();
+		}
+		if (iterator != null) {
+			throw new UnsupportedOperationException();
+		}
+		this.sourceList.remove(source);
+		this.currentType = this.sourceList.getCombinedSourceType();
+	}
 }

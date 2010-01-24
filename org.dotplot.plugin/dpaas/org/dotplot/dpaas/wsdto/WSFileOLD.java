@@ -35,57 +35,57 @@ import org.dotplot.tokenizer.service.TextType;
 @XmlType(name = "File", propOrder = { "filename", "content" })
 public class WSFileOLD {
 
-    @XmlElement(name = "Filename", required = true)
-    protected String filename;
-    @XmlElement(name = "Content", required = true)
-    protected byte[] content;
+	@XmlElement(name = "Filename", required = true)
+	protected String filename;
+	@XmlElement(name = "Content", required = true)
+	protected byte[] content;
 
-    /**
-     * Gets the value of the content property.
-     * 
-     * @return possible object is byte[]
-     */
-    public byte[] getContent() {
-	return content;
-    }
+	/**
+	 * Gets the value of the content property.
+	 * 
+	 * @return possible object is byte[]
+	 */
+	public byte[] getContent() {
+		return content;
+	}
 
-    /**
-     * Gets the value of the filename property.
-     * 
-     * @return possible object is {@link String }
-     * 
-     */
-    public String getFilename() {
-	return filename;
-    }
+	/**
+	 * Gets the value of the filename property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getFilename() {
+		return filename;
+	}
 
-    /**
-     * Sets the value of the content property.
-     * 
-     * @param value
-     *            allowed object is byte[]
-     */
-    public void setContent(byte[] value) {
-	this.content = (value);
-    }
+	/**
+	 * Sets the value of the content property.
+	 * 
+	 * @param value
+	 *            allowed object is byte[]
+	 */
+	public void setContent(byte[] value) {
+		this.content = (value);
+	}
 
-    /**
-     * Sets the value of the filename property.
-     * 
-     * @param value
-     *            allowed object is {@link String }
-     * 
-     */
-    public void setFilename(String value) {
-	this.filename = value;
-    }
+	/**
+	 * Sets the value of the filename property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setFilename(String value) {
+		this.filename = value;
+	}
 
-    public ByteRessource toByteRessource() {
+	public ByteRessource toByteRessource() {
 
-	ByteRessource tmp = new ByteRessource();
-	tmp.setBytearray(content);
-	tmp.setFilename(filename);
-	tmp.setType(TextType.type); // TODO: make new types avail here?!
-	return tmp;
-    }
+		ByteRessource tmp = new ByteRessource();
+		tmp.setBytearray(content);
+		tmp.setFilename(filename);
+		tmp.setType(TextType.type); // TODO: make new types avail here?!
+		return tmp;
+	}
 }

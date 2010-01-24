@@ -11,25 +11,25 @@ import org.dotplot.core.services.IContext;
  */
 public class FMatrixContext implements IContext {
 
-    private ITypeTableNavigator navigator;
+	private ITypeTableNavigator navigator;
 
-    /**
+	/**
 	 * 
 	 */
-    public FMatrixContext(ITypeTableNavigator navigator) {
-	super();
-	if (navigator == null) {
-	    throw new NullPointerException();
+	public FMatrixContext(ITypeTableNavigator navigator) {
+		super();
+		if (navigator == null) {
+			throw new NullPointerException();
+		}
+		this.navigator = navigator;
 	}
-	this.navigator = navigator;
-    }
 
-    /**
-     * 
-     * @return
-     */
-    public ITypeTableNavigator getTypeTableNavigator() {
-	return this.navigator;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public ITypeTableNavigator getTypeTableNavigator() {
+		return this.navigator;
+	}
 
 }

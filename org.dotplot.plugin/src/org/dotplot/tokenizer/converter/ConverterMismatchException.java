@@ -11,17 +11,17 @@ import org.dotplot.tokenizer.TokenizerException;
  */
 public class ConverterMismatchException extends TokenizerException {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 3686652013708303306L;
+	private static final long serialVersionUID = 3686652013708303306L;
 
-    /**
-     * @param message
-     */
-    public ConverterMismatchException(String message) {
-	super(message);
+	/**
+	 * @param message
+	 */
+	public ConverterMismatchException(String message) {
+		super(message);
 
-    }
+	}
 
 }

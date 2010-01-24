@@ -23,132 +23,137 @@ import org.dotplot.tokenizer.TokenizerIOException;
  */
 public abstract class BaseScanner implements ITokenizer {
 
-    protected String name;
+	protected String name;
 
-    /**
-     * Ein Array mit tokenTypen.
-     */
-    protected static TokenType[] tokenTypes;
+	/**
+	 * Ein Array mit tokenTypen.
+	 */
+	protected static TokenType[] tokenTypes;
 
-    /**
-     * Die Datei die durchgescannt wird
-     */
-    private IPlotSource source;
+	/**
+	 * Die Datei die durchgescannt wird
+	 */
+	private IPlotSource source;
 
-    /**
-     * the input device
-     */
-    private java.io.Reader zzReader;
+	/**
+	 * the input device
+	 */
+	private java.io.Reader zzReader;
 
-    /**
-     * Liefert die Datei die durchgescannt wird.
-     * 
-     * @return -- the actuall file
-     * 
-     * @see #setPlotSource(IPlotSource)
-     */
-    public IPlotSource gePlotSource() {
-	return this.source;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.tokenizer.service.ITokenizer#getName()
-     */
-    public String getName() {
-	return this.name;
-    }
-
-    /**
-     * Holt das nächste Token aus der Datei.
-     * 
-     * @return - das nächte Token
-     * 
-     * @throws TokenizerException
-     */
-    public Token getNextToken() throws TokenizerException {
-	if (this.zzReader == null) {
-	    if (this.source == null) {
-		throw new NoPlotSourceException();
-	    } else {
-		this.zzReader = new InputStreamReader(source.getInputStream());
-		this.yyreset(this.zzReader);
-	    }
+	/**
+	 * Liefert die Datei die durchgescannt wird.
+	 * 
+	 * @return -- the actuall file
+	 * 
+	 * @see #setPlotSource(IPlotSource)
+	 */
+	public IPlotSource gePlotSource() {
+		return this.source;
 	}
 
-	Token token = null;
-
-	try {
-	    token = this.yylex();
-	    if (token != null) {
-		token.setSource(this.source);
-	    } else {
-		token = new EOSToken();
-		this.zzReader.close();
-	    }
-	} catch (IOException e) {
-	    throw new TokenizerIOException(e.getMessage());
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.tokenizer.service.ITokenizer#getName()
+	 */
+	public String getName() {
+		return this.name;
 	}
 
-	return token;
-    }
-
-    /**
-     * Gibt die Tokentypen zurueck, die dieser Scanner erkennt.
-     * 
-     * @return ein Array von Tokentypen.
-     */
-    public abstract TokenType[] getTokenTypes();
-
-    public void setName(String name) {
-	this.name = name;
-    }
-
-    /**
-     * Setzt die Datei die durchgescannt werden soll.
-     * 
-     * @param source
-     *            - die Datei
-     * 
-     * @throws FileNotFoundException
-     * @see #getFile()
-     */
-    public void setPlotSource(IPlotSource source)
-	    throws UnassignablePlotSourceException {
-	if (source != null) {
-	    if (this.getStreamType().getClass().isAssignableFrom(
-		    source.getType().getClass())) {
-		this.source = source;
-		if (this.zzReader != null) {
-		    try {
-			this.zzReader.close();
-		    } catch (IOException e) {
-			/* hmm? */
-		    }
-		    this.zzReader = null;
+	/**
+	 * Holt das nächste Token aus der Datei.
+	 * 
+	 * @return - das nächte Token
+	 * 
+	 * @throws TokenizerException
+	 */
+	public Token getNextToken() throws TokenizerException {
+		if (this.zzReader == null) {
+			if (this.source == null) {
+				throw new NoPlotSourceException();
+			}
+			else {
+				this.zzReader = new InputStreamReader(source.getInputStream());
+				this.yyreset(this.zzReader);
+			}
 		}
-	    } else {
-		throw new UnassignablePlotSourceException(source.getURL()
-			.toString());
-	    }
+
+		Token token = null;
+
+		try {
+			token = this.yylex();
+			if (token != null) {
+				token.setSource(this.source);
+			}
+			else {
+				token = new EOSToken();
+				this.zzReader.close();
+			}
+		}
+		catch (IOException e) {
+			throw new TokenizerIOException(e.getMessage());
+		}
+
+		return token;
 	}
-    }
 
-    /**
-     * Liefert das nächste Yytoken. Ist hier nur zur kompatibilität mit den
-     * Klassen aufgeführt die von Flex generiert werden.
-     * 
-     * @return - das nächste Yytoken
-     */
-    protected abstract Token yylex() throws java.io.IOException;
+	/**
+	 * Gibt die Tokentypen zurueck, die dieser Scanner erkennt.
+	 * 
+	 * @return ein Array von Tokentypen.
+	 */
+	public abstract TokenType[] getTokenTypes();
 
-    /**
-     * Resettet einen Reader. Ist hier nur zur kompatibilität mit den Klassen
-     * aufgeführt die von Flex generiert werden.
-     * 
-     * @param reader
-     *            - der Reader
-     */
-    public abstract void yyreset(java.io.Reader reader);
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Setzt die Datei die durchgescannt werden soll.
+	 * 
+	 * @param source
+	 *            - die Datei
+	 * 
+	 * @throws FileNotFoundException
+	 * @see #getFile()
+	 */
+	public void setPlotSource(IPlotSource source)
+			throws UnassignablePlotSourceException {
+		if (source != null) {
+			if (this.getStreamType().getClass().isAssignableFrom(
+					source.getType().getClass())) {
+				this.source = source;
+				if (this.zzReader != null) {
+					try {
+						this.zzReader.close();
+					}
+					catch (IOException e) {
+						/* hmm? */
+					}
+					this.zzReader = null;
+				}
+			}
+			else {
+				throw new UnassignablePlotSourceException(source.getURL()
+						.toString());
+			}
+		}
+	}
+
+	/**
+	 * Liefert das nächste Yytoken. Ist hier nur zur kompatibilität mit den
+	 * Klassen aufgeführt die von Flex generiert werden.
+	 * 
+	 * @return - das nächste Yytoken
+	 */
+	protected abstract Token yylex() throws java.io.IOException;
+
+	/**
+	 * Resettet einen Reader. Ist hier nur zur kompatibilität mit den Klassen
+	 * aufgeführt die von Flex generiert werden.
+	 * 
+	 * @param reader
+	 *            - der Reader
+	 */
+	public abstract void yyreset(java.io.Reader reader);
 }

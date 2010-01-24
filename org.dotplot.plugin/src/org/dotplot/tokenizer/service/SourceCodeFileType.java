@@ -9,21 +9,21 @@ package org.dotplot.tokenizer.service;
  */
 public class SourceCodeFileType extends TextType {
 
-    public static final SourceCodeFileType type = new SourceCodeFileType();
+	public static final SourceCodeFileType type = new SourceCodeFileType();
 
-    /**
+	/**
 	 * 
 	 */
-    public SourceCodeFileType() {
-	super("Sourcecode");
+	public SourceCodeFileType() {
+		super("Sourcecode");
 
-    }
+	}
 
-    /**
-     * @param name
-     */
-    public SourceCodeFileType(String name) {
-	super(name);
-    }
+	/**
+	 * @param name
+	 */
+	public SourceCodeFileType(String name) {
+		super(name);
+	}
 
 }

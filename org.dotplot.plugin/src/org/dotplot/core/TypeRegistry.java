@@ -11,5 +11,5 @@ import org.dotplot.util.Registry;
  * @author Christian Gerhardt <case42@gmx.net>
  */
 public class TypeRegistry extends Registry<ISourceType> implements
-	ITypeRegistry {
+		ITypeRegistry {
 }

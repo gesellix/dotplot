@@ -27,119 +27,122 @@ import org.dotplot.core.services.UnknownServiceHotSpotException;
  */
 public class InitializerService extends PlugableService<IPluginContext> {
 
-    public static final String HOTSPOT_ID_STARTUP = "org.dotplot.core.init.StartUp";
+	public static final String HOTSPOT_ID_STARTUP = "org.dotplot.core.init.StartUp";
 
-    public static final String HOTSPOT_ID_SHUTDOWN = "org.dotplot.core.init.ShutDown";
+	public static final String HOTSPOT_ID_SHUTDOWN = "org.dotplot.core.init.ShutDown";
 
-    private Collection<IJob> startUpjobs;
+	private Collection<IJob> startUpjobs;
 
-    private Collection<IJob> shutdownjobs;
+	private Collection<IJob> shutdownjobs;
 
-    /**
-     * @param id
-     */
-    public InitializerService(String id) {
-	super(id);
-	this.startUpjobs = new Vector<IJob>();
-	this.shutdownjobs = new Vector<IJob>();
-	this.addHotSpot(new PluginHotSpot(HOTSPOT_ID_STARTUP, IJob.class));
-	this.addHotSpot(new PluginHotSpot(HOTSPOT_ID_SHUTDOWN, IJob.class));
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.AbstractService#createTask()
-     */
-    @Override
-    public ITask createTask() {
-	ITask task = new Task("Initializer", new ITaskResultMarshaler() {
-
-	    public Object marshalResult(Map<String, ? extends Object> taskResult) {
-		return new Object();
-	    }
-	}, false);
-	task.addPart(new InitialiserTaskPart("part 1", this.frameworkContext));
-	return task;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.AbstractService#getResultContext()
-     */
-    @Override
-    public IContext getResultContext() {
-	if (this.getTaskProcessor().getTaskResult() != null) {
-	    return new NullContext();
-	} else {
-	    return null;
-	}
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.AbstractService#getResultContextClass()
-     */
-    @Override
-    public Class getResultContextClass() {
-	return NullContext.class;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public Collection<IJob> getShutdownJobs() {
-	return this.shutdownjobs;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public Collection<IJob> getStartUpJobs() {
-	return this.startUpjobs;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.AbstractService#init()
-     */
-    @Override
-    public void init() {
-	this.startUpjobs.clear();
-	try {
-	    IPluginHotSpot spot = this.getHotSpot(HOTSPOT_ID_STARTUP);
-	    for (Object o : spot.getObjectsFromActivatedExtentions()) {
-		this.startUpjobs.add((IJob) o);
-	    }
-	} catch (UnknownServiceHotSpotException e) {
-	    /* dann eben nicht */
+	/**
+	 * @param id
+	 */
+	public InitializerService(String id) {
+		super(id);
+		this.startUpjobs = new Vector<IJob>();
+		this.shutdownjobs = new Vector<IJob>();
+		this.addHotSpot(new PluginHotSpot(HOTSPOT_ID_STARTUP, IJob.class));
+		this.addHotSpot(new PluginHotSpot(HOTSPOT_ID_SHUTDOWN, IJob.class));
 	}
 
-	this.shutdownjobs.clear();
-	try {
-	    IPluginHotSpot spot = this.getHotSpot(HOTSPOT_ID_SHUTDOWN);
-	    for (Object o : spot.getObjectsFromActivatedExtentions()) {
-		this.shutdownjobs.add((IJob) o);
-	    }
-	} catch (UnknownServiceHotSpotException e) {
-	    /* dann eben nicht */
-	}
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.AbstractService#createTask()
+	 */
+	@Override
+	public ITask createTask() {
+		ITask task = new Task("Initializer", new ITaskResultMarshaler() {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.services.AbstractService#workingContextIsCompatible(
-     * java.lang.Class)
-     */
-    @Override
-    public boolean workingContextIsCompatible(Class contextClass) {
-	return true;
-    }
+			public Object marshalResult(Map<String, ? extends Object> taskResult) {
+				return new Object();
+			}
+		}, false);
+		task.addPart(new InitialiserTaskPart("part 1", this.frameworkContext));
+		return task;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.AbstractService#getResultContext()
+	 */
+	@Override
+	public IContext getResultContext() {
+		if (this.getTaskProcessor().getTaskResult() != null) {
+			return new NullContext();
+		}
+		else {
+			return null;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.AbstractService#getResultContextClass()
+	 */
+	@Override
+	public Class getResultContextClass() {
+		return NullContext.class;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Collection<IJob> getShutdownJobs() {
+		return this.shutdownjobs;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Collection<IJob> getStartUpJobs() {
+		return this.startUpjobs;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.AbstractService#init()
+	 */
+	@Override
+	public void init() {
+		this.startUpjobs.clear();
+		try {
+			IPluginHotSpot spot = this.getHotSpot(HOTSPOT_ID_STARTUP);
+			for (Object o : spot.getObjectsFromActivatedExtentions()) {
+				this.startUpjobs.add((IJob) o);
+			}
+		}
+		catch (UnknownServiceHotSpotException e) {
+			/* dann eben nicht */
+		}
+
+		this.shutdownjobs.clear();
+		try {
+			IPluginHotSpot spot = this.getHotSpot(HOTSPOT_ID_SHUTDOWN);
+			for (Object o : spot.getObjectsFromActivatedExtentions()) {
+				this.shutdownjobs.add((IJob) o);
+			}
+		}
+		catch (UnknownServiceHotSpotException e) {
+			/* dann eben nicht */
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.core.services.AbstractService#workingContextIsCompatible(
+	 * java.lang.Class)
+	 */
+	@Override
+	public boolean workingContextIsCompatible(Class contextClass) {
+		return true;
+	}
 }

@@ -12,32 +12,32 @@ import org.dotplot.core.services.IServiceRegistry;
  */
 public class TestJob extends AbstractJob<DotplotContext> {
 
-    /**
-     * Creates a new <code>TestJob</code>.
-     */
-    public TestJob() {
-	super();
-    }
+	/**
+	 * Creates a new <code>TestJob</code>.
+	 */
+	public TestJob() {
+		super();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.IJob#process(C)
-     */
-    public boolean process(DotplotContext context) {
-	System.out.println("Processing TestJob");
-	return true;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.IJob#process(C)
+	 */
+	public boolean process(DotplotContext context) {
+		System.out.println("Processing TestJob");
+		return true;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.services.IJob#validatePreconditions(org.dotplot.core
-     * .services.IServiceRegistry)
-     */
-    public boolean validatePreconditions(IServiceRegistry registry) {
-	return true;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.core.services.IJob#validatePreconditions(org.dotplot.core
+	 * .services.IServiceRegistry)
+	 */
+	public boolean validatePreconditions(IServiceRegistry registry) {
+		return true;
+	}
 
 }

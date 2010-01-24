@@ -21,58 +21,59 @@ import org.eclipse.ui.application.IActionBarConfigurer;
  */
 public class DotplotActionBarAdvisor extends ActionBarAdvisor {
 
-    /**
-     * Creates a new <code>DotplotActionBarAdvisor</code>.
-     * 
-     * @param configurer
-     *            - The <code>ActionBarConfigurer</code> to configure the
-     *            actionbar.
-     */
-    public DotplotActionBarAdvisor(IActionBarConfigurer configurer) {
-	super(configurer);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.application.ActionBarAdvisor#fillMenuBar(org.eclipse.jface
-     * .action.IMenuManager)
-     */
-    @Override
-    public void fillMenuBar(IMenuManager menuBar) {
-
-	MenuManager fileMenu = new MenuManager("&File",
-		IWorkbenchActionConstants.M_FILE);
-
-	menuBar.add(fileMenu);
-
-	fileMenu.add(this.getAction(ActionFactory.PREFERENCES.getId()));
-	fileMenu.add(this.getAction(ActionFactory.ABOUT.getId()));
-	fileMenu.add(this.getAction(ActionFactory.QUIT.getId()));
-
-	DotplotContext context = ContextFactory.getContext();
-	try {
-	    EclipseUIService service = (EclipseUIService) context
-		    .getServiceRegistry().get(
-			    EclipseConstants.ID_SERVICE_ECLIPSE_UI);
-	    service.fillMenuBar(menuBar);
-	} catch (UnknownIDException e) {
-	    // dann eben nicht
+	/**
+	 * Creates a new <code>DotplotActionBarAdvisor</code>.
+	 * 
+	 * @param configurer
+	 *            - The <code>ActionBarConfigurer</code> to configure the
+	 *            actionbar.
+	 */
+	public DotplotActionBarAdvisor(IActionBarConfigurer configurer) {
+		super(configurer);
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.ui.application.ActionBarAdvisor#makeActions(org.eclipse.ui
-     * .IWorkbenchWindow)
-     */
-    @Override
-    public void makeActions(IWorkbenchWindow window) {
-	this.register(ActionFactory.QUIT.create(window));
-	this.register(ActionFactory.ABOUT.create(window));
-	this.register(ActionFactory.PREFERENCES.create(window));
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.application.ActionBarAdvisor#fillMenuBar(org.eclipse.jface
+	 * .action.IMenuManager)
+	 */
+	@Override
+	public void fillMenuBar(IMenuManager menuBar) {
+
+		MenuManager fileMenu = new MenuManager("&File",
+				IWorkbenchActionConstants.M_FILE);
+
+		menuBar.add(fileMenu);
+
+		fileMenu.add(this.getAction(ActionFactory.PREFERENCES.getId()));
+		fileMenu.add(this.getAction(ActionFactory.ABOUT.getId()));
+		fileMenu.add(this.getAction(ActionFactory.QUIT.getId()));
+
+		DotplotContext context = ContextFactory.getContext();
+		try {
+			EclipseUIService service = (EclipseUIService) context
+					.getServiceRegistry().get(
+							EclipseConstants.ID_SERVICE_ECLIPSE_UI);
+			service.fillMenuBar(menuBar);
+		}
+		catch (UnknownIDException e) {
+			// dann eben nicht
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.ui.application.ActionBarAdvisor#makeActions(org.eclipse.ui
+	 * .IWorkbenchWindow)
+	 */
+	@Override
+	public void makeActions(IWorkbenchWindow window) {
+		this.register(ActionFactory.QUIT.create(window));
+		this.register(ActionFactory.ABOUT.create(window));
+		this.register(ActionFactory.PREFERENCES.create(window));
+	}
 }

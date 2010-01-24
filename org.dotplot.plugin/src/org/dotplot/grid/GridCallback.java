@@ -11,17 +11,17 @@ import java.util.Map;
  * @author Tobias Gesellchen
  */
 public interface GridCallback {
-    /**
-     * called, when all parts from the grid are received.
-     * 
-     * @param gridImages
-     *            maps the client IDs to the corresponding image parts
-     * @param size
-     *            Dimension of the complete image
-     * 
-     * @throws IOException
-     *             if an error occured.
-     */
-    public void imagesReceived(Map gridImages, Dimension size)
-	    throws IOException;
+	/**
+	 * called, when all parts from the grid are received.
+	 * 
+	 * @param gridImages
+	 *            maps the client IDs to the corresponding image parts
+	 * @param size
+	 *            Dimension of the complete image
+	 * 
+	 * @throws IOException
+	 *             if an error occured.
+	 */
+	public void imagesReceived(Map gridImages, Dimension size)
+			throws IOException;
 }

@@ -22,37 +22,38 @@ import org.eclipse.jface.action.Action;
  */
 public class JobAction extends Action {
 
-    /**
-     * The id of the executed <code>Job</code>.
-     */
-    private String jobID;
+	/**
+	 * The id of the executed <code>Job</code>.
+	 */
+	private String jobID;
 
-    /**
-     * Creates a new <code>JobAction</code>.
-     * 
-     * @param text
-     *            - label of the <code>Action</code>.
-     * @param jobID
-     *            - the if og the executed <code>Job</code>.
-     */
-    public JobAction(String text, String jobID) {
-	super(text);
-	this.jobID = jobID;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.action.IAction#run()
-     */
-    @Override
-    public void run() {
-	DotplotContext context = ContextFactory.getContext();
-	try {
-	    context.executeJob(this.jobID);
-	} catch (UnknownIDException e) {
-	    // dann eben nicht
+	/**
+	 * Creates a new <code>JobAction</code>.
+	 * 
+	 * @param text
+	 *            - label of the <code>Action</code>.
+	 * @param jobID
+	 *            - the if og the executed <code>Job</code>.
+	 */
+	public JobAction(String text, String jobID) {
+		super(text);
+		this.jobID = jobID;
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.action.IAction#run()
+	 */
+	@Override
+	public void run() {
+		DotplotContext context = ContextFactory.getContext();
+		try {
+			context.executeJob(this.jobID);
+		}
+		catch (UnknownIDException e) {
+			// dann eben nicht
+		}
+	}
 
 }

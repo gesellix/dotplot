@@ -13,28 +13,28 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @author Tobias Gesellchen
  */
 public class ConfigureAction extends Action {
-    IWorkbenchWindow parent;
+	IWorkbenchWindow parent;
 
-    /**
-     * create a new action.
-     * 
-     * @param text
-     *            the title to be displayed on the context menu
-     * @param parent
-     *            the parent
-     */
-    public ConfigureAction(String text, IWorkbenchWindow parent) {
-	this.parent = parent;
-	setText(text);
-    }
+	/**
+	 * create a new action.
+	 * 
+	 * @param text
+	 *            the title to be displayed on the context menu
+	 * @param parent
+	 *            the parent
+	 */
+	public ConfigureAction(String text, IWorkbenchWindow parent) {
+		this.parent = parent;
+		setText(text);
+	}
 
-    /**
-     * starts the ConfigAction.
-     */
-    @Override
-    public void run() {
-	ConfigAction action = new ConfigAction();
-	action.init(parent);
-	action.run(null);
-    }
+	/**
+	 * starts the ConfigAction.
+	 */
+	@Override
+	public void run() {
+		ConfigAction action = new ConfigAction();
+		action.init(parent);
+		action.run(null);
+	}
 }

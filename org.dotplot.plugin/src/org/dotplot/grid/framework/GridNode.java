@@ -7,24 +7,25 @@ import java.io.IOException;
  * notified about messages
  */
 abstract class GridNode {
-    protected MessageHandler handler = new MessageHandler();
+	protected MessageHandler handler = new MessageHandler();
 
-    protected Identity id = null;
+	protected Identity id = null;
 
-    public Identity getIdentity() {
-	if (id == null || id.getName() == null) {
-	    return null;
-	} else {
-	    return id;
+	public Identity getIdentity() {
+		if (id == null || id.getName() == null) {
+			return null;
+		}
+		else {
+			return id;
+		}
 	}
-    }
 
-    // Incoming messages/data
-    public abstract boolean notify(String tag, Object data, Identity src)
-	    throws IOException;
+	// Incoming messages/data
+	public abstract boolean notify(String tag, Object data, Identity src)
+			throws IOException;
 
-    public String setIdentity(Identity identity) {
-	id = identity;
-	return id.getName();
-    }
+	public String setIdentity(Identity identity) {
+		id = identity;
+		return id.getName();
+	}
 }

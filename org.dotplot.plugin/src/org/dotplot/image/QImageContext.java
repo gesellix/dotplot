@@ -12,21 +12,21 @@ import org.dotplot.core.services.IContext;
  */
 public class QImageContext implements IContext {
 
-    private IDotplot dotplot;
+	private IDotplot dotplot;
 
-    /**
-     * Creates a new <code>QImageContext</code>.
-     */
-    public QImageContext(IDotplot dotplot) {
-	super();
-	if (dotplot == null) {
-	    throw new NullPointerException();
+	/**
+	 * Creates a new <code>QImageContext</code>.
+	 */
+	public QImageContext(IDotplot dotplot) {
+		super();
+		if (dotplot == null) {
+			throw new NullPointerException();
+		}
+		this.dotplot = dotplot;
 	}
-	this.dotplot = dotplot;
-    }
 
-    public IDotplot getDotplot() {
-	return this.dotplot;
-    }
+	public IDotplot getDotplot() {
+		return this.dotplot;
+	}
 
 }

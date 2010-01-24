@@ -12,16 +12,16 @@ import org.dotplot.core.services.ServiceHotSpot;
  */
 public class PluginHotSpot extends ServiceHotSpot implements IPluginHotSpot {
 
-    /**
-     * Creates a new <code>PluginHotSpot</code>.
-     * 
-     * @param id
-     *            - the id of the <code>PluginHotSpot</code>.
-     * @param extentionClass
-     *            - the class of the extention objects.
-     */
-    public PluginHotSpot(String id, Class<?> extentionClass) {
-	super(id, extentionClass);
-    }
+	/**
+	 * Creates a new <code>PluginHotSpot</code>.
+	 * 
+	 * @param id
+	 *            - the id of the <code>PluginHotSpot</code>.
+	 * @param extentionClass
+	 *            - the class of the extention objects.
+	 */
+	public PluginHotSpot(String id, Class<?> extentionClass) {
+		super(id, extentionClass);
+	}
 
 }

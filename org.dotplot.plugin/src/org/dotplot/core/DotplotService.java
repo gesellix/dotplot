@@ -59,111 +59,113 @@ import org.dotplot.core.services.UnknownServiceHotSpotException;
  */
 public abstract class DotplotService extends PlugableService<DotplotContext> {
 
-    /**
-     * Id suffix for the Before-<code>Interceptor</code>.
-     */
-    public static final String ID_INTERCEPTOR_BEFORE_SUFFIX = ".Before";
+	/**
+	 * Id suffix for the Before-<code>Interceptor</code>.
+	 */
+	public static final String ID_INTERCEPTOR_BEFORE_SUFFIX = ".Before";
 
-    /**
-     * Id suffix for the After-<code>Interceptor</code>.
-     */
-    public static final String ID_INTERCEPTOR_AFTER_SUFFIX = ".After";
+	/**
+	 * Id suffix for the After-<code>Interceptor</code>.
+	 */
+	public static final String ID_INTERCEPTOR_AFTER_SUFFIX = ".After";
 
-    /**
-     * This service's result context.
-     */
-    private IContext resultContext = NullContext.context;
+	/**
+	 * This service's result context.
+	 */
+	private IContext resultContext = NullContext.context;
 
-    /**
-     * Creates a new <code>DotplotService</code>.
-     * 
-     * @param id
-     *            The if of the <code>DotplotService</code>.
-     */
-    public DotplotService(String id) {
-	super(id);
-	this.addHotSpot(new PluginHotSpot(id + ID_INTERCEPTOR_BEFORE_SUFFIX,
-		IInterceptor.class));
-	this.addHotSpot(new PluginHotSpot(id + ID_INTERCEPTOR_AFTER_SUFFIX,
-		IInterceptor.class));
-    }
-
-    /**
-     * Creates the services's result context.
-     * <p>
-     * Subclasses should implement this method to create their result context.
-     * This method is invoked right after invoking the
-     * <code>TaskProcessor</code>.
-     * </p>
-     * 
-     * @return The result context.
-     */
-    protected abstract IContext createResultContext();
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.IService#getResultContext()
-     */
-    @Override
-    public final IContext getResultContext() {
-	return this.resultContext;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.IService#init()
-     */
-    @Override
-    public void init() {
-	if (this.frameworkContext != null) {
-	    this.registerDefaultConfiguration(this.frameworkContext
-		    .getConfigurationRegistry());
-	}
-    }
-
-    /**
-     * Registers the <code>DotplotService</code>'s default configuration to the
-     * <code>Configurationregistry</code>.
-     * 
-     * @param registry
-     *            The <code>Configurationregistry</code>.
-     */
-    public abstract void registerDefaultConfiguration(
-	    IConfigurationRegistry registry);
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
-    @Override
-    public void run() {
-	IPluginHotSpot hotSpot;
-	try {
-	    hotSpot = this.getHotSpot(this.getID()
-		    + ID_INTERCEPTOR_BEFORE_SUFFIX);
-	    for (Object extention : hotSpot.getObjectsFromActivatedExtentions()) {
-		((IInterceptor) extention).execute(hotSpot, this, this
-			.getWorkingContext(), this.frameworkContext);
-	    }
-	} catch (UnknownServiceHotSpotException e) {
-	    /* should not be possible */
+	/**
+	 * Creates a new <code>DotplotService</code>.
+	 * 
+	 * @param id
+	 *            The if of the <code>DotplotService</code>.
+	 */
+	public DotplotService(String id) {
+		super(id);
+		this.addHotSpot(new PluginHotSpot(id + ID_INTERCEPTOR_BEFORE_SUFFIX,
+				IInterceptor.class));
+		this.addHotSpot(new PluginHotSpot(id + ID_INTERCEPTOR_AFTER_SUFFIX,
+				IInterceptor.class));
 	}
 
-	super.run();
-	this.resultContext = this.createResultContext();
+	/**
+	 * Creates the services's result context.
+	 * <p>
+	 * Subclasses should implement this method to create their result context.
+	 * This method is invoked right after invoking the
+	 * <code>TaskProcessor</code>.
+	 * </p>
+	 * 
+	 * @return The result context.
+	 */
+	protected abstract IContext createResultContext();
 
-	try {
-	    hotSpot = this.getHotSpot(this.getID()
-		    + ID_INTERCEPTOR_AFTER_SUFFIX);
-	    for (Object extention : hotSpot.getObjectsFromActivatedExtentions()) {
-		((IInterceptor) extention).execute(hotSpot, this, this
-			.getResultContext(), this.frameworkContext);
-	    }
-	} catch (UnknownServiceHotSpotException e) {
-	    /* should not be possible */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.IService#getResultContext()
+	 */
+	@Override
+	public final IContext getResultContext() {
+		return this.resultContext;
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.IService#init()
+	 */
+	@Override
+	public void init() {
+		if (this.frameworkContext != null) {
+			this.registerDefaultConfiguration(this.frameworkContext
+					.getConfigurationRegistry());
+		}
+	}
+
+	/**
+	 * Registers the <code>DotplotService</code>'s default configuration to the
+	 * <code>Configurationregistry</code>.
+	 * 
+	 * @param registry
+	 *            The <code>Configurationregistry</code>.
+	 */
+	public abstract void registerDefaultConfiguration(
+			IConfigurationRegistry registry);
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		IPluginHotSpot hotSpot;
+		try {
+			hotSpot = this.getHotSpot(this.getID()
+					+ ID_INTERCEPTOR_BEFORE_SUFFIX);
+			for (Object extention : hotSpot.getObjectsFromActivatedExtentions()) {
+				((IInterceptor) extention).execute(hotSpot, this, this
+						.getWorkingContext(), this.frameworkContext);
+			}
+		}
+		catch (UnknownServiceHotSpotException e) {
+			/* should not be possible */
+		}
+
+		super.run();
+		this.resultContext = this.createResultContext();
+
+		try {
+			hotSpot = this.getHotSpot(this.getID()
+					+ ID_INTERCEPTOR_AFTER_SUFFIX);
+			for (Object extention : hotSpot.getObjectsFromActivatedExtentions()) {
+				((IInterceptor) extention).execute(hotSpot, this, this
+						.getResultContext(), this.frameworkContext);
+			}
+		}
+		catch (UnknownServiceHotSpotException e) {
+			/* should not be possible */
+		}
+	}
 }

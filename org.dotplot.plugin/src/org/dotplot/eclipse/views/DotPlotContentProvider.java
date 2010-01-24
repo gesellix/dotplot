@@ -16,110 +16,111 @@ import org.eclipse.jface.viewers.Viewer;
  * @author Sascha Hemminger
  */
 class DotPlotContentProvider implements ITreeContentProvider,
-	IPropertyChangeListener {
-    private static final Object[] EMPTY = new Object[0];
+		IPropertyChangeListener {
+	private static final Object[] EMPTY = new Object[0];
 
-    private FileFilter fileFilter;
+	private FileFilter fileFilter;
 
-    private CheckboxTreeViewer viewer;
+	private CheckboxTreeViewer viewer;
 
-    /**
-     * Creates a new instance of the receiver.
-     * 
-     * @param showFiles
-     *            <code>true</code> files and folders are returned by the
-     *            receiver. <code>false</code> only folders are returned.
-     */
-    public DotPlotContentProvider(final boolean showFiles) {
-	fileFilter = new FileFilter() {
-	    public boolean accept(File file) {
-		return (file.isFile() || file.isDirectory() && showFiles);
-	    }
-	};
-    }
-
-    public void dispose() {
-    }
-
-    /**
-     * Searches all children of an element.
-     * 
-     * @param parentElement
-     *            the 'father' element
-     * 
-     * @return an array of child-objects
-     */
-    public Object[] getChildren(Object parentElement) {
-	if (parentElement instanceof File) {
-	    File[] children = ((File) parentElement).listFiles(fileFilter);
-	    if (children != null) {
-		Arrays.sort(children);
-		return children;
-	    }
+	/**
+	 * Creates a new instance of the receiver.
+	 * 
+	 * @param showFiles
+	 *            <code>true</code> files and folders are returned by the
+	 *            receiver. <code>false</code> only folders are returned.
+	 */
+	public DotPlotContentProvider(final boolean showFiles) {
+		fileFilter = new FileFilter() {
+			public boolean accept(File file) {
+				return (file.isFile() || file.isDirectory() && showFiles);
+			}
+		};
 	}
 
-	return EMPTY;
-    }
-
-    /**
-     * searches all elements related to to the given element.
-     * 
-     * @param element
-     *            the ancestor-element
-     * 
-     * @return an array of all related elements
-     */
-    public Object[] getElements(Object element) {
-	return getChildren(element);
-    }
-
-    public Object getParent(Object element) {
-	if (element instanceof File) {
-	    return ((File) element).getParentFile();
-	} else {
-	    return null;
+	public void dispose() {
 	}
-    }
 
-    /**
-     * Use this to access the views basic viewer.
-     * 
-     * @return the basic viewer
-     * 
-     * @see #setViewer(CheckboxTreeViewer)
-     */
-    public CheckboxTreeViewer getViewer() {
-	return viewer;
-    }
+	/**
+	 * Searches all children of an element.
+	 * 
+	 * @param parentElement
+	 *            the 'father' element
+	 * 
+	 * @return an array of child-objects
+	 */
+	public Object[] getChildren(Object parentElement) {
+		if (parentElement instanceof File) {
+			File[] children = ((File) parentElement).listFiles(fileFilter);
+			if (children != null) {
+				Arrays.sort(children);
+				return children;
+			}
+		}
 
-    public boolean hasChildren(Object element) {
-	return getChildren(element).length > 0;
-    }
+		return EMPTY;
+	}
 
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-	this.viewer = (CheckboxTreeViewer) viewer;
-    }
+	/**
+	 * searches all elements related to to the given element.
+	 * 
+	 * @param element
+	 *            the ancestor-element
+	 * 
+	 * @return an array of all related elements
+	 */
+	public Object[] getElements(Object element) {
+		return getChildren(element);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse
-     * .jface.util.PropertyChangeEvent)
-     */
-    public void propertyChange(PropertyChangeEvent event) {
-	getViewer().refresh();
-    }
+	public Object getParent(Object element) {
+		if (element instanceof File) {
+			return ((File) element).getParentFile();
+		}
+		else {
+			return null;
+		}
+	}
 
-    /**
-     * sets this views basic viewer to a new one.
-     * 
-     * @param viewer
-     *            the new viewer
-     * 
-     * @see #getViewer()
-     */
-    public void setViewer(CheckboxTreeViewer viewer) {
-	this.viewer = viewer;
-    }
+	/**
+	 * Use this to access the views basic viewer.
+	 * 
+	 * @return the basic viewer
+	 * 
+	 * @see #setViewer(CheckboxTreeViewer)
+	 */
+	public CheckboxTreeViewer getViewer() {
+		return viewer;
+	}
+
+	public boolean hasChildren(Object element) {
+		return getChildren(element).length > 0;
+	}
+
+	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		this.viewer = (CheckboxTreeViewer) viewer;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse
+	 * .jface.util.PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		getViewer().refresh();
+	}
+
+	/**
+	 * sets this views basic viewer to a new one.
+	 * 
+	 * @param viewer
+	 *            the new viewer
+	 * 
+	 * @see #getViewer()
+	 */
+	public void setViewer(CheckboxTreeViewer viewer) {
+		this.viewer = viewer;
+	}
 }

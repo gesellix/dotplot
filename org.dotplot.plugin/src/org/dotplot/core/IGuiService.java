@@ -10,37 +10,37 @@ package org.dotplot.core;
  */
 public interface IGuiService {
 
-    /**
-     * Appends a message to the log.
-     * 
-     * @param message
-     *            The message.
-     */
-    public void appendToLog(String message);
+	/**
+	 * Appends a message to the log.
+	 * 
+	 * @param message
+	 *            The message.
+	 */
+	public void appendToLog(String message);
 
-    /**
-     * Shows an error message.
-     * 
-     * @param message
-     *            The message.
-     */
-    public void showErrorMessage(String message);
+	/**
+	 * Shows an error message.
+	 * 
+	 * @param message
+	 *            The message.
+	 */
+	public void showErrorMessage(String message);
 
-    /**
-     * Shows an error message.
-     * 
-     * @param message
-     *            The message.
-     * @param details
-     *            Details of the error.
-     */
-    public void showErrorMessage(String message, String details);
+	/**
+	 * Shows an error message.
+	 * 
+	 * @param message
+	 *            The message.
+	 * @param details
+	 *            Details of the error.
+	 */
+	public void showErrorMessage(String message, String details);
 
-    /**
-     * Shows a message.
-     * 
-     * @param message
-     *            The message.
-     */
-    public void showMessage(String message);
+	/**
+	 * Shows a message.
+	 * 
+	 * @param message
+	 *            The message.
+	 */
+	public void showMessage(String message);
 }

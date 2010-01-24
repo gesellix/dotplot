@@ -12,21 +12,21 @@ import org.dotplot.ui.ViewController;
  */
 public abstract class FilterViewController extends ViewController {
 
-    private IFilterUI ui;
+	private IFilterUI ui;
 
-    /**
-     * Creates a new <code>FilterViewController</code>.
-     * 
-     * @param dotplotCreator
-     * @param cv
-     */
-    public FilterViewController(ConfigurationView cv, IFilterUI ui) {
-	super(cv);
-	this.ui = ui;
-    }
+	/**
+	 * Creates a new <code>FilterViewController</code>.
+	 * 
+	 * @param dotplotCreator
+	 * @param cv
+	 */
+	public FilterViewController(ConfigurationView cv, IFilterUI ui) {
+		super(cv);
+		this.ui = ui;
+	}
 
-    public IFilterUI getFilterUI() {
-	return this.ui;
-    }
+	public IFilterUI getFilterUI() {
+		return this.ui;
+	}
 
 }

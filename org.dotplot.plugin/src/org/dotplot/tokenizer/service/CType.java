@@ -10,26 +10,26 @@ package org.dotplot.tokenizer.service;
  */
 public class CType extends SourceCodeFileType {
 
-    /**
-     * A static <code>CType</code>-object for default usage.
-     */
-    public static final CType type = new CType();
+	/**
+	 * A static <code>CType</code>-object for default usage.
+	 */
+	public static final CType type = new CType();
 
-    /**
-     * Creates a new <code>CType</code> object.
-     */
-    public CType() {
-	super("C");
-    }
+	/**
+	 * Creates a new <code>CType</code> object.
+	 */
+	public CType() {
+		super("C");
+	}
 
-    /**
-     * Creates a new <code>CType</code> object.
-     * 
-     * @param name
-     *            an identifier for the CType.
-     */
-    public CType(String name) {
-	super(name);
-    }
+	/**
+	 * Creates a new <code>CType</code> object.
+	 * 
+	 * @param name
+	 *            an identifier for the CType.
+	 */
+	public CType(String name) {
+		super(name);
+	}
 
 }

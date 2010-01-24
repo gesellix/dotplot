@@ -9,17 +9,17 @@ package org.dotplot.core.services;
  */
 public interface IFrameworkContext extends IContext {
 
-    /**
-     * Returns the <code>ServiceRegistry</code> of the framework.
-     * 
-     * @return The <code>ServiceRegistry</code>.
-     */
-    public IServiceRegistry getServiceRegistry();
+	/**
+	 * Returns the <code>ServiceRegistry</code> of the framework.
+	 * 
+	 * @return The <code>ServiceRegistry</code>.
+	 */
+	public IServiceRegistry getServiceRegistry();
 
-    /**
-     * Returns the path of the working directory.
-     * 
-     * @return The path of the working directory.
-     */
-    public String getWorkingDirectory();
+	/**
+	 * Returns the path of the working directory.
+	 * 
+	 * @return The path of the working directory.
+	 */
+	public String getWorkingDirectory();
 }

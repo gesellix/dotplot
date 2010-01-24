@@ -13,20 +13,20 @@ import org.dotplot.core.services.ServiceException;
  */
 public class DuplicateRegistrationException extends ServiceException {
 
-    /**
-     * UID for serialisation.
-     */
-    private static final long serialVersionUID = 7294760750704346992L;
+	/**
+	 * UID for serialisation.
+	 */
+	private static final long serialVersionUID = 7294760750704346992L;
 
-    /**
-     * Creates a new <code>DuplicateRegistrationException</code>.
-     * 
-     * @param registrationID
-     *            - The ID which is duplicate.
-     */
-    public DuplicateRegistrationException(String registrationID) {
-	super("" + registrationID); // das ("" +) ist dafür, das auch in fall
-	// von null ein string als message generiert
-	// wird
-    }
+	/**
+	 * Creates a new <code>DuplicateRegistrationException</code>.
+	 * 
+	 * @param registrationID
+	 *            - The ID which is duplicate.
+	 */
+	public DuplicateRegistrationException(String registrationID) {
+		super("" + registrationID); // das ("" +) ist dafür, das auch in fall
+		// von null ein string als message generiert
+		// wird
+	}
 }

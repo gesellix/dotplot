@@ -12,20 +12,20 @@ import org.dotplot.core.services.IContext;
  */
 public class SourceListContext implements IContext {
 
-    private ISourceList list;
+	private ISourceList list;
 
-    /**
+	/**
 	 * 
 	 */
-    public SourceListContext(ISourceList list) {
-	super();
-	if (list == null) {
-	    throw new NullPointerException();
+	public SourceListContext(ISourceList list) {
+		super();
+		if (list == null) {
+			throw new NullPointerException();
+		}
+		this.list = list;
 	}
-	this.list = list;
-    }
 
-    public ISourceList getSourceList() {
-	return this.list;
-    }
+	public ISourceList getSourceList() {
+		return this.list;
+	}
 }

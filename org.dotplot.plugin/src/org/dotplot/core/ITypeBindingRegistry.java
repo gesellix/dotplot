@@ -15,12 +15,12 @@ import org.dotplot.util.IRegistry;
  */
 public interface ITypeBindingRegistry extends IRegistry<String> {
 
-    /**
-     * Returns the bound <code>SourceType</code> of a file ending.
-     * 
-     * @param ending
-     *            The file ending.
-     * @return The bound <code>SourceType</code>.
-     */
-    public ISourceType getTypeOf(String ending);
+	/**
+	 * Returns the bound <code>SourceType</code> of a file ending.
+	 * 
+	 * @param ending
+	 *            The file ending.
+	 * @return The bound <code>SourceType</code>.
+	 */
+	public ISourceType getTypeOf(String ending);
 }

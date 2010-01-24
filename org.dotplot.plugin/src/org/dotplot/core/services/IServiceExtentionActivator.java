@@ -9,17 +9,17 @@ package org.dotplot.core.services;
  */
 public interface IServiceExtentionActivator {
 
-    /**
-     * Returns the id of the <code>ServiceExtentionActivator</code>.
-     * 
-     * @return The id.
-     */
-    public String getID();
+	/**
+	 * Returns the id of the <code>ServiceExtentionActivator</code>.
+	 * 
+	 * @return The id.
+	 */
+	public String getID();
 
-    /**
-     * Indicates of the <code>Extention</code> is activated.
-     * 
-     * @return <code>true</code> of its activated, <code>false</code> otherwise.
-     */
-    public boolean isActivated();
+	/**
+	 * Indicates of the <code>Extention</code> is activated.
+	 * 
+	 * @return <code>true</code> of its activated, <code>false</code> otherwise.
+	 */
+	public boolean isActivated();
 }

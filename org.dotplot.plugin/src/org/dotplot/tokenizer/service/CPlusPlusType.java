@@ -14,25 +14,25 @@ package org.dotplot.tokenizer.service;
  */
 public class CPlusPlusType extends CType {
 
-    /**
-     * A static <code>CPlusPlusType</code>-object for default usage.
-     */
-    public static final CPlusPlusType type = new CPlusPlusType();
+	/**
+	 * A static <code>CPlusPlusType</code>-object for default usage.
+	 */
+	public static final CPlusPlusType type = new CPlusPlusType();
 
-    /**
-     * Creates a new <code>CPlusPlusType</code>.
-     */
-    public CPlusPlusType() {
-	super("C++");
-    }
+	/**
+	 * Creates a new <code>CPlusPlusType</code>.
+	 */
+	public CPlusPlusType() {
+		super("C++");
+	}
 
-    /**
-     * Creates a new <code>CPlusPlusType</code>.
-     * 
-     * @param name
-     *            an identifier for the <code>CPlusPlusType</code>.
-     */
-    public CPlusPlusType(String name) {
-	super(name);
-    }
+	/**
+	 * Creates a new <code>CPlusPlusType</code>.
+	 * 
+	 * @param name
+	 *            an identifier for the <code>CPlusPlusType</code>.
+	 */
+	public CPlusPlusType(String name) {
+		super(name);
+	}
 }

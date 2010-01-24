@@ -5,7 +5,6 @@
 // Generated on: 2009.06.29 at 11:18:10 PM CEST 
 //
 
-
 package org.dotplot.dpaas.wsdto;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,11 +12,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for WSDotplotjobresponse complex type.
+ * <p>
+ * Java class for WSDotplotjobresponse complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="WSDotplotjobresponse">
@@ -39,31 +40,28 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class WSDotplotjobresponse {
 
-    @XmlElement(name = "Image", required = true)
-    protected WSFile image;
+	@XmlElement(name = "Image", required = true)
+	protected WSFile image;
 
-    /**
-     * Gets the value of the image property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link WSFile }
-     *     
-     */
-    public WSFile getImage() {
-        return image;
-    }
+	/**
+	 * Gets the value of the image property.
+	 * 
+	 * @return possible object is {@link WSFile }
+	 * 
+	 */
+	public WSFile getImage() {
+		return image;
+	}
 
-    /**
-     * Sets the value of the image property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link WSFile }
-     *     
-     */
-    public void setImage(WSFile value) {
-        this.image = value;
-    }
+	/**
+	 * Sets the value of the image property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link WSFile }
+	 * 
+	 */
+	public void setImage(WSFile value) {
+		this.image = value;
+	}
 
 }

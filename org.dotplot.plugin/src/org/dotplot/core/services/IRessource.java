@@ -12,18 +12,18 @@ import java.net.URL;
  */
 public interface IRessource {
 
-    /**
-     * Returns an <code>InputStream</code> to read from the
-     * <code>Ressource</code>.
-     * 
-     * @return The <code>InputStream</code>.
-     */
-    public InputStream getInputStream();
+	/**
+	 * Returns an <code>InputStream</code> to read from the
+	 * <code>Ressource</code>.
+	 * 
+	 * @return The <code>InputStream</code>.
+	 */
+	public InputStream getInputStream();
 
-    /**
-     * The an <code>URL</code> to locate the <code>Ressource</code>.
-     * 
-     * @return The <code>URL</code>.
-     */
-    public URL getURL();
+	/**
+	 * The an <code>URL</code> to locate the <code>Ressource</code>.
+	 * 
+	 * @return The <code>URL</code>.
+	 */
+	public URL getURL();
 }

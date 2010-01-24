@@ -34,238 +34,240 @@ import org.eclipse.ui.PlatformUI;
  * @author Tobias Gesellchen
  */
 public class DotPlotSplashScreen {
-    // java.awt.Image image;
-    // java.awt.Image back;
+	// java.awt.Image image;
+	// java.awt.Image back;
 
-    private class SplashShell {
-	public SplashShell(final URL splashImage) {
-	    final Display display = (Display.getCurrent() == null) ? Display
-		    .getDefault() : Display.getCurrent();
-	    display.asyncExec(new Runnable() {
-		public void run() {
-		    initAndShowSplash(display, splashImage);
+	private class SplashShell {
+		public SplashShell(final URL splashImage) {
+			final Display display = (Display.getCurrent() == null) ? Display
+					.getDefault() : Display.getCurrent();
+			display.asyncExec(new Runnable() {
+				public void run() {
+					initAndShowSplash(display, splashImage);
+				}
+			});
 		}
-	    });
-	}
 
-	private void initAndShowSplash(final Display display,
-		final URL splashImage) {
-	    final Shell shell = new Shell(display, SWT.MODELESS);
-	    final Image image = new Image(shell.getDisplay(), splashImage
-		    .getFile());
+		private void initAndShowSplash(final Display display,
+				final URL splashImage) {
+			final Shell shell = new Shell(display, SWT.MODELESS);
+			final Image image = new Image(shell.getDisplay(), splashImage
+					.getFile());
 
-	    shell.addListener(SWT.Paint, new Listener() {
-		public void handleEvent(Event e) {
-		    onShellPainted(e, image, new Point(0, 0), shell);
+			shell.addListener(SWT.Paint, new Listener() {
+				public void handleEvent(Event e) {
+					onShellPainted(e, image, new Point(0, 0), shell);
+				}
+			});
+
+			final Rectangle bounds = image.getBounds();
+
+			final int w = bounds.width;
+			final int h = bounds.height;
+
+			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+			shell.setBounds((d.width - w) / 2, (d.height - h) / 3, w, h);
+			shell.open();
+			shell.redraw();
+
+			try {
+				Thread.sleep(SHOWTIME);
+			}
+			catch (InterruptedException e) {
+				// ignore
+				// e.printStackTrace();
+			}
+
+			shell.close();
+			workbenchToFront();
 		}
-	    });
 
-	    final Rectangle bounds = image.getBounds();
+		private void onShellPainted(Event e, final Image image,
+				final Point origin, final Canvas shell) {
+			final GC gc = e.gc;
 
-	    final int w = bounds.width;
-	    final int h = bounds.height;
+			final Rectangle rect = image.getBounds();
+			final Rectangle client = shell.getClientArea();
 
-	    Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-	    shell.setBounds((d.width - w) / 2, (d.height - h) / 3, w, h);
-	    shell.open();
-	    shell.redraw();
+			final int w_r = rect.width;
+			final int h_r = rect.height;
+			final int w_c = client.width;
+			final int h_c = client.height;
 
-	    try {
-		Thread.sleep(SHOWTIME);
-	    } catch (InterruptedException e) {
-		// ignore
-		// e.printStackTrace();
-	    }
+			final int x = Math.max(5, Math.min(w_r, w_r - 100));
+			final int y = Math.max(5, Math.min(h_r, h_r - 90));
 
-	    shell.close();
-	    workbenchToFront();
-	}
+			final int marginWidth = w_c - w_r;
+			final int marginHeight = h_c - h_r;
 
-	private void onShellPainted(Event e, final Image image,
-		final Point origin, final Canvas shell) {
-	    final GC gc = e.gc;
+			final FontData fontData = gc.getFont().getFontData()[0];
 
-	    final Rectangle rect = image.getBounds();
-	    final Rectangle client = shell.getClientArea();
+			gc.drawImage(image, origin.x, origin.y);
 
-	    final int w_r = rect.width;
-	    final int h_r = rect.height;
-	    final int w_c = client.width;
-	    final int h_c = client.height;
+			gc.setFont(new Font(shell.getDisplay(), new FontData(fontData
+					.getName(), fontData.getHeight(), SWT.BOLD)));
+			gc.drawText(DotplotPlugin.getVersionInfo(), x, y, true);
 
-	    final int x = Math.max(5, Math.min(w_r, w_r - 100));
-	    final int y = Math.max(5, Math.min(h_r, h_r - 90));
-
-	    final int marginWidth = w_c - w_r;
-	    final int marginHeight = h_c - h_r;
-
-	    final FontData fontData = gc.getFont().getFontData()[0];
-
-	    gc.drawImage(image, origin.x, origin.y);
-
-	    gc.setFont(new Font(shell.getDisplay(), new FontData(fontData
-		    .getName(), fontData.getHeight(), SWT.BOLD)));
-	    gc.drawText(DotplotPlugin.getVersionInfo(), x, y, true);
-
-	    if (marginWidth > 0) {
-		gc.fillRectangle(w_r, 0, marginWidth, h_c);
-	    }
-	    if (marginHeight > 0) {
-		gc.fillRectangle(0, h_r, w_c, marginHeight);
-	    }
-	}
-    }
-
-    private final static int SHOWTIME = 2500;
-
-    /**
-     * only for testing.
-     * 
-     * @param args
-     *            command line arguments
-     */
-    public static void main(String[] args) {
-	try {
-	    new DotPlotSplashScreen(DotplotPlugin
-		    .getResource("icons/dp_splash_400x360_v0_2.jpg"));
-	} catch (IOException e) {
-	    // ignore
-	    // e.printStackTrace();
-	}
-    }
-
-    private static void workbenchToFront() {
-	final IWorkbench parent = PlatformUI.getWorkbench();
-	if (parent != null) {
-	    final Shell workbenchShell = parent.getActiveWorkbenchWindow()
-		    .getShell();
-	    workbenchShell.getDisplay().syncExec(new Runnable() {
-		public void run() {
-		    workbenchShell.forceActive();
-		    DotPlotNavigator navigatorV = (DotPlotNavigator) parent
-			    .getActiveWorkbenchWindow().getActivePage()
-			    .findView(DotPlotPerspective.DOTPLOTNAV);
-		    navigatorV.getViewer().getTree().forceFocus();
+			if (marginWidth > 0) {
+				gc.fillRectangle(w_r, 0, marginWidth, h_c);
+			}
+			if (marginHeight > 0) {
+				gc.fillRectangle(0, h_r, w_c, marginHeight);
+			}
 		}
-	    });
 	}
-    }
 
-    /**
-     * should construct a splashscreen some day...
-     * 
-     * @param splashURL
-     *            image URL
-     */
-    public DotPlotSplashScreen(final URL splashURL) {
-	// Aufruf:
-	/*
-	 * try { final URL imageURL = new
-	 * URL(descriptor.getInstallURL().toString() +
-	 * "icons/dp_splash_400x360_v0_2.jpg"); new
-	 * DotPlotSplashScreen(Platform.asLocalURL(imageURL)); } catch
-	 * (Exception e) { e.printStackTrace(); }
+	private final static int SHOWTIME = 2500;
+
+	/**
+	 * only for testing.
+	 * 
+	 * @param args
+	 *            command line arguments
 	 */
+	public static void main(String[] args) {
+		try {
+			new DotPlotSplashScreen(DotplotPlugin
+					.getResource("icons/dp_splash_400x360_v0_2.jpg"));
+		}
+		catch (IOException e) {
+			// ignore
+			// e.printStackTrace();
+		}
+	}
 
-	// new Thread()
+	private static void workbenchToFront() {
+		final IWorkbench parent = PlatformUI.getWorkbench();
+		if (parent != null) {
+			final Shell workbenchShell = parent.getActiveWorkbenchWindow()
+					.getShell();
+			workbenchShell.getDisplay().syncExec(new Runnable() {
+				public void run() {
+					workbenchShell.forceActive();
+					DotPlotNavigator navigatorV = (DotPlotNavigator) parent
+							.getActiveWorkbenchWindow().getActivePage()
+							.findView(DotPlotPerspective.DOTPLOTNAV);
+					navigatorV.getViewer().getTree().forceFocus();
+				}
+			});
+		}
+	}
+
+	/**
+	 * should construct a splashscreen some day...
+	 * 
+	 * @param splashURL
+	 *            image URL
+	 */
+	public DotPlotSplashScreen(final URL splashURL) {
+		// Aufruf:
+		/*
+		 * try { final URL imageURL = new
+		 * URL(descriptor.getInstallURL().toString() +
+		 * "icons/dp_splash_400x360_v0_2.jpg"); new
+		 * DotPlotSplashScreen(Platform.asLocalURL(imageURL)); } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
+
+		// new Thread()
+		// {
+		// public void run()
+		// {
+		Platform.endSplash();
+		// initSplashAWT(splashURL);
+		initSplashSWT(splashURL);
+		// }
+		// }.start();
+	}
+
+	// private void initSplashAWT(URL splashURL)
 	// {
-	// public void run()
+	// final SplashFrame splash = new SplashFrame(splashURL);
+	// splash.setUndecorated(true);
+	//
+	// splash.pack();
+	// splash.show();
+	// splash.toFront();
+	//
+	// try
 	// {
-	Platform.endSplash();
-	// initSplashAWT(splashURL);
-	initSplashSWT(splashURL);
+	// Thread.sleep(SHOWTIME);
 	// }
-	// }.start();
-    }
+	// catch (InterruptedException e)
+	// {
+	// // ignore
+	// //e.printStackTrace();
+	// }
+	//
+	// splash.hide();
+	// splash.dispose();
+	//
+	// workbenchToFront();
+	// }
 
-    // private void initSplashAWT(URL splashURL)
-    // {
-    // final SplashFrame splash = new SplashFrame(splashURL);
-    // splash.setUndecorated(true);
-    //
-    // splash.pack();
-    // splash.show();
-    // splash.toFront();
-    //
-    // try
-    // {
-    // Thread.sleep(SHOWTIME);
-    // }
-    // catch (InterruptedException e)
-    // {
-    // // ignore
-    // //e.printStackTrace();
-    // }
-    //
-    // splash.hide();
-    // splash.dispose();
-    //
-    // workbenchToFront();
-    // }
+	// private class SplashFrame extends Frame
+	// {
+	// public SplashFrame(URL splashURL)
+	// {
+	// image = Toolkit.getDefaultToolkit().getImage(splashURL);
+	//
+	// this.addWindowListener(new WindowAdapter()
+	// {
+	// public void windowClosing(WindowEvent e)
+	// {
+	// hide();
+	// dispose();
+	// }
+	// });
+	//
+	// setLayout(new BorderLayout());
+	// add(new JLabel(new ImageIcon(image)));
+	// }
+	//
+	// public void paint(Graphics g)
+	// {
+	// if (back != null)
+	// {
+	// g.drawImage(back, 0, 0, this);
+	// }
+	// g.drawImage(image, 0, 0, this);
+	// }
+	//
+	// public void show()
+	// {
+	// int w = image.getWidth(this);
+	// int h = image.getHeight(this);
+	//
+	// if (w != -1 && h != -1)
+	// {
+	// Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+	// setBounds((d.width - w) / 2, (d.height - h) / 3, w, h);
+	// try
+	// {
+	// back = new Robot().createScreenCapture(getBounds());
+	// }
+	// catch (AWTException e)
+	// {
+	// //never mind
+	// }
+	// }
+	//
+	// super.show();
+	// }
+	//
+	// public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int
+	// y, int w, int h)
+	// {
+	// if ((infoflags & WIDTH + HEIGHT) != 0)
+	// {
+	// show();
+	// }
+	//
+	// return super.imageUpdate(img, infoflags, x, y, w, h);
+	// }
+	// }
 
-    // private class SplashFrame extends Frame
-    // {
-    // public SplashFrame(URL splashURL)
-    // {
-    // image = Toolkit.getDefaultToolkit().getImage(splashURL);
-    //
-    // this.addWindowListener(new WindowAdapter()
-    // {
-    // public void windowClosing(WindowEvent e)
-    // {
-    // hide();
-    // dispose();
-    // }
-    // });
-    //
-    // setLayout(new BorderLayout());
-    // add(new JLabel(new ImageIcon(image)));
-    // }
-    //
-    // public void paint(Graphics g)
-    // {
-    // if (back != null)
-    // {
-    // g.drawImage(back, 0, 0, this);
-    // }
-    // g.drawImage(image, 0, 0, this);
-    // }
-    //
-    // public void show()
-    // {
-    // int w = image.getWidth(this);
-    // int h = image.getHeight(this);
-    //
-    // if (w != -1 && h != -1)
-    // {
-    // Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    // setBounds((d.width - w) / 2, (d.height - h) / 3, w, h);
-    // try
-    // {
-    // back = new Robot().createScreenCapture(getBounds());
-    // }
-    // catch (AWTException e)
-    // {
-    // //never mind
-    // }
-    // }
-    //
-    // super.show();
-    // }
-    //
-    // public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int
-    // y, int w, int h)
-    // {
-    // if ((infoflags & WIDTH + HEIGHT) != 0)
-    // {
-    // show();
-    // }
-    //
-    // return super.imageUpdate(img, infoflags, x, y, w, h);
-    // }
-    // }
-
-    private void initSplashSWT(URL splashURL) {
-	new SplashShell(splashURL);
-    }
+	private void initSplashSWT(URL splashURL) {
+		new SplashShell(splashURL);
+	}
 }

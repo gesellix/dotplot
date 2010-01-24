@@ -20,19 +20,19 @@ import org.dotplot.core.services.IContext;
  */
 public interface IInterceptor {
 
-    /**
-     * Executes the <code>Interceptor</code>.
-     * 
-     * @param hotSpot
-     *            The <code>Hotspot</code> which defines the intercepted event.
-     * @param interceptedService
-     *            The intercepted <code>Serivce</code>.
-     * @param workingContext
-     *            The intercepted <code>Serivce</code>'s workingcontext.
-     * @param dotplotContext
-     *            The <code>DotplotContext</code>.
-     */
-    public void execute(IPluginHotSpot hotSpot,
-	    DotplotService interceptedService, IContext workingContext,
-	    DotplotContext dotplotContext);
+	/**
+	 * Executes the <code>Interceptor</code>.
+	 * 
+	 * @param hotSpot
+	 *            The <code>Hotspot</code> which defines the intercepted event.
+	 * @param interceptedService
+	 *            The intercepted <code>Serivce</code>.
+	 * @param workingContext
+	 *            The intercepted <code>Serivce</code>'s workingcontext.
+	 * @param dotplotContext
+	 *            The <code>DotplotContext</code>.
+	 */
+	public void execute(IPluginHotSpot hotSpot,
+			DotplotService interceptedService, IContext workingContext,
+			DotplotContext dotplotContext);
 }

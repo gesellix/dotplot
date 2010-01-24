@@ -7,25 +7,25 @@ package org.dotplot.tokenizer.service;
  */
 public class XMLType extends TextType {
 
-    /**
-     * A static <code>XMLType</code>-object for default usage.
-     */
-    public static final XMLType type = new XMLType();
+	/**
+	 * A static <code>XMLType</code>-object for default usage.
+	 */
+	public static final XMLType type = new XMLType();
 
-    /**
-     * Creates a new <code>XMLType</code>.
-     */
-    public XMLType() {
-	super("XML");
-    }
+	/**
+	 * Creates a new <code>XMLType</code>.
+	 */
+	public XMLType() {
+		super("XML");
+	}
 
-    /**
-     * Creates a new <code>XMLType</code>.
-     * 
-     * @param name
-     *            an identifier for the <code>XMLType</code>.
-     */
-    public XMLType(String name) {
-	super(name);
-    }
+	/**
+	 * Creates a new <code>XMLType</code>.
+	 * 
+	 * @param name
+	 *            an identifier for the <code>XMLType</code>.
+	 */
+	public XMLType(String name) {
+		super(name);
+	}
 }

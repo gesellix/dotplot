@@ -12,10 +12,10 @@ import org.dotplot.util.IRegistry;
  */
 public interface IConfigurationRegistry extends IRegistry<IConfiguration> {
 
-    /**
-     * Returns a copy of the <code>ConfigurationRegistry</code>.
-     * 
-     * @return The copy.
-     */
-    public IConfigurationRegistry copy();
+	/**
+	 * Returns a copy of the <code>ConfigurationRegistry</code>.
+	 * 
+	 * @return The copy.
+	 */
+	public IConfigurationRegistry copy();
 }

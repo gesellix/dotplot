@@ -14,27 +14,27 @@ import org.eclipse.swt.widgets.Composite;
  * @author Sascha Hemminger
  */
 public class TextDiffViewer extends TextMergeViewer {
-    /**
-     * Constructs a TextDiffViewer object.
-     * 
-     * @param parent
-     *            parent Composite maybe a window
-     * @param configuration
-     *            the diff's config
-     */
-    public TextDiffViewer(Composite parent, CompareConfiguration configuration) {
-	super(parent, configuration);
-    }
+	/**
+	 * Constructs a TextDiffViewer object.
+	 * 
+	 * @param parent
+	 *            parent Composite maybe a window
+	 * @param configuration
+	 *            the diff's config
+	 */
+	public TextDiffViewer(Composite parent, CompareConfiguration configuration) {
+		super(parent, configuration);
+	}
 
-    /**
-     * sets the two texts.
-     * 
-     * @param leftText
-     *            left text
-     * @param rightText
-     *            right text
-     */
-    public void setText(Object leftText, Object rightText) {
-	super.updateContent(null, leftText, rightText);
-    }
+	/**
+	 * sets the two texts.
+	 * 
+	 * @param leftText
+	 *            left text
+	 * @param rightText
+	 *            right text
+	 */
+	public void setText(Object leftText, Object rightText) {
+		super.updateContent(null, leftText, rightText);
+	}
 }

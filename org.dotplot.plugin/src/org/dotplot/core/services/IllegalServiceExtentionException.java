@@ -10,20 +10,20 @@ package org.dotplot.core.services;
  */
 public class IllegalServiceExtentionException extends ServiceException {
 
-    /**
-     * UID for serilization.
-     */
-    private static final long serialVersionUID = -5479225327514246543L;
+	/**
+	 * UID for serilization.
+	 */
+	private static final long serialVersionUID = -5479225327514246543L;
 
-    /**
-     * Creates a new <code>IllegalServiceExtentionException</code>.
-     * 
-     * @param hotSpot
-     *            The <code>ServiceHotSot</code> which caused the
-     *            <code>Exception</code>.
-     */
-    public IllegalServiceExtentionException(IServiceHotSpot hotSpot) {
-	super("Illegal extention for " + hotSpot.getID());
-    }
+	/**
+	 * Creates a new <code>IllegalServiceExtentionException</code>.
+	 * 
+	 * @param hotSpot
+	 *            The <code>ServiceHotSot</code> which caused the
+	 *            <code>Exception</code>.
+	 */
+	public IllegalServiceExtentionException(IServiceHotSpot hotSpot) {
+		super("Illegal extention for " + hotSpot.getID());
+	}
 
 }

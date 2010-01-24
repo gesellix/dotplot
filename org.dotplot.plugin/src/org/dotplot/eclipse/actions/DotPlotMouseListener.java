@@ -28,103 +28,103 @@ import org.eclipse.ui.IWorkbenchWindow;
  * @see org.eclipse.swt.events.MouseAdapter
  */
 class DotPlotMouseListener extends MouseAdapter {
-    private IWorkbenchWindow parent;
+	private IWorkbenchWindow parent;
 
-    private Point start, end;
+	private Point start, end;
 
-    private MergeView merger;
+	private MergeView merger;
 
-    /**
-     * Constructs a DotPlotMouseListener object.
-     * 
-     * @param dp
-     *            the dotplotter-controller
-     * @param merger
-     *            dotplot's mergeview
-     */
-    public DotPlotMouseListener(IWorkbenchWindow parent, MergeView merger) {
-	this.parent = parent;
-	this.merger = merger;
-    }
-
-    private MenuManager createMenuManager() {
-	MenuManager menu = new MenuManager("");
-	MenuManager menuExport = new MenuManager("Export");
-
-	menu.add(new ConfigureAction("Configure...", parent));
-	menu.add(menuExport);
-	menuExport.add(new ExportAction("Export to file", parent));
-	menuExport.add(new SavePlotJobAction("Save plot as job", parent));
-
-	return menu;
-    }
-
-    // calculates the rectangle from two points
-    private Rectangle getChoice() {
-	Point[] result = new Point[2];
-
-	if (this.start != null && this.end != null) {
-	    result[0] = new Point(Math.min(start.x, end.x), (Math.min(start.y,
-		    end.y)));
-	    result[1] = new Point(Math.max(start.x, end.x), (Math.max(start.y,
-		    end.y)));
+	/**
+	 * Constructs a DotPlotMouseListener object.
+	 * 
+	 * @param dp
+	 *            the dotplotter-controller
+	 * @param merger
+	 *            dotplot's mergeview
+	 */
+	public DotPlotMouseListener(IWorkbenchWindow parent, MergeView merger) {
+		this.parent = parent;
+		this.merger = merger;
 	}
 
-	return new Rectangle(Math.max(0, result[0].x),
-		Math.max(0, result[0].y), (result[1].x - result[0].x),
-		(result[1].y - result[0].y));
-    }
+	private MenuManager createMenuManager() {
+		MenuManager menu = new MenuManager("");
+		MenuManager menuExport = new MenuManager("Export");
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
-     * .MouseEvent)
-     */
-    @Override
-    public void mouseDown(MouseEvent event) {
-	if (event.button == 1) { // left button
-	    this.start = new Point(event.x, event.y);
+		menu.add(new ConfigureAction("Configure...", parent));
+		menu.add(menuExport);
+		menuExport.add(new ExportAction("Export to file", parent));
+		menuExport.add(new SavePlotJobAction("Save plot as job", parent));
+
+		return menu;
 	}
 
-	if (event.button == 3) { // right button
-	    Shell shell = parent.getShell();
-	    Menu popup = createMenuManager().createContextMenu(shell);
+	// calculates the rectangle from two points
+	private Rectangle getChoice() {
+		Point[] result = new Point[2];
 
-	    shell.setMenu(popup);
-	    popup.setVisible(true);
-	}
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.
-     * MouseEvent)
-     */
-    @Override
-    public void mouseUp(MouseEvent event) {
-	if (event.button == 1) {
-	    this.end = new Point(event.x, event.y);
-
-	    if (this.start != null) {
-		IDotplot dotplot = ContextFactory.getContext()
-			.getCurrentDotplot();
-
-		if (dotplot != null) {
-		    IROIResult res = dotplot.getDetailsForROI(this.getChoice(),
-			    null);
-		    if (res != null) {
-			merger.setText(res.getXFile(), res.getXLineIndex(), res
-				.getYFile(), res.getYLineIndex(), this
-				.getChoice());
-			// TODO rectangle is experimental
-			merger.getViewSite().getWorkbenchWindow()
-				.getActivePage().bringToTop(merger);
-		    }
+		if (this.start != null && this.end != null) {
+			result[0] = new Point(Math.min(start.x, end.x), (Math.min(start.y,
+					end.y)));
+			result[1] = new Point(Math.max(start.x, end.x), (Math.max(start.y,
+					end.y)));
 		}
-	    }
+
+		return new Rectangle(Math.max(0, result[0].x),
+				Math.max(0, result[0].y), (result[1].x - result[0].x),
+				(result[1].y - result[0].y));
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events
+	 * .MouseEvent)
+	 */
+	@Override
+	public void mouseDown(MouseEvent event) {
+		if (event.button == 1) { // left button
+			this.start = new Point(event.x, event.y);
+		}
+
+		if (event.button == 3) { // right button
+			Shell shell = parent.getShell();
+			Menu popup = createMenuManager().createContextMenu(shell);
+
+			shell.setMenu(popup);
+			popup.setVisible(true);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @seeorg.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.
+	 * MouseEvent)
+	 */
+	@Override
+	public void mouseUp(MouseEvent event) {
+		if (event.button == 1) {
+			this.end = new Point(event.x, event.y);
+
+			if (this.start != null) {
+				IDotplot dotplot = ContextFactory.getContext()
+						.getCurrentDotplot();
+
+				if (dotplot != null) {
+					IROIResult res = dotplot.getDetailsForROI(this.getChoice(),
+							null);
+					if (res != null) {
+						merger.setText(res.getXFile(), res.getXLineIndex(), res
+								.getYFile(), res.getYLineIndex(), this
+								.getChoice());
+						// TODO rectangle is experimental
+						merger.getViewSite().getWorkbenchWindow()
+								.getActivePage().bringToTop(merger);
+					}
+				}
+			}
+		}
+	}
 }

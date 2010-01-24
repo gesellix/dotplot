@@ -9,12 +9,12 @@ package org.dotplot.core.services;
  */
 public class Structure {
 
-    /**
-     * Creates a new <code>Structure</code>.
-     */
-    public Structure() {
-	super();
+	/**
+	 * Creates a new <code>Structure</code>.
+	 */
+	public Structure() {
+		super();
 
-    }
+	}
 
 }

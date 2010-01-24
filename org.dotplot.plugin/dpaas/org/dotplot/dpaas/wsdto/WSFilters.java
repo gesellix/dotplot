@@ -5,7 +5,6 @@
 // Generated on: 2009.06.29 at 11:18:10 PM CEST 
 //
 
-
 package org.dotplot.dpaas.wsdto;
 
 import java.util.ArrayList;
@@ -15,11 +14,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for WSFilters complex type.
+ * <p>
+ * Java class for WSFilters complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="WSFilters">
@@ -36,41 +37,39 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Filters", propOrder = {
-    "filter"
-})
+@XmlType(name = "Filters", propOrder = { "filter" })
 public class WSFilters {
 
-    @XmlElement(name = "Filter")
-    protected List<WSFilter> filter;
+	@XmlElement(name = "Filter")
+	protected List<WSFilter> filter;
 
-    /**
-     * Gets the value of the filter property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the filter property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getFilter().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link WSFilter }
-     * 
-     * 
-     */
-    public List<WSFilter> getFilter() {
-        if (filter == null) {
-            filter = new ArrayList<WSFilter>();
-        }
-        return this.filter;
-    }
+	/**
+	 * Gets the value of the filter property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the filter property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getFilter().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list {@link WSFilter }
+	 * 
+	 * 
+	 */
+	public List<WSFilter> getFilter() {
+		if (filter == null) {
+			filter = new ArrayList<WSFilter>();
+		}
+		return this.filter;
+	}
 
 }

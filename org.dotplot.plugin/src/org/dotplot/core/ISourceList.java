@@ -10,14 +10,14 @@ import java.util.List;
  */
 public interface ISourceList extends List<IPlotSource> {
 
-    /**
-     * Derives the combined <code>SourceType</code> of the list.
-     * <p>
-     * The combined <code>SourceType</code> must be assigneable to all
-     * <code>PlotSources</code> of the list.
-     * </p>
-     * 
-     * @return The combined <code>SourceType</code>
-     */
-    public ISourceType getCombinedSourceType();
+	/**
+	 * Derives the combined <code>SourceType</code> of the list.
+	 * <p>
+	 * The combined <code>SourceType</code> must be assigneable to all
+	 * <code>PlotSources</code> of the list.
+	 * </p>
+	 * 
+	 * @return The combined <code>SourceType</code>
+	 */
+	public ISourceType getCombinedSourceType();
 }

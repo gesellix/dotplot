@@ -12,7 +12,7 @@ import org.dotplot.core.IConfiguration;
  * 
  */
 public interface IFMatrixConfiguration extends IConfiguration {
-    public List<WeightingEntry> getManualWeightedTokens();
+	public List<WeightingEntry> getManualWeightedTokens();
 
-    public List<String> getRegularExpressions();
+	public List<String> getRegularExpressions();
 }

@@ -17,79 +17,80 @@ import org.dotplot.fmatrix.ITypeTableNavigator;
  */
 public class QImageTaskPart extends AbstractTaskPart {
 
-    private ITypeTableNavigator navigator;
+	private ITypeTableNavigator navigator;
 
-    private IQImageConfiguration config;
+	private IQImageConfiguration config;
 
-    private IDotplot result;
+	private IDotplot result;
 
-    /**
-     * Creates a new <code>QImageTaskPart</code>.
-     * 
-     * @param id
-     * @param navigator
-     * @throws NullPointerException
-     */
-    public QImageTaskPart(String id, ITypeTableNavigator navigator,
-	    IQImageConfiguration config) {
-	super(id);
-	if (navigator == null || config == null) {
-	    throw new NullPointerException();
+	/**
+	 * Creates a new <code>QImageTaskPart</code>.
+	 * 
+	 * @param id
+	 * @param navigator
+	 * @throws NullPointerException
+	 */
+	public QImageTaskPart(String id, ITypeTableNavigator navigator,
+			IQImageConfiguration config) {
+		super(id);
+		if (navigator == null || config == null) {
+			throw new NullPointerException();
+		}
+		this.navigator = navigator;
+		this.config = config;
+		this.result = null;
 	}
-	this.navigator = navigator;
-	this.config = config;
-	this.result = null;
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.ITaskPart#errorOccured()
-     */
-    public boolean errorOccured() {
-	return false;
-    }
-
-    public IQImageConfiguration getConfiguration() {
-	return this.config;
-    }
-
-    public ITypeTableNavigator getNavigator() {
-	return this.navigator;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.core.services.ITaskPart#getResult()
-     */
-    public Object getResult() {
-	return this.result;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Runnable#run()
-     */
-    public void run() {
-	try {
-	    QImage qImage = new QImage(this.navigator, this.config);
-	    this.result = qImage.getDotplot();
-	} catch (Exception e) {
-	    this.getErrorhandler().fatal(this, e);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.ITaskPart#errorOccured()
+	 */
+	public boolean errorOccured() {
+		return false;
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.core.services.ITaskPart#setLocalRessources(java.util.Collection
-     * )
-     */
-    public void setLocalRessources(Collection<? extends IRessource> ressouceList)
-	    throws InsufficientRessourcesException {
-    }
+	public IQImageConfiguration getConfiguration() {
+		return this.config;
+	}
+
+	public ITypeTableNavigator getNavigator() {
+		return this.navigator;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.core.services.ITaskPart#getResult()
+	 */
+	public Object getResult() {
+		return this.result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	public void run() {
+		try {
+			QImage qImage = new QImage(this.navigator, this.config);
+			this.result = qImage.getDotplot();
+		}
+		catch (Exception e) {
+			this.getErrorhandler().fatal(this, e);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.core.services.ITaskPart#setLocalRessources(java.util.Collection
+	 * )
+	 */
+	public void setLocalRessources(Collection<? extends IRessource> ressouceList)
+			throws InsufficientRessourcesException {
+	}
 
 }

@@ -14,22 +14,22 @@ import org.dotplot.ui.ViewController;
  * @author hg12170
  */
 public class FMatrixViewController extends ViewController {
-    /**
-     * creates the view controller.
-     * 
-     * @param dotplotCreator
-     *            the dotplot plugin "controller"
-     * @param cv
-     *            the corresponding configuration view
-     * 
-     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
-     */
-    public FMatrixViewController(ConfigurationView cv) {
-	super(cv);
-    }
+	/**
+	 * creates the view controller.
+	 * 
+	 * @param dotplotCreator
+	 *            the dotplot plugin "controller"
+	 * @param cv
+	 *            the corresponding configuration view
+	 * 
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
+	public FMatrixViewController(ConfigurationView cv) {
+		super(cv);
+	}
 
-    @Override
-    public void update(Observable o, Object arg) {
-	// System.out.println("FMatrixController was used");
-    }
+	@Override
+	public void update(Observable o, Object arg) {
+		// System.out.println("FMatrixController was used");
+	}
 }

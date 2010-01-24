@@ -20,84 +20,85 @@ import org.eclipse.swt.widgets.Control;
  */
 public class FourGrammFilterUI extends AbstractFilterUI {
 
-    public static final String INFO = "A 4-Gramm filter combines "
-	    + "four successive tokens to a single token.";
+	public static final String INFO = "A 4-Gramm filter combines "
+			+ "four successive tokens to a single token.";
 
-    private Button checkBox;
+	private Button checkBox;
 
-    /**
-     * Creates a new <code>FourGrammFilterUI</code>.
-     * 
-     * @param title
-     * @param info
-     */
-    public FourGrammFilterUI() {
-	super("4-Gramms", INFO);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.tokenizer.filter.ui.AbstractFilterUI#drawContent(org.eclipse
-     * .swt.widgets.Composite, org.eclipse.swt.events.SelectionListener)
-     */
-    @Override
-    public Control drawContent(Composite parent,
-	    SelectionListener changeListener) {
-	Composite c = new Composite(parent, SWT.NONE);
-	c.setLayout(new RowLayout());
-
-	final Button b4Gramms = new Button(c, SWT.CHECK);
-	this.checkBox = b4Gramms;
-
-	b4Gramms.setText("use 4-Gramm Filter");
-	b4Gramms.addSelectionListener(changeListener);
-
-	return c;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.tokenizer.filter.ui.IFilterUI#getController(org.dotplot.ui
-     * .ConfigurationView)
-     */
-    public ViewController getController(ConfigurationView view) {
-	return new FourGrammFilterUIController(view, this);
-    }
-
-    public boolean getUseFilter() {
-	if (this.checkBox != null && !this.checkBox.isDisposed()) {
-	    return this.checkBox.getSelection();
-	} else {
-	    return false;
+	/**
+	 * Creates a new <code>FourGrammFilterUI</code>.
+	 * 
+	 * @param title
+	 * @param info
+	 */
+	public FourGrammFilterUI() {
+		super("4-Gramms", INFO);
 	}
-    }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dotplot.tokenizer.filter.ui.AbstractFilterUI#refresh()
-     */
-    @Override
-    public void refresh() {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.tokenizer.filter.ui.AbstractFilterUI#drawContent(org.eclipse
+	 * .swt.widgets.Composite, org.eclipse.swt.events.SelectionListener)
+	 */
+	@Override
+	public Control drawContent(Composite parent,
+			SelectionListener changeListener) {
+		Composite c = new Composite(parent, SWT.NONE);
+		c.setLayout(new RowLayout());
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.dotplot.tokenizer.filter.ui.IFilterUI#reset(org.dotplot.tokenizer
-     * .filter.IFilterConfiguration)
-     */
-    public void reset(IFilterConfiguration config) {
-	this.checkBox.setSelection(false);
+		final Button b4Gramms = new Button(c, SWT.CHECK);
+		this.checkBox = b4Gramms;
 
-	if (config.getFilterList().contains(this.getFilterID())) {
-	    this.checkBox.setSelection(true);
+		b4Gramms.setText("use 4-Gramm Filter");
+		b4Gramms.addSelectionListener(changeListener);
+
+		return c;
 	}
-    }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.tokenizer.filter.ui.IFilterUI#getController(org.dotplot.ui
+	 * .ConfigurationView)
+	 */
+	public ViewController getController(ConfigurationView view) {
+		return new FourGrammFilterUIController(view, this);
+	}
+
+	public boolean getUseFilter() {
+		if (this.checkBox != null && !this.checkBox.isDisposed()) {
+			return this.checkBox.getSelection();
+		}
+		else {
+			return false;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.dotplot.tokenizer.filter.ui.AbstractFilterUI#refresh()
+	 */
+	@Override
+	public void refresh() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.dotplot.tokenizer.filter.ui.IFilterUI#reset(org.dotplot.tokenizer
+	 * .filter.IFilterConfiguration)
+	 */
+	public void reset(IFilterConfiguration config) {
+		this.checkBox.setSelection(false);
+
+		if (config.getFilterList().contains(this.getFilterID())) {
+			this.checkBox.setSelection(true);
+		}
+	}
 
 }

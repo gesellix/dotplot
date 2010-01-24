@@ -10,15 +10,15 @@ import org.dotplot.core.IConfiguration;
  */
 public interface ITokenizerConfiguration extends IConfiguration {
 
-    /**
-     * 
-     * @return
-     */
-    public String getTokenizerID();
+	/**
+	 * 
+	 * @return
+	 */
+	public String getTokenizerID();
 
-    /**
-     * 
-     * @param id
-     */
-    public void setTokenizerID(String id);
+	/**
+	 * 
+	 * @param id
+	 */
+	public void setTokenizerID(String id);
 }

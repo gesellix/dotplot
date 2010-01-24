@@ -18,153 +18,154 @@ import org.eclipse.swt.widgets.Shell;
  * @see org.dotplot.ui.monitor.DotPlotProgressMonitor
  */
 class DotPlotProgressDialog {
-    private interface ThreadAwareCallback {
-	public void isActive(boolean state);
-    }
+	private interface ThreadAwareCallback {
+		public void isActive(boolean state);
+	}
 
-    private ProgressBar barOverall;
+	private ProgressBar barOverall;
 
-    private ProgressBar barModule;
+	private ProgressBar barModule;
 
-    private Composite messagesAndBars;
+	private Composite messagesAndBars;
 
-    private Composite buttonArea;
+	private Composite buttonArea;
 
-    private Label message;
+	private Label message;
 
-    private Label module;
+	private Label module;
 
-    private Label overall;
+	private Label overall;
 
-    private Button cancel;
+	private Button cancel;
 
-    private Shell shell;
+	private Shell shell;
 
-    DotPlotProgressDialog() {
-	shell = new Shell();
-	shell.setText("Generating DotPlot");
-	shell.setBounds(100, 100, 580, 250);
+	DotPlotProgressDialog() {
+		shell = new Shell();
+		shell.setText("Generating DotPlot");
+		shell.setBounds(100, 100, 580, 250);
 
-	this.messagesAndBars = new Composite(shell, SWT.NONE);
-	this.messagesAndBars.setBounds(10, 10, 540, 150);
-	this.buttonArea = new Composite(shell, SWT.NONE);
-	buttonArea.setBounds(10, 160, 540, 50);
+		this.messagesAndBars = new Composite(shell, SWT.NONE);
+		this.messagesAndBars.setBounds(10, 10, 540, 150);
+		this.buttonArea = new Composite(shell, SWT.NONE);
+		buttonArea.setBounds(10, 160, 540, 50);
 
-	message = new Label(this.messagesAndBars, SWT.NONE);
-	message.setBounds(10, 10, 350, 30);
+		message = new Label(this.messagesAndBars, SWT.NONE);
+		message.setBounds(10, 10, 350, 30);
 
-	module = new Label(this.messagesAndBars, SWT.NONE);
-	module.setBounds(10, 50, 120, 20);
+		module = new Label(this.messagesAndBars, SWT.NONE);
+		module.setBounds(10, 50, 120, 20);
 
-	barModule = new ProgressBar(this.messagesAndBars, SWT.NONE);
-	barModule.setBounds(150, 50, 390, 20);
-	barModule.setMaximum(100);
+		barModule = new ProgressBar(this.messagesAndBars, SWT.NONE);
+		barModule.setBounds(150, 50, 390, 20);
+		barModule.setMaximum(100);
 
-	overall = new Label(this.messagesAndBars, SWT.NONE);
-	overall.setText("Overall progress:");
-	overall.setBounds(10, 90, 120, 20);
+		overall = new Label(this.messagesAndBars, SWT.NONE);
+		overall.setText("Overall progress:");
+		overall.setBounds(10, 90, 120, 20);
 
-	barOverall = new ProgressBar(this.messagesAndBars, SWT.NONE);
-	barOverall.setBounds(150, 90, 390, 20);
-	barOverall.setMaximum(100);
+		barOverall = new ProgressBar(this.messagesAndBars, SWT.NONE);
+		barOverall.setBounds(150, 90, 390, 20);
+		barOverall.setMaximum(100);
 
-	cancel = new Button(this.buttonArea, SWT.NONE);
-	cancel.setText("Cancel");
-	cancel.setBounds(430, 10, 110, 35);
-	cancel.addSelectionListener(DotPlotProgressMonitor.getInstance());
-    }
+		cancel = new Button(this.buttonArea, SWT.NONE);
+		cancel.setText("Cancel");
+		cancel.setBounds(430, 10, 110, 35);
+		cancel.addSelectionListener(DotPlotProgressMonitor.getInstance());
+	}
 
-    private void checkActiveState(final ThreadAwareCallback callback) {
-	shell.getDisplay().syncExec(new Runnable() {
-	    public void run() {
-		callback.isActive(shell != null && !shell.isDisposed()
-			&& shell.isVisible());
-	    }
-	});
-    }
-
-    void close() {
-	checkActiveState(new ThreadAwareCallback() {
-	    public void isActive(boolean state) {
-		if (state) {
-		    shell.getDisplay().syncExec(new Runnable() {
+	private void checkActiveState(final ThreadAwareCallback callback) {
+		shell.getDisplay().syncExec(new Runnable() {
 			public void run() {
-			    shell.dispose();
+				callback.isActive(shell != null && !shell.isDisposed()
+						&& shell.isVisible());
 			}
-		    });
-		}
-	    }
-	});
-    }
+		});
+	}
 
-    int getMaximum() {
-	return this.barModule.getMaximum();
-    }
-
-    void open() {
-	this.shell.open();
-    }
-
-    void setMessage(final String message) {
-	checkActiveState(new ThreadAwareCallback() {
-	    public void isActive(boolean state) {
-		if (state) {
-		    shell.getDisplay().syncExec(new Runnable() {
-			public void run() {
-			    if (message != null) {
-				DotPlotProgressDialog.this.message
-					.setText(message);
-			    } else {
-				DotPlotProgressDialog.this.message
-					.setText("no message");
-			    }
+	void close() {
+		checkActiveState(new ThreadAwareCallback() {
+			public void isActive(boolean state) {
+				if (state) {
+					shell.getDisplay().syncExec(new Runnable() {
+						public void run() {
+							shell.dispose();
+						}
+					});
+				}
 			}
-		    });
-		}
-	    }
-	});
-    }
+		});
+	}
 
-    void setModule(final String moduleName) {
-	checkActiveState(new ThreadAwareCallback() {
-	    public void isActive(boolean state) {
-		if (state) {
-		    shell.getDisplay().syncExec(new Runnable() {
-			public void run() {
-			    DotPlotProgressDialog.this.module
-				    .setText(moduleName);
-			}
-		    });
-		}
-	    }
-	});
-    }
+	int getMaximum() {
+		return this.barModule.getMaximum();
+	}
 
-    void step(final int i) {
-	checkActiveState(new ThreadAwareCallback() {
-	    public void isActive(boolean state) {
-		if (state) {
-		    shell.getDisplay().syncExec(new Runnable() {
-			public void run() {
-			    barOverall.setSelection(i);
-			}
-		    });
-		}
-	    }
-	});
-    }
+	void open() {
+		this.shell.open();
+	}
 
-    void stepModule(final int i) {
-	checkActiveState(new ThreadAwareCallback() {
-	    public void isActive(boolean state) {
-		if (state) {
-		    shell.getDisplay().syncExec(new Runnable() {
-			public void run() {
-			    barModule.setSelection(i);
+	void setMessage(final String message) {
+		checkActiveState(new ThreadAwareCallback() {
+			public void isActive(boolean state) {
+				if (state) {
+					shell.getDisplay().syncExec(new Runnable() {
+						public void run() {
+							if (message != null) {
+								DotPlotProgressDialog.this.message
+										.setText(message);
+							}
+							else {
+								DotPlotProgressDialog.this.message
+										.setText("no message");
+							}
+						}
+					});
+				}
 			}
-		    });
-		}
-	    }
-	});
-    }
+		});
+	}
+
+	void setModule(final String moduleName) {
+		checkActiveState(new ThreadAwareCallback() {
+			public void isActive(boolean state) {
+				if (state) {
+					shell.getDisplay().syncExec(new Runnable() {
+						public void run() {
+							DotPlotProgressDialog.this.module
+									.setText(moduleName);
+						}
+					});
+				}
+			}
+		});
+	}
+
+	void step(final int i) {
+		checkActiveState(new ThreadAwareCallback() {
+			public void isActive(boolean state) {
+				if (state) {
+					shell.getDisplay().syncExec(new Runnable() {
+						public void run() {
+							barOverall.setSelection(i);
+						}
+					});
+				}
+			}
+		});
+	}
+
+	void stepModule(final int i) {
+		checkActiveState(new ThreadAwareCallback() {
+			public void isActive(boolean state) {
+				if (state) {
+					shell.getDisplay().syncExec(new Runnable() {
+						public void run() {
+							barModule.setSelection(i);
+						}
+					});
+				}
+			}
+		});
+	}
 }
