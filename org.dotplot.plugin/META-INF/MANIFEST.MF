@@ -23,7 +23,7 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.text,
  org.eclipse.core.runtime.compatibility.auth,
- org.junit4
+ org.junit4;resolution:=optional
 Bundle-ActivationPolicy: lazy
 Export-Package: Resources.afm,
  Resources.cmap,
