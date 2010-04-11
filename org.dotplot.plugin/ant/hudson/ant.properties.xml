@@ -9,7 +9,7 @@
     <property name="eclipse.location" value="/usr/share/hudson/programs/eclipse-3.4/plugins"/>
     <property name="report.output.dir" value="${workspace}/reports" />
     <property name="sources" value="${org.dotplot.plugin.location}" />
-	<property name="sources.dpaas" value="${org.dotplot.dpaas.location}" />
+	<property name="sources.dpaas" value="${org.dotplot.dpaas.location}/org.dotplot.dpaasEJB" />
     <property name="tmpdir" value="${workspace}/tmp" />
 
     <property name="destdir" value="${tmpdir}/bin" />
