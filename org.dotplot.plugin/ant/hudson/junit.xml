@@ -30,12 +30,20 @@
 			<include name="**/*.java" />
 			<classpath refid="project.classpath" />
 		</javac>
-
+		<javac destdir="${classes}" srcdir="${sources.dpaas}" debug="on" nowarn="off">
+			<include name="**/*.java" />
+			<classpath refid="project.classpath" />
+		</javac>
 	</target>
 
 
 	<target name="compile.cobertura">
 		<javac destdir="${cobertura.classes}" srcdir="${sources}" debug="on" nowarn="off">
+			<include name="**/*.java" />
+			<classpath refid="project.classpath" />
+		</javac>
+		
+		<javac destdir="${cobertura.classes}" srcdir="${sources.dpaas}" debug="on" nowarn="off">
 			<include name="**/*.java" />
 			<classpath refid="project.classpath" />
 		</javac>
