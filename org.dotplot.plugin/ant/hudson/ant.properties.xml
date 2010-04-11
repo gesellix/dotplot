@@ -5,9 +5,11 @@
 	<property name="basedir" value="../../../.." />
 
     <property name="org.dotplot.plugin.location" value="${workspace}/svn/org.dotplot.plugin"/>
+	<property name="org.dotplot.dpaas.location" value="${workspace}/svn/org.dotplot.dpaas"/>
     <property name="eclipse.location" value="/usr/share/hudson/programs/eclipse-3.4/plugins"/>
     <property name="report.output.dir" value="${workspace}/reports" />
     <property name="sources" value="${org.dotplot.plugin.location}" />
+	<property name="sources.dpaas" value="${org.dotplot.dpaas.location}" />
     <property name="tmpdir" value="${workspace}/tmp" />
 
     <property name="destdir" value="${tmpdir}/bin" />
@@ -27,6 +29,10 @@
                     <include name="**/*.jar"/>
             </fileset>
 
+        	<fileset dir="${org.dotplot.dpaas.location}/lib/">
+                    <include name="**/*.jar"/>
+            </fileset>
+    	
             <fileset dir="${eclipse.location}">
                     <include name="**/*.jar"/>
             </fileset>

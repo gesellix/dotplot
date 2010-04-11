@@ -15,6 +15,13 @@
 			<exclude name="**/tests/**/*.java" />
 			<classpath refid="project.classpath" />
 		</javac>
+		
+		<javac destdir="${tmpdir}/bin" srcdir="${sources.dpaas}" debug="on" nowarn="off" deprecation="on">
+			<compilerarg value="-Xlint:unchecked" />
+			<include name="**/*.java" />
+			<exclude name="**/tests/**/*.java" />
+			<classpath refid="project.classpath" />
+		</javac>
 	</target>
 
 </project>
