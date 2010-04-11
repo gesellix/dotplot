@@ -29,7 +29,8 @@
                     <include name="**/*.jar"/>
             </fileset>
 
-        	<fileset dir="${org.dotplot.dpaas.location}/org.dotplot.dpaasWeb/WebContent/WEB-INF/lib/">
+        	<!--<fileset dir="${org.dotplot.dpaas.location}/org.dotplot.dpaasWeb/WebContent/WEB-INF/lib/">-->
+        	<fileset dir="${org.dotplot.dpaas.location}/org.dotplot.dpaasEJB/lib/">
                     <include name="**/*.jar"/>
             </fileset>
     	
