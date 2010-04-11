@@ -29,7 +29,7 @@
                     <include name="**/*.jar"/>
             </fileset>
 
-        	<fileset dir="${org.dotplot.dpaas.location}/lib/">
+        	<fileset dir="${org.dotplot.dpaas.location}/org.dotplot.dpaasWeb/WebContent/WEB-INF/lib/">
                     <include name="**/*.jar"/>
             </fileset>
     	
