@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <project name="org.dotplot.plugin">
 
-    <property name="workspace" value="../../../.." />
-	<property name="basedir" value="../../../.." />
+    <property name="workspace" value="../../.." />
+	<property name="basedir" value="../../.." />
 	<property name="jenkins" value="/var/lib/jenkins" />
 
     <property name="org.dotplot.plugin.location" value="${workspace}/org.dotplot.plugin"/>
