@@ -3,9 +3,10 @@
 
     <property name="workspace" value="../../../.." />
 	<property name="basedir" value="../../../.." />
+	<property name="jenkins" value="/var/lib/jenkins" />
 
-    <property name="org.dotplot.plugin.location" value="${workspace}/svn/org.dotplot.plugin"/>
-	<property name="org.dotplot.dpaas.location" value="${workspace}/svn/org.dotplot.dpaas"/>
+    <property name="org.dotplot.plugin.location" value="${workspace}/org.dotplot.plugin"/>
+	<property name="org.dotplot.dpaas.location" value="${workspace}/org.dotplot.dpaas"/>
     <property name="eclipse.location" value="/usr/share/hudson/programs/eclipse-3.4/plugins"/>
     <property name="report.output.dir" value="${workspace}/reports" />
     <property name="sources" value="${org.dotplot.plugin.location}" />
@@ -14,15 +15,15 @@
 
     <property name="destdir" value="${tmpdir}/bin" />
 
-    <property name="checkstyle.home" value = "/usr/share/hudson/programs/checkstyle" />
-    <property name="simian.home" value = "/usr/share/hudson/programs/simian" />
-    <property name="pmd.home" value = "/usr/share/hudson/programs/pmd" />
-    <property name="crap4j.home" value="/usr/share/hudson/programs/crap4j"/>
-    <property name="cobertura.home" value = "/usr/share/hudson/programs/cobertura" />
-    <property name="findbugs.home" value = "/usr/share/hudson/programs/findbugs" />
-    <property name="javancss.home" value = "/usr/share/hudson/programs/javancss" />
-    <property name="emma.home" value = "/usr/share/hudson/programs/emma" />
-	<property name="testability.home" value = "/usr/share/hudson/programs/testability" />
+    <property name="checkstyle.home" value = "${jenkins}/programs/checkstyle" />
+    <property name="simian.home" value = "${jenkins}/programs/simian" />
+    <property name="pmd.home" value = "${jenkins}/programs/pmd" />
+    <property name="crap4j.home" value="${jenkins}/programs/crap4j"/>
+    <property name="cobertura.home" value = "${jenkins}/programs/cobertura" />
+    <property name="findbugs.home" value = "${jenkins}/programs/findbugs" />
+    <property name="javancss.home" value = "${jenkins}/programs/javancss" />
+    <property name="emma.home" value = "${jenkins}/programs/emma" />
+	<property name="testability.home" value = "${jenkins}/programs/testability" />
 	
     <path id="project.classpath">
             <fileset dir="${org.dotplot.plugin.location}/lib/">
