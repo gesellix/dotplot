@@ -12,8 +12,8 @@
 	</path>
 
 	<target name="init">
-		<delete dir="${workspace}/svn/cobertura/" />
-		<mkdir dir="${workspace}/svn/cobertura/" />
+		<delete dir="${workspace}/cobertura/" />
+		<mkdir dir="${workspace}/cobertura/" />
 	</target>
 
 	<target name="cobertura" depends="init">
@@ -27,7 +27,7 @@
 			</fileset>
 		</cobertura-instrument>
 
-		<cobertura-report format="xml" destdir="${workspace}/svn/cobertura/" srcdir="${sources}" />
+		<cobertura-report format="xml" destdir="${workspace}/cobertura/" srcdir="${sources}" />
 	</target>
 
 </project>
